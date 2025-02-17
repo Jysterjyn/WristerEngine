@@ -153,7 +153,7 @@ void Sprite::Initialize()
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
 	ID3D12Resource* vertBuff = nullptr;
-	CreateBuffer<Vertex>(&vertBuff, &vertMap, sizeVB);
+	CreateBuffer(&vertBuff, &vertMap, sizeVB);
 
 	// 全頂点に対して座標をコピー
 	copy(vertices.begin(), vertices.end(), vertMap);
@@ -166,8 +166,7 @@ void Sprite::Initialize()
 	vbView.StrideInBytes = sizeof(Vertex);
 
 	// 定数バッファ
-	CreateBuffer(constBuff.GetAddressOf(),
-		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
+	CreateBuffer(constBuff.GetAddressOf(), &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
 	AdjustTextureSize();
 	size = textureSize;
@@ -235,7 +234,7 @@ void Sprite::Update()
 void Sprite::Draw()
 {
 	if (isInvisible) { return; }
-	
+
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
 	cmdList->SetGraphicsRootDescriptorTable(0, tex->gpuHandle);

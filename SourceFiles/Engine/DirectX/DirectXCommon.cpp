@@ -220,7 +220,7 @@ void DirectXCommon::PreDraw()
 	// 描画先のRTVとDSVを指定する
 	rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
 		(size_t)bbIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-	
+
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
@@ -238,7 +238,7 @@ void DirectXCommon::PreDraw()
 	commandList->RSSetViewports(1, &viewport);
 	// シザー矩形の設定
 	D3D12_RECT rect = CD3DX12_RECT(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
-	commandList->RSSetScissorRects(1, &rect); 
+	commandList->RSSetScissorRects(1, &rect);
 }
 
 void DirectXCommon::PostDraw()
@@ -278,6 +278,32 @@ void DirectXCommon::PostDraw()
 	result = commandAllocator->Reset();
 	// 再びコマンドリストを貯める準備
 	result = commandList->Reset(commandAllocator.Get(), nullptr);
+}
+
+SRVHandle DirectXCommon::CreateSRV(uint32_t mipLevels, const D3D12_RESOURCE_DESC* texResDesc)
+{
+	// テクスチャ枚数上限チェック
+	assert(srvIndex < MAX_SRV_COUNT);
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		srvHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		srvHeap->GetGPUDescriptorHandleForHeapStart(), srvIndex,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	if (texResDesc) { srvDesc.Format = texResDesc->Format; }
+	else { srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; }
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	if (texResDesc && mipLevels == UINT32_MAX) { srvDesc.Texture2D.MipLevels = texResDesc->MipLevels; }
+	else { srvDesc.Texture2D.MipLevels = mipLevels; }
+
+	srvIndex++;
+
+	return SRVHandle(cpuHandle, gpuHandle);
 }
 
 void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)

@@ -5,6 +5,7 @@
 void TestSceneUIDrawer::Initialize()
 {
 	sprites["bg"] = WristerEngine::_2D::Sprite::Create("sample.png");
+	sprites["bg2"] = WristerEngine::_2D::Sprite::Create("uvChecker.png");
 	Update();
 }
 
