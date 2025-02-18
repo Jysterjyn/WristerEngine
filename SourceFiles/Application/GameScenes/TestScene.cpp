@@ -18,7 +18,7 @@ void TestScene::Initialize()
 	uiDrawer->Initialize();
 	obj = WristerEngine::_3D::ModelManager::Create("cube");
 	obj->worldTransform->scale *= 10;
-	WristerEngine::ParticleManager::AddParticleGroup("uvChecker.png");
+	WristerEngine::ParticleManager::AddParticleGroup("kamata.ico");
 }
 
 void TestScene::Update()

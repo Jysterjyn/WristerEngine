@@ -73,7 +73,6 @@ namespace WristerEngine::_2D
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		static const uint32_t MIP_LEVELS_DEFAULT = UINT32_MAX;
 		static std::list<TextureData*> textures;
 		const static Matrix4 matProj;
 		static DirectXCommon* dxCommon;
@@ -101,7 +100,7 @@ namespace WristerEngine::_2D
 		// anchorPoint = { 0.5f,0.5f } にする
 		void SetCenterAnchor() { anchorPoint = { 0.5f,0.5f }; }
 		// テクスチャ読み込み
-		static TextureData* LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels = MIP_LEVELS_DEFAULT);
+		static TextureData* LoadTexture(const std::string& fileName);
 		// スプライト生成
 		static std::unique_ptr<WristerEngine::_2D::Sprite> Create(const std::string& fileName,
 			const Vector2& pos = {}, const Vector2& anchorPoint = {},

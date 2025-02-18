@@ -3,6 +3,7 @@
 #include "D3D12Common.h"
 #include "ImGuiManager.h"
 using namespace WristerEngine;
+using namespace _2D;
 
 void Framework::Initialize()
 {
@@ -11,20 +12,20 @@ void Framework::Initialize()
 	input->Initialize();
 	PipelineManager::Initialize();
 	constant->LoadConstants();
-	_2D::ImGuiManager::Initialize();
+	ImGuiManager::Initialize();
 }
 
 void Framework::Update()
 {
-	_2D::ImGuiManager::Begin();
+	ImGuiManager::Begin();
 	input->Update();
 	sceneManager->Update();
-	_2D::ImGuiManager::End();
+	ImGuiManager::End();
 }
 
 void Framework::Finalize()
 {
-	_2D::ImGuiManager::Finalize();
+	ImGuiManager::Finalize();
 	constant->Finalize();
 	sceneManager->Finalize();
 	wAPI->Finalize();

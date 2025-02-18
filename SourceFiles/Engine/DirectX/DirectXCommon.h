@@ -73,15 +73,17 @@ namespace WristerEngine
 		/// SRVÇê∂ê¨
 		/// </summary>
 		/// <returns>åªç›ê∂ê¨ÇµÇΩSRVÉnÉìÉhÉã</returns>
-		SRVHandle CreateSRV(ID3D12Resource* resBuff, uint32_t mipLevels = UINT32_MAX, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
+		SRVHandle CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});
+
 		// getter
 		ID3D12Device* GetDevice() const { return device.Get(); }
 		ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
 		size_t GetBackBufferCount() const { return backBuffers.size(); }
 		Matrix4 GetViewportMatrix() const;
 		ID3D12DescriptorHeap* GetSRV() const { return srvHeap.Get(); }
+		SRVHandle GetNextSRVHandle() const;
 	};
 }

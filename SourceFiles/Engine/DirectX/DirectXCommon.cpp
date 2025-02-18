@@ -280,31 +280,29 @@ void DirectXCommon::PostDraw()
 	result = commandList->Reset(commandAllocator.Get(), nullptr);
 }
 
-SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, uint32_t mipLevels, const D3D12_RESOURCE_DESC* texResDesc)
+SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc)
 {
 	// テクスチャ枚数上限チェック
 	assert(srvIndex < MAX_SRV_COUNT);
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
-
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetGPUDescriptorHandleForHeapStart(), srvIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
-
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	if (texResDesc) { srvDesc.Format = texResDesc->Format; }
-	else { srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; }
+	if (texResDesc)
+	{
+		srvDesc.Format = texResDesc->Format;
+		srvDesc.Texture2D.MipLevels = texResDesc->MipLevels;
+	}
+	else
+	{
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		srvDesc.Texture2D.MipLevels = 1;
+	}
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	if (texResDesc && mipLevels == UINT32_MAX) { srvDesc.Texture2D.MipLevels = texResDesc->MipLevels; }
-	else { srvDesc.Texture2D.MipLevels = mipLevels; }
 
-	device->CreateShaderResourceView(resBuff, &srvDesc, cpuHandle);
+	SRVHandle srvHandle = GetNextSRVHandle();
+	device->CreateShaderResourceView(resBuff, &srvDesc, srvHandle.cpu);
 	srvIndex++;
-
-	return SRVHandle(cpuHandle, gpuHandle);
+	return srvHandle;
 }
 
 void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)
@@ -321,4 +319,17 @@ Matrix4 DirectXCommon::GetViewportMatrix() const
 	mat.m[3][0] = viewport.TopLeftX + viewport.Width / 2.0f;
 	mat.m[3][1] = viewport.TopLeftY + viewport.Height / 2.0f;
 	return mat;
+}
+
+SRVHandle WristerEngine::DirectXCommon::GetNextSRVHandle() const
+{
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		srvHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		srvHeap->GetGPUDescriptorHandleForHeapStart(), srvIndex,
+		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+
+	return SRVHandle(cpuHandle, gpuHandle);
 }

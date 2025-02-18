@@ -41,7 +41,7 @@ void Sprite::Split(const Vector2& spritNum)
 	size.y /= spritNum.y;
 }
 
-TextureData* Sprite::LoadTexture(const std::string& fileName, uint32_t mipLevels)
+TextureData* Sprite::LoadTexture(const std::string& fileName)
 {
 	// テクスチャの重複読み込みを検出
 	for (auto& texture : textures)
@@ -101,10 +101,8 @@ TextureData* Sprite::LoadTexture(const std::string& fileName, uint32_t mipLevels
 	}
 
 	texture->fileName = fileName;
-	texture->srvHandle = dxCommon->CreateSRV(texture->buffer.Get(), mipLevels, &textureResourceDesc);
-
+	texture->srvHandle = dxCommon->CreateSRV(texture->buffer.Get(), &textureResourceDesc);
 	textures.push_back(texture);
-
 	return texture;
 }
 
