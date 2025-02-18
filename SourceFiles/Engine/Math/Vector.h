@@ -98,9 +98,9 @@ Vector3 Normalize(const Vector3& v);
 // 3D→2D座標
 Vector2 To2DVector(const Vector3& vec);
 
-// 補間
 // 線形補間
-Vector3 Lerp(const Vector3& start, const Vector3& end, const float t);
+template <class T>
+T Lerp(const T& start, const T& end, const float t){ return start * (1.0f - t) + end * t; }
 // ベジエ曲線
 Vector3 BezierCurve(std::vector<Vector3> p, float t);
 // スプライン曲線

@@ -16,7 +16,7 @@ void ParticleGroup::CreateVertexBuffer()
 void ParticleGroup::Initialize(const std::string& textureName)
 {
 	// テクスチャ読み込み
-	texture = Sprite::LoadTexture("Particles/" + textureName, 1);
+	texture = Sprite::LoadTexture("Particles/" + textureName);
 	CreateVertexBuffer();
 }
 
@@ -56,7 +56,7 @@ void ParticleGroup::Draw()
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(0, texture->gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, texture->srvHandle.gpu);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }

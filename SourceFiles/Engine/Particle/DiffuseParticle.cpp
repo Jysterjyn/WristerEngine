@@ -4,10 +4,9 @@ using namespace WristerEngine;
 
 void DiffuseParticle::Particle::Update()
 {
-	velocity += accel;
 	position += velocity;
-	float f = 1.0f / frame.GetRemainTimeRate();
-	scale = s_scale + (e_scale - s_scale) / f;
+	velocity += accel;
+	scale = Lerp(s_scale, e_scale, frame.GetTimeRate());
 }
 
 void DiffuseParticle::Add(const AddProp& particleProp)

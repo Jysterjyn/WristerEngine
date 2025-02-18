@@ -11,8 +11,7 @@ namespace WristerEngine::_2D
 	{
 		std::string fileName;
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle{};
-		D3D12_GPU_DESCRIPTOR_HANDLE	gpuHandle{};
+		SRVHandle srvHandle;
 	};
 
 	// スプライト
@@ -77,7 +76,7 @@ namespace WristerEngine::_2D
 		static const uint32_t MIP_LEVELS_DEFAULT = UINT32_MAX;
 		static std::list<TextureData*> textures;
 		const static Matrix4 matProj;
-		static const DirectXCommon* dxCommon;
+		static DirectXCommon* dxCommon;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
@@ -110,7 +109,7 @@ namespace WristerEngine::_2D
 		// 描画前処理
 		static void PreDraw();
 		// getter
-		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return tex->gpuHandle; }
+		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return tex->srvHandle.gpu; }
 		/// <summary>
 		/// 切り取り領域を指定(描画サイズも変える)
 		/// </summary>

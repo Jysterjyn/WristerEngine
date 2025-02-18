@@ -280,7 +280,7 @@ void DirectXCommon::PostDraw()
 	result = commandList->Reset(commandAllocator.Get(), nullptr);
 }
 
-SRVHandle DirectXCommon::CreateSRV(uint32_t mipLevels, const D3D12_RESOURCE_DESC* texResDesc)
+SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, uint32_t mipLevels, const D3D12_RESOURCE_DESC* texResDesc)
 {
 	// テクスチャ枚数上限チェック
 	assert(srvIndex < MAX_SRV_COUNT);
@@ -301,6 +301,7 @@ SRVHandle DirectXCommon::CreateSRV(uint32_t mipLevels, const D3D12_RESOURCE_DESC
 	if (texResDesc && mipLevels == UINT32_MAX) { srvDesc.Texture2D.MipLevels = texResDesc->MipLevels; }
 	else { srvDesc.Texture2D.MipLevels = mipLevels; }
 
+	device->CreateShaderResourceView(resBuff, &srvDesc, cpuHandle);
 	srvIndex++;
 
 	return SRVHandle(cpuHandle, gpuHandle);

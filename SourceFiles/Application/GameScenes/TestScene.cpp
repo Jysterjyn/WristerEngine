@@ -1,6 +1,7 @@
 #include "TestScene.h"
 #include "ModelManager.h"
 #include "imgui.h"
+#include <ParticleManager.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -17,10 +18,15 @@ void TestScene::Initialize()
 	uiDrawer->Initialize();
 	obj = WristerEngine::_3D::ModelManager::Create("cube");
 	obj->worldTransform->scale *= 10;
+	WristerEngine::ParticleManager::AddParticleGroup("uvChecker.png");
 }
 
 void TestScene::Update()
 {
 	ImGui::Text("IwataShine");
 	debugCamera.Update();
+	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
+	WristerEngine::DiffuseParticle::AddProp addProp;
+	addProp.posOffset.x = 20;
+	pGroup->Add(addProp);
 }

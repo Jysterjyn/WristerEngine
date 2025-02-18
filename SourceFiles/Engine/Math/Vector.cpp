@@ -235,7 +235,6 @@ Vector2 To2DVector(const Vector3& vec)
 	v *= WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
 	return v;
 }
-Vector3 Lerp(const Vector3& start, const Vector3& end, const float t) { return start * (1.0f - t) + end * t; }
 
 Vector3 BezierCurve(std::vector<Vector3> p, float t)
 {

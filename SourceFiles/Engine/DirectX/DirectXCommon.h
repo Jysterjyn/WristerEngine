@@ -12,8 +12,8 @@ namespace WristerEngine
 {
 	struct SRVHandle
 	{
-		D3D12_CPU_DESCRIPTOR_HANDLE cpu;
-		D3D12_GPU_DESCRIPTOR_HANDLE	gpu;
+		D3D12_CPU_DESCRIPTOR_HANDLE cpu{};
+		D3D12_GPU_DESCRIPTOR_HANDLE	gpu{};
 	};
 
 	// DirectXäÓî’
@@ -73,7 +73,7 @@ namespace WristerEngine
 		/// SRVÇê∂ê¨
 		/// </summary>
 		/// <returns>åªç›ê∂ê¨ÇµÇΩSRVÉnÉìÉhÉã</returns>
-		SRVHandle CreateSRV(uint32_t mipLevels = UINT32_MAX, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
+		SRVHandle CreateSRV(ID3D12Resource* resBuff, uint32_t mipLevels = UINT32_MAX, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});

@@ -21,7 +21,7 @@ static Matrix4 OrthoGraphic()
 string Sprite::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
 list<TextureData*> Sprite::textures;
 const Matrix4 Sprite::matProj = OrthoGraphic();
-const DirectXCommon* Sprite::dxCommon = DirectXCommon::GetInstance();
+DirectXCommon* Sprite::dxCommon = DirectXCommon::GetInstance();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
 {
@@ -100,26 +100,8 @@ TextureData* Sprite::LoadTexture(const std::string& fileName, uint32_t mipLevels
 			(UINT)img->rowPitch, (UINT)img->slicePitch);
 	}
 
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	srvDesc.Format = textureResourceDesc.Format;
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	if (mipLevels == MIP_LEVELS_DEFAULT) { srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels; }
-	else { srvDesc.Texture2D.MipLevels = mipLevels; }
-
-	ID3D12DescriptorHeap* srvHeap = dxCommon->GetSRV();
-	UINT textureIndex = (UINT)textures.size();
-	CD3DX12_CPU_DESCRIPTOR_HANDLE srvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetCPUDescriptorHandleForHeapStart(), textureIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
-
-	device->CreateShaderResourceView(texture->buffer.Get(), &srvDesc, srvHandle);
-
 	texture->fileName = fileName;
-	texture->cpuHandle = srvHandle;
-	texture->gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetGPUDescriptorHandleForHeapStart(), textureIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	texture->srvHandle = dxCommon->CreateSRV(texture->buffer.Get(), mipLevels, &textureResourceDesc);
 
 	textures.push_back(texture);
 
@@ -237,7 +219,7 @@ void Sprite::Draw()
 
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
-	cmdList->SetGraphicsRootDescriptorTable(0, tex->gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(0, tex->srvHandle.gpu);
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
