@@ -2,6 +2,7 @@
 #include "ModelManager.h"
 #include "imgui.h"
 #include <ParticleManager.h>
+#include <SceneManager.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -29,4 +30,5 @@ void TestScene::Update()
 	WristerEngine::DiffuseParticle::AddProp addProp;
 	addProp.posOffset.x = 20;
 	pGroup->Add(addProp);
+	if (input->IsInput(WristerEngine::Key::Return)) { sceneManager->ChangeScene("TestScene"); }
 }

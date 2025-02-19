@@ -6,8 +6,6 @@ using namespace ImGui;
 using namespace WristerEngine;
 using namespace _2D;
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> ImGuiManager::srvHeap;
-
 void ImGuiManager::Initialize()
 {
 	// インスタンスの取得
@@ -20,19 +18,14 @@ void ImGuiManager::Initialize()
 
 	ImGui_ImplWin32_Init(WindowsAPI::GetInstance()->GetHwnd());
 
-	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
-	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvHeapDesc.NumDescriptors = 1;
-	Result result = dxCommon->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
-
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	SRVHandle srvHandle = dxCommon->GetNextSRVHandle();
 
 	ImGui_ImplDX12_Init(dxCommon->GetDevice(),
 		static_cast<int>(dxCommon->GetBackBufferCount()),
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, srvHeap.Get(),
-		srvHandle, srvGpuHandle);
+		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, dxCommon->GetSRV(),
+		srvHandle.cpu, srvHandle.gpu);
+
+	dxCommon->IncrementSRVIndex();
 
 	ImGuiIO& io = GetIO();
 	// 標準フォントを追加する
@@ -51,11 +44,7 @@ void ImGuiManager::End() { Render(); }
 
 void ImGuiManager::Draw()
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	// デスクリプタヒープセット
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	ImGui_ImplDX12_RenderDrawData(GetDrawData(), cmdList);
+	ImGui_ImplDX12_RenderDrawData(GetDrawData(), DirectXCommon::GetInstance()->GetCommandList());
 }
 
 void ImGuiManager::Finalize()

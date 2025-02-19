@@ -2,7 +2,6 @@
 #include <d3dx12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
-#include <vector>
 #include "FPS.h"
 #include "WindowsAPI.h"
 #include "Matrix4.h"
@@ -74,6 +73,9 @@ namespace WristerEngine
 		/// </summary>
 		/// <returns>現在生成したSRVハンドル</returns>
 		SRVHandle CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
+
+		// SRVIndexをインクリメント
+		void IncrementSRVIndex() { srvIndex++; }
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});

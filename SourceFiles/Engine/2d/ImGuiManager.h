@@ -1,7 +1,5 @@
 #pragma once
 #include <string>
-#include <d3dx12.h>
-#include <wrl.h>
 #include "Quaternion.h"
 #include "Color.h"
 
@@ -13,7 +11,6 @@ namespace WristerEngine::_2D
 	private:
 		ImGuiManager() = delete;
 		~ImGuiManager() = delete;
-		static Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
 
 	public:
 		// ‰Šú‰»

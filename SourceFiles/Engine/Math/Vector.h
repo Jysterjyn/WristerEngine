@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "MathUtility.h"
 
 // 2DƒxƒNƒgƒ‹
