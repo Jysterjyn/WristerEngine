@@ -14,14 +14,14 @@ DirectXCommon* DirectXCommon::GetInstance()
 
 void DirectXCommon::Initialize()
 {
-	fixFPS->Initialize();			// FPS固定初期化
-	InitializeDevice();				// デバイスの生成
-	InitializeCommand();			// コマンド関連の初期化
-	InitializeSwapchain();			// スワップチェーンの初期化
-	InitializeRenderTargetView();	// レンダーターゲットビューの初期化
-	InitializeShaderResourceView(); // シェーダーリソースビューの初期化
-	InitializeDepthBuffer();		// 深度バッファの初期化
-	InitializeFence();				// フェンスの初期化
+	fixFPS->Initialize();				// FPS固定初期化
+	InitializeDevice();					// デバイスの生成
+	InitializeCommand();				// コマンド関連の初期化
+	InitializeSwapchain();				// スワップチェーンの初期化
+	InitializeRenderTargetView();		// レンダーターゲットビューの初期化
+	InitializeShaderResourceView();		// シェーダーリソースビューの初期化
+	InitializeDepthBuffer(&dsvHeap);	// 深度バッファの初期化
+	InitializeFence();					// フェンスの初期化
 
 	// ビューポート設定コマンド
 	viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
@@ -151,7 +151,8 @@ void DirectXCommon::InitializeRenderTargetView()
 	for (int i = 0; i < backBuffers.size(); i++)
 	{
 		swapchain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
-		rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
+		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			rtvHeap->GetCPUDescriptorHandleForHeapStart(),
 			i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -169,13 +170,12 @@ void WristerEngine::DirectXCommon::InitializeShaderResourceView()
 	Result result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 }
 
-void DirectXCommon::InitializeDepthBuffer()
+void DirectXCommon::InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap_) const
 {
 	CD3DX12_RESOURCE_DESC depthResourceDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_D32_FLOAT,
-			(UINT64)WIN_SIZE.x,
-			(UINT)WIN_SIZE.y,
+			(UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 			1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
 	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
@@ -191,13 +191,13 @@ void DirectXCommon::InitializeDepthBuffer()
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(dsvHeap_));
 
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(
-		depthBuff, &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
+		depthBuff, &dsvDesc, (*dsvHeap_)->GetCPUDescriptorHandleForHeapStart());
 }
 
 void DirectXCommon::InitializeFence()
@@ -216,7 +216,8 @@ void DirectXCommon::PreDraw()
 	commandList->ResourceBarrier(1, &resourceBarrier);
 
 	// 描画先のRTVとDSVを指定する
-	rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		rtvHeap->GetCPUDescriptorHandleForHeapStart(),
 		(size_t)bbIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -319,7 +320,7 @@ Matrix4 DirectXCommon::GetViewportMatrix() const
 	return mat;
 }
 
-SRVHandle WristerEngine::DirectXCommon::GetNextSRVHandle() const
+SRVHandle DirectXCommon::GetNextSRVHandle() const
 {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		srvHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,

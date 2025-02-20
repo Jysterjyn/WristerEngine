@@ -21,7 +21,6 @@ void MyGame::Initialize()
 	ModelManager::Initialize();
 	WristerEngine::ParticleManager::Initialize();
 	WristerEngine::AudioManager::Initialize();
-	PostEffect::StaticInitialize();
 	postEffect = PostEffect::Create(PostEffect::Type::None);
 }
 
@@ -38,18 +37,15 @@ void MyGame::Update()
 void MyGame::Draw()
 {
 	postEffect->PreDrawScene();
-	//ModelManager::DrawObjects();
-	//WristerEngine::ParticleManager::Draw();
-	//Sprite::PreDraw();
-	postEffect->PostDrawScene();
-
-	dxCommon->PreDraw();
-	//postEffect->Draw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
 	ModelManager::DrawObjects();
+	postEffect->PostDrawScene();
+
+	dxCommon->PreDraw();
 	WristerEngine::ParticleManager::Draw();
 	WristerEngine::NonEffectDrawer::Draw();
+	postEffect->Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }

@@ -48,7 +48,7 @@ void MultiTexture::Draw(std::array<PostEffect, 2>& postEffects)
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // 三角形リスト
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 	// デスクリプタヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { PostEffect::GetSRV() };
+	ID3D12DescriptorHeap* ppHeaps[] = { DirectXCommon::GetInstance()->GetSRV() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	cmdList->SetGraphicsRootDescriptorTable(1, postEffects[0].GetGPUHandle());
 	cmdList->SetGraphicsRootDescriptorTable(2, postEffects[1].GetGPUHandle());

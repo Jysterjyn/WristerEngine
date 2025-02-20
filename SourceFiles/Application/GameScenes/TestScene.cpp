@@ -24,7 +24,7 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	ImGui::Text("IwataShine");
+	ImGui::Text("ZutaboroGround");
 	debugCamera.Update();
 	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
 	WristerEngine::DiffuseParticle::AddProp addProp;

@@ -28,12 +28,11 @@ namespace WristerEngine
 		ComPtr<ID3D12GraphicsCommandList> commandList;
 		ComPtr<ID3D12CommandQueue> commandQueue;
 		ComPtr<IDXGISwapChain4> swapchain;
-		ComPtr<ID3D12DescriptorHeap> dsvHeap, srvHeap, rtvHeap;
+		ComPtr<ID3D12DescriptorHeap> rtvHeap, srvHeap, dsvHeap;
 		UINT32 srvIndex = 0;
 		ComPtr<ID3D12Fence> fence;
 		DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
 		std::vector<ComPtr<ID3D12Resource>> backBuffers;
-		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle{};
 		UINT64 fenceVal = 0;
 		D3D12_VIEWPORT viewport{};
 		FPS* fixFPS = FPS::GetInstance();
@@ -50,8 +49,6 @@ namespace WristerEngine
 		void InitializeRenderTargetView();
 		// シェーダーリソースビューの初期化
 		void InitializeShaderResourceView();
-		// 深度バッファの初期化
-		void InitializeDepthBuffer();
 		// フェンスの初期化
 		void InitializeFence();
 
@@ -63,6 +60,8 @@ namespace WristerEngine
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
+		// 深度バッファの初期化
+		void InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap) const;
 		// 描画前処理
 		void PreDraw();
 		// 描画後処理
