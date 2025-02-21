@@ -34,7 +34,7 @@ namespace WristerEngine
 			int lifeTime = 60;
 			float start_scale = 1.0f;
 			float end_scale = 0.0f;
-			unsigned short addNum = 1;
+			unsigned int addNum = 1;
 		};
 
 	private:

@@ -19,12 +19,16 @@ namespace WristerEngine
 		{
 			Vector3 pos; // xyz座標
 			float scale; // スケール
+			Vector3 vel;
+			Vector3 acc;
+			Vector2 scales;
+			Vector2 passTime;
 		};
 
 		// Microsoft::WRL::を省略
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		static const int PARTICLE_MAX = 384; // パーティクル最大数
+		static const int PARTICLE_MAX = 30000; // パーティクル最大数
 		// 頂点バッファ
 		ComPtr<ID3D12Resource> vertBuff;
 		VertexPos* vertMap;

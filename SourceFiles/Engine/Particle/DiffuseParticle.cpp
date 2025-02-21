@@ -2,13 +2,6 @@
 #include "Random.h"
 using namespace WristerEngine;
 
-void DiffuseParticle::Particle::Update()
-{
-	position += velocity;
-	velocity += accel;
-	scale = Lerp(s_scale, e_scale, frame.GetTimeRate());
-}
-
 void DiffuseParticle::Add(const AddProp& particleProp)
 {
 	Random_Float randPos(-particleProp.posRange, particleProp.posRange);
@@ -31,5 +24,4 @@ void DiffuseParticle::Add(const AddProp& particleProp)
 void DiffuseParticle::Update()
 {
 	particles.remove_if([](Particle& particle) { return particle.frame.Update(); });
-	for (auto& particle : particles) { particle.Update(); }
 }

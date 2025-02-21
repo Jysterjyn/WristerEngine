@@ -93,6 +93,10 @@ void PipelineManager::Initialize()
 	pipelineProp.inputLayoutProps.clear();
 	pipelineProp.inputLayoutProps.push_back({ "POSITION", DXGI_FORMAT_R32G32B32_FLOAT });
 	pipelineProp.inputLayoutProps.push_back({ "TEXCOORD", DXGI_FORMAT_R32_FLOAT });
+	pipelineProp.inputLayoutProps.push_back({ "VELOCITY", DXGI_FORMAT_R32G32B32_FLOAT });
+	pipelineProp.inputLayoutProps.push_back({ "ACCEL", DXGI_FORMAT_R32G32B32_FLOAT });
+	pipelineProp.inputLayoutProps.push_back({ "SCALES", DXGI_FORMAT_R32G32_FLOAT });
+	pipelineProp.inputLayoutProps.push_back({ "NOWTIME", DXGI_FORMAT_R32G32_FLOAT });
 	pipelineProp.blendProp = { D3D12_BLEND_OP_ADD, D3D12_BLEND_ONE, D3D12_BLEND_ONE };
 	pipelineProp.rootParamProp = { 1,1 };
 	pipelineProp.depthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;

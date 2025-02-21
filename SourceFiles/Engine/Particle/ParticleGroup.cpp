@@ -35,7 +35,13 @@ void ParticleGroup::Update()
 	for (auto& dif : diffuse)
 	{
 		vertMap[i].pos = dif.position;
-		vertMap[i++].scale = dif.scale;
+		vertMap[i].scale = dif.scale;
+		vertMap[i].vel = dif.velocity;
+		vertMap[i].acc = dif.accel;
+		vertMap[i].scales.x = dif.s_scale;
+		vertMap[i].scales.y = dif.e_scale;
+		vertMap[i].passTime.x = (float)dif.frame.GetInterval();
+		vertMap[i++].passTime.y = (float)dif.frame.GetTime();
 	}
 	for (auto& dir : directional)
 	{
@@ -66,7 +72,7 @@ void ParticleGroup::Add(const DiffuseParticle::AddProp& particleProp)
 	if (IsParticleMax()) { return; }
 	
 	// 最大パーティクル量を超えるのを阻止
-	UINT16 nextParticleNum = (UINT16)diffuseParticle.GetParticles().size() + particleProp.addNum;
+	UINT32 nextParticleNum = (UINT32)diffuseParticle.GetParticles().size() + particleProp.addNum;
 	if (nextParticleNum > PARTICLE_MAX)
 	{
 		DiffuseParticle::AddProp p = particleProp;
@@ -89,7 +95,7 @@ void ParticleGroup::Add(const TrackParticle::AddProp& particleProp)
 	if (IsParticleMax()) { return; }
 	
 	// 最大パーティクル量を超えるのを阻止
-	UINT16 nextParticleNum = (UINT16)trackParticle.GetParticles().size() + particleProp.addNum;
+	UINT32 nextParticleNum = (UINT32)trackParticle.GetParticles().size() + particleProp.addNum;
 	if (nextParticleNum > PARTICLE_MAX)
 	{
 		TrackParticle::AddProp p = particleProp;

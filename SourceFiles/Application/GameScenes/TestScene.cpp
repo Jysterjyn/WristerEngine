@@ -3,11 +3,12 @@
 #include "imgui.h"
 #include <ParticleManager.h>
 #include <SceneManager.h>
+#include <FPS.h>
 
 void TestSceneUIDrawer::Initialize()
 {
-	sprites["bg"] = WristerEngine::_2D::Sprite::Create("sample.png");
-	sprites["bg2"] = WristerEngine::_2D::Sprite::Create("uvChecker.png");
+	//sprites["bg"] = WristerEngine::_2D::Sprite::Create("sample.png");
+	//sprites["bg2"] = WristerEngine::_2D::Sprite::Create("uvChecker.png");
 	Update();
 }
 
@@ -24,11 +25,14 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	ImGui::Text("ZutaboroGround");
 	debugCamera.Update();
 	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
 	WristerEngine::DiffuseParticle::AddProp addProp;
 	addProp.posOffset.x = 20;
+	addProp.lifeTime = 60000;
+	addProp.addNum = 30000;
 	pGroup->Add(addProp);
-	if (input->IsInput(WristerEngine::Key::Return)) { sceneManager->ChangeScene("TestScene"); }
+	const WristerEngine::FPS* fps = WristerEngine::FPS::GetInstance();
+
+	ImGui::Text("FPS %d",fps->GetFPS());
 }
