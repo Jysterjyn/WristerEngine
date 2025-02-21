@@ -4,7 +4,7 @@
 
 namespace WristerEngine::_2D
 {
-	class PostEffect //: DXCommonGetter
+	class PostEffect : DXCommonGetter
 	{
 	public:
 		enum class Type
@@ -33,7 +33,6 @@ namespace WristerEngine::_2D
 		};
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-		static ID3D12Device* device;
 		static std::vector<std::unique_ptr<PostEffect>> postEffects;
 
 		ComPtr<ID3D12Resource> texBuff;

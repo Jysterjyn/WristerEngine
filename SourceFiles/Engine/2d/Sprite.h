@@ -15,7 +15,7 @@ namespace WristerEngine::_2D
 	};
 
 	// スプライト
-	struct Sprite
+	struct Sprite : DXCommonGetter
 	{
 		// デフォルトディレクトリ
 		static std::string DEFAULT_TEXTURE_DIRECTORY_PATH;
@@ -73,7 +73,6 @@ namespace WristerEngine::_2D
 
 		static std::list<TextureData*> textures;
 		const static Matrix4 matProj;
-		static DirectXCommon* dxCommon;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;

@@ -40,8 +40,6 @@ void MultiTexture::Initialize()
 
 void MultiTexture::Draw(std::array<PostEffect, 2>& postEffects)
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
 	// パイプラインステートとルートシグネチャの設定コマンド
 	PipelineManager::SetPipeline(PipelineType::MultiTexture);
 	// プリミティブ形状の設定コマンド

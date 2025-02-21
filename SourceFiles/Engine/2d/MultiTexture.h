@@ -1,13 +1,11 @@
 #pragma once
 #include "PostEffect.h"
-#include <array>
 
 namespace WristerEngine::_2D
 {
-	class MultiTexture
+	class MultiTexture : DXCommonGetter
 	{
 	private:
-		struct Vertex { Vector2 pos, uv; };
 		struct ConstBufferData
 		{
 			UINT32 effectType = 0;

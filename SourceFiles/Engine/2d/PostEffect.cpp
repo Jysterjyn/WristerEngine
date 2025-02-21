@@ -4,7 +4,6 @@
 using namespace WristerEngine;
 using namespace WristerEngine::_2D;
 
-ID3D12Device* PostEffect::device;
 std::vector<std::unique_ptr<PostEffect>> PostEffect::postEffects;
 
 #pragma region 生成関数
@@ -80,9 +79,6 @@ void PostEffect::CreateRTV()
 
 PostEffect* PostEffect::Create(Type effectType)
 {
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	if (!device) { device = dxCommon->GetDevice(); }
-	
 	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
 	postEffect->CreateBuffers();
 	postEffect->CreateRTV();
@@ -95,8 +91,6 @@ PostEffect* PostEffect::Create(Type effectType)
 
 void PostEffect::Draw()
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	
 	// パイプラインステートとルートシグネチャの設定コマンド
 	PipelineManager::SetPipeline(PipelineType::PostEffect);
 	// プリミティブ形状の設定コマンド
@@ -152,8 +146,6 @@ void PostEffect::PreDrawScene()
 
 void PostEffect::PostDrawScene()
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
 	CD3DX12_RESOURCE_BARRIER resBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		texBuff.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 

@@ -21,7 +21,6 @@ static Matrix4 OrthoGraphic()
 string Sprite::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
 list<TextureData*> Sprite::textures;
 const Matrix4 Sprite::matProj = OrthoGraphic();
-DirectXCommon* Sprite::dxCommon = DirectXCommon::GetInstance();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
 {
@@ -86,7 +85,6 @@ TextureData* Sprite::LoadTexture(const std::string& fileName)
 
 	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
 
-	ID3D12Device* device = dxCommon->GetDevice();
 	result = device->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -121,7 +119,6 @@ std::unique_ptr<Sprite> Sprite::Create(
 
 void Sprite::PreDraw()
 {
-	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 	// パイプラインステートとルートシグネチャの設定コマンド
 	PipelineManager::SetPipeline(PipelineType::Sprite);
 	// プリミティブ形状の設定コマンド
@@ -214,8 +211,6 @@ void Sprite::Update()
 void Sprite::Draw()
 {
 	if (isInvisible) { return; }
-
-	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
 
 	cmdList->SetGraphicsRootDescriptorTable(0, tex->srvHandle.gpu);
 

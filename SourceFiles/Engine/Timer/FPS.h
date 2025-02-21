@@ -10,7 +10,7 @@ namespace WristerEngine
 	{
 	private:
 		std::chrono::steady_clock::time_point reference;
-		int fps = 0;
+		int fps = 60;
 		RealTimer oneSecond = 1.0f;
 		FrameTimer oneSecondFrames = INT32_MAX;
 
