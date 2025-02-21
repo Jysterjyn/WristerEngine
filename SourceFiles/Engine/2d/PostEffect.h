@@ -4,7 +4,7 @@
 
 namespace WristerEngine::_2D
 {
-	class PostEffect
+	class PostEffect //: DXCommonGetter
 	{
 	public:
 		enum class Type

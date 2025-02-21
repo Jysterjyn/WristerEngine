@@ -78,11 +78,11 @@ void PostEffect::CreateRTV()
 }
 #pragma endregion
 
-PostEffect* WristerEngine::_2D::PostEffect::Create(Type effectType)
+PostEffect* PostEffect::Create(Type effectType)
 {
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	if (!device) { device = dxCommon->GetDevice(); }
-
+	
 	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
 	postEffect->CreateBuffers();
 	postEffect->CreateRTV();
@@ -96,7 +96,7 @@ PostEffect* WristerEngine::_2D::PostEffect::Create(Type effectType)
 void PostEffect::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
+	
 	// パイプラインステートとルートシグネチャの設定コマンド
 	PipelineManager::SetPipeline(PipelineType::PostEffect);
 	// プリミティブ形状の設定コマンド

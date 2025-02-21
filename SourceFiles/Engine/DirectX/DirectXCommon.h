@@ -23,7 +23,7 @@ namespace WristerEngine
 	struct PreDrawProp
 	{
 		ID3D12Resource* resBuff;
-		ID3D12DescriptorHeap* rtvHeap, *dsvHeap;
+		ID3D12DescriptorHeap* rtvHeap, * dsvHeap;
 		D3D12_RESOURCE_STATES state;
 		UINT rtvIndex;
 		D3D12_VIEWPORT* viewport;
@@ -102,5 +102,20 @@ namespace WristerEngine
 		Matrix4 GetViewportMatrix() const;
 		ID3D12DescriptorHeap* GetSRV() const { return srvHeap.Get(); }
 		SRVHandle GetNextSRVHandle() const;
+	};
+
+	struct DXCommonGetter
+	{
+	protected:
+		static ID3D12Device* device;
+		static DirectXCommon* dxCommon;
+		static ID3D12GraphicsCommandList* cmdList;
+
+	public:
+		static void SetPointer(ID3D12Device* device_, ID3D12GraphicsCommandList* cmdList_)
+		{
+			device = device_;
+			cmdList = cmdList_;
+		}
 	};
 }

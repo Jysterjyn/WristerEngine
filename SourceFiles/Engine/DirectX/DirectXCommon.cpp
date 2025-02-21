@@ -6,6 +6,10 @@ using namespace std;
 using namespace WristerEngine;
 using namespace Microsoft::WRL;
 
+ID3D12Device* DXCommonGetter::device = nullptr;
+DirectXCommon* DXCommonGetter::dxCommon = DirectXCommon::GetInstance();
+ID3D12GraphicsCommandList* DXCommonGetter::cmdList = nullptr;
+
 DirectXCommon* DirectXCommon::GetInstance()
 {
 	static DirectXCommon* dxCommon = new DirectXCommon;
@@ -22,6 +26,9 @@ void DirectXCommon::Initialize()
 	InitializeShaderResourceView();		// シェーダーリソースビューの初期化
 	InitializeDepthBuffer(&dsvHeap);	// 深度バッファの初期化
 	InitializeFence();					// フェンスの初期化
+
+	// DXCommonGetterにポインタ代入
+	DXCommonGetter::SetPointer(device.Get(), commandList.Get());
 
 	// ビューポート設定コマンド
 	viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
