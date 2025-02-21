@@ -39,6 +39,15 @@ float4 main(VSOutput input) : SV_TARGET
             texcolor = Dark(input);
             break;
     }
-    texcolor.a = 1;
+    
+    if (length(texcolor.rgb) == 0)
+    {
+        // çïÇÃèÍçáÇÕìßâﬂÇ∑ÇÈ
+        texcolor.a = 0;
+    }
+    else
+    {
+        texcolor.a = 1;
+    }
     return texcolor;
 }

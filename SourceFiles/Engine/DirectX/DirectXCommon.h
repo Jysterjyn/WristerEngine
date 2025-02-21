@@ -9,10 +9,24 @@
 
 namespace WristerEngine
 {
+	namespace _2D
+	{
+		struct Vertex { Vector2 pos, uv; };
+	}
+
 	struct SRVHandle
 	{
 		D3D12_CPU_DESCRIPTOR_HANDLE cpu{};
 		D3D12_GPU_DESCRIPTOR_HANDLE	gpu{};
+	};
+
+	struct PreDrawProp
+	{
+		ID3D12Resource* resBuff;
+		ID3D12DescriptorHeap* rtvHeap, *dsvHeap;
+		D3D12_RESOURCE_STATES state;
+		UINT rtvIndex;
+		D3D12_VIEWPORT* viewport;
 	};
 
 	// DirectX基盤
@@ -64,6 +78,8 @@ namespace WristerEngine
 		void InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap) const;
 		// 描画前処理
 		void PreDraw();
+		// ポストエフェクトクラス内で使う共通処理部分
+		void PreDraw(const PreDrawProp& prop);
 		// 描画後処理
 		void PostDraw();
 

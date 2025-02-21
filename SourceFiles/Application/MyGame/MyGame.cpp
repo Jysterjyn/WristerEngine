@@ -40,12 +40,12 @@ void MyGame::Draw()
 	Sprite::PreDraw();
 	sceneManager->Draw();
 	ModelManager::DrawObjects();
+	WristerEngine::ParticleManager::Draw();
 	postEffect->PostDrawScene();
 
 	dxCommon->PreDraw();
-	WristerEngine::ParticleManager::Draw();
-	WristerEngine::NonEffectDrawer::Draw();
 	postEffect->Draw();
+	WristerEngine::NonEffectDrawer::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }

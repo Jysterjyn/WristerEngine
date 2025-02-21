@@ -4,7 +4,6 @@
 using namespace WristerEngine;
 using namespace WristerEngine::_2D;
 
-const float PostEffect::CLEAR_COLOR[4] = { 0,0,0,1 };
 ID3D12Device* PostEffect::device;
 std::vector<std::unique_ptr<PostEffect>> PostEffect::postEffects;
 
@@ -43,7 +42,8 @@ void PostEffect::CreateBuffers()
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, (UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
 
-	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, CLEAR_COLOR);
+	float clearColor[4] = { 0,0,0,1 };
+	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
 	result = device->CreateCommittedResource(
 		new CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
@@ -80,7 +80,7 @@ void PostEffect::CreateRTV()
 
 PostEffect* WristerEngine::_2D::PostEffect::Create(Type effectType)
 {
-	 DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 	if (!device) { device = dxCommon->GetDevice(); }
 
 	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
@@ -113,33 +113,41 @@ void PostEffect::Draw()
 
 void PostEffect::PreDrawScene()
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
-	// リソースバリアで書き込み可能に変更
-	D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	cmdList->ResourceBarrier(1, &resourceBarrier);
-
-	// 描画先のRTVとDSVを指定する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-	cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-	// 画面全体の色をクリア
-	cmdList->ClearRenderTargetView(rtvHandle, CLEAR_COLOR, 0, nullptr);
-	// 画面全体の深度をクリア
-	cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-	
-	// SRV用のデスクリプタヒープを指定する
-	ID3D12DescriptorHeap* ppHeaps[] = { DirectXCommon::GetInstance()->GetSRV() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
 	// ビューポート領域の設定
-	CD3DX12_VIEWPORT viewport(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
-	cmdList->RSSetViewports(1, &viewport);
-	// シザー矩形の設定
-	CD3DX12_RECT rect(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
-	cmdList->RSSetScissorRects(1, &rect);
+	D3D12_VIEWPORT viewport= CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
+
+	DirectXCommon::GetInstance()->PreDraw({ texBuff.Get(),
+		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0, &viewport});
+
+
+	//ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
+
+	//// リソースバリアで書き込み可能に変更
+	//D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+	//	texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	//cmdList->ResourceBarrier(1, &resourceBarrier);
+
+	//// 描画先のRTVとDSVを指定する
+	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
+	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	//cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+
+	//// 画面全体の色をクリア
+	//float clearColor[4] = { 0,0,0,1 };
+	//cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	//// 画面全体の深度をクリア
+	//cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+	//// SRV用のデスクリプタヒープを指定する
+	//ID3D12DescriptorHeap* ppHeaps[] = { DirectXCommon::GetInstance()->GetSRV() };
+	//cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//// ビューポート領域の設定
+	//CD3DX12_VIEWPORT viewport(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
+	//cmdList->RSSetViewports(1, &viewport);
+	//// シザー矩形の設定
+	//CD3DX12_RECT rect(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
+	//cmdList->RSSetScissorRects(1, &rect);
 }
 
 void PostEffect::PostDrawScene()

@@ -55,8 +55,6 @@ namespace WristerEngine::_2D
 			void Update();
 		};
 
-		struct Vertex { Vector2 pos, uv; };
-
 		struct ConstBufferData
 		{
 			Matrix4 mat;

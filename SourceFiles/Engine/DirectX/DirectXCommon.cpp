@@ -114,8 +114,7 @@ void DirectXCommon::InitializeCommand()
 		commandAllocator.Get(), nullptr,
 		IID_PPV_ARGS(&commandList));
 
-	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
-	device->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue));
+	device->CreateCommandQueue(new D3D12_COMMAND_QUEUE_DESC(), IID_PPV_ARGS(&commandQueue));
 }
 
 void DirectXCommon::InitializeSwapchain()
@@ -151,8 +150,7 @@ void DirectXCommon::InitializeRenderTargetView()
 	for (int i = 0; i < backBuffers.size(); i++)
 	{
 		swapchain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-			rtvHeap->GetCPUDescriptorHandleForHeapStart(),
+		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
 			i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -172,21 +170,20 @@ void WristerEngine::DirectXCommon::InitializeShaderResourceView()
 
 void DirectXCommon::InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap_) const
 {
-	CD3DX12_RESOURCE_DESC depthResourceDesc =
+	D3D12_RESOURCE_DESC depthResourceDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
 			DXGI_FORMAT_D32_FLOAT,
 			(UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 			1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
-	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-	D3D12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
-
 	ID3D12Resource* depthBuff = nullptr;
 	Result result = device->CreateCommittedResource(
-		&heapProp, D3D12_HEAP_FLAG_NONE,
+		new CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		&clearValue, IID_PPV_ARGS(&depthBuff));
+		new CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
+		IID_PPV_ARGS(&depthBuff));
 
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;
@@ -207,24 +204,28 @@ void DirectXCommon::InitializeFence()
 
 void DirectXCommon::PreDraw()
 {
-	// バックバッファの番号取得
 	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
 
+	PreDraw({ backBuffers[bbIndex].Get(), rtvHeap.Get(),
+		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex, &viewport });
+}
+
+void WristerEngine::DirectXCommon::PreDraw(const PreDrawProp& prop)
+{
 	// リソースバリアで書き込み可能に変更
 	D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		backBuffers[bbIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		prop.resBuff, prop.state, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	commandList->ResourceBarrier(1, &resourceBarrier);
 
 	// 描画先のRTVとDSVを指定する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		rtvHeap->GetCPUDescriptorHandleForHeapStart(),
-		(size_t)bbIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(prop.rtvHeap->GetCPUDescriptorHandleForHeapStart(),
+		prop.rtvIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
 
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = prop.dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 	// 画面全体の色をクリア
-	float clearColor[] = { 0,0,0,0 }; // 黒
+	float clearColor[4] = { 0,0,0,1 };
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	// 画面全体の深度をクリア
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -234,10 +235,9 @@ void DirectXCommon::PreDraw()
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	// ビューポート領域の設定
-	commandList->RSSetViewports(1, &viewport);
+	commandList->RSSetViewports(1, prop.viewport);
 	// シザー矩形の設定
-	D3D12_RECT rect = CD3DX12_RECT(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
-	commandList->RSSetScissorRects(1, &rect);
+	commandList->RSSetScissorRects(1, std::make_unique<CD3DX12_RECT>(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y).get());
 }
 
 void DirectXCommon::PostDraw()
@@ -322,13 +322,11 @@ Matrix4 DirectXCommon::GetViewportMatrix() const
 
 SRVHandle DirectXCommon::GetNextSRVHandle() const
 {
-	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	CD3DX12_CPU_DESCRIPTOR_HANDLE cpuHandle(srvHeap->GetCPUDescriptorHandleForHeapStart(),
+		srvIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 
-	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetGPUDescriptorHandleForHeapStart(), srvIndex,
-		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
+	CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle(srvHeap->GetGPUDescriptorHandleForHeapStart(),
+		srvIndex, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 
 	return SRVHandle(cpuHandle, gpuHandle);
 }

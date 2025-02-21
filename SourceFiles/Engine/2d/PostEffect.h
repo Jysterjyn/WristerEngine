@@ -22,8 +22,6 @@ namespace WristerEngine::_2D
 		};
 
 	private:
-		struct Vertex { Vector2 pos, uv; };
-
 		struct ConstBufferData
 		{
 			UINT32 effectType = 0;
@@ -35,7 +33,6 @@ namespace WristerEngine::_2D
 		};
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-		static const float CLEAR_COLOR[4];
 		static ID3D12Device* device;
 		static std::vector<std::unique_ptr<PostEffect>> postEffects;
 
