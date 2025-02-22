@@ -24,12 +24,10 @@ void ParticleGroup::Update()
 {
 	diffuseParticle.Update();
 	directionalParticle.Update();
-	trackParticle.Update();
 
 	// 定数バッファへデータ転送
 	std::list<DiffuseParticle::Particle> diffuse = diffuseParticle.GetParticles();
 	std::list<DirectionalParticle::Particle> directional = directionalParticle.GetParticles();
-	std::list<TrackParticle::Particle> track = trackParticle.GetParticles();
 	int i = 0;
 
 	for (auto& dif : diffuse)
@@ -46,12 +44,6 @@ void ParticleGroup::Update()
 	for (auto& dir : directional)
 	{
 		vertMap[i++].pos = dir.position;
-	}
-	for (auto& tra : track)
-	{
-		vertMap[i].pos = tra.position;
-		vertMap[i].scales.x = tra.scale;
-		vertMap[i++].type = 2;
 	}
 }
 
@@ -90,26 +82,8 @@ void ParticleGroup::Add(const DirectionalParticle::AddProp& particleProp)
 	directionalParticle.Add(particleProp);
 }
 
-void ParticleGroup::Add(const TrackParticle::AddProp& particleProp)
-{
-	if (IsParticleMax()) { return; }
-
-	// 最大パーティクル量を超えるのを阻止
-	UINT32 nextParticleNum = (UINT32)trackParticle.GetParticles().size() + particleProp.addNum;
-	if (nextParticleNum > PARTICLE_MAX)
-	{
-		TrackParticle::AddProp p = particleProp;
-		p.addNum -= nextParticleNum - PARTICLE_MAX;
-		trackParticle.Add(p);
-		return;
-	}
-
-	trackParticle.Add(particleProp);
-}
-
 void ParticleGroup::Clear()
 {
 	diffuseParticle.Clear();
 	directionalParticle.Clear();
-	trackParticle.Clear();
 }

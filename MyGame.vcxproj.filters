@@ -157,9 +157,6 @@
     <ClCompile Include="SourceFiles\Engine\Particle\ParticleGroup.cpp">
       <Filter>ソース ファイル\Engine\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Engine\Particle\TrackParticle.cpp">
-      <Filter>ソース ファイル\Engine\Particle</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Engine\DirectX\DirectXCommon.cpp">
       <Filter>ソース ファイル\Engine\DirectX</Filter>
     </ClCompile>
@@ -319,9 +316,6 @@
       <Filter>ソース ファイル\Engine\Functions</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Engine\Particle\ParticleGroup.h">
-      <Filter>ソース ファイル\Engine\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Engine\Particle\TrackParticle.h">
       <Filter>ソース ファイル\Engine\Particle</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Engine\DirectX\DirectXCommon.h">

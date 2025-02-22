@@ -131,7 +131,6 @@
     <ClCompile Include="SourceFiles\Engine\Math\MathUtility.cpp" />
     <ClCompile Include="SourceFiles\Engine\Skydome\Skydome.cpp" />
     <ClCompile Include="SourceFiles\Engine\Particle\ParticleGroup.cpp" />
-    <ClCompile Include="SourceFiles\Engine\Particle\TrackParticle.cpp" />
     <ClCompile Include="SourceFiles\Engine\Particle\DiffuseParticle.cpp" />
     <ClCompile Include="SourceFiles\Engine\Particle\DirectionalParticle.cpp" />
     <ClCompile Include="SourceFiles\Engine\Audio\PointAudio.cpp" />
@@ -191,7 +190,6 @@
     <ClInclude Include="SourceFiles\Engine\Math\MathUtility.h" />
     <ClInclude Include="SourceFiles\Engine\Skydome\Skydome.h" />
     <ClInclude Include="SourceFiles\Engine\Particle\ParticleGroup.h" />
-    <ClInclude Include="SourceFiles\Engine\Particle\TrackParticle.h" />
     <ClInclude Include="SourceFiles\Engine\Particle\DiffuseParticle.h" />
     <ClInclude Include="SourceFiles\Engine\Particle\DirectionalParticle.h" />
     <ClInclude Include="SourceFiles\Engine\Audio\PointAudio.h" />
