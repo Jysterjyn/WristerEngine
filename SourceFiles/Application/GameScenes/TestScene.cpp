@@ -27,11 +27,14 @@ void TestScene::Update()
 {
 	debugCamera.Update();
 
-	obj->worldTransform->translation +=
-		input->Move(WristerEngine::Key::D, WristerEngine::Key::A, 5);
+	obj->worldTransform->translation.x +=
+		input->Move(WristerEngine::Key::D, WristerEngine::Key::A, 1);
+
+	obj->worldTransform->translation.y +=
+		input->Move(WristerEngine::Key::W, WristerEngine::Key::S, 1);
 
 	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
-	WristerEngine::TrackParticle::AddProp addProp;
+	WristerEngine::DiffuseParticle::AddProp addProp;
 	addProp.posRange = 1;
 	addProp.addNum = 10;
 	addProp.posOffset.y = 20;

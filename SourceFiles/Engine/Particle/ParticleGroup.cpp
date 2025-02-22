@@ -35,6 +35,7 @@ void ParticleGroup::Update()
 	for (auto& dif : diffuse)
 	{
 		vertMap[i].pos = dif.position;
+		if (dif.parent) { vertMap[i].pos += dif.parent->GetWorldPosition(); }
 		vertMap[i].vel = dif.velocity;
 		vertMap[i].acc = dif.accel;
 		vertMap[i].scales = { dif.s_scale,dif.e_scale };

@@ -10,7 +10,7 @@
 namespace WristerEngine
 {
 	// パーティクルグループ
-// このインスタンス1つにつき1枚のテクスチャが使える
+	// このインスタンス1つにつき1枚のテクスチャが使える
 	class ParticleGroup
 	{
 	private:

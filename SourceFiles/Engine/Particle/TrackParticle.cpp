@@ -33,8 +33,8 @@ void TrackParticle::Add(const AddProp& particleProp)
 		p.velocity = Vector3(randVel(), randVel(), randVel()) + particleProp.velOffset;
 		p.accel = Vector3(randAcc(), randAcc(), 0) + particleProp.accOffset;
 		p.frame = particleProp.lifeTime;
-		p.scale = p.s_scale = particleProp.start_scale;
-		p.e_scale = particleProp.end_scale;
+		p.scale = p.s_scale = particleProp.startScale;
+		p.e_scale = particleProp.endScale;
 	}
 }
 

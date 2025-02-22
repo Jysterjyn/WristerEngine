@@ -12,7 +12,9 @@ void DiffuseParticle::Add(const AddProp& particleProp)
 		p.velocity = RandomVector(particleProp.velRange) + particleProp.velOffset;
 		p.accel = RandomVector(particleProp.accRange) + particleProp.accOffset;
 		p.frame = particleProp.lifeTime;
-		p.e_scale = particleProp.end_scale;
+		p.s_scale = particleProp.startScale;
+		p.e_scale = particleProp.endScale;
+		p.parent = particleProp.parent;
 	}
 }
 

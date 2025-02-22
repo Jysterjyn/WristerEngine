@@ -36,8 +36,8 @@ namespace WristerEngine
 			float velRange = 0.1f;
 			float accRange = 0.001f;
 			int lifeTime = 60;
-			float start_scale = 1.0f;
-			float end_scale = 0.0f;
+			float startScale = 1.0f;
+			float endScale = 0.0f;
 			unsigned int addNum = 1;
 		};
 
