@@ -12,15 +12,12 @@ namespace WristerEngine
 		// パーティクル1粒
 		struct Particle
 		{
-			Vector3 position{}; // 座標
-			Vector3 velocity{}; // 速度
-			Vector3 accel{}; // 加速度
+			Vector3 position; // 座標
+			Vector3 velocity; // 速度
+			Vector3 accel; // 加速度
 			FrameTimer frame = 0;
-			float scale = 1.0f; // スケール
 			float s_scale = 1.0f; // 初期値
 			float e_scale = 0.0f;	// 最終値
-
-			void Update();
 		};
 
 		struct AddProp
@@ -28,9 +25,9 @@ namespace WristerEngine
 			Vector3 posOffset;
 			Vector3 velOffset;
 			Vector3 accOffset;
-			float posRange = 1.0f;
-			float velRange = 0.1f;
-			float accRange = 0.001f;
+			Vector3 posRange = { 1,1,1 };
+			Vector3 velRange = { 0.1f,0.1f,0.1f };
+			Vector3 accRange = { 0.001f,0.001f,0.001f };
 			int lifeTime = 60;
 			float start_scale = 1.0f;
 			float end_scale = 0.0f;

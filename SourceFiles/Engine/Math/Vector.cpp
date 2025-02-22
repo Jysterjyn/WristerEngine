@@ -2,6 +2,7 @@
 #include "DirectXCommon.h"
 #include <cmath>
 #include <cassert>
+#include <Random.h>
 
 Vector2 Vector2::Normalize()
 {
@@ -234,6 +235,21 @@ Vector2 To2DVector(const Vector3& vec)
 	v *= WristerEngine::_3D::ModelManager::GetViewProjection()->GetViewProjectionMatrix();
 	v *= WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
 	return v;
+}
+
+Vector2 RandomVector(Vector2 range)
+{
+	WristerEngine::Random_Float randPosX(-range.x, range.x);
+	WristerEngine::Random_Float randPosY(-range.y, range.y);
+	return Vector2(randPosX(), randPosY());
+}
+
+Vector3 RandomVector(Vector3 range)
+{
+	WristerEngine::Random_Float randPosX(-range.x, range.x);
+	WristerEngine::Random_Float randPosY(-range.y, range.y);
+	WristerEngine::Random_Float randPosZ(-range.z, range.z);
+	return Vector3(randPosX(), randPosY(), randPosZ());
 }
 
 Vector3 BezierCurve(std::vector<Vector3> p, float t)

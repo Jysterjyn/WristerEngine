@@ -9,7 +9,7 @@ void TestSceneUIDrawer::Initialize()
 {
 	//sprites["bg"] = WristerEngine::_2D::Sprite::Create("sample.png");
 	//sprites["bg2"] = WristerEngine::_2D::Sprite::Create("uvChecker.png");
-	Update();
+	//Update();
 }
 
 void TestScene::Initialize()
@@ -26,11 +26,16 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	debugCamera.Update();
+
+	obj->worldTransform->translation +=
+		input->Move(WristerEngine::Key::D, WristerEngine::Key::A, 5);
+
 	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
-	WristerEngine::DiffuseParticle::AddProp addProp;
-	addProp.posOffset.x = 20;
-	addProp.lifeTime = 60000;
-	addProp.addNum = 30000;
+	WristerEngine::TrackParticle::AddProp addProp;
+	addProp.posRange = 1;
+	addProp.addNum = 10;
+	addProp.posOffset.y = 20;
+	addProp.parent = obj->worldTransform.get();
 	pGroup->Add(addProp);
 	const WristerEngine::FPS* fps = WristerEngine::FPS::GetInstance();
 

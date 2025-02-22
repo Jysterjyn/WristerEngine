@@ -39,7 +39,7 @@ void MyGame::Draw()
 	postEffect->PreDrawScene();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	//ModelManager::DrawObjects();
+	ModelManager::DrawObjects();
 	WristerEngine::ParticleManager::Draw();
 	postEffect->PostDrawScene();
 

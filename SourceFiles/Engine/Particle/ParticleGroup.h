@@ -18,11 +18,11 @@ namespace WristerEngine
 		struct VertexPos
 		{
 			Vector3 pos; // xyz座標
-			float scale; // スケール
 			Vector3 vel;
 			Vector3 acc;
 			Vector2 scales;
 			Vector2 passTime;
+			unsigned char type;
 		};
 
 		// Microsoft::WRL::を省略
