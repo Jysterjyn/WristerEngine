@@ -148,7 +148,7 @@ void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)
 	blenddesc.DestBlend = pipelineProp.blendProp.destBlend;
 
 	// スタティックサンプラー
-	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT,
+	CD3DX12_STATIC_SAMPLER_DESC samplerDesc(0, D3D12_FILTER_MIN_MAG_MIP_POINT,
 		pipelineProp.textureAddressMode, pipelineProp.textureAddressMode);
 
 	// ルートシグネチャの設定

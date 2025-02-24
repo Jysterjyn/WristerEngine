@@ -8,7 +8,7 @@ namespace WristerEngine::_3D
 	struct Object3d
 	{
 		Material material;
-		std::unique_ptr<Transform> worldTransform;
+		std::unique_ptr<Transform> transform;
 		bool isDestroy = false;
 		bool isInvisible = false;
 

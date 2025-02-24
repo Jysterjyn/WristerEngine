@@ -10,7 +10,7 @@ namespace WristerEngine::_3D
 		float distance = 50.0f; // 注視点から視点までの距離
 		Camera viewProjection;
 		Vector2 angle = { 0,0.3f }; // カメラ回転量
-		Transform worldTransform;
+		Transform transform;
 
 	public:
 		// 仮想デストラクタ

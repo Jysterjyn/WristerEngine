@@ -43,7 +43,9 @@ void ParticleGroup::Update()
 	}
 	for (auto& dir : directional)
 	{
-		vertMap[i++].pos = dir.position;
+		vertMap[i].pos = dir.position;
+		vertMap[i].scales.x = dir.scale;
+		vertMap[i++].type = 1;
 	}
 }
 

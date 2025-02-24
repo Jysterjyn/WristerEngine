@@ -13,7 +13,7 @@ namespace WristerEngine
 		static float gravity; // 重力加速度
 		static Vector3 gravityDir; // 重力の向き
 		static float k_air; // 空気抵抗の比例定数
-		_3D::Transform* worldTransform = nullptr;
+		_3D::Transform* transform = nullptr;
 		Vector3 vel; // 速度
 		float accel = 0; // 加速度
 		float force = 0; // 力の大きさ
@@ -51,7 +51,7 @@ namespace WristerEngine
 		const Vector3& GetVelocity() const { return vel; }
 		float GetForce() const { return accel * mass; }
 		float GetMass() const { return mass; }
-		_3D::Transform* GetWorldTransform() { return worldTransform; }
+		_3D::Transform* GetWorldTransform() { return transform; }
 		bool IsFreeFall() const { return isFreeFall; }
 		float GetMomentum() const { return mass * vel.Length(); } // 運動量を取得
 	};

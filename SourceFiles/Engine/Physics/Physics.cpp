@@ -13,7 +13,7 @@ float Physics::k_air = 0.4f;
 std::unique_ptr<Physics> Physics::Create(_3D::Transform* w)
 {
 	std::unique_ptr<Physics> instance = std::make_unique<Physics>();
-	instance->worldTransform = w;
+	instance->transform = w;
 	return instance;
 }
 
@@ -37,8 +37,8 @@ void Physics::Backlash(Physics* p1, Physics* p2, float e)
 		if (isCollided == 0b11) { return; }
 	}
 	// ポジションを取得
-	Vector3 p1Pos = p1->worldTransform->GetWorldPosition();
-	Vector3 p2Pos = p2->worldTransform->GetWorldPosition();
+	Vector3 p1Pos = p1->transform->GetWorldPosition();
+	Vector3 p2Pos = p2->transform->GetWorldPosition();
 	// 衝突の法線ベクトル
 	Vector3 n = Normalize(p2Pos - p1Pos);
 	// 2物体の速度
@@ -64,7 +64,7 @@ void Physics::Update()
 {
 	accel = force / mass; // 加速度を計算
 	vel += accel * forceDir; // 速度に加速度を加算
-	worldTransform->translation += vel; // 位置に速度加算
+	transform->translation += vel; // 位置に速度加算
 
 	// 落下処理
 	if (isFreeFall)

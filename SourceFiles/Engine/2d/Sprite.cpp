@@ -77,13 +77,13 @@ TextureData* Sprite::LoadTexture(const std::string& fileName)
 		}
 	}
 
-	CD3DX12_RESOURCE_DESC textureResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+	D3D12_RESOURCE_DESC textureResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		metadata.format, metadata.width, (UINT)metadata.height,
 		(UINT16)metadata.arraySize, (UINT16)metadata.mipLevels);
 
 	TextureData* texture = new TextureData;
 
-	D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
+	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
 
 	result = device->CreateCommittedResource(
 		&heapProp, D3D12_HEAP_FLAG_NONE,

@@ -31,7 +31,7 @@ void DirectXCommon::Initialize()
 	DXCommonGetter::SetPointer(device.Get(), commandList.Get());
 
 	// ビューポート設定コマンド
-	viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
+	SetViewport();
 }
 
 void DirectXCommon::InitializeDevice()
@@ -315,6 +315,8 @@ void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)
 {
 	viewport = CD3DX12_VIEWPORT(viewportLeftTop.x, viewportLeftTop.y,
 		viewportSize.x, viewportSize.y);
+
+	commandList->RSSetViewports(1, &viewport);
 }
 
 Matrix4 DirectXCommon::GetViewportMatrix() const

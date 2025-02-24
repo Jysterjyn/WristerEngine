@@ -7,21 +7,21 @@ void Object3d::Initialize(Mesh* mesh_)
 {
 	mesh = mesh_;
 	material.Load(mesh_);
-	worldTransform = std::make_unique<Transform>();
-	worldTransform->Initialize();
+	transform = std::make_unique<Transform>();
+	transform->Initialize();
 }
 
 void Object3d::Update()
 {
 	if (isInvisible) { return; }
 	material.Update();
-	worldTransform->Update();
+	transform->Update();
 }
 
 void Object3d::Draw()
 {
 	if (isInvisible) { return; }
-	worldTransform->Draw();
+	transform->Draw();
 	material.Draw();
 	mesh->Draw();
 }

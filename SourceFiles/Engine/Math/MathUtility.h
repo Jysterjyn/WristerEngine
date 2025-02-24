@@ -15,8 +15,8 @@ class Angle
 public:
 	float operator+() const { return angle; }
 	float operator-() const { return -angle; }
-	void operator++(int) { angle += ONE_DEG_RAD; }
-	void operator--(int) { angle -= ONE_DEG_RAD; }
+	float operator++(int) { float rAngle = angle; angle += ONE_DEG_RAD; return rAngle; }
+	float operator--(int) { float rAngle = angle; angle -= ONE_DEG_RAD; return rAngle; }
 	void operator+=(float rad) { angle += rad; }
 	void operator+=(int deg) { angle += ToRadian(deg); }
 	void operator-=(float rad) { angle -= rad; }
