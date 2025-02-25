@@ -16,7 +16,7 @@ void PointAudio::Update()
 {
 	if (useCamera)
 	{
-		_3D::Camera* vp = _3D::ModelManager::GetViewProjection();
+		_3D::Camera* vp = _3D::ModelManager::GetCamera();
 		micPos = vp->eye;
 		forward = Normalize(vp->target - vp->eye);
 	}

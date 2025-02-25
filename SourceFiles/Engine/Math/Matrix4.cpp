@@ -236,7 +236,7 @@ Matrix4 Matrix4::CreateFromVector(const Vector3& vec1, const Vector3& vec2, cons
 
 Matrix4 Matrix4::GetBillboard()
 {
-	WristerEngine::_3D::Camera* vp = WristerEngine::_3D::ModelManager::GetViewProjection();
+	WristerEngine::_3D::Camera* vp = WristerEngine::_3D::ModelManager::GetCamera();
 	Vector3 cameraAxisZ = vp->target - vp->eye;
 	// 0ƒxƒNƒgƒ‹‚ÌŽž
 	assert(!(cameraAxisZ == Vector3(0, 0, 0)));

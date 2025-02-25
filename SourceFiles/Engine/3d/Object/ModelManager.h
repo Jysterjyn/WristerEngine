@@ -32,9 +32,9 @@ namespace WristerEngine::_3D
 		// オブジェクトの解放
 		static void ClearObjects() { objects.clear(); }
 		// setter
-		static void SetCamera(Camera* viewProjection_) { camera = viewProjection_; }
+		static void SetCamera(Camera* camera_) { camera = camera_; }
 		// getter
 		static LightGroup* GetLightGroup() { return lightGroup.get(); }
-		static Camera* GetViewProjection() { return camera; }
+		static Camera* GetCamera() { return camera; }
 	};
 }

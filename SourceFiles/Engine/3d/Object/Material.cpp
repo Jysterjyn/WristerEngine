@@ -19,7 +19,7 @@ void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
 	color.b = colorTemp.z;
 }
 
-void Material::LoadSprite(istringstream& line_stream, Mesh* mesh, TexType spriteIndex)
+void Material::LoadTexture(istringstream& line_stream, Mesh* mesh, TexType spriteIndex)
 {
 	string textureFilename;
 	line_stream >> textureFilename;
@@ -27,33 +27,16 @@ void Material::LoadSprite(istringstream& line_stream, Mesh* mesh, TexType sprite
 	// スプライトのデフォルトディレクトリパスの文字列を削除
 	string defaultDirectoryPath = TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH;
 	path.erase(path.begin(), path.begin() + defaultDirectoryPath.size());
-	sprites[(size_t)spriteIndex] = Sprite::Create({ path + textureFilename });
+	textures[(size_t)spriteIndex].tex = TextureData::Load(path + textureFilename);
 }
 
 void Material::TransferCBV()
 {
-	for (size_t i = 0; i < constMap->texTrans.size(); i++)
+	for (size_t i = 0; i < constMap->texTrans.size(); i++) { constMap->texTrans[i] = textures[i]; }
+	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = textures[i].color; }
+	for (size_t i = 0; i < constMap->maskPow.size(); i++)
 	{
-		constMap->texTrans[i].tiling =
-		{
-			sprites[i]->textureSize.x / sprites[i]->size.x,
-			sprites[i]->textureSize.y / sprites[i]->size.y
-		};
-
-		if (sprites[i]->isFlipX) { constMap->texTrans[i].tiling.x *= -1.0f; }
-		if (sprites[i]->isFlipY) { constMap->texTrans[i].tiling.y *= -1.0f; }
-
-		constMap->texTrans[i].uvOffset =
-		{
-			sprites[i]->textureLeftTop.x / sprites[i]->size.x,
-			sprites[i]->textureLeftTop.y / sprites[i]->size.y
-		};
-	}
-
-	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = sprites[i]->color; }
-	for (size_t i = 0; i < constMap->maskPow.size() - 1; i++)
-	{
-		constMap->maskPow[i] = sprites[(size_t)TexType::Blend + i]->color.r;
+		constMap->maskPow[i] = textures[(size_t)TexType::Blend + i].color.r;
 	}
 
 	constMap->ambient = ambient;
@@ -75,26 +58,29 @@ void Material::Load(Mesh* mesh)
 		getline(line_stream, key, ' ');
 
 		if (key[0] == '\t') { key.erase(key.begin()); }
-		if (key == "newmtl") { line_stream >> materialName; }
+		if (key == "newmtl") { line_stream >> name; }
 		if (key == "Ka") { LoadColorRGBStream(line_stream, ambient); }
 		if (key == "Kd") { LoadColorRGBStream(line_stream, diffuse); }
 		if (key == "Ks") { LoadColorRGBStream(line_stream, specular); }
-		if (key == "map_Kd") { LoadSprite(line_stream, mesh, TexType::Main); }		// メインテクスチャ
-		if (key == "map_Kds") { LoadSprite(line_stream, mesh, TexType::Sub); }		// サブテクスチャ
-		if (key == "map_Kbm") { LoadSprite(line_stream, mesh, TexType::Blend); }	// ブレンドマスク
-		if (key == "map_Ksm") { LoadSprite(line_stream, mesh, TexType::Specular); }	// スペキュラマスク
-		if (key == "map_Kdm") { LoadSprite(line_stream, mesh, TexType::Dissolve); }	// ディゾルブマスク
+		if (key == "map_Kd") { LoadTexture(line_stream, mesh, TexType::Main); }		// メインテクスチャ
+		if (key == "map_Kds") { LoadTexture(line_stream, mesh, TexType::Sub); }		// サブテクスチャ
+		if (key == "map_Kbm") { LoadTexture(line_stream, mesh, TexType::Blend); }	// ブレンドマスク
+		if (key == "map_Ksm") { LoadTexture(line_stream, mesh, TexType::Specular); }	// スペキュラマスク
+		if (key == "map_Kdm") { LoadTexture(line_stream, mesh, TexType::Dissolve); }	// ディゾルブマスク
 	}
 	file.close();
 
 	// デフォルトテクスチャのセット
-	for (auto& sprite : sprites) { if (!sprite) { sprite = Sprite::Create({ "white1x1.png" }); } }
+	for (auto& tex : textures) { if (!tex.tex) { tex.tex = TextureData::Load("white1x1.png"); } }
 
 	// ブレンドテクスチャがデフォルトの場合、マスク値は使わない
-	if (sprites[(size_t)TexType::Blend]->textures[0]->fileName.find("white1x1.png") != string::npos)
+	if (textures[(size_t)TexType::Blend].tex->fileName.find("white1x1.png") != string::npos)
 	{
-		sprites[(size_t)TexType::Blend]->color.r = 0;
+		textures[(size_t)TexType::Blend].color.r = 0;
 	}
+
+	// ディゾルブ値の初期値は0
+	textures[(size_t)TexType::Dissolve].color.r = 0;
 
 	// 定数バッファ生成
 	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
@@ -104,7 +90,6 @@ void Material::Load(Mesh* mesh)
 
 void Material::Update()
 {
-	for (auto& sprite : sprites) { sprite->Update(); }
 	TransferCBV();
 }
 
@@ -117,6 +102,6 @@ void Material::Draw()
 	// シェーダリソースビューをセット
 	for (UINT i = 0; i < (UINT)TexType::Num; i++)
 	{
-		cmdList->SetGraphicsRootDescriptorTable(i, sprites[i]->GetGPUHandle());
+		cmdList->SetGraphicsRootDescriptorTable(i, textures[i].tex->srvHandle.gpu);
 	}
 }

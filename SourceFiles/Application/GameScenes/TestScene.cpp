@@ -36,7 +36,7 @@ void TestScene::Initialize()
 	uiDrawer = std::make_unique<TestSceneUIDrawer>();
 	uiDrawer->Initialize();
 	obj = WristerEngine::_3D::ModelManager::Create("cube");
-	obj->transform->scale *= 5;
+	obj->transform.scale *= 5;
 	WristerEngine::ParticleManager::AddParticleGroup("kamata.ico");
 }
 
@@ -45,10 +45,10 @@ void TestScene::Update()
 	uiDrawer->Update();
 	debugCamera.Update();
 
-	obj->transform->translation.x +=
+	obj->transform.translation.x +=
 		input->Move(WristerEngine::Key::D, WristerEngine::Key::A, 1);
 
-	obj->transform->translation.y +=
+	obj->transform.translation.y +=
 		input->Move(WristerEngine::Key::W, WristerEngine::Key::S, 1);
 	
 	//obj->material.SetDissolvePow(0.5f);

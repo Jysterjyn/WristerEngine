@@ -232,7 +232,7 @@ Vector3 Normalize(const Vector3& v) { return Vector3(v).Normalize(); }
 Vector2 To2DVector(const Vector3& vec)
 {
 	Vector3 v = vec;
-	v *= WristerEngine::_3D::ModelManager::GetViewProjection()->GetViewProjectionMatrix();
+	v *= WristerEngine::_3D::ModelManager::GetCamera()->GetViewProjectionMatrix();
 	v *= WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
 	return v;
 }
