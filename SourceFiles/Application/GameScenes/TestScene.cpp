@@ -10,6 +10,7 @@
 void TestSceneUIDrawer::Initialize()
 {
 	sprites["bg"] = WristerEngine::_2D::Sprite::Create({ "sample.png","uvChecker.png" });
+	sprites["bg"]->isInvisible = true;
 	Update();
 }
 
@@ -49,9 +50,11 @@ void TestScene::Update()
 
 	obj->transform->translation.y +=
 		input->Move(WristerEngine::Key::W, WristerEngine::Key::S, 1);
+	
+	//obj->material.SetDissolvePow(0.5f);
 
-	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
-	WristerEngine::DiffuseParticle::AddProp addProp;
-	addProp.posOffset.y = 10;
-	pGroup->Add(addProp);
+	//WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
+	//WristerEngine::DiffuseParticle::AddProp addProp;
+	//addProp.posOffset.y = 10;
+	//pGroup->Add(addProp);
 }

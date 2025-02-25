@@ -51,7 +51,7 @@ void Material::TransferCBV()
 	}
 
 	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = sprites[i]->color; }
-	for (size_t i = 0; i < constMap->maskPow.size(); i++)
+	for (size_t i = 0; i < constMap->maskPow.size() - 1; i++)
 	{
 		constMap->maskPow[i] = sprites[(size_t)TexType::Blend + i]->color.r;
 	}
