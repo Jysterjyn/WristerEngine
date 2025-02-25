@@ -16,7 +16,7 @@ void ParticleGroup::CreateVertexBuffer()
 void ParticleGroup::Initialize(const std::string& textureName)
 {
 	// テクスチャ読み込み
-	texture = Sprite::LoadTexture("Particles/" + textureName);
+	texture= TextureData::Load("Particles/" + textureName);
 	CreateVertexBuffer();
 }
 

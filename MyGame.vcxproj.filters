@@ -47,9 +47,6 @@
     <Filter Include="ソース ファイル\Engine\Input">
       <UniqueIdentifier>{fa885c07-fe8d-4879-a7a7-e2bbf42afdc2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Engine\Skydome">
-      <UniqueIdentifier>{add36e36-d459-432f-a0ce-f0579e636034}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Engine\3d\Object">
       <UniqueIdentifier>{c425de59-8479-456f-9548-a18c39f17171}</UniqueIdentifier>
     </Filter>
@@ -91,6 +88,9 @@
     </Filter>
     <Filter Include="シェーダー ファイル\Sprite">
       <UniqueIdentifier>{a84edc20-0787-47b8-9f83-c97e08f20321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Engine\3d\Skydome">
+      <UniqueIdentifier>{add36e36-d459-432f-a0ce-f0579e636034}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -209,7 +209,7 @@
       <Filter>ソース ファイル\Engine\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Engine\Skydome\Skydome.cpp">
-      <Filter>ソース ファイル\Engine\Skydome</Filter>
+      <Filter>ソース ファイル\Engine\3d\Skydome</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Engine\Timer\Timer.cpp">
       <Filter>ソース ファイル\Engine\Timer</Filter>
@@ -376,7 +376,7 @@
       <Filter>ソース ファイル\Engine\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Engine\Skydome\Skydome.h">
-      <Filter>ソース ファイル\Engine\Skydome</Filter>
+      <Filter>ソース ファイル\Engine\3d\Skydome</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Engine\Timer\Timer.h">
       <Filter>ソース ファイル\Engine\Timer</Filter>

@@ -18,12 +18,12 @@ void TestSceneUIDrawer::Update()
 {
 	if (WristerEngine::Input::GetInstance()->IsTrigger(WristerEngine::Key::Space))
 	{
-		sprites["bg"]->tex = WristerEngine::_2D::Sprite::LoadTexture("uvChecker.png");
+		sprites["bg"]->tex = WristerEngine::_2D::TextureData::Load("uvChecker.png");
 	}
 
 	if (WristerEngine::Input::GetInstance()->IsUp(WristerEngine::Key::Space))
 	{
-		sprites["bg"]->tex = WristerEngine::_2D::Sprite::LoadTexture("sample.png");
+		sprites["bg"]->tex = WristerEngine::_2D::TextureData::Load("sample.png");
 	}
 
 	WristerEngine::_2D::AbstractUIDrawer::Update();
@@ -37,6 +37,7 @@ void TestScene::Initialize()
 	uiDrawer->Initialize();
 	obj = WristerEngine::_3D::ModelManager::Create("cube");
 	obj->transform->scale *= 5;
+	WristerEngine::ParticleManager::AddParticleGroup("kamata.ico");
 }
 
 void TestScene::Update()
@@ -49,4 +50,9 @@ void TestScene::Update()
 
 	obj->transform->translation.y +=
 		input->Move(WristerEngine::Key::W, WristerEngine::Key::S, 1);
+
+	WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);
+	WristerEngine::DiffuseParticle::AddProp addProp;
+	addProp.posOffset.y = 10;
+	pGroup->Add(addProp);
 }

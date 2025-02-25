@@ -7,19 +7,22 @@
 namespace WristerEngine::_2D
 {
 	// テクスチャ1枚分のデータ
-	struct TextureData
+	struct TextureData : DXCommonGetter
 	{
+		// デフォルトディレクトリ
+		static std::string DEFAULT_TEXTURE_DIRECTORY_PATH;
+
+		static std::list<std::unique_ptr<TextureData>> textures;
 		std::string fileName;
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
 		SRVHandle srvHandle;
+
+		static TextureData* Load(const std::string& fileName);
 	};
 
 	// スプライト
 	struct Sprite : DXCommonGetter
 	{
-		// デフォルトディレクトリ
-		static std::string DEFAULT_TEXTURE_DIRECTORY_PATH;
-
 		Vector2 position;
 		float rotation = 0;
 		ColorRGBA color;
@@ -71,7 +74,6 @@ namespace WristerEngine::_2D
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		static std::list<TextureData*> textures;
 		const static Matrix4 matProj;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
@@ -97,7 +99,7 @@ namespace WristerEngine::_2D
 		// anchorPoint = { 0.5f,0.5f } にする
 		void SetCenterAnchor() { anchorPoint = { 0.5f,0.5f }; }
 		// テクスチャ読み込み
-		static TextureData* LoadTexture(const std::string& fileName);
+		//static TextureData* LoadTexture(const std::string& fileName);
 		// スプライト生成
 		static std::unique_ptr<WristerEngine::_2D::Sprite> Create(const std::string& fileName,
 			const Vector2& pos = {}, const Vector2& anchorPoint = {},

@@ -25,7 +25,7 @@ void Material::LoadSprite(istringstream& line_stream, Mesh* mesh, TexType sprite
 	line_stream >> textureFilename;
 	string path = mesh->directoryPath;
 	// スプライトのデフォルトディレクトリパスの文字列を削除
-	string defaultDirectoryPath = Sprite::DEFAULT_TEXTURE_DIRECTORY_PATH;
+	string defaultDirectoryPath = TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH;
 	path.erase(path.begin(), path.begin() + defaultDirectoryPath.size());
 	sprites[(size_t)spriteIndex] = Sprite::Create(path + textureFilename);
 }

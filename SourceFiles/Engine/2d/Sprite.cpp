@@ -18,8 +18,8 @@ static Matrix4 OrthoGraphic()
 	return matProj;
 }
 
-string Sprite::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
-list<TextureData*> Sprite::textures;
+string TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
+list<unique_ptr<TextureData>> TextureData::textures;
 const Matrix4 Sprite::matProj = OrthoGraphic();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
@@ -40,25 +40,25 @@ void Sprite::Split(const Vector2& spritNum)
 	size.y /= spritNum.y;
 }
 
-TextureData* Sprite::LoadTexture(const std::string& fileName)
+TextureData* TextureData::Load(const std::string& fileName_)
 {
 	// テクスチャの重複読み込みを検出
-	for (auto& texture : textures)
+	for (auto& tex : textures)
 	{
-		if (texture->fileName.find(fileName) == string::npos) { continue; }
-		return texture;
+		if (tex->fileName.find(fileName_) == string::npos) { continue; }
+		return tex.get();
 	}
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{}, mipChain{};
 
-	string fullPath = DEFAULT_TEXTURE_DIRECTORY_PATH + fileName;
+	string fullPath = DEFAULT_TEXTURE_DIRECTORY_PATH + fileName_;
 
 	// ワイド文字列に変換
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
 	Result result = S_OK;
-	bool isDDSFile = fileName.find(".dds") != string::npos;
+	bool isDDSFile = fileName_.find(".dds") != string::npos;
 
 	if (isDDSFile)
 	{
@@ -81,8 +81,7 @@ TextureData* Sprite::LoadTexture(const std::string& fileName)
 		metadata.format, metadata.width, (UINT)metadata.height,
 		(UINT16)metadata.arraySize, (UINT16)metadata.mipLevels);
 
-	TextureData* texture = new TextureData;
-
+	unique_ptr<TextureData> texture = make_unique<TextureData>();
 	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
 
 	result = device->CreateCommittedResource(
@@ -98,10 +97,10 @@ TextureData* Sprite::LoadTexture(const std::string& fileName)
 			(UINT)img->rowPitch, (UINT)img->slicePitch);
 	}
 
-	texture->fileName = fileName;
+	texture->fileName = fileName_;
 	texture->srvHandle = dxCommon->CreateSRV(texture->buffer.Get(), &textureResourceDesc);
-	textures.push_back(texture);
-	return texture;
+	textures.push_back(move(texture));
+	return textures.back().get();
 }
 
 std::unique_ptr<Sprite> Sprite::Create(
@@ -109,7 +108,7 @@ std::unique_ptr<Sprite> Sprite::Create(
 	const Vector2& textureSize, const Vector2& textureLeftTop)
 {
 	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	sprite->tex = LoadTexture(fileName);
+	sprite->tex = TextureData::Load(fileName);
 	sprite->Initialize();
 	sprite->position = pos;
 	sprite->anchorPoint = anchorPoint;
