@@ -9,8 +9,7 @@
 
 void TestSceneUIDrawer::Initialize()
 {
-	sprites["bg"] = WristerEngine::_2D::Sprite::Create("sample.png");
-	//sprites["bg2"] = WristerEngine::_2D::Sprite::Create("uvChecker.png");
+	sprites["bg"] = WristerEngine::_2D::Sprite::Create({ "sample.png","uvChecker.png" });
 	Update();
 }
 
@@ -18,12 +17,12 @@ void TestSceneUIDrawer::Update()
 {
 	if (WristerEngine::Input::GetInstance()->IsTrigger(WristerEngine::Key::Space))
 	{
-		sprites["bg"]->tex = WristerEngine::_2D::TextureData::Load("uvChecker.png");
+		sprites["bg"]->SetTextureIndex(1);
 	}
 
 	if (WristerEngine::Input::GetInstance()->IsUp(WristerEngine::Key::Space))
 	{
-		sprites["bg"]->tex = WristerEngine::_2D::TextureData::Load("sample.png");
+		sprites["bg"]->SetTextureIndex(0);
 	}
 
 	WristerEngine::_2D::AbstractUIDrawer::Update();

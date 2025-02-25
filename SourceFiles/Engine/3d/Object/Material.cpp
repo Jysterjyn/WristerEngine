@@ -27,7 +27,7 @@ void Material::LoadSprite(istringstream& line_stream, Mesh* mesh, TexType sprite
 	// スプライトのデフォルトディレクトリパスの文字列を削除
 	string defaultDirectoryPath = TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH;
 	path.erase(path.begin(), path.begin() + defaultDirectoryPath.size());
-	sprites[(size_t)spriteIndex] = Sprite::Create(path + textureFilename);
+	sprites[(size_t)spriteIndex] = Sprite::Create({ path + textureFilename });
 }
 
 void Material::TransferCBV()
@@ -51,7 +51,7 @@ void Material::TransferCBV()
 	}
 
 	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = sprites[i]->color; }
-	for (size_t i = 0; i < constMap->maskPow.size() - 1; i++)
+	for (size_t i = 0; i < constMap->maskPow.size(); i++)
 	{
 		constMap->maskPow[i] = sprites[(size_t)TexType::Blend + i]->color.r;
 	}
@@ -88,10 +88,10 @@ void Material::Load(Mesh* mesh)
 	file.close();
 
 	// デフォルトテクスチャのセット
-	for (auto& sprite : sprites) { if (!sprite) { sprite = Sprite::Create("white1x1.png"); } }
+	for (auto& sprite : sprites) { if (!sprite) { sprite = Sprite::Create({ "white1x1.png" }); } }
 
 	// ブレンドテクスチャがデフォルトの場合、マスク値は使わない
-	if (sprites[(size_t)TexType::Blend]->tex->fileName.find("white1x1.png") != string::npos)
+	if (sprites[(size_t)TexType::Blend]->textures[0]->fileName.find("white1x1.png") != string::npos)
 	{
 		sprites[(size_t)TexType::Blend]->color.r = 0;
 	}

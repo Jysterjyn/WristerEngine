@@ -40,6 +40,13 @@ void Sprite::Split(const Vector2& spritNum)
 	size.y /= spritNum.y;
 }
 
+void WristerEngine::_2D::Sprite::SetTextureIndex(UINT16 texIndex_)
+{
+	// テクスチャ数を超えてたら停止
+	assert(texIndex_ < textures.size());
+	texIndex = texIndex_;
+}
+
 TextureData* TextureData::Load(const std::string& fileName_)
 {
 	// テクスチャの重複読み込みを検出
@@ -103,12 +110,16 @@ TextureData* TextureData::Load(const std::string& fileName_)
 	return textures.back().get();
 }
 
-std::unique_ptr<Sprite> Sprite::Create(
-	const std::string& fileName, const Vector2& pos, const Vector2& anchorPoint,
+std::unique_ptr<Sprite> Sprite::Create(std::initializer_list<const std::string> fileNames,
+	const Vector2& pos, const Vector2& anchorPoint,
 	const Vector2& textureSize, const Vector2& textureLeftTop)
 {
 	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	sprite->tex = TextureData::Load(fileName);
+	for (const std::string& fileName : fileNames)
+	{
+		TextureData* tex = TextureData::Load(fileName);
+		sprite->textures.push_back(tex);
+	}
 	sprite->Initialize();
 	sprite->position = pos;
 	sprite->anchorPoint = anchorPoint;
@@ -150,9 +161,9 @@ void Sprite::Initialize()
 
 void Sprite::AdjustTextureSize()
 {
-	assert(tex->buffer);
+	assert(textures[0]->buffer);
 
-	D3D12_RESOURCE_DESC resDesc = tex->buffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = textures[0]->buffer->GetDesc();
 
 	textureSize.x = static_cast<float>(resDesc.Width);
 	textureSize.y = static_cast<float>(resDesc.Height);
@@ -183,7 +194,7 @@ void Sprite::Update()
 	vertices[(size_t)VertexNumber::RB].pos = { right, bottom };
 	vertices[(size_t)VertexNumber::RT].pos = { right, top };
 
-	D3D12_RESOURCE_DESC resDesc = tex->buffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = textures[texIndex]->buffer->GetDesc();
 
 	float tex_left = textureLeftTop.x / resDesc.Width;
 	float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
@@ -211,7 +222,7 @@ void Sprite::Draw()
 {
 	if (isInvisible) { return; }
 
-	cmdList->SetGraphicsRootDescriptorTable(0, tex->srvHandle.gpu);
+	cmdList->SetGraphicsRootDescriptorTable(0, GetGPUHandle());
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vbView);

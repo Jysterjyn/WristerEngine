@@ -26,7 +26,7 @@ void BitMapNumber::Initialize()
 	for (size_t i = 0; i < bitMapProp.digit; i++)
 	{
 		// 数字のスプライト
-		sprites.push_back(Sprite::Create(bitMapProp.fileName));
+		sprites.push_back(Sprite::Create({ bitMapProp.fileName }));
 		if (allSpriteSize.x == 0) { allSpriteSize = sprites[i]->textureSize; }
 		sprites[i]->textureSize = bitMapProp.rectSize;
 		UpdateSprite(i);
