@@ -9,24 +9,14 @@
 
 void TestSceneUIDrawer::Initialize()
 {
-	sprites["bg"] = WristerEngine::_2D::Sprite::Create({ "sample.png","uvChecker.png" });
-	sprites["bg"]->isInvisible = true;
-	Update();
+	sprites["bg"] = WristerEngine::_2D::Sprite::Create({ "sample.png" });
+	sprites["bg2"] = WristerEngine::_2D::Sprite::Create({ "uvChecker.png" });
+	//Update();
 }
 
 void TestSceneUIDrawer::Update()
 {
-	if (WristerEngine::Input::GetInstance()->IsTrigger(WristerEngine::Key::Space))
-	{
-		sprites["bg"]->SetTextureIndex(1);
-	}
-
-	if (WristerEngine::Input::GetInstance()->IsUp(WristerEngine::Key::Space))
-	{
-		sprites["bg"]->SetTextureIndex(0);
-	}
-
-	WristerEngine::_2D::AbstractUIDrawer::Update();
+	//WristerEngine::_2D::AbstractUIDrawer::Update();
 }
 
 void TestScene::Initialize()
@@ -36,7 +26,7 @@ void TestScene::Initialize()
 	uiDrawer = std::make_unique<TestSceneUIDrawer>();
 	uiDrawer->Initialize();
 	obj = WristerEngine::_3D::ModelManager::Create("cube");
-	obj->transform.scale *= 5;
+	obj->transform.scale *= 0;
 	WristerEngine::ParticleManager::AddParticleGroup("kamata.ico");
 }
 
@@ -50,7 +40,7 @@ void TestScene::Update()
 
 	obj->transform.translation.y +=
 		input->Move(WristerEngine::Key::W, WristerEngine::Key::S, 1);
-	
+
 	//obj->material.SetDissolvePow(0.5f);
 
 	//WristerEngine::ParticleGroup* pGroup = WristerEngine::ParticleManager::GetParticleGroup(0);

@@ -9,7 +9,7 @@ namespace WristerEngine
 	private:
 		const int FADE_TIME = 30;
 		float fadePerFlame = 1.0f / FADE_TIME;
-		std::unique_ptr<_2D::Sprite> sprite;
+		_2D::Sprite* sprite;
 		bool isFade = 0;
 		float alpha = 0;
 		bool isChange = false;

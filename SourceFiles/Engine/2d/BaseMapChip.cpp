@@ -10,15 +10,15 @@ void BaseMapChip::Initialize(const Vector2& leftTopPos_, const Vector2& chipSize
 
 void BaseMapChip::AddSprite(const std::string& fileName, const Vector2& chipPos, float splitNum, const Vector2& drawSize)
 {
-	std::unique_ptr<Sprite> newSprite = Sprite::Create({ fileName });
+	Sprite* newSprite = Sprite::Create({ fileName });
 	if (drawSize.Length() != 0) { newSprite->size = drawSize; }
 	newSprite->position = leftTopPos;
 	newSprite->position.x += chipPos.x * chipSize.x;
 	newSprite->position.y += chipPos.y * chipSize.y;
 	newSprite->anchorPoint = chipAnchor;
-	VirtualInitialize(newSprite.get(), splitNum);
+	VirtualInitialize(newSprite, splitNum);
 	newSprite->Update();
-	sprites.push_back(std::move(newSprite));
+	sprites.push_back(newSprite);
 }
 
 void BaseMapChip::Draw()

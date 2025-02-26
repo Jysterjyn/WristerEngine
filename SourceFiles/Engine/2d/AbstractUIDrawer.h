@@ -11,7 +11,7 @@ namespace WristerEngine::_2D
 	{
 	protected:
 		Constant* constant = Constant::GetInstance();
-		std::map<std::string, std::unique_ptr<Sprite>> sprites;
+		std::map<std::string, Sprite*> sprites;
 
 	public:
 		// 仮想デストラクタ
@@ -19,8 +19,8 @@ namespace WristerEngine::_2D
 		// 初期化(純粋仮想関数)
 		virtual void Initialize() = 0;
 		// 更新(仮想関数)
-		virtual void Update() { for (auto& s : sprites) { s.second->Update(); } }
+		virtual void Update() { /*for (auto& s : sprites) { s.second->Update(); } */}
 		// 描画(仮想関数)
-		virtual void Draw() { for (auto& s : sprites) { s.second->Draw(); } }
+		virtual void Draw() { /*for (auto& s : sprites) { s.second->Draw(); } */}
 	};
 }

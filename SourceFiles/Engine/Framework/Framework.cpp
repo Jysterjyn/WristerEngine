@@ -20,6 +20,7 @@ void Framework::Update()
 	ImGuiManager::Begin();
 	input->Update();
 	sceneManager->Update();
+	Sprite::UpdateAll();
 	ImGuiManager::End();
 }
 

@@ -20,6 +20,7 @@ static Matrix4 OrthoGraphic()
 
 string TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
 list<unique_ptr<TextureData>> TextureData::textures;
+list<unique_ptr<Sprite>> Sprite::sprites;
 const Matrix4 Sprite::matProj = OrthoGraphic();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
@@ -40,32 +41,32 @@ void Sprite::Split(const Vector2& spritNum)
 	size.y /= spritNum.y;
 }
 
-void WristerEngine::_2D::Sprite::SetTextureIndex(UINT16 texIndex_)
+void Sprite::SetTextureIndex(UINT16 texIndex_)
 {
 	// テクスチャ数を超えてたら停止
 	assert(texIndex_ < textures.size());
 	texIndex = texIndex_;
 }
 
-TextureData* TextureData::Load(const std::string& fileName_)
+TextureData* TextureData::Load(const std::string& fileName)
 {
 	// テクスチャの重複読み込みを検出
 	for (auto& tex : textures)
 	{
-		if (tex->fileName.find(fileName_) == string::npos) { continue; }
+		if (tex->fileName.find(fileName) == string::npos) { continue; }
 		return tex.get();
 	}
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{}, mipChain{};
 
-	string fullPath = DEFAULT_TEXTURE_DIRECTORY_PATH + fileName_;
+	string fullPath = DEFAULT_TEXTURE_DIRECTORY_PATH + fileName;
 
 	// ワイド文字列に変換
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
 	Result result = S_OK;
-	bool isDDSFile = fileName_.find(".dds") != string::npos;
+	bool isDDSFile = fileName.find(".dds") != string::npos;
 
 	if (isDDSFile)
 	{
@@ -104,13 +105,13 @@ TextureData* TextureData::Load(const std::string& fileName_)
 			(UINT)img->rowPitch, (UINT)img->slicePitch);
 	}
 
-	texture->fileName = fileName_;
+	texture->fileName = fileName;
 	texture->srvHandle = dxCommon->CreateSRV(texture->buffer.Get(), &textureResourceDesc);
 	textures.push_back(move(texture));
 	return textures.back().get();
 }
 
-std::unique_ptr<Sprite> Sprite::Create(std::initializer_list<const std::string> fileNames,
+Sprite* Sprite::Create(std::initializer_list<const std::string> fileNames,
 	const Vector2& pos, const Vector2& anchorPoint,
 	const Vector2& textureSize, const Vector2& textureLeftTop)
 {
@@ -124,7 +125,8 @@ std::unique_ptr<Sprite> Sprite::Create(std::initializer_list<const std::string> 
 	sprite->position = pos;
 	sprite->anchorPoint = anchorPoint;
 	if (textureSize.Length() != 0) { sprite->SetRect(textureSize, textureLeftTop); }
-	return sprite;
+	sprites.push_back(move(sprite));
+	return sprites.back().get();
 }
 
 void Sprite::PreDraw()
@@ -133,6 +135,7 @@ void Sprite::PreDraw()
 	PipelineManager::SetPipeline(PipelineType::Sprite);
 	// プリミティブ形状の設定コマンド
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // 三角形リスト
+	for (auto& s : sprites) { s->Draw(); }
 }
 
 void Sprite::Initialize()
@@ -167,6 +170,11 @@ void Sprite::AdjustTextureSize()
 
 	textureSize.x = static_cast<float>(resDesc.Width);
 	textureSize.y = static_cast<float>(resDesc.Height);
+}
+
+void WristerEngine::_2D::Sprite::UpdateAll()
+{
+	for (auto& s : sprites) { s->Update(); }
 }
 
 void Sprite::SetAnimation(size_t spriteNum, int animationIntervel)

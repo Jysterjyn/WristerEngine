@@ -10,7 +10,7 @@ namespace WristerEngine::_2D
 		Vector2 leftTopPos; // 起点となる位置
 		Vector2 chipSize; // チップ1枚のサイズ
 		Vector2 chipAnchor; // チップのアンカーポイント
-		std::vector<std::unique_ptr<Sprite>> sprites; // 描画に使うスプライト
+		std::vector<Sprite*> sprites; // 描画に使うスプライト
 
 	public:
 		virtual ~BaseMapChip() = default;

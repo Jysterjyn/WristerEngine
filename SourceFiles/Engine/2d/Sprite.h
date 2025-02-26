@@ -35,7 +35,6 @@ namespace WristerEngine::_2D
 		Vector2 textureLeftTop; // 切り取り領域の左上座標
 		Vector2 textureSize; // 切り取り領域のサイズ
 		Vector2 posOffset; // 表示位置の調整
-		std::vector<TextureData*> textures{};
 
 	private:
 		class Animation
@@ -76,6 +75,7 @@ namespace WristerEngine::_2D
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 		const static Matrix4 matProj;
+		static std::list<std::unique_ptr<Sprite>> sprites;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
@@ -83,6 +83,7 @@ namespace WristerEngine::_2D
 		Vertex* vertMap = nullptr;
 		Matrix4 matWorld;
 		UINT16 texIndex = 0;
+		std::vector<TextureData*> textures{};
 		std::unique_ptr<Animation> animation;
 
 		// テクスチャサイズをイメージに合わせる
@@ -91,6 +92,8 @@ namespace WristerEngine::_2D
 		void Initialize();
 
 	public:
+		static void UpdateAll();
+
 		void SetAnimation(size_t spriteNum, int animationIntervel);
 		// 更新
 		void Update();
@@ -101,13 +104,12 @@ namespace WristerEngine::_2D
 		// anchorPoint = { 0.5f,0.5f } にする
 		void SetCenterAnchor() { anchorPoint = { 0.5f,0.5f }; }
 		// スプライト生成
-		static std::unique_ptr<WristerEngine::_2D::Sprite> Create(
-			std::initializer_list<const std::string> fileNames,
+		static Sprite* Create(std::initializer_list<const std::string> fileNames,
 			const Vector2& pos = {}, const Vector2& anchorPoint = {},
 			const Vector2& textureSize = {}, const Vector2& textureLeftTop = {});
 		// 描画前処理
 		static void PreDraw();
-		
+
 		// 現在のインデックスが示すテクスチャのGPUハンドルを取得
 		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return textures[texIndex]->srvHandle.gpu; }
 
