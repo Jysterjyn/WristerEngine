@@ -253,6 +253,9 @@
     <ClCompile Include="SourceFiles\Engine\LevelLoader\LevelLoader.cpp">
       <Filter>ソース ファイル\Engine\LevelLoader</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Engine\Timer\TimedCall.cpp">
+      <Filter>ソース ファイル\Engine\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Engine\Math\Matrix4.h">
@@ -431,6 +434,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Engine\LevelLoader\LevelLoader.h">
       <Filter>ソース ファイル\Engine\LevelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Engine\Timer\TimedCall.h">
+      <Filter>ソース ファイル\Engine\Timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

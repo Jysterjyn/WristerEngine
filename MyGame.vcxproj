@@ -149,6 +149,7 @@
     <ClCompile Include="SourceFiles\Engine\Framework\Framework.cpp" />
     <ClCompile Include="SourceFiles\Engine\Input\Input.cpp" />
     <ClCompile Include="SourceFiles\Engine\main.cpp" />
+    <ClCompile Include="SourceFiles\Engine\Timer\TimedCall.cpp" />
     <ClCompile Include="SourceFiles\Engine\WinApp\WindowsAPI.cpp" />
     <ClCompile Include="SourceFiles\Engine\Functions\Color.cpp" />
     <ClCompile Include="SourceFiles\Engine\Particle\ParticleManager.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="SourceFiles\Engine\DirectX\DirectXCommon.h" />
     <ClInclude Include="SourceFiles\Engine\Framework\Framework.h" />
     <ClInclude Include="SourceFiles\Engine\Input\Input.h" />
+    <ClInclude Include="SourceFiles\Engine\Timer\TimedCall.h" />
     <ClInclude Include="SourceFiles\Engine\WinApp\WindowsAPI.h" />
     <ClInclude Include="SourceFiles\Engine\Functions\Color.h" />
     <ClInclude Include="SourceFiles\Engine\Particle\ParticleManager.h" />
