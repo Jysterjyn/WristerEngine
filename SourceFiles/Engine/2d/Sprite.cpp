@@ -135,7 +135,6 @@ void Sprite::PreDraw()
 	PipelineManager::SetPipeline(PipelineType::Sprite);
 	// プリミティブ形状の設定コマンド
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // 三角形リスト
-	for (auto& s : sprites) { s->Draw(); }
 }
 
 void Sprite::Initialize()

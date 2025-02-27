@@ -17,7 +17,6 @@ void BaseMapChip::AddSprite(const std::string& fileName, const Vector2& chipPos,
 	newSprite->position.y += chipPos.y * chipSize.y;
 	newSprite->anchorPoint = chipAnchor;
 	VirtualInitialize(newSprite, splitNum);
-	newSprite->Update();
 	sprites.push_back(newSprite);
 }
 

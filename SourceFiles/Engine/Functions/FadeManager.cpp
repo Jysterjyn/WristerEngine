@@ -29,5 +29,4 @@ void FadeManager::Update()
 		isFade = false;
 	}
 	sprite->color.a = alpha;
-	sprite->Update();
 }

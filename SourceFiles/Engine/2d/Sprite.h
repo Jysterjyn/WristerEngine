@@ -90,13 +90,13 @@ namespace WristerEngine::_2D
 		void AdjustTextureSize();
 		// 初期化
 		void Initialize();
+		// 更新
+		void Update();
 
 	public:
 		static void UpdateAll();
 
 		void SetAnimation(size_t spriteNum, int animationIntervel);
-		// 更新
-		void Update();
 		// 描画
 		void Draw();
 		// 位置を画面中央にする

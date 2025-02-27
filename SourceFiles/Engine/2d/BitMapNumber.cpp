@@ -56,7 +56,6 @@ void BitMapNumber::Update(int number)
 		UpdateSprite(i);
 		sprites[i]->color = bitMapProp.color;
 		sprites[i]->anchorPoint = bitMapProp.anchorPoint;
-		sprites[i]->Update();
 	}
 }
 
