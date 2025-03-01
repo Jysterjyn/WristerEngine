@@ -94,6 +94,7 @@ namespace WristerEngine
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});
+		void SetDescriptorHeap();
 
 		// getter
 		ID3D12Device* GetDevice() const { return device.Get(); }

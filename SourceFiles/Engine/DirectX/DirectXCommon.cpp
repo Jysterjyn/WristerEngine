@@ -237,10 +237,6 @@ void WristerEngine::DirectXCommon::PreDraw(const PreDrawProp& prop)
 	// 画面全体の深度をクリア
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
-	// SRV用のデスクリプタヒープを指定する
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
-	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
 	// ビューポート領域の設定
 	commandList->RSSetViewports(1, prop.viewport);
 	// シザー矩形の設定
@@ -317,6 +313,13 @@ void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)
 		viewportSize.x, viewportSize.y);
 
 	commandList->RSSetViewports(1, &viewport);
+}
+
+void DirectXCommon::SetDescriptorHeap()
+{
+	// SRV用のデスクリプタヒープを指定する
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
 Matrix4 DirectXCommon::GetViewportMatrix() const

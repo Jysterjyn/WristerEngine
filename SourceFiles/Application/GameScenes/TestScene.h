@@ -6,7 +6,6 @@
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
 	std::unique_ptr<WristerEngine::TimedCall> timedCall;
-	//WristerEngine::TimedCall* timedCall = nullptr;
 	// AbstractUIDrawer ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;
 	void Update() override;

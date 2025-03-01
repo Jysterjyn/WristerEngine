@@ -36,6 +36,10 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
+	// デスクリプタヒープをセット
+	dxCommon->SetDescriptorHeap();
+
+	// ポストエフェクト
 	postEffect->PreDrawScene();
 	Sprite::PreDraw();
 	sceneManager->Draw();
@@ -43,6 +47,7 @@ void MyGame::Draw()
 	WristerEngine::ParticleManager::Draw();
 	postEffect->PostDrawScene();
 
+	// 描画処理
 	dxCommon->PreDraw();
 	postEffect->Draw();
 	WristerEngine::NonEffectDrawer::Draw();
