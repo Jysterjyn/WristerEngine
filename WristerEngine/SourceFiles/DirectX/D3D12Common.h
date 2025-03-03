@@ -47,13 +47,6 @@ namespace WristerEngine
 	// シェーダー読み込み
 	void LoadShader(ID3DBlob** shaderBlob, std::wstring shaderName, LPCSTR target);
 
-	/// <summary>
-	/// マルチバイト文字列をワイド文字列に変換
-	/// </summary>
-	/// <param name="mString">マルチバイト文字列</param>
-	/// <returns>ワイド文字列</returns>
-	std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
-
 	enum class RootParamType { CBV, DescriptorTable };
 
 	// パイプライン生成の設定
@@ -95,7 +88,7 @@ namespace WristerEngine
 	enum class PipelineType { Sprite, PostEffect, MultiTexture,Object, Dissolve, Particle };
 
 	// パイプライン管理クラス
-	class PipelineManager
+	class PipelineManager : public DXCommonGetter
 	{
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 		static std::map<PipelineType, PipelineManager> pipelines;

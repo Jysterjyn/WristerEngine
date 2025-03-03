@@ -1,6 +1,7 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include <DirectXTex.h>
+#include <StringUtility.h>
 using namespace std;
 using namespace DirectX;
 using namespace WristerEngine;
@@ -74,7 +75,7 @@ TextureData* TextureData::Load(const std::string& fileName)
 	}
 	else
 	{
-		result = LoadFromWICFile(wfilePath.c_str(), WIC_FLAGS_NONE, &metadata, scratchImg);
+		result = LoadFromWICFile(wfilePath.c_str(), WIC_FLAGS_FORCE_SRGB, &metadata, scratchImg);
 
 		HRESULT result1 = GenerateMipMaps(scratchImg.GetImages(), scratchImg.GetImageCount(),
 			scratchImg.GetMetadata(), TEX_FILTER_DEFAULT, 0, mipChain);

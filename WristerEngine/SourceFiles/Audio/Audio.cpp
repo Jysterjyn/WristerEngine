@@ -1,6 +1,7 @@
 #include "Audio.h"
 #include "D3D12Common.h"
 #include <fstream>
+#include <StringUtility.h>
 using namespace WristerEngine;
 
 std::string Audio::DEFAULT_DIRECTORY_PATH = "Resources/Sounds/";

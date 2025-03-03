@@ -46,17 +46,6 @@ void WristerEngine::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR
 	}
 }
 
-std::wstring WristerEngine::ConvertMultiByteStringToWideString(const std::string& mString)
-{
-	// ワイド文字列に変換した際の文字列バッファサイズを計算
-	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, nullptr, 0);
-	// ワイド文字列に変換
-	vector<wchar_t> wfilePath(filePathBufferSize);
-	MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, wfilePath.data(), filePathBufferSize);
-
-	return wfilePath.data();
-}
-
 void PipelineManager::Initialize()
 {
 	PipelineProp pipelineProp;
@@ -160,7 +149,6 @@ void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)
 	// バージョン自動判定のシリアライズ
 	Result result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	// ルートシグネチャの生成
-	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipeline{};
@@ -204,7 +192,6 @@ void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)
 
 void PipelineManager::SetPipeline(PipelineType type)
 {
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	// パイプラインステートとルートシグネチャの設定コマンド
 	cmdList->SetPipelineState(pipelines[type].pipelineState.Get());
 	cmdList->SetGraphicsRootSignature(pipelines[type].rootSignature.Get());

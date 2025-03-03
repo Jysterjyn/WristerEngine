@@ -214,6 +214,9 @@
     <ClCompile Include="SourceFiles\Timer\TimedCall.cpp">
       <Filter>ソース ファイル\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Utility\StringUtility.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -386,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Timer\TimedCall.h">
       <Filter>ソース ファイル\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Utility\StringUtility.h">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

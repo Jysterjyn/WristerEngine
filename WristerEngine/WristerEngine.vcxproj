@@ -146,6 +146,7 @@
     <ClCompile Include="SourceFiles\Framework\Framework.cpp" />
     <ClCompile Include="SourceFiles\Input\Input.cpp" />
     <ClCompile Include="SourceFiles\Timer\TimedCall.cpp" />
+    <ClCompile Include="SourceFiles\Utility\StringUtility.cpp" />
     <ClCompile Include="SourceFiles\WinApp\WindowsAPI.cpp" />
     <ClCompile Include="SourceFiles\Utility\Color.cpp" />
     <ClCompile Include="SourceFiles\Particle\ParticleManager.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="SourceFiles\Framework\Framework.h" />
     <ClInclude Include="SourceFiles\Input\Input.h" />
     <ClInclude Include="SourceFiles\Timer\TimedCall.h" />
+    <ClInclude Include="SourceFiles\Utility\StringUtility.h" />
     <ClInclude Include="SourceFiles\WinApp\WindowsAPI.h" />
     <ClInclude Include="SourceFiles\Utility\Color.h" />
     <ClInclude Include="SourceFiles\Particle\ParticleManager.h" />
