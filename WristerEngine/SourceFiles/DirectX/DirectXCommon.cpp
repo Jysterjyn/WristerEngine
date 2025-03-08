@@ -232,7 +232,7 @@ void WristerEngine::DirectXCommon::PreDraw(const PreDrawProp& prop)
 	commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 	// 画面全体の色をクリア
-	float clearColor[4] = { 0,0,0,1 };
+	float clearColor[4] = { 0.1f,0.25f,0.5f,1 };
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	// 画面全体の深度をクリア
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);

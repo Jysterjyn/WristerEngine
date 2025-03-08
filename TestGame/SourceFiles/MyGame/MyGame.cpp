@@ -20,8 +20,6 @@ void MyGame::Initialize()
 
 	ModelManager::Initialize();
 	WristerEngine::ParticleManager::Initialize();
-	WristerEngine::AudioManager::Initialize();
-	postEffect = PostEffect::Create(PostEffect::Type::None);
 }
 
 void MyGame::Update()
@@ -31,7 +29,6 @@ void MyGame::Update()
 	WristerEngine::CollisionManager::CheckAllCollisions();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
-	WristerEngine::AudioManager::Update();
 }
 
 void MyGame::Draw()
@@ -39,24 +36,17 @@ void MyGame::Draw()
 	// デスクリプタヒープをセット
 	dxCommon->SetDescriptorHeap();
 
-	// ポストエフェクト
-	postEffect->PreDrawScene();
+	// 描画処理
+	dxCommon->PreDraw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
 	ModelManager::DrawObjects();
 	WristerEngine::ParticleManager::Draw();
-	postEffect->PostDrawScene();
-
-	// 描画処理
-	dxCommon->PreDraw();
-	postEffect->Draw();
-	WristerEngine::NonEffectDrawer::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
 
 void MyGame::Finalize()
 {
-	WristerEngine::AudioManager::Finalize();
 	Framework::Finalize();
 }
