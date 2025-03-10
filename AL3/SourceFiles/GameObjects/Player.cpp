@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <ImGuiManager.h>
+#include <ImGui.h>
 #include <algorithm>
 using namespace WristerEngine;
 
@@ -32,9 +33,12 @@ void Player::Attack()
 {
 	if (!input->IsTrigger(Key::Space)) { return; }
 
-	new PlayerBullet;
+	const float BULLET_SPEED = 1.0f;
+	Vector3 velocity(0, 0, BULLET_SPEED);
+	velocity *= Matrix4::Rotate(obj->transform.rotation);
+
 	std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-	newBullet->Initialize(obj->transform.translation);
+	newBullet->Initialize(obj->transform.translation, velocity);
 	bullets.push_back(std::move(newBullet));
 }
 
@@ -45,12 +49,13 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
+		if (bullet->IsDead()) { return true; }
+		return false;
+		});
+
 	Rotate();
 	Move();
 	Attack();
 	for (auto& bullet : bullets) { bullet->Update(); }
-}
-
-void Player::Draw()
-{
 }

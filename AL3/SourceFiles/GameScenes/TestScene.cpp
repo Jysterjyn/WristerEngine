@@ -24,6 +24,9 @@ void TestScene::Initialize()
 
 	player = std::make_unique<Player>();
 	player->Initialize();
+
+	enemy = std::make_unique<Enemy>();
+	enemy->Initialize();
 }
 
 void TestScene::Update()
@@ -42,4 +45,5 @@ void TestScene::Update()
 	}
 
 	player->Update();
+	if (enemy) { enemy->Update(); }
 }

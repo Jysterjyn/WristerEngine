@@ -56,6 +56,12 @@
     <ClCompile Include="SourceFiles\GameObjects\PlayerBullet.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Enemy.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\EnemyState.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\MyGame\MyGame.h">
@@ -71,6 +77,12 @@
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\PlayerBullet.h">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Enemy.h">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\EnemyState.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
