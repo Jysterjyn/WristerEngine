@@ -27,7 +27,7 @@ void Material::LoadTexture(istringstream& line_stream, Mesh* mesh, TexType sprit
 	// スプライトのデフォルトディレクトリパスの文字列を削除
 	string defaultDirectoryPath = TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH;
 	path.erase(path.begin(), path.begin() + defaultDirectoryPath.size());
-	textures[(size_t)spriteIndex].tex = TextureData::Load(path + textureFilename);
+	textures[(size_t)spriteIndex].data = TextureData::Load(path + textureFilename);
 }
 
 void Material::TransferCBV()
@@ -42,6 +42,11 @@ void Material::TransferCBV()
 	constMap->ambient = ambient;
 	constMap->diffuse = diffuse;
 	constMap->specular = specular;
+}
+
+void Material::ChangeTexture(size_t texIndex, const std::string& texName)
+{
+	textures[texIndex].data = TextureData::Load(texName);
 }
 
 void Material::Load(Mesh* mesh)
@@ -71,10 +76,10 @@ void Material::Load(Mesh* mesh)
 	file.close();
 
 	// デフォルトテクスチャのセット
-	for (auto& tex : textures) { if (!tex.tex) { tex.tex = TextureData::Load("white1x1.png"); } }
+	for (auto& tex : textures) { if (!tex.data) { tex.data = TextureData::Load("white1x1.png"); } }
 
 	// ブレンドテクスチャがデフォルトの場合、マスク値は使わない
-	if (textures[(size_t)TexType::Blend].tex->fileName.find("white1x1.png") != string::npos)
+	if (textures[(size_t)TexType::Blend].data->fileName.find("white1x1.png") != string::npos)
 	{
 		textures[(size_t)TexType::Blend].color.r = 0;
 	}
@@ -102,6 +107,6 @@ void Material::Draw()
 	// シェーダリソースビューをセット
 	for (UINT i = 0; i < (UINT)TexType::Num; i++)
 	{
-		cmdList->SetGraphicsRootDescriptorTable(i, textures[i].tex->srvHandle.gpu);
+		cmdList->SetGraphicsRootDescriptorTable(i, textures[i].data->srvHandle.gpu);
 	}
 }

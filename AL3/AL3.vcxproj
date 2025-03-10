@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\PlayerBullet.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />
@@ -19,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
+    <ClInclude Include="SourceFiles\GameObjects\PlayerBullet.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\TestScene.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />

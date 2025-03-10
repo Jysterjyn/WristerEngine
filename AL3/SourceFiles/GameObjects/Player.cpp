@@ -3,12 +3,7 @@
 #include <algorithm>
 using namespace WristerEngine;
 
-void Player::Initialize()
-{
-	obj = _3D::ModelManager::GetInstance()->Create("cube");
-}
-
-void Player::Update()
+void Player::Move()
 {
 	Vector3 move;
 	const float CHARACTER_SPEED = 0.2f;
@@ -25,6 +20,35 @@ void Player::Update()
 	pos.y = std::clamp(pos.y, -MOVE_LIMIT.y, MOVE_LIMIT.y);
 
 	_2D::ImGuiManager::SliderVector("Player", pos, -MOVE_LIMIT.x, MOVE_LIMIT.x);
+}
+
+void Player::Rotate()
+{
+	const float ROT_SPEED = 0.02f;
+	obj->transform.rotation.y += input->Move(Key::D, Key::A, ROT_SPEED);
+}
+
+void Player::Attack()
+{
+	if (!input->IsTrigger(Key::Space)) { return; }
+
+	new PlayerBullet;
+	std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+	newBullet->Initialize(obj->transform.translation);
+	bullets.push_back(std::move(newBullet));
+}
+
+void Player::Initialize()
+{
+	obj = _3D::ModelManager::GetInstance()->Create("cube");
+}
+
+void Player::Update()
+{
+	Rotate();
+	Move();
+	Attack();
+	for (auto& bullet : bullets) { bullet->Update(); }
 }
 
 void Player::Draw()

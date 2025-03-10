@@ -5,6 +5,7 @@
 namespace WristerEngine::_3D
 {
 	class Mesh;
+	struct Object3d;
 
 	struct TextureTransform
 	{
@@ -26,26 +27,23 @@ namespace WristerEngine::_3D
 	struct MaterialData : public TextureTransform
 	{
 		ColorRGB color;
-		_2D::TextureData* tex = nullptr;
+		_2D::TextureData* data = nullptr;
 	};
 
 	// マテリアル
 	struct Material
 	{
 		std::string name;
-		ColorRGB ambient = { 0.3f,0.3f,0.3f };
+		ColorRGB ambient;
 		ColorRGB diffuse;
 		ColorRGB specular;
 		std::array<MaterialData, (size_t)TexType::Num> textures; // テクスチャの配列
 
-		// マテリアル読み込み
-		void Load(Mesh* mesh);
-		// 更新
-		void Update();
-		// 描画
-		void Draw();
+		void ChangeTexture(size_t texIndex, const std::string& texName);
 
 	private:
+		friend Object3d;
+
 		// マテリアル
 		struct ConstBufferData
 		{
@@ -60,6 +58,12 @@ namespace WristerEngine::_3D
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
 		ConstBufferData* constMap = nullptr;
 
+		// マテリアル読み込み
+		void Load(Mesh* mesh);
+		// 更新
+		void Update();
+		// 描画
+		void Draw();
 		// テクスチャ読み込み
 		void LoadTexture(std::istringstream& line_stream, Mesh* mesh, TexType spriteIndex);
 		// 定数バッファに転送
