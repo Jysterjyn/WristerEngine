@@ -41,7 +41,7 @@ void SceneManager::Update()
 
 		if (isObjectClear)
 		{
-			_3D::ModelManager::ClearObjects();
+			_3D::ModelManager::GetInstance()->ClearObjects();
 			isObjectClear = false;
 		}
 		if (isParticleClear)

@@ -5,7 +5,7 @@ using namespace WristerEngine;
 
 void Player::Initialize()
 {
-	obj = _3D::ModelManager::Create("cube");
+	obj = _3D::ModelManager::GetInstance()->Create("cube");
 }
 
 void Player::Update()

@@ -12,29 +12,38 @@ namespace WristerEngine::_3D
 	{
 	private:
 		// ライト
-		static std::unique_ptr<LightGroup> lightGroup;
+		std::unique_ptr<LightGroup> lightGroup;
 		// 読み込んだモデル情報
-		static std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
+		std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
 		// 生成したオブジェクト
-		static std::list<std::unique_ptr<Object3d>> objects;
+		std::list<std::unique_ptr<Object3d>> objects;
 		// カメラのポインタ
-		static Camera* camera;
+		std::vector<Camera*> cameras;
+		// 現在使っているカメラのインデックス
+		size_t cameraIndex = 0;
+
+		ModelManager() = default;
+		~ModelManager() = default;
 
 	public:
+		static ModelManager* GetInstance();
+
 		// 初期化
-		static void Initialize();
+		void Initialize();
 		// 更新
-		static void Update();
+		void Update();
 		// 描画処理
-		static void DrawObjects();
+		void DrawObjects();
 		// モデル作成
-		static Object3d* Create(const std::string& modelName, bool smoothing = false);
+		Object3d* Create(const std::string& modelName, bool smoothing = false);
 		// オブジェクトの解放
-		static void ClearObjects() { objects.clear(); }
+		void ClearObjects() { objects.clear(); }
+		// カメラの追加
+		void AddCamera(Camera* camera) { cameras.push_back(camera); }
 		// setter
-		static void SetCamera(Camera* camera_) { camera = camera_; }
+		void SetCameraIndex(size_t cameraIndex);
 		// getter
-		static LightGroup* GetLightGroup() { return lightGroup.get(); }
-		static Camera* GetCamera() { return camera; }
+		LightGroup* GetLightGroup() const { return lightGroup.get(); }
+		Camera* GetCamera() const { return cameras[cameraIndex]; }
 	};
 }

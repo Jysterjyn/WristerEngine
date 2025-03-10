@@ -19,7 +19,7 @@ void ParticleManager::Update()
 {
 	for (auto& particleGroup : particleGroups) { particleGroup.Update(); }
 	// 定数バッファへデータ転送
-	constMap->mat = _3D::ModelManager::GetCamera()->GetViewProjectionMatrix();
+	constMap->mat = _3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
 	constMap->matBillboard = Matrix4::GetBillboard();
 }
 

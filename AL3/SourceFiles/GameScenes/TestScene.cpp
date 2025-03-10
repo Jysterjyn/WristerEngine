@@ -18,7 +18,8 @@ void TestSceneUIDrawer::Update()
 void TestScene::Initialize()
 {
 	debugCamera.Initialize({}, 20);
-	camera = WristerEngine::_3D::ModelManager::GetCamera();
+	modelManager->AddCamera(&debugCamera);
+	camera = modelManager->GetCamera();
 	camera->eye.z = -20;
 
 	player = std::make_unique<Player>();
@@ -33,11 +34,11 @@ void TestScene::Update()
 	if (isDebugCameraActive)
 	{
 		debugCamera.Update();
-		WristerEngine::_3D::ModelManager::SetCamera(&debugCamera);
+		modelManager->SetCameraIndex(1);
 	}
 	else
 	{
-		WristerEngine::_3D::ModelManager::SetCamera(camera);
+		modelManager->SetCameraIndex(0);
 	}
 
 	player->Update();

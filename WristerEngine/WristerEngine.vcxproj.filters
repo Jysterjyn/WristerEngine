@@ -109,9 +109,6 @@
     <ClCompile Include="SourceFiles\Audio\PointAudio.cpp">
       <Filter>ソース ファイル\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp">
-      <Filter>ソース ファイル\3d\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Particle\DiffuseParticle.cpp">
       <Filter>ソース ファイル\Particle</Filter>
     </ClCompile>
@@ -217,6 +214,9 @@
     <ClCompile Include="SourceFiles\Utility\StringUtility.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp">
+      <Filter>ソース ファイル\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -266,9 +266,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Audio\PointAudio.h">
       <Filter>ソース ファイル\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h">
-      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Particle\DiffuseParticle.h">
       <Filter>ソース ファイル\Particle</Filter>
@@ -392,6 +389,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\StringUtility.h">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\AxisIndicator.h">
+      <Filter>ソース ファイル\3d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

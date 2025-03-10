@@ -110,6 +110,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
+    <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\GameObject\BaseStage.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp" />
@@ -131,7 +132,6 @@
     <ClCompile Include="SourceFiles\Particle\DiffuseParticle.cpp" />
     <ClCompile Include="SourceFiles\Particle\DirectionalParticle.cpp" />
     <ClCompile Include="SourceFiles\Audio\PointAudio.cpp" />
-    <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp" />
     <ClCompile Include="SourceFiles\2d\PostEffect.cpp" />
     <ClCompile Include="SourceFiles\2d\Sprite.cpp" />
@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
+    <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\GameObject\BaseStage.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />
@@ -188,7 +189,6 @@
     <ClInclude Include="SourceFiles\Particle\DiffuseParticle.h" />
     <ClInclude Include="SourceFiles\Particle\DirectionalParticle.h" />
     <ClInclude Include="SourceFiles\Audio\PointAudio.h" />
-    <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\2d\ImGuiManager.h" />
     <ClInclude Include="SourceFiles\2d\PostEffect.h" />
     <ClInclude Include="SourceFiles\2d\Sprite.h" />

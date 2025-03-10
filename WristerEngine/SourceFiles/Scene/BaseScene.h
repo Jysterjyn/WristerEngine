@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "DebugCamera.h"
 #include "AbstractUIDrawer.h"
+#include <ModelManager.h>
 #include <memory>
 
 namespace WristerEngine
@@ -15,6 +16,7 @@ namespace WristerEngine
 		SceneManager* sceneManager = nullptr;
 		Input* input = Input::GetInstance();
 		_3D::DebugCamera debugCamera;
+		_3D::ModelManager* modelManager=_3D::ModelManager::GetInstance();
 		std::unique_ptr<_2D::AbstractUIDrawer> uiDrawer;
 
 	public:

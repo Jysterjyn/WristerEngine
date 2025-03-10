@@ -16,16 +16,16 @@ void MyGame::Initialize()
 
 	std::unique_ptr<WristerEngine::AbstractSceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
-	sceneManager->Initialize(sceneFactory,"TestScene");
+	sceneManager->Initialize(sceneFactory, "TestScene");
 
-	ModelManager::Initialize();
+	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();
 }
 
 void MyGame::Update()
 {
 	Framework::Update();
-	ModelManager::Update();
+	modelManager->Update();
 	WristerEngine::CollisionManager::CheckAllCollisions();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
@@ -40,7 +40,7 @@ void MyGame::Draw()
 	dxCommon->PreDraw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	ModelManager::DrawObjects();
+	modelManager->DrawObjects();
 	WristerEngine::ParticleManager::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();

@@ -6,19 +6,20 @@ using namespace std;
 using namespace WristerEngine;
 using namespace _3D;
 
-// 静的メンバ変数の実体
-unique_ptr<LightGroup> ModelManager::lightGroup;
-unordered_map<string, array<unique_ptr<Mesh>, 2>> ModelManager::meshes;
-list<unique_ptr<Object3d>> ModelManager::objects;
-Camera* ModelManager::camera = nullptr;
+ModelManager* WristerEngine::_3D::ModelManager::GetInstance()
+{
+	static ModelManager instance;
+	return &instance;
+}
 
 void ModelManager::Initialize()
 {
 	// ライトグループ生成
 	lightGroup = LightGroup::Create();
 	// カメラ生成
-	camera = new Camera;
+	Camera* camera = new Camera;
 	camera->Initialize();
+	cameras.push_back(camera);
 }
 
 Object3d* ModelManager::Create(const string& modelName, bool smoothing)
@@ -43,6 +44,12 @@ Object3d* ModelManager::Create(const string& modelName, bool smoothing)
 	return objects.back().get();
 }
 
+void ModelManager::SetCameraIndex(size_t cameraIndex_)
+{
+	assert(cameraIndex_ <= cameras.size());
+	cameraIndex = cameraIndex_;
+}
+
 void ModelManager::DrawObjects()
 {
 	// コマンドリストをセット
@@ -54,14 +61,15 @@ void ModelManager::DrawObjects()
 	// ライトの描画
 	lightGroup->Draw((UINT)RootParamNum::Light);
 	// カメラ
-	cmdList->SetGraphicsRootConstantBufferView((UINT)RootParamNum::Camera, camera->constBuffer->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView((UINT)RootParamNum::Camera, GetCamera()->constBuffer->GetGPUVirtualAddress());
 	for (auto& object : objects) { object->Draw(); }
 }
 
 void ModelManager::Update()
 {
 	lightGroup->Update();
-	camera->Update();
+
+	GetCamera()->Update();
 	objects.remove_if([](std::unique_ptr<Object3d>& object) { return object->isDestroy; });
 	for (auto& object : objects) { object->Update(); }
 }
