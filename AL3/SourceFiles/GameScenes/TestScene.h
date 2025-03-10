@@ -13,6 +13,8 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class TestScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
+	WristerEngine::_3D::Camera* camera;
+	bool isDebugCameraActive = false;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

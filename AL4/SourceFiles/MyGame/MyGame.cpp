@@ -11,7 +11,7 @@ using namespace WristerEngine::_3D;
 
 void MyGame::Initialize()
 {
-	windowName = L"自作エンジン";
+	windowName = L"AL4";
 	Framework::Initialize();
 
 	std::unique_ptr<WristerEngine::AbstractSceneFactory> sceneFactory;
