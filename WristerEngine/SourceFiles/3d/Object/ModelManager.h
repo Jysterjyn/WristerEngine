@@ -18,9 +18,9 @@ namespace WristerEngine::_3D
 		// 生成したオブジェクト
 		std::list<std::unique_ptr<Object3d>> objects;
 		// カメラのポインタ
-		std::vector<Camera*> cameras;
-		// 現在使っているカメラのインデックス
-		size_t cameraIndex = 0;
+		std::unordered_map<std::string, Camera*> cameras;
+		// 現在使っているカメラの名前
+		std::string cameraName = "default";
 
 		ModelManager() = default;
 		~ModelManager() = default;
@@ -39,11 +39,11 @@ namespace WristerEngine::_3D
 		// オブジェクトの解放
 		void ClearObjects() { objects.clear(); }
 		// カメラの追加
-		void AddCamera(Camera* camera) { cameras.push_back(camera); }
+		void AddCamera(const std::string& cameraName_, Camera* camera) { cameras[cameraName_] = camera; }
 		// setter
-		void SetCameraIndex(size_t cameraIndex);
+		void SetCameraName(const std::string& cameraName);
 		// getter
 		LightGroup* GetLightGroup() const { return lightGroup.get(); }
-		Camera* GetCamera() const { return cameras[cameraIndex]; }
+		Camera* GetCamera() { return cameras[cameraName]; }
 	};
 }

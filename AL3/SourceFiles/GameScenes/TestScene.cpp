@@ -18,7 +18,7 @@ void TestSceneUIDrawer::Update()
 void TestScene::Initialize()
 {
 	debugCamera.Initialize({}, 20);
-	modelManager->AddCamera(&debugCamera);
+	modelManager->AddCamera("debug", &debugCamera);
 	camera = modelManager->GetCamera();
 	camera->eye.z = -20;
 
@@ -34,11 +34,11 @@ void TestScene::Update()
 	if (isDebugCameraActive)
 	{
 		debugCamera.Update();
-		modelManager->SetCameraIndex(1);
+		modelManager->SetCameraName("debug");
 	}
 	else
 	{
-		modelManager->SetCameraIndex(0);
+		modelManager->SetCameraName("default");
 	}
 
 	player->Update();

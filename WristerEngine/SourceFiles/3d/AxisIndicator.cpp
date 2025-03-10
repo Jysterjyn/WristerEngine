@@ -4,7 +4,7 @@ void WristerEngine::AxisIndicator::Initialize()
 {
 	obj = modelManager->Create("axis");
 	camera.Initialize();
-	modelManager->AddCamera(&camera);
+	modelManager->AddCamera("axis", &camera);
 }
 
 void WristerEngine::AxisIndicator::Update()

@@ -14,7 +14,7 @@ namespace WristerEngine::_3D
 
 	private:
 		friend class ModelManager;
-		Mesh* mesh;
+		Mesh* mesh = nullptr;
 		/// <summary>
 		/// ‰Šú‰»
 		/// </summary>

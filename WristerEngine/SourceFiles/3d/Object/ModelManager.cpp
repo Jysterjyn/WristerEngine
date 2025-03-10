@@ -19,7 +19,7 @@ void ModelManager::Initialize()
 	// ƒJƒƒ‰¶¬
 	Camera* camera = new Camera;
 	camera->Initialize();
-	cameras.push_back(camera);
+	AddCamera(cameraName, camera);
 }
 
 Object3d* ModelManager::Create(const string& modelName, bool smoothing)
@@ -44,10 +44,10 @@ Object3d* ModelManager::Create(const string& modelName, bool smoothing)
 	return objects.back().get();
 }
 
-void ModelManager::SetCameraIndex(size_t cameraIndex_)
+void ModelManager::SetCameraName(const std::string& cameraName_)
 {
-	assert(cameraIndex_ <= cameras.size());
-	cameraIndex = cameraIndex_;
+	assert(cameras.contains(cameraName_));
+	cameraName = cameraName_;
 }
 
 void ModelManager::DrawObjects()
