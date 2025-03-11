@@ -13,7 +13,7 @@ public:
 	Quaternion(float w_ = 0, float x_ = 0, float y_ = 0, float z_ = 0) { x = x_, y = y_, z = z_; w = w_; }
 	// 虚部を抽出
 	Vector3 GetImaginary() const { return { x,y,z }; }
-	Quaternion operator-()const { return { -w,x,y,z }; }
+	Quaternion operator-() const { return { -w,x,y,z }; }
 	// 代入演算子オーバーロード
 	void operator*=(const Quaternion& q);
 	void operator/=(float norm) { x /= norm, y /= norm, z /= norm, w /= norm; }
@@ -58,6 +58,7 @@ Quaternion operator/(const Quaternion& q, float norm);
 
 // 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t);
 
 // uからvへの回転を生成(u,vは正規化されている前提)
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v);

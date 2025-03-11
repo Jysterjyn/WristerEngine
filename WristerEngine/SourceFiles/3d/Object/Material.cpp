@@ -39,7 +39,7 @@ void Material::TransferCBV()
 		constMap->maskPow[i] = textures[(size_t)TexType::Blend + i].color.r;
 	}
 
-	constMap->ambient = ambient;
+	constMap->ambient = { ambient,alpha };
 	constMap->diffuse = diffuse;
 	constMap->specular = specular;
 }

@@ -4,8 +4,6 @@
 #include <EnemyBullet.h>
 #include <TimedCall.h>
 
-class Player;
-
 class Enemy
 {
 	static const int FIRE_INTERVAL = 60;
@@ -20,6 +18,7 @@ class Enemy
 	void FireAndReset();
 
 public:
+	~Enemy() { state.release(); }
 	void Initialize();
 	void Update();
 	void ChangeState(std::unique_ptr<BaseEnemyState> nextState);

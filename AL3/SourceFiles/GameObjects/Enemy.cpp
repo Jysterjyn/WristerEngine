@@ -6,8 +6,8 @@ using namespace WristerEngine::_3D;
 
 void Enemy::FireAndReset()
 {
-	Fire();
-	FireReserve();
+	//Fire();
+	//FireReserve();
 }
 
 void Enemy::Initialize()
@@ -51,6 +51,7 @@ void Enemy::Fire()
 
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Initialize(obj->transform.translation, velocity);
+	newBullet->SetPlayer(player);
 	bullets.push_back(std::move(newBullet));
 }
 

@@ -25,7 +25,7 @@ void DebugCamera::Update()
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
 	// マウスの左ボタンが押されていたらカメラを回転させる
-	if (input->IsInput(Mouse::Left))
+	if (input->IsInput(Mouse::Right))
 	{
 		angle = -Vector2((float)mouseMove.lY * scale.x, (float)mouseMove.lX * scale.y) * PI;
 		dirty = true;

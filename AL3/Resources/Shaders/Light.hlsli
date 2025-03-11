@@ -40,7 +40,7 @@ static const uint CIRCLESHADOW_NUM = 3;
 
 struct Material
 {
-    float3 ambient; // アンビエント係数
+    float4 ambient; // アンビエント係数
     float3 diffuse; // ディフューズ係数
     float3 specular; // スペキュラー係数
 };

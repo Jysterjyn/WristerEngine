@@ -37,6 +37,7 @@ namespace WristerEngine::_3D
 		ColorRGB ambient;
 		ColorRGB diffuse;
 		ColorRGB specular;
+		float alpha = 1.0f;
 		std::array<MaterialData, (size_t)TexType::Num> textures; // テクスチャの配列
 
 		void ChangeTexture(size_t texIndex, const std::string& texName);

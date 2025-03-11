@@ -30,10 +30,9 @@ float4 main(VSOutput input) : SV_TARGET
     lightData.shininess = 10.0f; // 光沢度
     lightData.texcolor = texcolor.rgb;
 	// 環境反射光
-    float3 ambient = material.ambient * texcolor.rgb * lightGroup.ambientColor;
+    float3 ambient = material.ambient.rgb * texcolor.rgb * lightGroup.ambientColor;
 	// シェーディングによる色
-    float4 shadecolor = float4(ambient, 1.0f);
+    float4 shadecolor = float4(ambient, material.ambient.a);
     shadecolor.rgb += lightGroup.ComputeLightEffect(lightData, material);
-    shadecolor.a = 1.0f;
     return shadecolor;
 }
