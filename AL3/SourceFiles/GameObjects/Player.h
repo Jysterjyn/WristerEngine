@@ -17,4 +17,5 @@ class Player
 public:
 	void Initialize();
 	void Update();
+	Vector3 GetWorldPosition() const { return obj->transform.GetWorldPosition(); }
 };

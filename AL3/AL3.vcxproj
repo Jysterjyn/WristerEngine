@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\GameObjects\Enemy.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\EnemyBullet.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\EnemyState.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\PlayerBullet.cpp" />
@@ -22,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\GameObjects\Enemy.h" />
+    <ClInclude Include="SourceFiles\GameObjects\EnemyBullet.h" />
     <ClInclude Include="SourceFiles\GameObjects\EnemyState.h" />
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
     <ClInclude Include="SourceFiles\GameObjects\PlayerBullet.h" />

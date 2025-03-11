@@ -27,6 +27,7 @@ void TestScene::Initialize()
 
 	enemy = std::make_unique<Enemy>();
 	enemy->Initialize();
+	enemy->SetPlayer(player.get());
 }
 
 void TestScene::Update()
