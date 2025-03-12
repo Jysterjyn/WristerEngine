@@ -15,7 +15,7 @@ void Player::Move()
 	Vector3& pos = obj->transform.translation;
 	pos += move;
 
-	const Vector2 MOVE_LIMIT = { 12.5f,6.5f };
+	const Vector2 MOVE_LIMIT = { 34.5f,18.5f };
 
 	pos.x = std::clamp(pos.x, -MOVE_LIMIT.x, MOVE_LIMIT.x);
 	pos.y = std::clamp(pos.y, -MOVE_LIMIT.y, MOVE_LIMIT.y);

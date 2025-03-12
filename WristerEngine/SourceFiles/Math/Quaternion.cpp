@@ -119,15 +119,22 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 
 Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t)
 {
-	Vector3 v01 = Normalize(v1 - v0);
-	Vector3 av01 = (v0 + v1) / 2.0f;
-	Vector3 av0 = v0 - av01;
-	Vector3 crossZY = Normalize(Cross(v01, Vector3::MakeAxis(Axis::Y)));
-	Vector3 cross = Normalize(Cross(v01, crossZY));
+	Vector3 v0temp = Normalize(v0);
+	Vector3 v1temp = Normalize(v1);
+	float dot = Dot(v0temp, v1temp);
+	if (dot < 0)
+	{
+		dot = -dot;
+	}
 
-	Quaternion q0 = Quaternion::MakeAxisAngle(cross, Angle(180) * t);
+	const float EPSILON = 1.0e-5f;
+	float length = std::lerp(v0.Length(), v1.Length(), t);
+	if (dot >= 1.0f - EPSILON) { return length * Lerp(v0temp, v1temp, t); }
 
-	return Quaternion::RotateVector(av0, q0) + av01;
+	float theta = std::acos(dot);
+	float scale0 = std::sin((1 - t) * theta) / std::sin(theta);
+	float scale1 = std::sin(t * theta) / std::sin(theta);
+	return length * (scale0 * v0temp + scale1 * v1temp);
 }
 
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)

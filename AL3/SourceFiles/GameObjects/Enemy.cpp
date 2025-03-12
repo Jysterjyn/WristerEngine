@@ -6,8 +6,8 @@ using namespace WristerEngine::_3D;
 
 void Enemy::FireAndReset()
 {
-	//Fire();
-	//FireReserve();
+	Fire();
+	FireReserve();
 }
 
 void Enemy::Initialize()
