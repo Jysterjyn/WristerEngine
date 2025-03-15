@@ -11,6 +11,6 @@ namespace WristerEngine
 
 	public:
 		// ‰Šú‰»
-		void Initialize(float scale);
+		void Initialize(const std::string& modelName, float scale);
 	};
 }

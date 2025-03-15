@@ -4,7 +4,7 @@
 #include <PlayerBullet.h>
 #include <list>
 
-class Player
+class Player : WristerEngine::SphereCollider
 {
 	WristerEngine::_3D::Object3d* obj = nullptr;
 	WristerEngine::Input* input = WristerEngine::Input::GetInstance();
@@ -17,5 +17,6 @@ class Player
 public:
 	void Initialize();
 	void Update();
+	void SetParent(WristerEngine::_3D::Transform* parent) { transform->parent = parent; }
 	Vector3 GetWorldPosition() const { return obj->transform.GetWorldPosition(); }
 };

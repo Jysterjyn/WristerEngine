@@ -7,6 +7,9 @@ void PlayerBullet::Initialize(const Vector3& position, const Vector3& velocity_)
 	obj->material.ChangeTexture(0, "Models/cube/Grass.jpg");
 	obj->transform.translation = position;
 	velocity = velocity_;
+	transform = &obj->transform;
+	collisionAttribute = CollisionAttribute::Player;
+	collisionMask = CollisionMask::Player;
 }
 
 void PlayerBullet::Update()

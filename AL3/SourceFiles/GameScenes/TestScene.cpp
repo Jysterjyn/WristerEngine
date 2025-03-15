@@ -2,12 +2,7 @@
 #include "ModelManager.h"
 #include "imgui.h"
 #include "imguimanager.h"
-#include <ParticleManager.h>
 #include <SceneManager.h>
-#include <FPS.h>
-#include <Random.h>
-#include <MathUtility.h>
-#include <Quaternion.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -26,10 +21,13 @@ void TestScene::Initialize()
 
 	player = std::make_unique<Player>();
 	player->Initialize();
+	player->SetParent(railCamera.GetTransform());
 
 	enemy = std::make_unique<Enemy>();
 	enemy->Initialize();
 	enemy->SetPlayer(player.get());
+
+	railCamera.Initialize({0,0,-50});
 }
 
 void TestScene::Update()
@@ -44,9 +42,10 @@ void TestScene::Update()
 	}
 	else
 	{
-		modelManager->SetCameraName("default");
+		//modelManager->SetCameraName("default");
 	}
 
 	player->Update();
 	if (enemy) { enemy->Update(); }
+	railCamera.Update();
 }

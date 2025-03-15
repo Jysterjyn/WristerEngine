@@ -4,7 +4,7 @@
 #include <EnemyBullet.h>
 #include <TimedCall.h>
 
-class Enemy
+class Enemy : WristerEngine::SphereCollider
 {
 	static const int FIRE_INTERVAL = 60;
 

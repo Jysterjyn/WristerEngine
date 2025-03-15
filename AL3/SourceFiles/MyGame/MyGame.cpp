@@ -20,6 +20,9 @@ void MyGame::Initialize()
 
 	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();
+
+	skydome = std::make_unique<WristerEngine::Skydome>();
+	skydome->Initialize("skydome", 1);
 }
 
 void MyGame::Update()

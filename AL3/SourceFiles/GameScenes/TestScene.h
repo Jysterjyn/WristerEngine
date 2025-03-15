@@ -2,6 +2,7 @@
 #include <BaseScene.h>
 #include <Player.h>
 #include <Enemy.h>
+#include <RailCamera.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -16,6 +17,8 @@ class TestScene : public WristerEngine::BaseScene
 	WristerEngine::_3D::Camera* camera;
 	bool isDebugCameraActive = false;
 	std::unique_ptr<Enemy> enemy;
+	WristerEngine::_3D::RailCamera railCamera;
+	
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;
 	void Update() override;

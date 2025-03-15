@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
+    <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
     <ClCompile Include="SourceFiles\GameObject\BaseStage.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
     <ClInclude Include="SourceFiles\GameObject\BaseStage.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />

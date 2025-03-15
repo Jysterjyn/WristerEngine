@@ -11,7 +11,6 @@ namespace WristerEngine::_3D
 	class Camera
 	{
 	private:
-		Matrix4 matView, matProjection, matViewProjection;
 
 		// 定数バッファ用データ構造体
 		struct ConstBufferData
@@ -28,6 +27,7 @@ namespace WristerEngine::_3D
 		// アスペクト比(基本はWIN_SIZEに準拠)
 		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
 		float nearZ = 0.1f, farZ = 1000.0f; // 映る範囲
+		Matrix4 matView, matProjection, matViewProjection;
 		// シェイク機能
 		std::unique_ptr<CameraShake> shake;
 

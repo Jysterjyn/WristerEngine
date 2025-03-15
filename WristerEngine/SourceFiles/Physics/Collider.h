@@ -12,7 +12,6 @@ enum class CollisionAttribute
 {
 	Player = 0b1,
 	Enemy = 0b1 << 1,
-	Goal = 0b1 << 2,
 	All = -1
 };
 
@@ -21,9 +20,8 @@ enum class CollisionMask
 {
 	None = 0,
 	All = -1,
-	Player = (int)CollisionAttribute::Enemy | (int)CollisionAttribute::Goal,
+	Player = (int)CollisionAttribute::Enemy,
 	Enemy = (int)CollisionAttribute::Player,
-	Goal = (int)CollisionAttribute::Player
 };
 
 namespace WristerEngine

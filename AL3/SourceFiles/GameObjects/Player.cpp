@@ -38,13 +38,17 @@ void Player::Attack()
 	velocity *= Matrix4::Rotate(obj->transform.rotation);
 
 	std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-	newBullet->Initialize(obj->transform.translation, velocity);
+	newBullet->Initialize(obj->transform.GetWorldPosition(), velocity);
 	bullets.push_back(std::move(newBullet));
 }
 
 void Player::Initialize()
 {
 	obj = _3D::ModelManager::GetInstance()->Create("cube");
+	transform = &obj->transform;
+	transform->translation.z = 50.0f;
+	collisionAttribute = CollisionAttribute::Player;
+	collisionMask = CollisionMask::Player;
 }
 
 void Player::Update()

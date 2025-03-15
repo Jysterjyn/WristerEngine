@@ -21,6 +21,9 @@ void Enemy::Initialize()
 	nextState = std::make_unique<EnemyStateApproach>();
 	ChangeState(std::move(nextState));
 	state->Initialize();
+	transform = &obj->transform;
+	collisionAttribute = CollisionAttribute::Enemy;
+	collisionMask = CollisionMask::Enemy;
 }
 
 void Enemy::Update()

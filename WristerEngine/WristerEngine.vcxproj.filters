@@ -217,6 +217,9 @@
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp">
       <Filter>ソース ファイル\3d</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp">
+      <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h">
       <Filter>ソース ファイル\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h">
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
