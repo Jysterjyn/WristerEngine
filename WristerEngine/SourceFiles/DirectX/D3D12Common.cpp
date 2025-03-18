@@ -65,14 +65,23 @@ void PipelineManager::Initialize()
 	pipelineProp.rootParamProp = { 2,1 };
 	pipelines[PipelineType::MultiTexture].CreatePipeline(pipelineProp);
 
+	pipelineProp.shaderNames = { L"PrimitiveVS", L"PrimitivePS" };
+	pipelineProp.inputLayoutProps.clear();
+	pipelineProp.inputLayoutProps.push_back({ "POSITION", DXGI_FORMAT_R32G32B32_FLOAT });
+	pipelineProp.inputLayoutProps.push_back({ "COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT });
+	pipelineProp.isDepthTest = true;
+	pipelineProp.rootParamProp = { 0,1 };
+	pipelineProp.primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+	pipelines[PipelineType::Primitive].CreatePipeline(pipelineProp);
+
 	pipelineProp.shaderNames = { L"ObjVS", L"ObjPS" };
 	pipelineProp.inputLayoutProps.clear();
 	pipelineProp.inputLayoutProps.push_back({ "POSITION", DXGI_FORMAT_R32G32B32_FLOAT });
 	pipelineProp.inputLayoutProps.push_back({ "NORMAL", DXGI_FORMAT_R32G32B32_FLOAT });
 	pipelineProp.inputLayoutProps.push_back({ "TEXCOORD", DXGI_FORMAT_R32G32_FLOAT });
 	pipelineProp.textureAddressMode = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-	pipelineProp.isDepthTest = true;
 	pipelineProp.rootParamProp = { 5,4 };
+	pipelineProp.primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	pipelines[PipelineType::Object].CreatePipeline(pipelineProp);
 	
 	pipelineProp.cullMode = D3D12_CULL_MODE_NONE;

@@ -27,7 +27,14 @@ void TestScene::Initialize()
 	enemy->Initialize();
 	enemy->SetPlayer(player.get());
 
-	railCamera.Initialize({0,0,-50});
+	skydome = std::make_unique<WristerEngine::Skydome>();
+	skydome->Initialize("skydome", 1);
+
+	railCamera.Initialize({ 0,0,-50 });
+
+	primitiveDrawer->DrawLine3d({ -5,0,0 }, { 5,0,0 }, WristerEngine::ColorRGBA::Red());
+	primitiveDrawer->DrawLine3d({ -5,5,0 }, { 5,5,0 }, WristerEngine::ColorRGBA::Blue());
+	primitiveDrawer->TransferVertices();
 }
 
 void TestScene::Update()
@@ -42,10 +49,10 @@ void TestScene::Update()
 	}
 	else
 	{
-		//modelManager->SetCameraName("default");
+		modelManager->SetCameraName("default");
 	}
 
 	player->Update();
 	if (enemy) { enemy->Update(); }
-	railCamera.Update();
+	//railCamera.Update();
 }

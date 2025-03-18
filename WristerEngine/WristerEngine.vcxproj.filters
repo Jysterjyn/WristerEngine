@@ -199,9 +199,6 @@
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\GameObject\BaseStage.cpp">
-      <Filter>ソース ファイル\3d\Object</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp">
       <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
@@ -219,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp">
+      <Filter>ソース ファイル\3d\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +357,6 @@
     <ClInclude Include="SourceFiles\Math\Easing.h">
       <Filter>ソース ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObject\GameObject.h">
-      <Filter>ソース ファイル\3d\Object</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\CameraShake.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
@@ -378,9 +375,6 @@
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObject\BaseStage.h">
-      <Filter>ソース ファイル\3d\Object</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h">
       <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
@@ -398,6 +392,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h">
+      <Filter>ソース ファイル\3d\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,14 +21,14 @@ void MyGame::Initialize()
 	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();
 
-	skydome = std::make_unique<WristerEngine::Skydome>();
-	skydome->Initialize("skydome", 1);
+	primitiveDrawer->Initialize();
 }
 
 void MyGame::Update()
 {
 	Framework::Update();
 	modelManager->Update();
+	primitiveDrawer->Update();
 	WristerEngine::CollisionManager::CheckAllCollisions();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
@@ -44,6 +44,7 @@ void MyGame::Draw()
 	Sprite::PreDraw();
 	sceneManager->Draw();
 	modelManager->DrawObjects();
+	primitiveDrawer->Draw();
 	WristerEngine::ParticleManager::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();

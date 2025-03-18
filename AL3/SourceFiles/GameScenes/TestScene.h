@@ -3,6 +3,8 @@
 #include <Player.h>
 #include <Enemy.h>
 #include <RailCamera.h>
+#include <Skydome.h>
+#include <PrimitiveDrawer.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -18,7 +20,9 @@ class TestScene : public WristerEngine::BaseScene
 	bool isDebugCameraActive = false;
 	std::unique_ptr<Enemy> enemy;
 	WristerEngine::_3D::RailCamera railCamera;
-	
+	std::unique_ptr<WristerEngine::Skydome> skydome;
+	WristerEngine::_3D::PrimitiveDrawer* primitiveDrawer = WristerEngine::_3D::PrimitiveDrawer::GetInstance();
+
 	// BaseScene ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	void Initialize() override;
 	void Update() override;

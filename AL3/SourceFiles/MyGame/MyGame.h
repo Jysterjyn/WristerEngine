@@ -2,13 +2,13 @@
 #include "Framework.h"
 #include "PostEffect.h"
 #include <ModelManager.h>
-#include <Skydome.h>
+#include <PrimitiveDrawer.h>
 
 // このゲーム固有の処理クラス
 class MyGame : public WristerEngine::Framework
 {
 	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
-	std::unique_ptr<WristerEngine::Skydome> skydome;
+	WristerEngine::_3D::PrimitiveDrawer* primitiveDrawer = WristerEngine::_3D::PrimitiveDrawer::GetInstance();
 
 	// 初期化(オーバーライド)
 	void Initialize();

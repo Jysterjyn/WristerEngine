@@ -112,7 +112,7 @@
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
-    <ClCompile Include="SourceFiles\GameObject\BaseStage.cpp" />
+    <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp" />
     <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp" />
@@ -166,7 +166,7 @@
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
-    <ClInclude Include="SourceFiles\GameObject\BaseStage.h" />
+    <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />
     <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h" />
@@ -184,7 +184,6 @@
     <ClInclude Include="SourceFiles\Math\Easing.h" />
     <ClInclude Include="SourceFiles\Timer\FPS.h" />
     <ClInclude Include="SourceFiles\Utility\Random.h" />
-    <ClInclude Include="SourceFiles\GameObject\GameObject.h" />
     <ClInclude Include="SourceFiles\Math\MathUtility.h" />
     <ClInclude Include="SourceFiles\3d\Skydome\Skydome.h" />
     <ClInclude Include="SourceFiles\Particle\ParticleGroup.h" />
