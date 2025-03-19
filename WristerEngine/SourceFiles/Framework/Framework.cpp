@@ -35,10 +35,7 @@ void Framework::Finalize()
 bool Framework::IsEndRequest()
 {
 	// Xボタンで終了メッセージが来たらゲームループを抜ける
-	if (wAPI->ProcessMessage()) { return true; }
-	// ESCキーを押したらゲームループを抜ける
-	if (input->IsTrigger(WristerEngine::Key::Escape)) { return true; }
-	return false;
+	return wAPI->ProcessMessage();
 }
 
 void Framework::Run()

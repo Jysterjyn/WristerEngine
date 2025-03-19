@@ -1,9 +1,5 @@
-﻿#include "AudioManager.h"
-#include "CollisionManager.h"
-#include "ModelManager.h"
+﻿#include "CollisionManager.h"
 #include "MyGame.h"
-#include "ParticleManager.h"
-#include "NonEffectDrawer.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
 using namespace WristerEngine::_2D;
@@ -19,8 +15,6 @@ void MyGame::Initialize()
 	sceneManager->Initialize(sceneFactory, "TestScene");
 
 	modelManager->Initialize();
-	WristerEngine::ParticleManager::Initialize();
-
 	primitiveDrawer->Initialize();
 }
 
@@ -30,8 +24,6 @@ void MyGame::Update()
 	modelManager->Update();
 	primitiveDrawer->Update();
 	WristerEngine::CollisionManager::CheckAllCollisions();
-	WristerEngine::Physics::ResetCollideList();
-	WristerEngine::ParticleManager::Update();
 }
 
 void MyGame::Draw()
@@ -45,12 +37,13 @@ void MyGame::Draw()
 	sceneManager->Draw();
 	modelManager->DrawObjects();
 	primitiveDrawer->Draw();
-	WristerEngine::ParticleManager::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
 
-void MyGame::Finalize()
+bool MyGame::IsEndRequest()
 {
-	Framework::Finalize();
+	// ESCキーを押したらゲームループを抜ける
+	if (input->IsTrigger(WristerEngine::Key::Escape)) { return true; }
+	return Framework::IsEndRequest();
 }
