@@ -115,7 +115,7 @@ void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)
 	{
 		inputLayout.push_back(SetInputLayout(inputLayoutProp.semanticName, inputLayoutProp.format));
 	}
-
+	
 	std::vector<CD3DX12_ROOT_PARAMETER> rootParams;
 	// デスクリプタレンジ
 	for (UINT i = 0; i < pipelineProp.rootParamProp.descriptorNum; i++)

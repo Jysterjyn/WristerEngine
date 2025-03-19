@@ -18,14 +18,14 @@ DirectXCommon* DirectXCommon::GetInstance()
 
 void DirectXCommon::Initialize()
 {
-	fixFPS->Initialize();				// FPS固定初期化
-	InitializeDevice();					// デバイスの生成
-	InitializeCommand();				// コマンド関連の初期化
-	InitializeSwapchain();				// スワップチェーンの初期化
-	InitializeRenderTargetView();		// レンダーターゲットビューの初期化
-	InitializeShaderResourceView();		// シェーダーリソースビューの初期化
-	InitializeDepthBuffer(&dsvHeap);	// 深度バッファの初期化
-	InitializeFence();					// フェンスの初期化
+	fixFPS->Initialize();			// FPS固定生成
+	CreateDevice();					// デバイスの生成
+	CreateCommandList();			// コマンド関連の生成
+	CreateSwapchain();				// スワップチェーンの生成
+	CreateRenderTargetView();		// レンダーターゲットビューの生成
+	CreateShaderResourceView();		// シェーダーリソースビューの生成
+	CreateDepthBuffer(&dsvHeap);	// 深度バッファの生成
+	CreateFence();					// フェンスの生成
 
 	// DXCommonGetterにポインタ代入
 	DXCommonGetter::SetPointer(device.Get(), commandList.Get());
@@ -34,7 +34,7 @@ void DirectXCommon::Initialize()
 	SetViewport();
 }
 
-void DirectXCommon::InitializeDevice()
+void DirectXCommon::CreateDevice()
 {
 #ifdef _DEBUG
 	//デバッグレイヤーをオンに
@@ -112,7 +112,7 @@ void DirectXCommon::InitializeDevice()
 #endif
 }
 
-void DirectXCommon::InitializeCommand()
+void DirectXCommon::CreateCommandList()
 {
 	Result result = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator));
 
@@ -124,7 +124,7 @@ void DirectXCommon::InitializeCommand()
 	device->CreateCommandQueue(new D3D12_COMMAND_QUEUE_DESC(), IID_PPV_ARGS(&commandQueue));
 }
 
-void DirectXCommon::InitializeSwapchain()
+void DirectXCommon::CreateSwapchain()
 {
 	swapchainDesc.Width = (UINT)WIN_SIZE.x;
 	swapchainDesc.Height = (UINT)WIN_SIZE.y;
@@ -143,7 +143,7 @@ void DirectXCommon::InitializeSwapchain()
 	result = swapchain1->QueryInterface(IID_PPV_ARGS(&swapchain));
 }
 
-void DirectXCommon::InitializeRenderTargetView()
+void DirectXCommon::CreateRenderTargetView()
 {
 	// デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -166,7 +166,7 @@ void DirectXCommon::InitializeRenderTargetView()
 	}
 }
 
-void WristerEngine::DirectXCommon::InitializeShaderResourceView()
+void WristerEngine::DirectXCommon::CreateShaderResourceView()
 {
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -175,7 +175,7 @@ void WristerEngine::DirectXCommon::InitializeShaderResourceView()
 	Result result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 }
 
-void DirectXCommon::InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap_) const
+void DirectXCommon::CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap_) const
 {
 	D3D12_RESOURCE_DESC depthResourceDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
@@ -204,7 +204,7 @@ void DirectXCommon::InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap_) const
 		depthBuff, &dsvDesc, (*dsvHeap_)->GetCPUDescriptorHandleForHeapStart());
 }
 
-void DirectXCommon::InitializeFence()
+void DirectXCommon::CreateFence()
 {
 	Result result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 }
@@ -217,7 +217,7 @@ void DirectXCommon::PreDraw()
 		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex, &viewport });
 }
 
-void WristerEngine::DirectXCommon::PreDraw(const PreDrawProp& prop)
+void DirectXCommon::PreDraw(const PreDrawProp& prop)
 {
 	// リソースバリアで書き込み可能に変更
 	D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(

@@ -53,18 +53,18 @@ namespace WristerEngine
 
 		DirectXCommon() = default;
 		~DirectXCommon() = default;
-		// デバイスの初期化
-		void InitializeDevice();
-		// コマンドリストの初期化
-		void InitializeCommand();
-		// スワップチェーンの初期化
-		void InitializeSwapchain();
-		// レンダーターゲットビューの初期化
-		void InitializeRenderTargetView();
-		// シェーダーリソースビューの初期化
-		void InitializeShaderResourceView();
-		// フェンスの初期化
-		void InitializeFence();
+		// デバイスの生成
+		void CreateDevice();
+		// コマンドリストの生成
+		void CreateCommandList();
+		// スワップチェーンの生成
+		void CreateSwapchain();
+		// レンダーターゲットビューの生成
+		void CreateRenderTargetView();
+		// シェーダーリソースビューの生成
+		void CreateShaderResourceView();
+		// フェンスの生成
+		void CreateFence();
 
 	public:
 		DirectXCommon(const DirectXCommon& obj) = delete;
@@ -74,8 +74,8 @@ namespace WristerEngine
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
-		// 深度バッファの初期化
-		void InitializeDepthBuffer(ID3D12DescriptorHeap** dsvHeap) const;
+		// 深度バッファの生成
+		void CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap) const;
 		// 描画前処理
 		void PreDraw();
 		// ポストエフェクトクラス内で使う共通処理部分

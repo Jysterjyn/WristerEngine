@@ -83,7 +83,7 @@ PostEffect* PostEffect::Create(Type effectType)
 	postEffect->CreateBuffers();
 	postEffect->CreateRTV();
 	postEffect->srvHandle = dxCommon->CreateSRV(postEffect->texBuff.Get());
-	dxCommon->InitializeDepthBuffer(&postEffect->dsvHeap);
+	dxCommon->CreateDepthBuffer(&postEffect->dsvHeap);
 	postEffect->SetEffectType(effectType);
 	postEffects.push_back(std::move(postEffect));
 	return postEffects.back().get();
