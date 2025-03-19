@@ -74,8 +74,6 @@ namespace WristerEngine
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
-		// 深度バッファの生成
-		void CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap) const;
 		// 描画前処理
 		void PreDraw();
 		// ポストエフェクトクラス内で使う共通処理部分

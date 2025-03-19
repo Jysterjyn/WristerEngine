@@ -402,5 +402,8 @@
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\Utility\WristerEngine.h">
+      <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

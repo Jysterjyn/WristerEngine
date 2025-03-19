@@ -45,5 +45,6 @@ namespace WristerEngine
 	D3D12_INPUT_ELEMENT_DESC SetInputLayout(LPCSTR semanticName, DXGI_FORMAT format);
 	// シェーダー読み込み
 	void LoadShader(ID3DBlob** shaderBlob, std::wstring shaderName, LPCSTR target);
-
+	// 深度バッファの生成
+	void CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap);
 }

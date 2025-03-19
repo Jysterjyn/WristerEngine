@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imguimanager.h"
 #include <SceneManager.h>
+#include <WristerEngine.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -31,7 +32,7 @@ void TestScene::Initialize()
 	skydome->Initialize("skydome", 1);
 
 	railCamera.Initialize({ 0,0,-50 });
-
+	
 	primitiveDrawer->DrawLine3d({ -5,0,0 }, { 5,0,0 }, WristerEngine::ColorRGBA::Red());
 	primitiveDrawer->DrawLine3d({ -5,5,0 }, { 5,5,0 }, WristerEngine::ColorRGBA::Blue());
 	primitiveDrawer->TransferVertices();

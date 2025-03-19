@@ -207,6 +207,7 @@
     <ClInclude Include="SourceFiles\Input\Input.h" />
     <ClInclude Include="SourceFiles\Timer\TimedCall.h" />
     <ClInclude Include="SourceFiles\Utility\StringUtility.h" />
+    <ClInclude Include="SourceFiles\Utility\WristerEngine.h" />
     <ClInclude Include="SourceFiles\WinApp\WindowsAPI.h" />
     <ClInclude Include="SourceFiles\Utility\Color.h" />
     <ClInclude Include="SourceFiles\Particle\ParticleManager.h" />
