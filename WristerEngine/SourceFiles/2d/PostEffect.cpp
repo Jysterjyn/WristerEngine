@@ -1,5 +1,6 @@
 #include "PostEffect.h"
 #include "D3D12Common.h"
+#include "PipelineManager.h"
 
 using namespace WristerEngine;
 using namespace WristerEngine::_2D;

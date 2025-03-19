@@ -1,5 +1,6 @@
 #include "PrimitiveDrawer.h"
 #include "ModelManager.h"
+#include "PipelineManager.h"
 using namespace WristerEngine::_3D;
 
 PrimitiveDrawer* PrimitiveDrawer::GetInstance()

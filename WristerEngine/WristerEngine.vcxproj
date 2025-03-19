@@ -113,6 +113,7 @@
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
+    <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp" />
     <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
+    <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />
     <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h" />

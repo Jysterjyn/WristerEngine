@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include "ModelManager.h"
+#include "PipelineManager.h"
 using namespace Microsoft::WRL;
 using namespace WristerEngine;
 

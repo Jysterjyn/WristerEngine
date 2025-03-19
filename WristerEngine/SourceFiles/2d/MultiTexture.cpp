@@ -1,5 +1,6 @@
 #include "MultiTexture.h"
 #include "D3D12Common.h"
+#include "PipelineManager.h"
 
 using namespace WristerEngine::_2D;
 

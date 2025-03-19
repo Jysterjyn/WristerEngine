@@ -3,6 +3,7 @@
 #include "D3D12Common.h"
 #include "Mesh.h"
 #include "ModelManager.h"
+#include "PipelineManager.h"
 using namespace std;
 using namespace WristerEngine;
 using namespace _2D;

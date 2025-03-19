@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include "ImGuiManager.h"
+#include "PipelineManager.h"
 using namespace WristerEngine;
 using namespace _2D;
 

@@ -220,6 +220,9 @@
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp">
       <Filter>ソース ファイル\3d\Object</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp">
+      <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -395,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h">
       <Filter>ソース ファイル\3d\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\DirectX\PipelineManager.h">
+      <Filter>ソース ファイル\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
