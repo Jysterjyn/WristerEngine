@@ -67,7 +67,5 @@ namespace WristerEngine::_3D
 		void Draw();
 		// テクスチャ読み込み
 		void LoadTexture(std::istringstream& line_stream, Mesh* mesh, TexType spriteIndex);
-		// 定数バッファに転送
-		void TransferCBV();
 	};
 }

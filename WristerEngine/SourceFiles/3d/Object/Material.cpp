@@ -31,20 +31,6 @@ void Material::LoadTexture(istringstream& line_stream, Mesh* mesh, TexType sprit
 	textures[(size_t)spriteIndex].data = TextureData::Load(path + textureFilename);
 }
 
-void Material::TransferCBV()
-{
-	for (size_t i = 0; i < constMap->texTrans.size(); i++) { constMap->texTrans[i] = textures[i]; }
-	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = textures[i].color; }
-	for (size_t i = 0; i < constMap->maskPow.size(); i++)
-	{
-		constMap->maskPow[i] = textures[(size_t)TexType::Blend + i].color.r;
-	}
-
-	constMap->ambient = { ambient,alpha };
-	constMap->diffuse = diffuse;
-	constMap->specular = specular;
-}
-
 void Material::ChangeTexture(size_t texIndex, const std::string& texName)
 {
 	textures[texIndex].data = TextureData::Load(texName);
@@ -90,13 +76,20 @@ void Material::Load(Mesh* mesh)
 
 	// 定数バッファ生成
 	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
-
-	TransferCBV();
 }
 
 void Material::Update()
 {
-	TransferCBV();
+	for (size_t i = 0; i < constMap->texTrans.size(); i++) { constMap->texTrans[i] = textures[i]; }
+	for (size_t i = 0; i < constMap->color.size(); i++) { constMap->color[i] = textures[i].color; }
+	for (size_t i = 0; i < constMap->maskPow.size(); i++)
+	{
+		constMap->maskPow[i] = textures[(size_t)TexType::Blend + i].color.r;
+	}
+
+	constMap->ambient = { ambient,alpha };
+	constMap->diffuse = diffuse;
+	constMap->specular = specular;
 }
 
 void Material::Draw()
