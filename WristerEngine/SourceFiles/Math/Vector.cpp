@@ -274,21 +274,36 @@ Vector3 BezierCurve(std::vector<Vector3> p, float t)
 
 Vector3 SplineCurve(const std::vector<Vector3>& points, size_t startIndex, float t)
 {
-	size_t n = points.size() - 2;
+	// ç≈èâÇ∆ç≈å„Ç…êßå‰ì_Çí«â¡
+	std::vector<Vector3> newPoints = points;
+	newPoints.insert(newPoints.begin(), points[0]);
+	newPoints.push_back(points.back());
 
-	if (startIndex > n) { return points[n]; }
-	if (startIndex < 1) { return points[1]; }
+	size_t n = newPoints.size() - 2;
+
+	if (startIndex >= n) { return newPoints[n]; }
+	if (startIndex < 1) { return newPoints[1]; }
 
 	std::vector<Vector3> p =
 	{
-		points[startIndex - 1],
-		points[startIndex],
-		points[startIndex + 1],
-		points[startIndex + 2],
+		newPoints[startIndex - 1],
+		newPoints[startIndex],
+		newPoints[startIndex + 1],
+		newPoints[startIndex + 2],
 	};
 
 	return 0.5f * (
 		2 * p[1] + (-p[0] + p[2]) * t +
 		(2 * p[0] - 5 * p[1] + 4 * p[2] - p[3]) * t * t +
 		(-p[0] + 3 * p[1] - 3 * p[2] + p[3]) * t * t * t);
+}
+
+Vector3 SplineCurve(const std::vector<Vector3>& points, float t)
+{
+	if (t == 0) { return SplineCurve(points, 0, t); }
+	if (t >= 1) { return SplineCurve(points, points.size() - 1, 1); }
+	float length = float(points.size() - 1);
+	float dt = 1.0f / length;
+	int index = int((t / dt)) + 1;
+	return SplineCurve(points, index, fmodf(t, dt) * length);
 }

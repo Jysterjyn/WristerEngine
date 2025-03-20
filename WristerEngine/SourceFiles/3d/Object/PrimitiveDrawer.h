@@ -8,8 +8,10 @@ namespace WristerEngine::_3D
 	{
 	private:
 		// ü•ª‚ÌÅ‘å”
-		static const UINT MAX_LINE_COUNT = 256;
-		
+		static const UINT MAX_LINE_COUNT = 1024;
+		// ü•ª‚Ì’¸“_”
+		static const UINT VERTEX_COUNT_LINE = 2;
+
 		struct ConstBufferData
 		{
 			Matrix4 matCamera;

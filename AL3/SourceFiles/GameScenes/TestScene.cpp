@@ -32,9 +32,31 @@ void TestScene::Initialize()
 	skydome->Initialize("skydome", 1);
 
 	railCamera.Initialize({ 0,0,-50 });
-	
-	primitiveDrawer->DrawLine3d({ -5,0,0 }, { 5,0,0 }, WristerEngine::ColorRGBA::Red());
-	primitiveDrawer->DrawLine3d({ -5,5,0 }, { 5,5,0 }, WristerEngine::ColorRGBA::Blue());
+
+	std::vector<Vector3> controlPoints =
+	{
+		{0,  0,  0},
+		{10, 10, 0},
+		{10, 15, 0},
+		{20, 15, 0},
+		{20, 0,  0},
+		{30, 0,  0},
+	};
+
+	const size_t segmentCount = 100;
+	std::vector<Vector3> pointsDrawing;
+	for (size_t i = 0; i < segmentCount + 1; i++)
+	{
+		float t = 1.0f / segmentCount * i;
+		Vector3 pos = SplineCurve(controlPoints, t);
+		pointsDrawing.push_back(pos);
+	}
+
+	for (size_t i = 0; i < pointsDrawing.size() - 1; i++)
+	{
+		primitiveDrawer->DrawLine3d(pointsDrawing[i], pointsDrawing[i + 1], WE::ColorRGBA::Red());
+	}
+
 	primitiveDrawer->TransferVertices();
 }
 

@@ -22,7 +22,7 @@ void PrimitiveDrawer::TransferVertices()
 
 void PrimitiveDrawer::Initialize()
 {
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexData) * MAX_LINE_COUNT);
+	UINT sizeVB = static_cast<UINT>(sizeof(VertexData) * MAX_LINE_COUNT * VERTEX_COUNT_LINE);
 	// 頂点バッファ生成
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
 	// 頂点バッファビューの作成

@@ -108,3 +108,4 @@ T Lerp(const T& start, const T& end, const float t){ return start * (1.0f - t) +
 Vector3 BezierCurve(std::vector<Vector3> p, float t);
 // ƒXƒvƒ‰ƒCƒ“‹Èü
 Vector3 SplineCurve(const std::vector<Vector3>& points, size_t startIndex, float t);
+Vector3 SplineCurve(const std::vector<Vector3>& points, float t);
