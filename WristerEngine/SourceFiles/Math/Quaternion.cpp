@@ -14,7 +14,7 @@ void Quaternion::operator*=(const Quaternion& q)
 	*this = ans;
 }
 
-float Quaternion::Norm() const
+float Quaternion::Length() const
 {
 	Vector3 i = GetImaginary();
 	return sqrt(Dot(i, i) + w * w);
@@ -23,7 +23,7 @@ float Quaternion::Norm() const
 void Quaternion::Inverse()
 {
 	Conjugate();
-	*this /= (Norm() * Norm());
+	*this /= (Length() * Length());
 }
 
 Matrix4 Quaternion::MakeRotateMatrix() const

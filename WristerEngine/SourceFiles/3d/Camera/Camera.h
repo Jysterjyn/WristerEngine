@@ -9,7 +9,8 @@ namespace WristerEngine::_3D
 	public:
 		virtual ~Camera() = default;
 
+	private:
 		// ŒÅ—L‚ÌXVˆ—
-		virtual void VirtualUpdate();
+		virtual void VirtualUpdate() override;
 	};
 }

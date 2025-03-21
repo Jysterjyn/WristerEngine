@@ -120,7 +120,7 @@
     <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp" />
     <ClCompile Include="SourceFiles\2d\BaseMapChip.cpp" />
     <ClCompile Include="SourceFiles\2d\MultiTexture.cpp" />
-    <ClCompile Include="SourceFiles\3d\Camera\Shake.cpp" />
+    <ClCompile Include="SourceFiles\Utility\Shake.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Object3d.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Material.cpp" />
     <ClCompile Include="SourceFiles\Audio\AudioManager.cpp" />
@@ -158,7 +158,7 @@
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp" />
     <ClCompile Include="SourceFiles\Math\Quaternion.cpp" />
     <ClCompile Include="SourceFiles\Math\Vector.cpp" />
-    <ClCompile Include="SourceFiles\Utility\FadeManager.cpp" />
+    <ClCompile Include="SourceFiles\Scene\FadeManager.cpp" />
     <ClCompile Include="SourceFiles\Physics\Collider.cpp" />
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp" />
     <ClCompile Include="SourceFiles\Physics\Physics.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="SourceFiles\2d\BitMapNumber.h" />
     <ClInclude Include="SourceFiles\2d\BaseMapChip.h" />
     <ClInclude Include="SourceFiles\2d\MultiTexture.h" />
-    <ClInclude Include="SourceFiles\3d\Camera\Shake.h" />
+    <ClInclude Include="SourceFiles\Utility\Shake.h" />
     <ClInclude Include="SourceFiles\3d\Object\Object3d.h" />
     <ClInclude Include="SourceFiles\3d\Object\Material.h" />
     <ClInclude Include="SourceFiles\Audio\AudioManager.h" />
@@ -222,7 +222,7 @@
     <ClInclude Include="SourceFiles\Scene\AbstractSceneFactory.h" />
     <ClInclude Include="SourceFiles\Physics\Physics.h" />
     <ClInclude Include="SourceFiles\Scene\BaseScene.h" />
-    <ClInclude Include="SourceFiles\Utility\FadeManager.h" />
+    <ClInclude Include="SourceFiles\Scene\FadeManager.h" />
     <ClInclude Include="SourceFiles\Physics\Collider.h" />
     <ClInclude Include="SourceFiles\Physics\CollisionManager.h" />
     <ClInclude Include="SourceFiles\Scene\SceneManager.h" />

@@ -19,23 +19,22 @@ public:
 	void operator/=(float norm) { x /= norm, y /= norm, z /= norm, w /= norm; }
 	// ‹¤–ğ‚É‚·‚é
 	void Conjugate() { x = -x, y = -y, z = -z; }
-	// ‚±‚ÌQuaternion‚ÌNorm‚ğ•Ô‚·
-	float Norm() const;
+	// ƒmƒ‹ƒ€(’·‚³)
+	float Length() const;
 	// ³‹K‰»‚·‚é
-	void Normalize() { *this /= Norm(); }
+	void Normalize() { *this /= Length(); }
 	// ‹tQuaternion‚É‚·‚é
 	void Inverse();
 	// ‰ñ“]s—ñ‚ğ‹‚ß‚é
 	Matrix4 MakeRotateMatrix() const;
 
 	// Ã“IŠÖ”
-	// ƒƒ“ƒo•Ï”‚Ì’l‚ğ•Ï‚¦‚½‚­‚È‚¢‚Í‚±‚Á‚¿‚ğg‚¤
 	// ’PˆÊQuaternion
 	static Quaternion Identity() { return Quaternion(1, 0, 0, 0); }
 	// ‹¤–ğ‚É‚·‚é
 	static Quaternion Conjugate(const Quaternion& q) { return Quaternion(q.w, -q.GetImaginary()); }
 	// ‚±‚ÌQuaternion‚ÌNorm‚ğ•Ô‚·
-	static float Norm(const Quaternion& q) { return q.Norm(); }
+	static float Length(const Quaternion& q) { return q.Length(); }
 	// ³‹K‰»‚·‚é
 	static Quaternion Normalize(const Quaternion& q);
 	// ‹tQuaternion‚É‚·‚é

@@ -16,8 +16,9 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	debugCamera.Initialize({}, 50);
-	modelManager->AddCamera("debug", &debugCamera);
+	debugCamera = std::make_unique<WE::_3D::DebugCamera>(Vector3(), 50.0f);
+	debugCamera->Initialize();
+	modelManager->AddCamera("debug", debugCamera.get());
 	camera = modelManager->GetCamera();
 	camera->eye.z = -50;
 
@@ -68,12 +69,11 @@ void TestScene::Update()
 #endif // _DEBUG
 	if (isDebugCameraActive)
 	{
-		debugCamera.Update();
 		modelManager->SetCameraName("debug");
 	}
 	else
 	{
-		modelManager->SetCameraName("default");
+		modelManager->SetCameraName("rail");
 	}
 
 	player->Update();

@@ -43,7 +43,7 @@ namespace WristerEngine::_3D
 		// 初期化
 		void Initialize();
 		// 更新
-		void Update();
+		virtual void Update();
 		// 固有の更新処理
 		virtual void VirtualUpdate() = 0;
 		// シェイクを生成する

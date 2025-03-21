@@ -142,7 +142,7 @@
     <ClCompile Include="SourceFiles\Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Utility\FadeManager.cpp">
+    <ClCompile Include="SourceFiles\Scene\FadeManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Framework\Framework.cpp">
@@ -184,9 +184,6 @@
     <ClCompile Include="SourceFiles\Math\Easing.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Camera\Shake.cpp">
-      <Filter>ソース ファイル\3d\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\2d\MultiTexture.cpp">
       <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
@@ -225,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Utility\Shake.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,7 +315,7 @@
     <ClInclude Include="SourceFiles\Scene\AbstractSceneFactory.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Utility\FadeManager.h">
+    <ClInclude Include="SourceFiles\Scene\FadeManager.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Framework\Framework.h">
@@ -363,9 +363,6 @@
     <ClInclude Include="SourceFiles\Math\Easing.h">
       <Filter>ソース ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Camera\Shake.h">
-      <Filter>ソース ファイル\3d\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Utility\AbstractSpawnPoint.h">
       <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
@@ -410,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Utility\Shake.h">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
