@@ -10,14 +10,18 @@ namespace WristerEngine::_3D
 	// カメラ基底クラス
 	class BaseCamera
 	{
-	protected:
+	private:
 		// 定数バッファ用データ構造体
 		struct ConstBufferData
 		{
 			Matrix4 viewproj; // ビュープロジェクション行列
 			Vector3 cameraPos; // カメラ座標(ワールド座標)
 		};
+		
+		// プロジェクション行列を求める
+		void UpdateProjectionMatrix();
 
+	protected:
 		// シェイク込みの値
 		Vector3 sTarget;
 		Vector3 sEye;
@@ -48,9 +52,5 @@ namespace WristerEngine::_3D
 		void CameraMove(const Vector3& move);
 		// ビュー行列とプロジェクション行列を掛け合わせた行列
 		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
-
-	private:
-		// プロジェクション行列を求める
-		void UpdateProjectionMatrix();
 	};
 }

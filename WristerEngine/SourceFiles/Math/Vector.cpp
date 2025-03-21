@@ -211,8 +211,11 @@ const Vector3 operator/(const Vector3& v, float s)
 }
 
 float Dot(const Vector2& v1, const Vector2& v2) { return v1.x * v2.x + v1.y * v2.y; }
+
 float Dot(const Vector3& v1, const Vector3& v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
+
 float Cross(const Vector2& v1, const Vector2& v2) { return v1.x * v2.y - v1.y * v2.x; }
+
 Vector3 Cross(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 temp;
@@ -226,15 +229,34 @@ Vector3 Cross(const Vector3& v1, const Vector3& v2)
 
 	return temp;
 }
+
 float Length(const Vector3& v) { return Vector3(v).Length(); }
+
 Vector2 Normalize(const Vector2& v) { return Vector2(v).Normalize(); }
+
 Vector3 Normalize(const Vector3& v) { return Vector3(v).Normalize(); }
+
 Vector2 To2DVector(const Vector3& vec)
 {
 	Vector3 v = vec;
 	v *= WristerEngine::_3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
 	v *= WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
 	return v;
+}
+
+std::array<Vector3, 3> CalculateAxis(const Vector3& frontVec, const Vector3* up)
+{
+	assert(frontVec.Length() != 0);
+
+	Vector3 upVec;
+	if (up) { upVec = Normalize(*up); }
+	else { upVec = Vector3::MakeAxis(Axis::Y); }
+
+	std::array<Vector3, 3> axis;
+	axis[(int)Axis::Z] = Normalize(frontVec);
+	axis[(int)Axis::X] = Normalize(Cross(upVec, axis[(int)Axis::Z]));
+	axis[(int)Axis::Y] = Normalize(Cross(axis[(int)Axis::Z], axis[(int)Axis::X]));
+	return axis;
 }
 
 Vector2 RandomVector(Vector2 range)

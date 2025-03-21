@@ -1,5 +1,6 @@
 #pragma once
 #include "MathUtility.h"
+#include <array>
 
 // 2Dベクトル
 class Vector2
@@ -97,13 +98,16 @@ Vector3 Normalize(const Vector3& v);
 // 3D→2D座標
 Vector2 To2DVector(const Vector3& vec);
 
+// frontVecを正面ベクトルとする3軸を計算する
+std::array<Vector3, 3> CalculateAxis(const Vector3& frontVec, const Vector3* up = nullptr);
+
 // 範囲内のランダムな大きさのベクトルを生成する
 Vector2 RandomVector(Vector2 range);
 Vector3 RandomVector(Vector3 range);
 
 // 線形補間
 template <class T>
-T Lerp(const T& start, const T& end, const float t){ return start * (1.0f - t) + end * t; }
+T Lerp(const T& start, const T& end, const float t) { return start * (1.0f - t) + end * t; }
 // ベジエ曲線
 Vector3 BezierCurve(std::vector<Vector3> p, float t);
 // スプライン曲線
