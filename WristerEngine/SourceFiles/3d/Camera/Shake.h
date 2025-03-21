@@ -6,7 +6,7 @@
 
 namespace WristerEngine::_3D
 {
-	class CameraShake
+	class Shake
 	{
 	private:
 		Easing easing; // イージングによるシェイク範囲の減衰
@@ -27,7 +27,7 @@ namespace WristerEngine::_3D
 		/// </summary>
 		/// <param name="shakeProp">シェイク情報</param>
 		/// <returns>CameraShakeのインスタンス</returns>
-		static std::unique_ptr<CameraShake> Create(const Prop& shakeProp);
+		static std::unique_ptr<Shake> Create(const Prop& shakeProp);
 
 		/// <summary>
 		/// シェイクの範囲を再設定

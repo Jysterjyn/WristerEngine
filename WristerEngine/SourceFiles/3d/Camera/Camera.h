@@ -1,7 +1,7 @@
 #pragma once
 #include "Matrix4.h"
 #include "WindowsAPI.h"
-#include "CameraShake.h"
+#include "Shake.h"
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -11,7 +11,6 @@ namespace WristerEngine::_3D
 	class Camera
 	{
 	private:
-
 		// 定数バッファ用データ構造体
 		struct ConstBufferData
 		{
@@ -29,18 +28,17 @@ namespace WristerEngine::_3D
 		float nearZ = 0.1f, farZ = 1000.0f; // 映る範囲
 		Matrix4 matView, matProjection, matViewProjection;
 		// シェイク機能
-		std::unique_ptr<CameraShake> shake;
+		std::unique_ptr<Shake> shake;
 
-		/// <summary>
-		/// 初期化
-		/// </summary>
-		/// <param name="shakeProp">シェイク情報</param>
-		void Initialize(const CameraShake::Prop* shakeProp = nullptr);
+		// 初期化
+		void Initialize();
 		// 更新
 		void Update();
+		// シェイクを生成する
+		void CreateShake(const Shake::Prop& shakeProp);
 		// カメラ移動
 		void CameraMove(const Vector3& move);
 		// ビュー行列とプロジェクション行列を掛け合わせた行列
-		Matrix4 GetViewProjectionMatrix() const { return matViewProjection; }
+		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
 	};
 }

@@ -1,17 +1,17 @@
-#include "CameraShake.h"
+#include "Shake.h"
 
 using namespace WristerEngine::_3D;
 
-std::unique_ptr<CameraShake> CameraShake::Create(const Prop& shakeProp)
+std::unique_ptr<Shake> Shake::Create(const Prop& shakeProp)
 {
 	// インスタンス生成
-	std::unique_ptr<CameraShake> instance = std::make_unique<CameraShake>();
+	std::unique_ptr<Shake> instance = std::make_unique<Shake>();
 	instance->SetShakeRange(shakeProp.range);
 	instance->easing.Initialize(shakeProp.time, shakeProp.easingType);
 	return instance;
 }
 
-void WristerEngine::_3D::CameraShake::SetShakeRange(const Vector3& shakeRange_)
+void Shake::SetShakeRange(const Vector3& shakeRange_)
 {
 	// 乱数の生成
 	rand[Axis::X] = Random_Float(-shakeRange_.x, shakeRange_.x);
@@ -19,13 +19,13 @@ void WristerEngine::_3D::CameraShake::SetShakeRange(const Vector3& shakeRange_)
 	rand[Axis::Z] = Random_Float(-shakeRange_.z, shakeRange_.z);
 }
 
-void WristerEngine::_3D::CameraShake::Start()
+void Shake::Start()
 {
 	isWhile = true;
 	easing.Restart();
 }
 
-Vector3 WristerEngine::_3D::CameraShake::Update()
+Vector3 Shake::Update()
 {
 	// イージングしてないなら値は0
 	if (!isWhile) { return {}; }

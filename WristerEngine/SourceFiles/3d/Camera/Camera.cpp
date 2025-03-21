@@ -4,10 +4,9 @@
 using namespace WristerEngine;
 using namespace _3D;
 
-void Camera::Initialize(const CameraShake::Prop* shakeProp)
+void Camera::Initialize()
 {
 	CreateBuffer(constBuffer.GetAddressOf(), &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
-	if (shakeProp) { shake = CameraShake::Create(*shakeProp); }
 }
 
 void Camera::Update()
@@ -47,6 +46,11 @@ void Camera::Update()
 	// GPU“]‘—
 	constMap->viewproj = matViewProjection;
 	constMap->cameraPos = sEye;
+}
+
+void Camera::CreateShake(const Shake::Prop& shakeProp)
+{
+	shake = Shake::Create(shakeProp);
 }
 
 void Camera::CameraMove(const Vector3& move)

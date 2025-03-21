@@ -184,7 +184,7 @@
     <ClCompile Include="SourceFiles\Math\Easing.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Camera\CameraShake.cpp">
+    <ClCompile Include="SourceFiles\3d\Camera\Shake.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\2d\MultiTexture.cpp">
@@ -222,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp">
       <Filter>ソース ファイル\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp">
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +363,7 @@
     <ClInclude Include="SourceFiles\Math\Easing.h">
       <Filter>ソース ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Camera\CameraShake.h">
+    <ClInclude Include="SourceFiles\3d\Camera\Shake.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\AbstractSpawnPoint.h">
@@ -404,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\WristerEngine.h">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h">
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

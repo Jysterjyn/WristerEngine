@@ -4,6 +4,7 @@
 #include "imguimanager.h"
 #include <SceneManager.h>
 #include <WristerEngine.h>
+#include <BaseCamera.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -56,7 +57,7 @@ void TestScene::Initialize()
 	{
 		primitiveDrawer->DrawLine3d(pointsDrawing[i], pointsDrawing[i + 1], WE::ColorRGBA::Red());
 	}
-
+	
 	primitiveDrawer->TransferVertices();
 }
 

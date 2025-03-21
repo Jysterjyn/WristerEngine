@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
+    <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
     <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
@@ -119,7 +120,7 @@
     <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp" />
     <ClCompile Include="SourceFiles\2d\BaseMapChip.cpp" />
     <ClCompile Include="SourceFiles\2d\MultiTexture.cpp" />
-    <ClCompile Include="SourceFiles\3d\Camera\CameraShake.cpp" />
+    <ClCompile Include="SourceFiles\3d\Camera\Shake.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Object3d.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Material.cpp" />
     <ClCompile Include="SourceFiles\Audio\AudioManager.cpp" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
@@ -175,7 +177,7 @@
     <ClInclude Include="SourceFiles\2d\BitMapNumber.h" />
     <ClInclude Include="SourceFiles\2d\BaseMapChip.h" />
     <ClInclude Include="SourceFiles\2d\MultiTexture.h" />
-    <ClInclude Include="SourceFiles\3d\Camera\CameraShake.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\Shake.h" />
     <ClInclude Include="SourceFiles\3d\Object\Object3d.h" />
     <ClInclude Include="SourceFiles\3d\Object\Material.h" />
     <ClInclude Include="SourceFiles\Audio\AudioManager.h" />
