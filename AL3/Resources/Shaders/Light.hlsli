@@ -57,6 +57,7 @@ struct LightData
 struct LightGroup
 {
     float3 ambientColor;
+    float shininess;
     DirLight dirLights[DIRLIGHT_NUM];
     PointLight pointLights[POINTLIGHT_NUM];
     SpotLight spotLights[SPOTLIGHT_NUM];

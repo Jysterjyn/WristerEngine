@@ -2,9 +2,23 @@
 #include "D3D12Common.h"
 using namespace WristerEngine;
 
-void LightGroup::TransferConstBuffer()
+std::unique_ptr<LightGroup> LightGroup::Create()
+{
+	std::unique_ptr<LightGroup> instance = std::make_unique<LightGroup>();
+	instance->Initialize();
+	return instance;
+}
+
+void LightGroup::Initialize()
+{
+	DefaultLightSetting();
+	CreateBuffer(&constBuff, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
+}
+
+void LightGroup::Update()
 {
 	constMap->ambientColor = ambientColor;
+	constMap->shininess = shininess;
 	// ïΩçsåıåπ
 	for (int i = 0; i < DIR_LIGHT_NUM; i++)
 	{
@@ -58,19 +72,6 @@ void LightGroup::TransferConstBuffer()
 		}
 		else { constMap->circleShadows[i].active = false; }
 	}
-}
-
-std::unique_ptr<LightGroup> LightGroup::Create()
-{
-	std::unique_ptr<LightGroup> instance = std::make_unique<LightGroup>();
-	instance->Initialize();
-	return instance;
-}
-
-void LightGroup::Initialize()
-{
-	DefaultLightSetting();
-	CreateBuffer(&constBuff, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 }
 
 void LightGroup::Draw(UINT rootParameterIndex)

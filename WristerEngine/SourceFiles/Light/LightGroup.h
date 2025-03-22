@@ -23,7 +23,7 @@ namespace WristerEngine
 		struct ConstBufferData
 		{
 			ColorRGB ambientColor;
-			float pad1;
+			float shininess;
 			DirectionalLight::ConstBufferData dirLights[DIR_LIGHT_NUM];
 			PointLight::ConstBufferData pointLights[POINT_LIGHT_NUM];
 			SpotLight::ConstBufferData spotLights[SPOT_LIGHT_NUM];
@@ -32,14 +32,13 @@ namespace WristerEngine
 
 		ComPtr<ID3D12Resource> constBuff;
 		ColorRGB ambientColor;
+		float shininess = 10.0f;
 		std::array<DirectionalLight, DIR_LIGHT_NUM> dirLights;
 		std::array<PointLight, POINT_LIGHT_NUM> pointLights;
 		std::array<SpotLight, SPOT_LIGHT_NUM> spotLights;
 		std::array<CircleShadow, CIRCLE_SHADOW_NUM> circleShadows;
 		ConstBufferData* constMap = nullptr;
 
-		// 定数バッファ転送
-		void TransferConstBuffer();
 		// 初期化
 		void Initialize();
 		// 標準のライト設定
@@ -52,11 +51,13 @@ namespace WristerEngine
 		/// <returns>インスタンス</returns>
 		static std::unique_ptr<LightGroup> Create();
 		// 更新
-		void Update(){ TransferConstBuffer(); }
+		void Update();
 		// 描画
 		void Draw(UINT rootParameterIndex);
 		// 環境光を変更
 		void SetAmbientColor(const ColorRGB& color) { ambientColor = color; }
+		// 光沢度を変更
+		void SetShininess(float shininess_) { shininess = shininess_; }
 		// 平行光源を取得
 		DirectionalLight* GetDirectionalLight(uint32_t index);
 		// 点光源を取得

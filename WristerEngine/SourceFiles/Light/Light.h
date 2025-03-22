@@ -17,7 +17,7 @@ namespace WristerEngine
 		void SetColor(const ColorRGB& color_) { color = color_; }
 		void SetActive(bool active_) { active = active_; }
 		// getter
-		const ColorRGB& GetColor()  { return color; }
+		const ColorRGB& GetColor() const { return color; }
 		bool IsActive() const { return active; }
 	};
 
@@ -39,7 +39,7 @@ namespace WristerEngine
 		// ライト光線方向を変更
 		void SetDir(const Vector3& lightdir_) { dir = Normalize(lightdir_); }
 		// ライト光線方向を取得
-		const Vector3& GetDir()  { return dir; }
+		const Vector3& GetDir() const { return dir; }
 	};
 
 	// スポットライト
@@ -77,10 +77,10 @@ namespace WristerEngine
 			factorAngleCos.y = std::cos(factorAngle.y);
 		}
 		// getter
-		const Vector3& GetDir() { return dir; }
-		const Vector3& GetPos() { return pos; }
-		const Vector3& GetAtten() { return atten; }
-		const Vector2& GetFactorAngleCos() { return factorAngleCos; }
+		const Vector3& GetDir() const { return dir; }
+		const Vector3& GetPos() const { return pos; }
+		const Vector3& GetAtten() const { return atten; }
+		const Vector2& GetFactorAngleCos() const { return factorAngleCos; }
 	};
 
 	// 点光源
@@ -105,7 +105,7 @@ namespace WristerEngine
 		void SetPos(const Vector3& pos_) { pos = pos_; }
 		void SetAtten(const Vector3& atten_) { atten = atten_; }
 		// getter
-		const Vector3& GetPos() { return pos; }
-		const Vector3& GetAtten() { return atten; }
+		const Vector3& GetPos() const { return pos; }
+		const Vector3& GetAtten() const { return atten; }
 	};
 }

@@ -27,7 +27,7 @@ float4 main(VSOutput input) : SV_TARGET
     lightData.normal = input.normal;
     lightData.worldpos = input.worldpos.xyz;
     lightData.eyedir = normalize(cameraPos - input.worldpos.xyz); // 頂点から視点への方向ベクトル
-    lightData.shininess = 10.0f; // 光沢度
+    lightData.shininess = lightGroup.shininess; // 光沢度
 	// 環境光
     float3 ambient = material.ambient.rgb  * lightGroup.ambientColor;
 	// シェーディングによる色

@@ -76,6 +76,10 @@ void TestScene::Update()
 		modelManager->SetCameraName("rail");
 	}
 
+	static float shininess = 10.0f;
+	ImGui::SliderFloat("Shininess", &shininess, 0, 10);
+	modelManager->GetLightGroup()->SetShininess(shininess);
+
 	player->Update();
 	if (enemy) { enemy->Update(); }
 	//railCamera.Update();
