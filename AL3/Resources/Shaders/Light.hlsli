@@ -51,7 +51,6 @@ struct LightData
     float3 worldpos;
     float3 eyedir;
     float shininess;
-    float3 texcolor;
     float specularMaskVal;
 };
 
@@ -80,7 +79,7 @@ float3 ComputeDiffuseSpecular(float3 lightv, LightData lightData, Material mater
     float3 diffuse = saturate(dotlightnormal * material.diffuse);
 	// ‹¾–Ê”½ŽËŒõ
     float3 specular = pow(saturate(dot(reflect, lightData.eyedir)), lightData.shininess) * material.specular;
-    return diffuse * lightData.texcolor + specular * lightData.specularMaskVal;
+    return diffuse + specular * lightData.specularMaskVal;
 }
 
 float3 LightGroup::ComputeDirLight(LightData lightData, Material material)
