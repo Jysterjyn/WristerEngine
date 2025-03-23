@@ -34,7 +34,7 @@ void DebugCamera::VirtualUpdate()
 	if (input->IsInput(Mouse::Middle))
 	{
 		Vector3 move = Vector3(-(float)mouseMove.lX, (float)mouseMove.lY) / mouseMoveDec;
-		move = Quaternion::RotateVector(move, rotQ);
+		move = RotateVector(move, rotQ);
 
 		CameraMove(move);
 		dirty = true;
@@ -51,8 +51,8 @@ void DebugCamera::VirtualUpdate()
 	if (!dirty) { return; }
 	// 追加回転分のQuaternionを生成
 	Quaternion rotQNew;
-	rotQNew = Quaternion::MakeAxisAngle(Vector3::MakeAxis(Axis::Y), -angle.y);
-	rotQNew *= Quaternion::MakeAxisAngle(Vector3::MakeAxis(Axis::X), -angle.x);
+	rotQNew = MakeAxisAngle(Vector3::MakeAxis(Axis::Y), -angle.y);
+	rotQNew *= MakeAxisAngle(Vector3::MakeAxis(Axis::X), -angle.x);
 
 	// 累積のQuaternionを合成
 	rotQ *= rotQNew;
@@ -62,8 +62,8 @@ void DebugCamera::VirtualUpdate()
 	Vector3 vUp = Vector3::MakeAxis(Axis::Y);
 
 	// ベクトルを回転
-	vTargetEye = Quaternion::RotateVector(vTargetEye, rotQ);
-	vUp = Quaternion::RotateVector(vUp, rotQ);
+	vTargetEye = RotateVector(vTargetEye, rotQ);
+	vUp = RotateVector(vUp, rotQ);
 
 	// 注視点からずらした位置に視点座標を決定
 	eye = target + vTargetEye;

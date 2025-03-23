@@ -9,7 +9,7 @@ void DirectionalParticle::Particle::ComputeControlPoints()
 	// 回転軸を求める
 	Vector3 axis = Normalize(end - start);
 	// Quaternion生成
-	Quaternion rotQ = Quaternion::MakeAxisAngle(axis, angle);
+	Quaternion rotQ = MakeAxisAngle(axis, angle);
 	// 制御点の追加
 	controlPoints.push_back(start);
 	// 制御点を線形補間で計算
@@ -22,7 +22,7 @@ void DirectionalParticle::Particle::ComputeControlPoints()
 		// Quaternionは原点中心に回転させるので、回転軸の始点を原点とする
 		controlPoint -= start;
 		// 制御点をQuaternionで回転させる
-		controlPoint = Quaternion::RotateVector(controlPoint, rotQ);
+		controlPoint = RotateVector(controlPoint, rotQ);
 		// 平行移動を相殺
 		controlPoint += start;
 		controlPoints.push_back(controlPoint);

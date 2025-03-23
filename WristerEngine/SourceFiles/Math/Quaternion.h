@@ -28,25 +28,24 @@ public:
 	// 回転行列を求める
 	Matrix4 MakeRotateMatrix() const;
 
-	// 静的関数
 	// 単位Quaternion
 	static Quaternion Identity() { return Quaternion(1, 0, 0, 0); }
-	// 共役にする
-	static Quaternion Conjugate(const Quaternion& q) { return Quaternion(q.w, -q.GetImaginary()); }
-	// このQuaternionのNormを返す
-	static float Length(const Quaternion& q) { return q.Length(); }
-	// 正規化する
-	static Quaternion Normalize(const Quaternion& q);
-	// 逆Quaternionにする
-	static Quaternion Inverse(const Quaternion& q);
-	// 任意軸回転のQuaternion生成(axisは正規化されている必要がある)
-	static Quaternion MakeAxisAngle(const Vector3& axis, float angle);
-	// ベクトルをQuaternionで回転させる
-	static Vector3 RotateVector(const Vector3& v, const Quaternion& q);
-	// Quaternionから回転行列を求める
-	static Matrix4 MakeRotateMatrix(const Quaternion& q);
 };
 
+// 共役にする
+Quaternion Conjugate(const Quaternion& q);
+// このQuaternionのNormを返す
+float Length(const Quaternion& q);
+// 正規化する
+Quaternion Normalize(const Quaternion& q);
+// 逆Quaternionにする
+Quaternion Inverse(const Quaternion& q);
+// 任意軸回転のQuaternion生成(axisは正規化されている必要がある)
+Quaternion MakeAxisAngle(const Vector3& axis, float angle);
+// ベクトルをQuaternionで回転させる
+Vector3 RotateVector(const Vector3& v, const Quaternion& q);
+// Quaternionから回転行列を求める
+Matrix4 MakeRotateMatrix(const Quaternion& q);
 // 内積を求める
 float Dot(const Quaternion& q1, const Quaternion& q2);
 // 2項演算子オーバーロード

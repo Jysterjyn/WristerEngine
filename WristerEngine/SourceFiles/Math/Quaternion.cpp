@@ -39,32 +39,36 @@ Matrix4 Quaternion::MakeRotateMatrix() const
 	return mat;
 }
 
-Quaternion Quaternion::Normalize(const Quaternion& q)
+Quaternion Conjugate(const Quaternion& q) { return Quaternion(q.w, -q.GetImaginary()); }
+
+float Length(const Quaternion& q) { return q.Length(); }
+
+Quaternion Normalize(const Quaternion& q)
 {
 	Quaternion ans = q;
 	ans.Normalize();
 	return ans;
 }
 
-Quaternion Quaternion::Inverse(const Quaternion& q)
+Quaternion Inverse(const Quaternion& q)
 {
 	Quaternion ans = q;
 	ans.Inverse();
 	return ans;
 }
 
-Quaternion Quaternion::MakeAxisAngle(const Vector3& axis, float angle)
+Quaternion MakeAxisAngle(const Vector3& axis, float angle)
 {
 	return Quaternion(cosf(angle / 2.0f), axis * sinf(angle / 2.0f));
 }
 
-Vector3 Quaternion::RotateVector(const Vector3& v, const Quaternion& q)
+Vector3 RotateVector(const Vector3& v, const Quaternion& q)
 {
 	Quaternion r = { 0,v };
 	return Quaternion(q * r * Conjugate(q)).GetImaginary();
 }
 
-Matrix4 Quaternion::MakeRotateMatrix(const Quaternion& q)
+Matrix4 MakeRotateMatrix(const Quaternion& q)
 {
 	return q.MakeRotateMatrix();
 }
@@ -142,5 +146,5 @@ Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 	float dot = Dot(u, v);
 	Vector3 axis = Normalize(Cross(u, v));
 	float theta = std::acos(dot);
-	return Quaternion::MakeAxisAngle(axis, theta);
+	return MakeAxisAngle(axis, theta);
 }

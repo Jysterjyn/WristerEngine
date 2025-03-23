@@ -36,7 +36,7 @@ Vector3 BaseCamera::UpdateViewMatrix()
 	{
 		// シェイクの値だけ位置をずらす
 		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
-		matView = Matrix4::Inverse(sMatWorld);
+		matView = Inverse(sMatWorld);
 		return sMatWorld.GetVector(3);
 	}
 	// eye, target, upから行列を計算
@@ -45,8 +45,8 @@ Vector3 BaseCamera::UpdateViewMatrix()
 	std::array<Vector3, 3> axis = CalculateAxis(sTarget - sEye, &up);
 	Vector3 cameraMove;
 	for (size_t i = 0; i < axis.size(); i++) { cameraMove[i] = Dot(sEye, axis[i]); }
-	matView = Matrix4::CreateFromVector(axis[(int)Axis::X], axis[(int)Axis::Y], axis[(int)Axis::Z]);
-	matView = Matrix4::Inverse(matView);
+	matView = CreateFromVector(axis[(int)Axis::X], axis[(int)Axis::Y], axis[(int)Axis::Z]);
+	matView = Inverse(matView);
 	for (size_t i = 0; i < axis.size(); i++) { matView.m[3][i] = -cameraMove[i]; }
 	return sEye;
 }

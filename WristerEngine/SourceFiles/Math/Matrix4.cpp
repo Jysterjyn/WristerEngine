@@ -29,6 +29,12 @@ Vector3 Matrix4::GetVector(size_t row) const
 	return Vector3(m[row][0], m[row][1], m[row][2]);
 }
 
+//void Inverse()
+//{
+//	Matrix4 mat = Inverse(mat);
+//	return Vector3(m[row][0], m[row][1], m[row][2]);
+//}
+
 Matrix4 Matrix4::Identity()
 {
 	Matrix4 result
@@ -134,7 +140,7 @@ Matrix4 Matrix4::Translate(const Vector3& t)
 	return result;
 }
 
-Matrix4 Matrix4::Transpose(const Matrix4& mat)
+Matrix4 Transpose(const Matrix4& mat)
 {
 	Matrix4 ans;
 
@@ -148,7 +154,7 @@ Matrix4 Matrix4::Transpose(const Matrix4& mat)
 	return ans;
 }
 
-Matrix4 Matrix4::Inverse(const Matrix4& m)
+Matrix4 Inverse(const Matrix4& m)
 {
 	Matrix4 result;
 	float mat[4][8]{};
@@ -221,7 +227,7 @@ Matrix4 Matrix4::Inverse(const Matrix4& m)
 	return result;
 }
 
-Matrix4 Matrix4::CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3& vec3, const Vector3& vec4)
+Matrix4 CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3& vec3, const Vector3& vec4)
 {
 	Matrix4 result
 	{
@@ -234,7 +240,7 @@ Matrix4 Matrix4::CreateFromVector(const Vector3& vec1, const Vector3& vec2, cons
 	return result;
 }
 
-Matrix4 Matrix4::GetBillboard()
+Matrix4 GetBillboard()
 {
 	WristerEngine::_3D::BaseCamera* vp = WristerEngine::_3D::ModelManager::GetInstance()->GetCamera();
 	Vector3 cameraAxisZ = vp->target - vp->eye;
@@ -246,7 +252,7 @@ Matrix4 Matrix4::GetBillboard()
 
 	Vector3 cameraAxisX = Normalize(Cross(vp->up, cameraAxisZ));
 	Vector3 cameraAxisY = Normalize(Cross(cameraAxisZ, cameraAxisX));
-	return Matrix4::CreateFromVector(cameraAxisX, cameraAxisY, cameraAxisZ);
+	return CreateFromVector(cameraAxisX, cameraAxisY, cameraAxisZ);
 }
 
 Vector3 operator*(const Vector3& v, const Matrix4& m)
