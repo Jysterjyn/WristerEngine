@@ -3,15 +3,16 @@
 
 namespace WristerEngine::_3D
 {
-	class RailCamera
+	class RailCamera : public Camera
 	{
 		ModelManager* modelManager = ModelManager::GetInstance();
 		Transform transform;
-		Camera camera;
 
 	public:
-		void Initialize(const Vector3& pos = {}, const Vector3& rot = {});
-		void Update();
+		RailCamera(const Vector3& pos = {}, const Vector3& rot = {});
 		Transform* GetTransform() { return &transform; }
+
+		// BaseCamera ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+		void VirtualUpdate() override;
 	};
 }

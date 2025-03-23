@@ -69,7 +69,7 @@ void ModelManager::DrawObjects()
 void ModelManager::Update()
 {
 	lightGroup->Update();
-	GetCamera()->Update();
 	objects.remove_if([](std::unique_ptr<Object3d>& object) { return object->isDestroy; });
 	for (auto& object : objects) { object->Update(); }
+	GetCamera()->Update();
 }

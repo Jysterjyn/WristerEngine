@@ -19,7 +19,7 @@ class TestScene : public WristerEngine::BaseScene
 	WristerEngine::_3D::Camera* camera;
 	bool isDebugCameraActive = false;
 	std::unique_ptr<Enemy> enemy;
-	WristerEngine::_3D::RailCamera railCamera;
+	std::unique_ptr<WristerEngine::_3D::RailCamera> railCamera;
 	std::unique_ptr<WristerEngine::Skydome> skydome;
 	WristerEngine::_3D::PrimitiveDrawer* primitiveDrawer = WristerEngine::_3D::PrimitiveDrawer::GetInstance();
 

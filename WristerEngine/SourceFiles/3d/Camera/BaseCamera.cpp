@@ -13,24 +13,42 @@ void BaseCamera::Update()
 {
 	UpdateProjectionMatrix();
 
-	// シェイクを計算
-	sTarget = target;
-	sEye = eye;
-	if (shake)
-	{
-		Vector3 shakeVal = shake->Update();
-		sTarget += shakeVal;
-		sEye += shakeVal;
-	}
-
 	VirtualUpdate();
+
+	Vector3 cameraPos = UpdateViewMatrix();
 
 	// 2行列を掛ける
 	matViewProjection = matView * matProjection;
 
 	// GPU転送
 	constMap->viewproj = matViewProjection;
-	constMap->cameraPos = sEye;
+	constMap->cameraPos = cameraPos;
+}
+
+Vector3 BaseCamera::UpdateViewMatrix()
+{
+	// シェイクを計算
+	Vector3 shakeVal;
+	if (shake) { shakeVal = shake->Update(); }
+
+	// ワールド行列からビュー行列を計算
+	if (pTransform)
+	{
+		// シェイクの値だけ位置をずらす
+		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
+		matView = Matrix4::Inverse(sMatWorld);
+		return sMatWorld.GetVector(3);
+	}
+	// eye, target, upから行列を計算
+	Vector3 sTarget = target + shakeVal;
+	Vector3 sEye = eye + shakeVal;
+	std::array<Vector3, 3> axis = CalculateAxis(sTarget - sEye, &up);
+	Vector3 cameraMove;
+	for (size_t i = 0; i < axis.size(); i++) { cameraMove[i] = Dot(sEye, axis[i]); }
+	matView = Matrix4::CreateFromVector(axis[(int)Axis::X], axis[(int)Axis::Y], axis[(int)Axis::Z]);
+	matView = Matrix4::Inverse(matView);
+	for (size_t i = 0; i < axis.size(); i++) { matView.m[3][i] = -cameraMove[i]; }
+	return sEye;
 }
 
 void BaseCamera::UpdateProjectionMatrix()

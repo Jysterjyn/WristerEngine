@@ -22,9 +22,13 @@ void TestScene::Initialize()
 	camera = modelManager->GetCamera();
 	camera->eye.z = -50;
 
+	railCamera = std::make_unique<WE::_3D::RailCamera>(Vector3(0, 0, -50));
+	railCamera->Initialize();
+	modelManager->AddCamera("rail", railCamera.get());
+
 	player = std::make_unique<Player>();
 	player->Initialize();
-	player->SetParent(railCamera.GetTransform());
+	player->SetParent(railCamera->GetTransform());
 
 	enemy = std::make_unique<Enemy>();
 	enemy->Initialize();
@@ -32,8 +36,6 @@ void TestScene::Initialize()
 
 	skydome = std::make_unique<WristerEngine::Skydome>();
 	skydome->Initialize("skydome", 1);
-
-	railCamera.Initialize({ 0,0,-50 });
 
 	std::vector<Vector3> controlPoints =
 	{
@@ -58,8 +60,15 @@ void TestScene::Initialize()
 	{
 		primitiveDrawer->DrawLine3d(pointsDrawing[i], pointsDrawing[i + 1], WE::ColorRGBA::Red());
 	}
-	
+
 	primitiveDrawer->TransferVertices();
+
+	WE::_3D::Shake::Prop prop;
+	prop.easingType = WE::Easing::Type::Linear;
+	prop.range = { 5,5,0 };
+	prop.time = 20;
+	debugCamera->CreateShake(prop);
+	railCamera->CreateShake(prop);
 }
 
 void TestScene::Update()
@@ -69,18 +78,15 @@ void TestScene::Update()
 #endif // _DEBUG
 	if (isDebugCameraActive)
 	{
+		if (input->IsTrigger(WE::Key::T)) { debugCamera->shake->Start(); }
 		modelManager->SetCameraName("debug");
 	}
 	else
 	{
+		if (input->IsTrigger(WE::Key::T)) { railCamera->shake->Start(); }
 		modelManager->SetCameraName("rail");
 	}
 
-	static float shininess = 10.0f;
-	ImGui::SliderFloat("Shininess", &shininess, 0, 10);
-	modelManager->GetLightGroup()->SetShininess(shininess);
-
 	player->Update();
 	if (enemy) { enemy->Update(); }
-	//railCamera.Update();
 }

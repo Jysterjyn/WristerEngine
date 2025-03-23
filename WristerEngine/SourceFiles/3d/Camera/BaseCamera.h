@@ -2,6 +2,7 @@
 #include "Matrix4.h"
 #include "WindowsAPI.h"
 #include "Shake.h"
+#include <Transform.h>
 #include <wrl.h>
 #include <d3d12.h>
 
@@ -17,14 +18,20 @@ namespace WristerEngine::_3D
 			Matrix4 viewproj; // ビュープロジェクション行列
 			Vector3 cameraPos; // カメラ座標(ワールド座標)
 		};
-		
-		// プロジェクション行列を求める
+
+		// ワールド行列を使った計算を行うためのTransformポインタ
+		const Transform* pTransform = nullptr;
+
+		/// <summary>
+		/// ビュー行列を更新
+		/// </summary>
+		/// <returns>シェイク値を含んだカメラの座標</returns>
+		Vector3 UpdateViewMatrix();
+
+		// プロジェクション行列を更新
 		void UpdateProjectionMatrix();
 
 	protected:
-		// シェイク込みの値
-		Vector3 sTarget;
-		Vector3 sEye;
 
 	public:
 		ConstBufferData* constMap = nullptr;
@@ -45,11 +52,15 @@ namespace WristerEngine::_3D
 		// 更新
 		virtual void Update();
 		// 固有の更新処理
-		virtual void VirtualUpdate() = 0;
+		virtual void VirtualUpdate() {}
 		// シェイクを生成する
 		void CreateShake(const Shake::Prop& shakeProp);
 		// カメラ移動
 		void CameraMove(const Vector3& move);
+		// ワールド行列をセット
+		void SetTransform(const Transform* transform) { pTransform = transform; }
+		// ワールド行列をセット
+		const Transform* GetTransform() const { return pTransform; }
 		// ビュー行列とプロジェクション行列を掛け合わせた行列
 		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
 	};
