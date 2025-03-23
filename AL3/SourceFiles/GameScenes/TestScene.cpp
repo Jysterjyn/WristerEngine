@@ -72,6 +72,7 @@ void TestScene::Update()
 	if (isDebugCameraActive)
 	{
 		modelManager->SetCameraName("debug");
+		railCamera->Update();
 	}
 	else
 	{

@@ -7,6 +7,7 @@ namespace WristerEngine::_3D
 	{
 		ModelManager* modelManager = ModelManager::GetInstance();
 		Transform transform;
+		float t = 0;
 
 	public:
 		RailCamera(const Vector3& pos = {}, const Vector3& rot = {});

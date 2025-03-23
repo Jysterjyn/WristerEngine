@@ -16,10 +16,11 @@ namespace WristerEngine::_3D
 			Matrix4 world; // ƒ[ƒ‹ƒhs—ñ
 		};
 
-	public:
-		Matrix4 matWorld;
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
+
+	public:
+		Matrix4 matWorld;
 		Vector3 scale = { 1,1,1 }, rotation, translation;
 		Transform* parent = nullptr;
 		bool isUpdated = false;

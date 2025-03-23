@@ -244,16 +244,16 @@ Vector2 To2DVector(const Vector3& vec)
 	return v;
 }
 
-std::array<Vector3, 3> CalculateAxis(const Vector3& frontVec, const Vector3* up)
+std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)
 {
-	assert(frontVec.Length() != 0);
+	assert(forward.Length() != 0);
 
 	Vector3 upVec;
 	if (up) { upVec = Normalize(*up); }
 	else { upVec = Vector3::MakeAxis(Axis::Y); }
 
 	std::array<Vector3, 3> axis;
-	axis[(int)Axis::Z] = Normalize(frontVec);
+	axis[(int)Axis::Z] = Normalize(forward);
 	axis[(int)Axis::X] = Normalize(Cross(upVec, axis[(int)Axis::Z]));
 	axis[(int)Axis::Y] = Normalize(Cross(axis[(int)Axis::Z], axis[(int)Axis::X]));
 	return axis;

@@ -21,6 +21,7 @@ namespace WristerEngine::_3D
 
 		// ワールド行列を使った計算を行うためのTransformポインタ
 		const Transform* pTransform = nullptr;
+		Matrix4 matView, matProjection, matViewProjection;
 
 		/// <summary>
 		/// ビュー行列を更新
@@ -31,8 +32,6 @@ namespace WristerEngine::_3D
 		// プロジェクション行列を更新
 		void UpdateProjectionMatrix();
 
-	protected:
-
 	public:
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
@@ -41,7 +40,6 @@ namespace WristerEngine::_3D
 		// アスペクト比(基本はWIN_SIZEに準拠)
 		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
 		float nearZ = 0.1f, farZ = 1000.0f; // 映る範囲
-		Matrix4 matView, matProjection, matViewProjection;
 		// シェイク機能
 		std::unique_ptr<Shake> shake;
 

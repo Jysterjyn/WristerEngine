@@ -98,8 +98,8 @@ Vector3 Normalize(const Vector3& v);
 // 3D→2D座標
 Vector2 To2DVector(const Vector3& vec);
 
-// frontVecを正面ベクトルとする3軸を計算する
-std::array<Vector3, 3> CalculateAxis(const Vector3& frontVec, const Vector3* up = nullptr);
+// forwardを正面ベクトルとする3軸を計算する
+std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up = nullptr);
 
 // 範囲内のランダムな大きさのベクトルを生成する
 Vector2 RandomVector(Vector2 range);

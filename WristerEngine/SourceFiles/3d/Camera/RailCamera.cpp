@@ -14,10 +14,28 @@ RailCamera::RailCamera(const Vector3& pos, const Vector3& rot)
 
 void RailCamera::VirtualUpdate()
 {
-	transform.translation.z -= 0.1f;
-	transform.Update();
-	transform.isUpdated = false;
+	std::vector<Vector3> controlPoints =
+	{
+		{0,  0,  0},
+		{10, 10, 0},
+		{10, 15, 0},
+		{20, 15, 0},
+		{20, 0,  0},
+		{30, 0,  0},
+	};
 
-	//ImGuiManager::PrintVector("CameraPos", transform.translation);
-	//ImGuiManager::PrintVector("CameraRot", transform.rotation);
+	const float dt = 1.0f / 600.0f;
+	eye = SplineCurve(controlPoints, t);
+	target = SplineCurve(controlPoints, std::clamp(t + dt, 0.0f, 1.0f));
+	t += dt;
+
+	transform.translation = eye;
+
+	Vector3 forward = Normalize(target - eye);
+	transform.rotation.y = Angle(90);
+	transform.rotation.z = std::atan2(forward.x, forward.y);
+	float velocityXY = Length(Vector2(forward.x, forward.y));
+	transform.rotation.x = std::atan2(-forward.y, velocityXY);
+
+	transform.isUpdated = false;
 }
