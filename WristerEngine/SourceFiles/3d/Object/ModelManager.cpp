@@ -18,7 +18,7 @@ void ModelManager::Initialize()
 	// ライトグループ生成
 	lightGroup = LightGroup::Create();
 	// カメラ生成
-	Camera* camera = new Camera;
+	BaseCamera* camera = new BaseCamera;
 	camera->Initialize();
 	AddCamera(cameraName, camera);
 }

@@ -4,7 +4,7 @@
 using namespace WristerEngine;
 using namespace _3D;
 
-WristerEngine::_3D::DebugCamera::DebugCamera(Vector3 targetPos, float distance_, float mouseMoveDec_, float wheelSpdDec_)
+DebugCamera::DebugCamera(Vector3 targetPos, float distance_, float mouseMoveDec_, float wheelSpdDec_)
 {
 	distance = distance_;
 	target = eye = targetPos;
@@ -13,7 +13,7 @@ WristerEngine::_3D::DebugCamera::DebugCamera(Vector3 targetPos, float distance_,
 	eye.z -= distance;
 }
 
-void DebugCamera::Update()
+void DebugCamera::VirtualUpdate()
 {
 	bool dirty = false;
 	Vector2 angle;
@@ -48,7 +48,7 @@ void DebugCamera::Update()
 		dirty = true;
 	}
 
-	if (!dirty) { Camera::Update(); return; }
+	if (!dirty) { return; }
 	// 追加回転分のQuaternionを生成
 	Quaternion rotQNew;
 	rotQNew = Quaternion::MakeAxisAngle(Vector3::MakeAxis(Axis::Y), -angle.y);
@@ -68,6 +68,4 @@ void DebugCamera::Update()
 	// 注視点からずらした位置に視点座標を決定
 	eye = target + vTargetEye;
 	up = vUp;
-
-	Camera::Update();
 }

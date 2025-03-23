@@ -62,13 +62,6 @@ void TestScene::Initialize()
 	}
 
 	primitiveDrawer->TransferVertices();
-
-	WE::_3D::Shake::Prop prop;
-	prop.easingType = WE::Easing::Type::Linear;
-	prop.range = { 5,5,0 };
-	prop.time = 20;
-	debugCamera->CreateShake(prop);
-	railCamera->CreateShake(prop);
 }
 
 void TestScene::Update()
@@ -78,12 +71,10 @@ void TestScene::Update()
 #endif // _DEBUG
 	if (isDebugCameraActive)
 	{
-		if (input->IsTrigger(WE::Key::T)) { debugCamera->shake->Start(); }
 		modelManager->SetCameraName("debug");
 	}
 	else
 	{
-		if (input->IsTrigger(WE::Key::T)) { railCamera->shake->Start(); }
 		modelManager->SetCameraName("rail");
 	}
 

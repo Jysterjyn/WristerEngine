@@ -141,7 +141,6 @@
     <ClCompile Include="SourceFiles\3d\Camera\DebugCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Mesh.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\ModelManager.cpp" />
-    <ClCompile Include="SourceFiles\3d\Camera\Camera.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Transform.cpp" />
     <ClCompile Include="SourceFiles\Audio\Audio.cpp" />
     <ClCompile Include="SourceFiles\DirectX\D3D12Common.cpp" />
@@ -200,7 +199,6 @@
     <ClInclude Include="SourceFiles\3d\Camera\DebugCamera.h" />
     <ClInclude Include="SourceFiles\3d\Object\Mesh.h" />
     <ClInclude Include="SourceFiles\3d\Object\ModelManager.h" />
-    <ClInclude Include="SourceFiles\3d\Camera\Camera.h" />
     <ClInclude Include="SourceFiles\3d\Object\Transform.h" />
     <ClInclude Include="SourceFiles\Audio\Audio.h" />
     <ClInclude Include="SourceFiles\DirectX\D3D12Common.h" />

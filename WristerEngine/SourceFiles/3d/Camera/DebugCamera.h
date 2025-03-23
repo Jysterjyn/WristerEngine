@@ -1,11 +1,11 @@
 #pragma once
-#include "Camera.h"
+#include "BaseCamera.h"
 #include "Quaternion.h"
 
 namespace WristerEngine::_3D
 {
 	// デバッグカメラ
-	class DebugCamera : public Camera
+	class DebugCamera : public BaseCamera
 	{
 	private:
 		float distance = 50;
@@ -23,6 +23,6 @@ namespace WristerEngine::_3D
 		/// <param name="wheelSpdDec">ズームの速度補正</param>
 		DebugCamera(Vector3 targetPos = { 0,0,0 }, float distance = 50, float mouseMoveDec = 75, float wheelSpdDec = 50);
 		// 更新
-		void Update() override;
+		void VirtualUpdate() override;
 	};
 }

@@ -16,7 +16,7 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class TestScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
-	WristerEngine::_3D::Camera* camera;
+	WristerEngine::_3D::BaseCamera* camera;
 	bool isDebugCameraActive = false;
 	std::unique_ptr<Enemy> enemy;
 	std::unique_ptr<WristerEngine::_3D::RailCamera> railCamera;

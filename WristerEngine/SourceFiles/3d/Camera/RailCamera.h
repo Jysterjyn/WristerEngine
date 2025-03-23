@@ -3,7 +3,7 @@
 
 namespace WristerEngine::_3D
 {
-	class RailCamera : public Camera
+	class RailCamera : public BaseCamera
 	{
 		ModelManager* modelManager = ModelManager::GetInstance();
 		Transform transform;
