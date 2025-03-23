@@ -7,6 +7,7 @@
 class Player : WristerEngine::SphereCollider
 {
 	WristerEngine::_3D::Object3d* obj = nullptr;
+	WristerEngine::_3D::Object3d* obj3DReticle = nullptr;
 	WristerEngine::Input* input = WristerEngine::Input::GetInstance();
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 

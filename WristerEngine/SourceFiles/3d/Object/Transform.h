@@ -32,7 +32,7 @@ namespace WristerEngine::_3D
 		// •`‰æ
 		void Draw();
 		// getter
-		Vector3 GetWorldPosition() const { return { matWorld.m[3][0],matWorld.m[3][1],matWorld.m[3][2] }; }
+		Vector3 GetWorldPosition() const { return matWorld.GetVector(3); }
 		Vector3 GetScale() const;
 	};
 }
