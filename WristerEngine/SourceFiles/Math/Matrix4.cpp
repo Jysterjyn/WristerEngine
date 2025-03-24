@@ -19,7 +19,7 @@ Matrix4 Matrix4::operator*=(const Matrix4& m2)
 	return *this;
 }
 
-void Matrix4::SetVector(Vector3& vec, size_t row)
+void Matrix4::SetVector(Vector3 vec, size_t row)
 {
 	for (size_t i = 0; i < 3; i++) { m[row][i] = vec[i]; }
 }
@@ -236,21 +236,6 @@ Matrix4 CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3
 	};
 
 	return result;
-}
-
-Matrix4 GetBillboard()
-{
-	WristerEngine::_3D::BaseCamera* vp = WristerEngine::_3D::ModelManager::GetInstance()->GetCamera();
-	Vector3 cameraAxisZ = vp->target - vp->eye;
-	// 0ƒxƒNƒgƒ‹‚ÌŽž
-	assert(!(cameraAxisZ == Vector3(0, 0, 0)));
-	assert(!(vp->up == Vector3(0, 0, 0)));
-
-	cameraAxisZ.Normalize();
-
-	Vector3 cameraAxisX = Normalize(Cross(vp->up, cameraAxisZ));
-	Vector3 cameraAxisY = Normalize(Cross(cameraAxisZ, cameraAxisX));
-	return CreateFromVector(cameraAxisX, cameraAxisY, cameraAxisZ);
 }
 
 Vector3 operator*(const Vector3& v, const Matrix4& m)

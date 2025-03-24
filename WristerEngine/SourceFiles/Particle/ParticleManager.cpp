@@ -1,18 +1,19 @@
 #include "ParticleManager.h"
 #include "Sprite.h"
 #include "D3D12Common.h"
-#include "ModelManager.h"
 #include "PipelineManager.h"
 using namespace Microsoft::WRL;
 using namespace WristerEngine;
+using namespace _3D;
 
 // 静的メンバ変数の実体
 ComPtr<ID3D12Resource> ParticleManager::constBuff;
 ParticleManager::ConstBufferData* ParticleManager::constMap = nullptr;
 std::vector<ParticleGroup> ParticleManager::particleGroups;
+ModelManager* ParticleManager::modelManager = ModelManager::GetInstance();
 
 void ParticleManager::Initialize()
-{	
+{
 	CreateBuffer(&constBuff, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 }
 
@@ -20,8 +21,9 @@ void ParticleManager::Update()
 {
 	for (auto& particleGroup : particleGroups) { particleGroup.Update(); }
 	// 定数バッファへデータ転送
-	constMap->mat = _3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
-	constMap->matBillboard = GetBillboard();
+	BaseCamera* camera = modelManager->GetCamera();
+	constMap->mat = camera->GetViewProjectionMatrix();
+	constMap->matBillboard = camera->GetBillboard();
 }
 
 void ParticleManager::Draw()

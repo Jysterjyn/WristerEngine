@@ -47,7 +47,7 @@ Vector3 BaseCamera::UpdateViewMatrix()
 	for (size_t i = 0; i < axis.size(); i++) { cameraMove[i] = Dot(sEye, axis[i]); }
 	matView = CreateFromVector(axis[(int)Axis::X], axis[(int)Axis::Y], axis[(int)Axis::Z]);
 	matView = Inverse(matView);
-	for (size_t i = 0; i < axis.size(); i++) { matView.m[3][i] = -cameraMove[i]; }
+	matView.SetVector(-cameraMove, 3);
 	return sEye;
 }
 
@@ -70,4 +70,18 @@ void BaseCamera::CameraMove(const Vector3& move)
 {
 	eye += move;
 	target += move;
+}
+
+Matrix4 BaseCamera::GetBillboard() const
+{
+	Vector3 cameraAxisZ = target - eye;
+	// 0ƒxƒNƒgƒ‹‚ÌŽž
+	assert(!(cameraAxisZ.Length() == 0));
+	assert(!(up.Length() == 0));
+
+	cameraAxisZ.Normalize();
+
+	Vector3 cameraAxisX = Normalize(Cross(up, cameraAxisZ));
+	Vector3 cameraAxisY = Normalize(Cross(cameraAxisZ, cameraAxisX));
+	return CreateFromVector(cameraAxisX, cameraAxisY, cameraAxisZ);
 }

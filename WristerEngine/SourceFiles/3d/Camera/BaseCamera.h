@@ -57,6 +57,8 @@ namespace WristerEngine::_3D
 		void CameraMove(const Vector3& move);
 		// ワールド行列をセット
 		void SetTransform(const Transform* transform) { pTransform = transform; }
+		// カメラに対してのビルボード行列を返す
+		Matrix4 GetBillboard() const;
 		// ワールド行列をセット
 		const Transform* GetTransform() const { return pTransform; }
 		// ビュー行列とプロジェクション行列を掛け合わせた行列

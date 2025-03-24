@@ -39,7 +39,7 @@ Vector2& Vector2::operator/=(float s)
 	return *this;
 }
 
-float Vector2::operator[](size_t index)
+float& Vector2::operator[](size_t index)
 {
 	switch (index)
 	{
@@ -132,31 +132,31 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
-bool Vector3::operator<=(Vector3 vec)
+bool Vector3::operator<=(Vector3 vec) const
 {
 	if (x <= vec.x && y <= vec.y && z <= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>=(Vector3 vec)
+bool Vector3::operator>=(Vector3 vec) const
 {
 	if (x >= vec.x && y >= vec.y && z >= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator<(Vector3 vec)
+bool Vector3::operator<(Vector3 vec) const
 {
 	if (x < vec.x && y < vec.y && z < vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>(Vector3 vec)
+bool Vector3::operator>(Vector3 vec) const
 {
 	if (x > vec.x && y > vec.y && z > vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator==(Vector3 vec)
+bool Vector3::operator==(Vector3 vec) const
 {
 	if (x == vec.x && y == vec.y && z == vec.z) { return true; }
 	return false;

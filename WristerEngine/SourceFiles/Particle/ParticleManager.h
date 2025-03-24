@@ -1,6 +1,7 @@
 #pragma once
 #include "Matrix4.h"
 #include "ParticleGroup.h"
+#include "ModelManager.h"
 
 namespace WristerEngine
 {
@@ -23,6 +24,7 @@ namespace WristerEngine
 		static ConstBufferData* constMap;
 		// パーティクルグループの配列
 		static std::vector<ParticleGroup> particleGroups;
+		static _3D::ModelManager* modelManager;
 
 		ParticleManager() = delete;
 		ParticleManager(const ParticleManager& obj) = delete;

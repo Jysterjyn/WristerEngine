@@ -24,7 +24,7 @@ public:
 	Vector2& operator-=(const Vector2& v);
 	Vector2& operator*=(float s);
 	Vector2& operator/=(float s);
-	float operator[](size_t index);
+	float& operator[](size_t index);
 };
 
 class Matrix4;
@@ -56,11 +56,11 @@ public:
 	Vector3& operator*=(const Matrix4& m);
 	Vector3& operator/=(float s);
 
-	bool operator<=(Vector3);
-	bool operator>=(Vector3);
-	bool operator<(Vector3);
-	bool operator>(Vector3);
-	bool operator==(Vector3);
+	bool operator<=(Vector3) const;
+	bool operator>=(Vector3) const;
+	bool operator<(Vector3) const;
+	bool operator>(Vector3) const;
+	bool operator==(Vector3) const;
 
 	// ”z—ñ‚Æ‚µ‚Äˆµ‚¦‚é
 	float& operator[](size_t index);
