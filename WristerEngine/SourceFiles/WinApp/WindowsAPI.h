@@ -14,7 +14,7 @@ namespace WristerEngine
 	class WindowsAPI final
 	{
 	private:
-		HWND hwnd;
+		HWND hwnd{};
 		WNDCLASSEX w{};
 		WindowsAPI() = default;
 
@@ -31,7 +31,9 @@ namespace WristerEngine
 		// メッセージの処理
 		bool ProcessMessage();
 		// 終了
-		void Finalize();
+		void Finalize() const;
+		// マウス座標を取得する
+		Vector2 GetScreenCursorPos() const;
 
 		// getter
 		HWND GetHwnd() const { return hwnd; }

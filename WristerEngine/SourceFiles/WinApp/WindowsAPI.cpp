@@ -27,8 +27,8 @@ LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam
 
 WindowsAPI* WindowsAPI::GetInstance()
 {
-	static WindowsAPI* wAPI = new WindowsAPI;
-	return wAPI;
+	static WindowsAPI wAPI;
+	return &wAPI;
 }
 
 bool WindowsAPI::ProcessMessage()
@@ -81,8 +81,18 @@ void WindowsAPI::Initialize(const std::wstring& windowName)
 	timeBeginPeriod(1);
 }
 
-void WindowsAPI::Finalize()
+void WindowsAPI::Finalize() const
 {
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
+}
+
+Vector2 WindowsAPI::GetScreenCursorPos() const
+{
+	POINT mousePosition{};
+	// マウス座標(スクリーン座標)を取得する
+	GetCursorPos(&mousePosition);
+	// クライアントエリア座標に変換する
+	ScreenToClient(hwnd, &mousePosition);
+	return Vector2((float)mousePosition.x, (float)mousePosition.y);
 }
