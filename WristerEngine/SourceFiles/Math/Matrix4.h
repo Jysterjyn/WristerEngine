@@ -18,7 +18,7 @@ public:
 	// 行列からベクトルを得る
 	Vector3 GetVector(size_t row) const;
 	// 逆行列にする
-	//void Inverse();
+	void Inverse();
 
 	// 単位行列
 	static Matrix4 Identity();

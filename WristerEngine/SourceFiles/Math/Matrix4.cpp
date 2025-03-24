@@ -29,12 +29,6 @@ Vector3 Matrix4::GetVector(size_t row) const
 	return Vector3(m[row][0], m[row][1], m[row][2]);
 }
 
-//void Inverse()
-//{
-//	Matrix4 mat = Inverse(mat);
-//	return Vector3(m[row][0], m[row][1], m[row][2]);
-//}
-
 Matrix4 Matrix4::Identity()
 {
 	Matrix4 result
@@ -154,15 +148,21 @@ Matrix4 Transpose(const Matrix4& mat)
 	return ans;
 }
 
-Matrix4 Inverse(const Matrix4& m)
+Matrix4 Inverse(const Matrix4& mat)
 {
-	Matrix4 result;
+	Matrix4 m = mat;
+	m.Inverse();
+	return m;
+}
+
+void Matrix4::Inverse()
+{
 	float mat[4][8]{};
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++)
 		{
-			mat[i][j] = m.m[i][j];
+			mat[i][j] = m[i][j];
 		}
 	}
 
@@ -186,8 +186,8 @@ Matrix4 Inverse(const Matrix4& m)
 			}
 		}
 
-		// 最大の絶対値が0だったら逆行列は求められないので単位行列を返す
-		if (abs(mat[maxIndex][n]) <= 1.0e-6f) { return result; }
+		// 最大の絶対値が0だったら逆行列は求められないので先の計算は省略
+		if (abs(mat[maxIndex][n]) <= 1.0e-6f) { return; }
 
 		// 入れ替え
 		if (n != maxIndex)
@@ -220,11 +220,9 @@ Matrix4 Inverse(const Matrix4& m)
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++)
 		{
-			result.m[i][j] = mat[i][j + 4];
+			m[i][j] = mat[i][j + 4];
 		}
 	}
-
-	return result;
 }
 
 Matrix4 CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3& vec3, const Vector3& vec4)
