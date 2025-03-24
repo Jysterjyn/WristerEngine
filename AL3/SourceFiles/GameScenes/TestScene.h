@@ -26,4 +26,5 @@ class TestScene : public WristerEngine::BaseScene
 	// BaseScene ‚ð‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;
 	void Update() override;
+	void Draw() override { WristerEngine::BaseScene::Draw(); player->Draw(); }
 };

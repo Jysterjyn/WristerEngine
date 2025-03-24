@@ -22,7 +22,7 @@ namespace WristerEngine::_2D
 	};
 
 	// スプライト
-	struct Sprite : DXCommonGetter
+	struct Sprite : private DXCommonGetter
 	{
 		Vector2 position;
 		float rotation = 0;

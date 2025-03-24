@@ -297,7 +297,7 @@ Matrix4 DirectXCommon::GetViewportMatrix() const
 {
 	Matrix4 mat;
 	mat.m[0][0] = viewport.Width / 2.0f;
-	mat.m[1][1] = viewport.Height / 2.0f;
+	mat.m[1][1] = -viewport.Height / 2.0f;
 	mat.m[3][0] = viewport.TopLeftX + viewport.Width / 2.0f;
 	mat.m[3][1] = viewport.TopLeftY + viewport.Height / 2.0f;
 	return mat;

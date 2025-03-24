@@ -2,6 +2,7 @@
 #include <ImGuiManager.h>
 #include <ImGui.h>
 #include <algorithm>
+#include <DirectXCommon.h>
 using namespace WristerEngine;
 
 void Player::Move()
@@ -34,7 +35,7 @@ void Player::Attack()
 	if (!input->IsTrigger(Key::Space)) { return; }
 
 	const float BULLET_SPEED = 1.0f;
-	Vector3 velocity = obj3DReticle->transform.GetWorldPosition() - obj->transform.GetWorldPosition();
+	Vector3 velocity = transform3DReticle.GetWorldPosition() - obj->transform.GetWorldPosition();
 	velocity = Normalize(velocity) * BULLET_SPEED;
 	std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 	newBullet->Initialize(obj->transform.GetWorldPosition(), velocity);
@@ -44,11 +45,13 @@ void Player::Attack()
 void Player::Initialize()
 {
 	obj = _3D::ModelManager::GetInstance()->Create("cube");
-	obj3DReticle = _3D::ModelManager::GetInstance()->Create("cube");
 	transform = &obj->transform;
 	transform->translation.z = 50.0f;
 	collisionAttribute = CollisionAttribute::Player;
 	collisionMask = CollisionMask::Player;
+	sprite2DReticle = _2D::Sprite::Create({ "Reticle.png" });
+	sprite2DReticle->SetCenterAnchor();
+	sprite2DReticle->SetCenterPos();
 }
 
 void Player::Update()
@@ -62,7 +65,12 @@ void Player::Update()
 	Vector3 offset = { 0,0,1 };
 	offset *= Matrix4::Rotate(obj->transform.rotation);
 	offset = Normalize(offset) * 50.0f;
-	obj3DReticle->transform.translation = obj->transform.GetWorldPosition() + offset;
+	transform3DReticle.translation = obj->transform.GetWorldPosition() + offset;
+	transform3DReticle.Update();
+	transform3DReticle.isUpdated = false;
+
+	Vector3 positionReticle = transform3DReticle.GetWorldPosition();
+	sprite2DReticle->position = To2DVector(positionReticle);
 
 	Rotate();
 	Move();

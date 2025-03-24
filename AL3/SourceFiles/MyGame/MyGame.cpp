@@ -33,9 +33,9 @@ void MyGame::Draw()
 
 	// 描画処理
 	dxCommon->PreDraw();
+	modelManager->DrawObjects();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	modelManager->DrawObjects();
 	primitiveDrawer->Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();

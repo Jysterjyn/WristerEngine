@@ -1,7 +1,6 @@
 #include "ModelManager.h"
 #include "DirectXCommon.h"
 #include <cmath>
-#include <cassert>
 #include <Random.h>
 
 Vector2 Vector2::Normalize()
