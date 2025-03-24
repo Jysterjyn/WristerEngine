@@ -235,12 +235,31 @@ Vector2 Normalize(const Vector2& v) { return Vector2(v).Normalize(); }
 
 Vector3 Normalize(const Vector3& v) { return Vector3(v).Normalize(); }
 
+static Matrix4 GetViewProjectionViewportMatrix()
+{
+	Matrix4 matVP = WristerEngine::_3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
+	Matrix4 matV = WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
+	return matVP * matV;
+}
+
 Vector2 To2DVector(const Vector3& vec)
 {
-	Vector3 v = vec;
-	v *= WristerEngine::_3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
-	v *= WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
-	return v;
+	return vec * GetViewProjectionViewportMatrix();
+}
+
+Vector3 To3DVector(const Vector2& vec, float distance)
+{
+	// 合成行列の逆行列を計算する
+	Matrix4 matInverseVPV = Inverse(GetViewProjectionViewportMatrix());
+	// スクリーン座標
+	Vector3 posNear(vec, 0);
+	Vector3 posFar(vec, 1);
+	// スクリーン座標系からワールド座標系へ
+	posNear *= matInverseVPV;
+	posFar *= matInverseVPV;
+	// レイの方向
+	Vector3 direction = Normalize(posFar - posNear);
+	return posNear + direction * distance;
 }
 
 std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)

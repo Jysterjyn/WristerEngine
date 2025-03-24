@@ -73,25 +73,9 @@ void Player::Update()
 	//sprite2DReticle->position = To2DVector(positionReticle);
 
 	Vector2 mousePosition = WindowsAPI::GetInstance()->GetScreenCursorPos();
-
 	sprite2DReticle->position = mousePosition;
-
-	Matrix4 matVP = _3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
-	Matrix4 matV = DirectXCommon::GetInstance()->GetViewportMatrix();
-	Matrix4 matInverseVPV = Inverse(matVP * matV);
-
-	Vector3 posNear(mousePosition, 0);
-	Vector3 posFar(mousePosition, 1);
-
-	posNear *= matInverseVPV;
-	posFar *= matInverseVPV;
-
-	Vector3 mouseDirection = Normalize(posFar - posNear);
-
 	const float kDistanceTestObject = 100.0f;
-	obj3DReticle->transform.translation = posNear + mouseDirection * kDistanceTestObject;
-
-	_2D::ImGuiManager::PrintVector("3DReticlePos", obj3DReticle->transform.translation);
+	obj3DReticle->transform.translation = To3DVector(mousePosition, kDistanceTestObject);
 
 	Rotate();
 	Move();
