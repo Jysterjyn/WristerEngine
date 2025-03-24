@@ -2,6 +2,7 @@
 #include <ImGuiManager.h>
 #include <ImGui.h>
 #include <algorithm>
+#include <WindowsAPI.h>
 #include <DirectXCommon.h>
 using namespace WristerEngine;
 
@@ -35,7 +36,7 @@ void Player::Attack()
 	if (!input->IsTrigger(Key::Space)) { return; }
 
 	const float BULLET_SPEED = 1.0f;
-	Vector3 velocity = transform3DReticle.GetWorldPosition() - obj->transform.GetWorldPosition();
+	Vector3 velocity = obj3DReticle->transform.GetWorldPosition() - obj->transform.GetWorldPosition();
 	velocity = Normalize(velocity) * BULLET_SPEED;
 	std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 	newBullet->Initialize(obj->transform.GetWorldPosition(), velocity);
@@ -45,6 +46,7 @@ void Player::Attack()
 void Player::Initialize()
 {
 	obj = _3D::ModelManager::GetInstance()->Create("cube");
+	obj3DReticle = _3D::ModelManager::GetInstance()->Create("cube");
 	transform = &obj->transform;
 	transform->translation.z = 50.0f;
 	collisionAttribute = CollisionAttribute::Player;
@@ -57,20 +59,43 @@ void Player::Initialize()
 void Player::Update()
 {
 	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
-		if (bullet->IsDead()) { return true; }
-		return false;
-		});
+		return bullet->IsDead(); });
 
-	obj->transform.Update();
-	Vector3 offset = { 0,0,1 };
-	offset *= Matrix4::Rotate(obj->transform.rotation);
-	offset = Normalize(offset) * 50.0f;
-	transform3DReticle.translation = obj->transform.GetWorldPosition() + offset;
-	transform3DReticle.Update();
-	transform3DReticle.isUpdated = false;
+	//obj->transform.Update();
+	//Vector3 offset = { 0,0,1 };
+	//offset *= Matrix4::Rotate(obj->transform.rotation);
+	//offset = Normalize(offset) * 50.0f;
+	//transform3DReticle.translation = obj->transform.GetWorldPosition() + offset;
+	//transform3DReticle.Update();
+	//transform3DReticle.isUpdated = false;
 
-	Vector3 positionReticle = transform3DReticle.GetWorldPosition();
-	sprite2DReticle->position = To2DVector(positionReticle);
+	//Vector3 positionReticle = transform3DReticle.GetWorldPosition();
+	//sprite2DReticle->position = To2DVector(positionReticle);
+
+	POINT mousePosition{};
+	GetCursorPos(&mousePosition);
+
+	HWND hwnd = WindowsAPI::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+
+	sprite2DReticle->position = { (float)mousePosition.x,(float)mousePosition.y };
+
+	Matrix4 matVP = _3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
+	Matrix4 matV = DirectXCommon::GetInstance()->GetViewportMatrix();
+	Matrix4 matInverseVPV = Inverse(matVP * matV);
+
+	Vector3 posNear(sprite2DReticle->position, 0);
+	Vector3 posFar(sprite2DReticle->position, 1);
+
+	posNear *= matInverseVPV;
+	posFar *= matInverseVPV;
+
+	Vector3 mouseDirection = Normalize(posFar - posNear);
+	
+	const float kDistanceTestObject = 100.0f;
+	obj3DReticle->transform.translation = posNear + mouseDirection * kDistanceTestObject;
+	
+	_2D::ImGuiManager::PrintVector("3DReticlePos",obj3DReticle->transform.translation);
 
 	Rotate();
 	Move();
