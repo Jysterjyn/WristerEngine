@@ -6,6 +6,8 @@
 
 namespace WristerEngine::_3D
 {
+	class Object3d;
+
 	// ワールドトランスフォーム
 	class Transform
 	{
@@ -18,12 +20,14 @@ namespace WristerEngine::_3D
 
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
+		bool isObject3d = false; // Object3Dのメンバ変数か
+		bool isUpdated = false;
+		friend Object3d;
 
 	public:
 		Matrix4 matWorld;
 		Vector3 scale = { 1,1,1 }, rotation, translation;
 		Transform* parent = nullptr;
-		bool isUpdated = false;
 
 		// 初期化
 		void Initialize();

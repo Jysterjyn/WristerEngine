@@ -32,10 +32,7 @@ void RailCamera::VirtualUpdate()
 	transform.translation = eye;
 
 	Vector3 forward = Normalize(target - eye);
-	transform.rotation.y = Angle(90);
-	transform.rotation.z = std::atan2(forward.x, forward.y);
-	float velocityXY = Length(Vector2(forward.x, forward.y));
-	transform.rotation.x = std::atan2(-forward.y, velocityXY);
-
-	transform.isUpdated = false;
+	transform.rotation.y = std::atan2(forward.x, forward.z);
+	float velocityXZ = Length(Vector2(forward.x, forward.z));
+	transform.rotation.x = std::atan2(-forward.y, velocityXZ);
 }

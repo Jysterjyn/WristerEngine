@@ -20,7 +20,7 @@ void Transform::Update()
 	matWorld = matScale * matRot;
 	matWorld.SetVector(translation, 3); // 平行移動成分を代入
 	if (parent) { matWorld *= parent->matWorld; } // 親のワールド行列を掛ける
-	isUpdated = true;
+	if (isObject3d) { isUpdated = true; }
 	if (constMap) { constMap->world = matWorld; }
 }
 

@@ -5,8 +5,9 @@
 namespace WristerEngine::_3D
 {
 	// オブジェクトクラス
-	struct Object3d
+	class Object3d
 	{
+	public:
 		Material material;
 		Transform transform;
 		bool isDestroy = false;

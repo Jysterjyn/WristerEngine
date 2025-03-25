@@ -5,6 +5,8 @@
 #include <SceneManager.h>
 #include <WristerEngine.h>
 #include <BaseCamera.h>
+#include <WindowsAPI.h>
+#include <MathUtility.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -49,7 +51,7 @@ void TestScene::Update()
 	}
 	else
 	{
-		modelManager->SetCameraName("default");
+		modelManager->SetCameraName("rail");
 	}
 
 	player->Update();

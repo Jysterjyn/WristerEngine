@@ -61,21 +61,19 @@ void Player::Update()
 	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
 		return bullet->IsDead(); });
 
-	//obj->transform.Update();
-	//Vector3 offset = { 0,0,1 };
-	//offset *= Matrix4::Rotate(obj->transform.rotation);
-	//offset = Normalize(offset) * 50.0f;
-	//transform3DReticle.translation = obj->transform.GetWorldPosition() + offset;
-	//transform3DReticle.Update();
-	//transform3DReticle.isUpdated = false;
+	obj->transform.Update();
+	Vector3 offset = { 0,0,1 };
+	offset *= Matrix4::Rotate(obj->transform.rotation);
+	offset = Normalize(offset) * 50.0f;
+	obj3DReticle->transform.translation = obj->transform.GetWorldPosition() + offset;
 
-	//Vector3 positionReticle = transform3DReticle.GetWorldPosition();
-	//sprite2DReticle->position = To2DVector(positionReticle);
+	Vector3 positionReticle = obj3DReticle->transform.GetWorldPosition();
+	sprite2DReticle->position = To2DVector(positionReticle);
 
-	Vector2 mousePosition = WindowsAPI::GetInstance()->GetScreenCursorPos();
-	sprite2DReticle->position = mousePosition;
-	const float kDistanceTestObject = 100.0f;
-	obj3DReticle->transform.translation = To3DVector(mousePosition, kDistanceTestObject);
+	//Vector2 mousePosition = WindowsAPI::GetInstance()->GetScreenCursorPos();
+	//sprite2DReticle->position = mousePosition;
+	//const float kDistanceTestObject = 100.0f;
+	//obj3DReticle->transform.translation = To3DVector(mousePosition, kDistanceTestObject);
 
 	Rotate();
 	Move();

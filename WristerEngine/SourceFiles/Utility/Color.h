@@ -2,6 +2,14 @@
 
 namespace WristerEngine
 {
+	enum class ColorMode
+	{
+		Normal,		// 今までと同じ
+		Clamp,		// 0~1の範囲を超えない
+		Loop,		// 0~1の範囲をループ
+		Infinite	// 値の制限なし
+	};
+
 	// 1色分の構造体
 	struct Color
 	{

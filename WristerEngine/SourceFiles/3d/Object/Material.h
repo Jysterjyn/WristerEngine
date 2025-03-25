@@ -5,7 +5,7 @@
 namespace WristerEngine::_3D
 {
 	class Mesh;
-	struct Object3d;
+	class Object3d;
 
 	struct TextureTransform
 	{

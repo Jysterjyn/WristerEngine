@@ -8,6 +8,7 @@ void Object3d::Initialize(Mesh* mesh_)
 	mesh = mesh_;
 	material.Load(mesh_);
 	transform.Initialize();
+	transform.isObject3d = true;
 }
 
 void Object3d::Update()
