@@ -46,18 +46,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\fbxsdk\include;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\fbxsdk\include;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -113,6 +113,9 @@
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp" />
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp" />
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
     <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
@@ -168,6 +171,9 @@
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h" />
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h" />
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h" />
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />

@@ -62,6 +62,9 @@
     <Filter Include="ソース ファイル\Utility">
       <UniqueIdentifier>{823e7a3e-f66c-4d55-a1f7-a5ed16915fdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\3d\Fbx">
+      <UniqueIdentifier>{b85dfb4a-b2a3-4b7b-9ff1-9241c17c8eb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp">
@@ -222,6 +225,15 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Utility\Shake.cpp">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +416,15 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\Shake.h">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h">
+      <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
