@@ -5,7 +5,10 @@
 #include <windows.h>
 #include <wrl.h>
 #include <d3dx12.h>
+#pragma warning(push)
+#pragma warning(disable:26495)
 #include "fbxsdk.h"
+#pragma warning(pop)
 #include "Sprite.h"
 
 namespace WristerEngine::_3D

@@ -45,6 +45,18 @@ void PipelineManager::Initialize()
 	pipelineProp.cullMode = D3D12_CULL_MODE_NONE;
 	pipelines[PipelineType::Dissolve].CreatePipeline(pipelineProp);
 
+	// シェーダの読み込みとコンパイル
+	pipelineProp.shaderNames = { L"FBXVS", L"FBXPS" };
+	// 影響を受けるボーン番号(4つ)
+	pipelineProp.inputLayoutProps.push_back({ "BONEINDICES", DXGI_FORMAT_R32G32B32A32_UINT });
+	// ボーンのスキンウェイト(4つ)
+	pipelineProp.inputLayoutProps.push_back({ "BONEWEIGHTS", DXGI_FORMAT_R32G32B32A32_FLOAT });
+	pipelineProp.rootParamProp.constBuffNum = 4;
+	pipelineProp.rootParamProp.descriptorNum = 3;
+	pipelineProp.cullMode = D3D12_CULL_MODE_BACK;
+	// グラフィックスパイプラインの生成
+	pipelines[PipelineType::Fbx].CreatePipeline(pipelineProp);
+
 	pipelineProp.shaderNames = { L"ParticleVS", L"ParticlePS", L"ParticleGS" };
 	pipelineProp.inputLayoutProps.clear();
 	pipelineProp.inputLayoutProps.push_back({ "POSITION", DXGI_FORMAT_R32G32B32_FLOAT });

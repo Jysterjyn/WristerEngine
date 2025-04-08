@@ -45,7 +45,7 @@ namespace WristerEngine::_3D
 		bool isPlay = false;
 
 	public:
-		static void SetLightGroup(LightGroup* lightGroup) { FbxObject3d::lightGroup = lightGroup; }
+		static void SetLightGroup(LightGroup* lightGroup_) { lightGroup = lightGroup_; }
 
 		/// <summary>
 		/// グラフィックパイプラインの生成

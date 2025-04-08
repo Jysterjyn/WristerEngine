@@ -62,7 +62,7 @@ void FbxModel::ParseNodeRecursive(FbxNode* fbxNode, Node* parent)
 		}
 	}
 
-	for (size_t i = 0; i < fbxNode->GetChildCount(); i++)
+	for (int i = 0; i < fbxNode->GetChildCount(); i++)
 	{
 		ParseNodeRecursive(fbxNode->GetChild(i), &node);
 	}
@@ -115,14 +115,14 @@ void FbxModel::ParseMeshFaces(FbxMesh* fbxMesh)
 	FbxStringList uvNames;
 	fbxMesh->GetUVSetNames(uvNames);
 
-	for (size_t i = 0; i < POLYGON_COUNT; i++)
+	for (int i = 0; i < POLYGON_COUNT; i++)
 	{
 		const int POLYGON_SIZE = fbxMesh->GetPolygonSize(i);
 		assert(POLYGON_SIZE <= 4);
 
-		for (size_t j = 0; j < POLYGON_SIZE; j++)
+		for (int j = 0; j < POLYGON_SIZE; j++)
 		{
-			int index = fbxMesh->GetPolygonVertex(i, j);
+			uint16_t index = (uint16_t)fbxMesh->GetPolygonVertex(i, j);
 			assert(index >= 0);
 
 			FbxModel::VertexPosNormalUvSkin& vertex = vertices[index];
@@ -147,9 +147,9 @@ void FbxModel::ParseMeshFaces(FbxMesh* fbxMesh)
 			if (j < 3) { indices.push_back(index); }
 			else
 			{
-				int index2 = indices[indices.size() - 1];
-				int index3 = index;
-				int index0 = indices[indices.size() - 3];
+				uint16_t index2 = indices[indices.size() - 1];
+				uint16_t index3 = index;
+				uint16_t index0 = indices[indices.size() - 3];
 				indices.push_back(index2);
 				indices.push_back(index3);
 				indices.push_back(index0);
@@ -168,15 +168,15 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 
 		if (material)
 		{
-			string name = material->GetName(); // マテリアル名(デバッグ用)
+			name = material->GetName(); // マテリアル名(デバッグ用)
 
 			// ベースカラー
 			const FbxProperty PROP_BASE_COLOR = FbxSurfaceMaterialUtils::GetProperty("baseColor", material);
 			if (PROP_BASE_COLOR.IsValid())
 			{
 				// プロパティの値読み取り
-				Vector3 baseColor = FbxDouble3ToVector3(PROP_BASE_COLOR.Get<FbxDouble3>());
-				ColorRGB baseColorRGB = { baseColor.x,baseColor.y,baseColor.z };
+				Vector3 baseColor_ = FbxDouble3ToVector3(PROP_BASE_COLOR.Get<FbxDouble3>());
+				ColorRGB baseColorRGB = { baseColor_.x,baseColor_.y,baseColor_.z };
 				this->baseColor = baseColorRGB; // 読み取った値を書き込む
 				// テクスチャ読み込み
 				const FbxFileTexture* texture = PROP_BASE_COLOR.GetSrcObject<FbxFileTexture>();
@@ -185,9 +185,9 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					const char* filepath = texture->GetFileName();
 					// ファイルパスからファイル名抽出
 					string path_str(filepath);
-					string name = ExtractFileName(path_str);
+					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(&baseTexture, BASE_DIRECTORY + this->name + "/" + name);
+					LoadTexture(&baseTexture, BASE_DIRECTORY + this->name + "/" + name_);
 					baseColor = {};
 					textureLoaded = true;
 				}
@@ -205,9 +205,9 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					const char* filepath = texture->GetFileName();
 					// ファイルパスからファイル名抽出
 					string path_str(filepath);
-					string name = ExtractFileName(path_str);
+					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(&metalnessTexture, BASE_DIRECTORY + this->name + "/" + name);
+					LoadTexture(&metalnessTexture, BASE_DIRECTORY + this->name + "/" + name_);
 					metalness = 0.0f;
 				}
 			}
@@ -228,9 +228,9 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					const char* filepath = texture->GetFileName();
 					// ファイルパスからファイル名抽出
 					string path_str(filepath);
-					string name = ExtractFileName(path_str);
+					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(&roughnessTexture, BASE_DIRECTORY + this->name + "/" + name);
+					LoadTexture(&roughnessTexture, BASE_DIRECTORY + this->name + "/" + name_);
 					roughness = 0.0f;
 				}
 			}
@@ -413,9 +413,10 @@ void FbxModel::CreateTexture(TextureData& texture, int srvIndex)
 		texture.metadata.format, texture.metadata.width, (UINT)texture.metadata.height,
 		(UINT16)texture.metadata.arraySize, (UINT16)texture.metadata.mipLevels);
 
+	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE, &texresDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&texture.texBuff));
+		&heapProp, D3D12_HEAP_FLAG_NONE, &texresDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&texture.texBuff));
 
 	result = texture.texBuff->WriteToSubresource(0, nullptr, img->pixels, (UINT)img->rowPitch, (UINT)img->slicePitch);
 
@@ -429,7 +430,7 @@ void FbxModel::CreateTexture(TextureData& texture, int srvIndex)
 
 	device->CreateShaderResourceView(texture.texBuff.Get(), &srvDesc,
 		CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		descHeap->GetCPUDescriptorHandleForHeapStart(),srvIndex,
+			descHeap->GetCPUDescriptorHandleForHeapStart(), srvIndex,
 			device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 
 	// GPUハンドル取得

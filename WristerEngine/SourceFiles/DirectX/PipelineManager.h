@@ -50,7 +50,8 @@ namespace WristerEngine
 		Primitive,
 		Object,
 		Dissolve,
-		Particle
+		Particle,
+		Fbx
 	};
 
 	// パイプライン管理クラス
