@@ -35,9 +35,6 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
-	// デスクリプタヒープをセット
-	dxCommon->SetDescriptorHeap();
-
 	// 描画処理
 	dxCommon->PreDraw();
 	Sprite::PreDraw();
