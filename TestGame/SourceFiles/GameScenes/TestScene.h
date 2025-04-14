@@ -21,5 +21,5 @@ class TestScene : public WristerEngine::BaseScene
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;
 	void Update() override;
-	//void Draw() { fObject.Draw(); }
+	void Draw() { fObject.Draw(); }
 };

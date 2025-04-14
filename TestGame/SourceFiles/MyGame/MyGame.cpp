@@ -37,11 +37,11 @@ void MyGame::Draw()
 {
 	// 描画処理
 	dxCommon->PreDraw();
-	Sprite::PreDraw();
+	//Sprite::PreDraw();
 	sceneManager->Draw();
-	modelManager->DrawObjects();
-	WristerEngine::ParticleManager::Draw();
-	ImGuiManager::Draw();
+	//modelManager->DrawObjects();
+	//WristerEngine::ParticleManager::Draw();
+	//ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
 

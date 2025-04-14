@@ -109,7 +109,7 @@ void FbxObject3d::Draw()
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
-	//lightGroup->Draw(6);
+	lightGroup->Draw(6);
 	// モデル描画
 	model->Draw();
 }

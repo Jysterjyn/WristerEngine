@@ -30,12 +30,11 @@ void TestScene::Initialize()
 	fObject.Initialize(&fTrans,fModel);
 	fObject.PlayAnimation();
 
-	player = std::make_unique<Player>();
-	player->Initialize();
+	//player = std::make_unique<Player>();
+	//player->Initialize();
 }
 
 void TestScene::Update()
 {
-	player->Update();
 	fObject.Update();
 }
