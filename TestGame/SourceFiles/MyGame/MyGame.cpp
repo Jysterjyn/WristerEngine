@@ -1,11 +1,11 @@
 ﻿#include "AudioManager.h"
 #include "CollisionManager.h"
-#include "ModelManager.h"
 #include "MyGame.h"
 #include "ParticleManager.h"
 #include "NonEffectDrawer.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
+#include <FbxLoader.h>
 using namespace WristerEngine::_2D;
 using namespace WristerEngine::_3D;
 
@@ -18,14 +18,16 @@ void MyGame::Initialize()
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "TestScene");
 
-	ModelManager::Initialize();
+	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();
+
+	WristerEngine::_3D::FbxLoader::Initialize();
 }
 
 void MyGame::Update()
 {
 	Framework::Update();
-	ModelManager::Update();
+	modelManager->Update();
 	WristerEngine::CollisionManager::CheckAllCollisions();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
@@ -40,7 +42,7 @@ void MyGame::Draw()
 	dxCommon->PreDraw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	ModelManager::DrawObjects();
+	modelManager->DrawObjects();
 	WristerEngine::ParticleManager::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
@@ -49,4 +51,5 @@ void MyGame::Draw()
 void MyGame::Finalize()
 {
 	Framework::Finalize();
+	WristerEngine::_3D::FbxLoader::Finalize();
 }

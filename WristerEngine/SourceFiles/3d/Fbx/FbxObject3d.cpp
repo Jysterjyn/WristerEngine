@@ -103,16 +103,13 @@ void FbxObject3d::Draw()
 	if (model == nullptr) { return; }
 
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelinestate.Get());
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	PipelineManager::SetPipeline(PipelineType::Fbx);
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffSkin->GetGPUVirtualAddress());
-	lightGroup->Draw(4);
+	cmdList->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
+	//lightGroup->Draw(6);
 	// モデル描画
 	model->Draw();
 }

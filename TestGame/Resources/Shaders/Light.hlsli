@@ -40,7 +40,7 @@ static const uint CIRCLESHADOW_NUM = 3;
 
 struct Material
 {
-    float3 ambient; // アンビエント係数
+    float4 ambient; // アンビエント係数
     float3 diffuse; // ディフューズ係数
     float3 specular; // スペキュラー係数
 };
@@ -51,13 +51,13 @@ struct LightData
     float3 worldpos;
     float3 eyedir;
     float shininess;
-    float3 texcolor;
     float specularMaskVal;
 };
 
 struct LightGroup
 {
     float3 ambientColor;
+    float shininess;
     DirLight dirLights[DIRLIGHT_NUM];
     PointLight pointLights[POINTLIGHT_NUM];
     SpotLight spotLights[SPOTLIGHT_NUM];
@@ -80,7 +80,7 @@ float3 ComputeDiffuseSpecular(float3 lightv, LightData lightData, Material mater
     float3 diffuse = saturate(dotlightnormal * material.diffuse);
 	// 鏡面反射光
     float3 specular = pow(saturate(dot(reflect, lightData.eyedir)), lightData.shininess) * material.specular;
-    return diffuse * lightData.texcolor + specular * lightData.specularMaskVal;
+    return diffuse + specular * lightData.specularMaskVal;
 }
 
 float3 LightGroup::ComputeDirLight(LightData lightData, Material material)

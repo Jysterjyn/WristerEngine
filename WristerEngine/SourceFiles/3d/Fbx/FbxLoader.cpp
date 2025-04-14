@@ -32,7 +32,8 @@ FbxModel* FbxLoader::LoadModelFromFile(const string& modelName)
 		FILE_NAME = modelName + ".fbx",
 		FULLPATH = DIRECTORY_PATH + FILE_NAME;
 
-	bool result = fbxImporter->Initialize(FULLPATH.c_str(), -1, fbxManager->GetIOSettings());
+	bool result = true;
+	result = fbxImporter->Initialize(FULLPATH.c_str(), -1, fbxManager->GetIOSettings());
 	assert(result);
 
 	FbxScene* fbxScene = FbxScene::Create(fbxManager, "fbxScene");

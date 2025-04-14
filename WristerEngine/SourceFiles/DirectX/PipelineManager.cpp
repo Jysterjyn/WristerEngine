@@ -51,8 +51,7 @@ void PipelineManager::Initialize()
 	pipelineProp.inputLayoutProps.push_back({ "BONEINDICES", DXGI_FORMAT_R32G32B32A32_UINT });
 	// ボーンのスキンウェイト(4つ)
 	pipelineProp.inputLayoutProps.push_back({ "BONEWEIGHTS", DXGI_FORMAT_R32G32B32A32_FLOAT });
-	pipelineProp.rootParamProp.constBuffNum = 4;
-	pipelineProp.rootParamProp.descriptorNum = 3;
+	pipelineProp.rootParamProp = { 3,4 };
 	pipelineProp.cullMode = D3D12_CULL_MODE_BACK;
 	// グラフィックスパイプラインの生成
 	pipelines[PipelineType::Fbx].CreatePipeline(pipelineProp);

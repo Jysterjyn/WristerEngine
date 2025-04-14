@@ -29,6 +29,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Shaders\FBX.hlsli" />
     <None Include="Resources\Shaders\Functions.hlsli" />
     <None Include="Resources\Shaders\Light.hlsli" />
     <None Include="Resources\Shaders\Obj.hlsli" />
@@ -38,6 +39,16 @@
     <None Include="Resources\Shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Resources\Shaders\MultiTexturePS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -124,18 +135,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\fbxsdk\include;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
-    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\fbxsdk\include;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -147,14 +158,14 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\fbx;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>strmiids.lib;DirectXTex.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>strmiids.lib;DirectXTex.lib;imgui.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -172,7 +183,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\fbx;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>
@@ -182,7 +193,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>strmiids.lib;DirectXTex.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>strmiids.lib;DirectXTex.lib;imgui.lib;libfbxsdk-mt.lib;libxml2-mt.lib;zlib-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>

@@ -7,7 +7,7 @@
 #include <d3dx12.h>
 #pragma warning(push)
 #pragma warning(disable:26495)
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 #pragma warning(pop)
 #include "Sprite.h"
 
@@ -60,7 +60,7 @@ namespace WristerEngine::_3D
 			float metalness;
 			float specular;
 			float roughness;
-			float pad[2];
+			//float pad[2];
 		};
 
 	private:

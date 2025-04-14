@@ -17,9 +17,19 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	debugCamera.Initialize({}, 10);
+	debugCamera = std::make_unique<WristerEngine::_3D::DebugCamera>(Vector3(), 10.0f);
+	debugCamera->Initialize();
+	modelManager->AddCamera("debug", debugCamera.get());
 
-	WristerEngine::_3D::ModelManager::SetCamera(&debugCamera);
+	modelManager->SetCameraName("debug");
+
+	fModel = WristerEngine::_3D::FbxLoader::LoadModelFromFile("boneTest");
+
+	WristerEngine::_3D::FbxObject3d::SetLightGroup(modelManager->GetLightGroup());
+	fTrans.Initialize();
+	fObject.Initialize(&fTrans,fModel);
+	fObject.PlayAnimation();
+
 	player = std::make_unique<Player>();
 	player->Initialize();
 }
@@ -27,5 +37,5 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	player->Update();
-	debugCamera.Update();
+	fObject.Update();
 }

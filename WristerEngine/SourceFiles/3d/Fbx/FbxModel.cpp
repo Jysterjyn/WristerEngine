@@ -384,8 +384,16 @@ void FbxModel::Draw()
 
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeap->GetGPUDescriptorHandleForHeapStart());
-	cmdList->SetGraphicsRootConstantBufferView(3, constBuffMaterial->GetGPUVirtualAddress());
+	
+	cmdList->SetGraphicsRootDescriptorTable(0, baseTexture.gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(1, baseTexture.gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(2, baseTexture.gpuHandle);
+
+	//cmdList->SetGraphicsRootDescriptorTable(1, metalnessTexture.gpuHandle);
+	//cmdList->SetGraphicsRootDescriptorTable(2, roughnessTexture.gpuHandle);
+
+	//cmdList->SetGraphicsRootDescriptorTable(0, descHeap->GetGPUDescriptorHandleForHeapStart());
+	cmdList->SetGraphicsRootConstantBufferView(5, constBuffMaterial->GetGPUVirtualAddress());
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }
 

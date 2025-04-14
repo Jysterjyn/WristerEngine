@@ -99,6 +99,7 @@ void Material::Draw()
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView((UINT)RootParamNum::Material, constBuffer->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
+	cmdList->SetGraphicsRootDescriptorTable(0, DirectXCommon::GetInstance()->GetSRV()->GetGPUDescriptorHandleForHeapStart());
 	for (UINT i = 0; i < (UINT)TexType::Num; i++)
 	{
 		cmdList->SetGraphicsRootDescriptorTable(i, textures[i].data->srvHandle.gpu);
