@@ -12,3 +12,14 @@ std::wstring WristerEngine::ConvertMultiByteStringToWideString(const std::string
 
 	return wfilePath.data();
 }
+
+std::string WristerEngine::ExtractFileName(const std::string& path)
+{
+	size_t pos1 = path.rfind('\\');
+	if (pos1 != std::string::npos) { return path.substr(pos1 + 1, path.size() - pos1 - 1); }
+
+	pos1 = path.rfind('/');
+	if (pos1 != std::string::npos) { return path.substr(pos1 + 1, path.size() - pos1 - 1); }
+
+	return path;
+}

@@ -102,7 +102,6 @@ namespace WristerEngine::_3D
 		void LoadTexture(TextureData* texData, const string& FULLPATH);
 		void ParseMesh(FbxNode* fbxNode);
 		void ParseSkin(FbxMesh* fbxMesh);
-		string ExtractFileName(const string& PATH);
 		void CreateTexture(TextureData& texture, int srvIndex);
 
 	public:

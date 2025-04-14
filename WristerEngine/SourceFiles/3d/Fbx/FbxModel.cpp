@@ -1,5 +1,6 @@
 #include "FbxModel.h"
 #include "D3D12Common.h"
+#include <StringUtility.h>
 using namespace WristerEngine;
 using namespace _3D;
 
@@ -76,17 +77,6 @@ void FbxModel::ParseMesh(FbxNode* fbxNode)
 	ParseMeshFaces(fbxMesh);
 	ParseMaterial(fbxNode);
 	ParseSkin(fbxMesh);
-}
-
-std::string FbxModel::ExtractFileName(const string& PATH)
-{
-	size_t pos1 = PATH.rfind('\\');
-	if (pos1 != string::npos) { return PATH.substr(pos1 + 1, PATH.size() - pos1 - 1); }
-
-	pos1 = PATH.rfind('/');
-	if (pos1 != string::npos) { return PATH.substr(pos1 + 1, PATH.size() - pos1 - 1); }
-
-	return PATH;
 }
 
 void FbxModel::ParseMeshVertices(FbxMesh* fbxMesh)
