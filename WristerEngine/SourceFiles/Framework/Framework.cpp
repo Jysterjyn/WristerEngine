@@ -48,7 +48,7 @@ void Framework::Run()
 		Update();
 
 		// デスクリプタヒープをセット
-		//dxCommon->SetDescriptorHeap();
+		dxCommon->SetDescriptorHeap();
 
 		Draw();
 	}

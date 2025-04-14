@@ -41,7 +41,6 @@ void MyGame::Draw()
 	sceneManager->Draw();
 	//modelManager->DrawObjects();
 	//WristerEngine::ParticleManager::Draw();
-	dxCommon->SetDescriptorHeap();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }

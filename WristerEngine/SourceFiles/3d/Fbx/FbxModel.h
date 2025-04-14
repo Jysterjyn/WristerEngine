@@ -23,14 +23,6 @@ namespace WristerEngine::_3D
 		Node* parent = nullptr;
 	};
 
-	struct TextureData
-	{
-		DirectX::TexMetadata metadata{};
-		DirectX::ScratchImage scratchImg{};
-		Microsoft::WRL::ComPtr<ID3D12Resource> texBuff;
-		CD3DX12_GPU_DESCRIPTOR_HANDLE gpuHandle;
-	};
-
 	class FbxModel
 	{
 	public:
@@ -79,16 +71,13 @@ namespace WristerEngine::_3D
 		vector<VertexPosNormalUvSkin> vertices;
 		vector<uint16_t> indices;
 		Vector3 ambient = { 1,1,1 }, diffuse = { 1,1,1 };
-		VertexPosNormalUvSkin* vertMap = nullptr;
 		ConstBufferDataMaterial* constMapMaterial = nullptr;
-		uint16_t* indexMap = nullptr;
 		vector<Bone> bones;
 		FbxScene* fbxScene = nullptr;
-		ComPtr<ID3D12DescriptorHeap> descHeap;
 		// テクスチャ
-		TextureData baseTexture; // ベース
-		TextureData metalnessTexture; // メタル
-		TextureData roughnessTexture; // ラフネス
+		_2D::TextureData* baseTexture; // ベース
+		_2D::TextureData* metalnessTexture; // メタル
+		_2D::TextureData* roughnessTexture; // ラフネス
 
 		ColorRGB baseColor = { 1,1,1 }; // アルベド
 		float metalness = 0.0f; // 金属度(0 or 1)
@@ -98,10 +87,8 @@ namespace WristerEngine::_3D
 		void ParseMeshVertices(FbxMesh* fbxMesh);
 		void ParseMeshFaces(FbxMesh* fbxMesh);
 		void ParseMaterial(FbxNode* fbxNode);
-		void LoadTexture(TextureData* texData, const string& FULLPATH);
 		void ParseMesh(FbxNode* fbxNode);
 		void ParseSkin(FbxMesh* fbxMesh);
-		void CreateTexture(TextureData& texture, int srvIndex);
 
 	public:
 		friend class FbxLoader;
