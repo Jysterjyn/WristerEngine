@@ -1,8 +1,8 @@
 #include "FBX.hlsli"
 
 Texture2D<float4> baseTex : register(t0);  // 0番スロットに設定されたテクスチャ
-Texture2D<float4> metalnessTex : register(t1);  // 1番スロットに設定されたテクスチャ
-Texture2D<float4> roughnessTex : register(t2);  // 2番スロットに設定されたテクスチャ
+Texture2D<float> metalnessTex : register(t1);  // 1番スロットに設定されたテクスチャ
+Texture2D<float> roughnessTex : register(t2);  // 2番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);      // 0番スロットに設定されたサンプラー
 static const float PI = 3.141592654f; // π
 static float3 N; // 反射点の法線ベクトル
@@ -100,31 +100,31 @@ float3 BRDF(float3 L, float3 V)
 
 float4 main(VSOutput input) : SV_TARGET
 {
-		// テクスチャマッピング
-    float4 texcolor = baseTex.Sample(smp, input.uv);
-	// Lambert反射
-    float3 light = normalize(float3(1, -1, 1)); // 右下奥　向きのライト
-    float diffuse = saturate(dot(-light, input.normal));
-    float brightness = diffuse + 0.3f;
-    float4 shadecolor = float4(brightness, brightness, brightness, 1.0f);
-	// 陰影とテクスチャの色を合成
-    return shadecolor * texcolor;
+	//	// テクスチャマッピング
+ //   float4 texcolor = baseTex.Sample(smp, input.uv);
+	//// Lambert反射
+ //   float3 light = normalize(float3(1, -1, 1)); // 右下奥　向きのライト
+ //   float diffuse = saturate(dot(-light, input.normal));
+ //   float brightness = diffuse + 0.3f;
+ //   float4 shadecolor = float4(brightness, brightness, brightness, 1.0f);
+	//// 陰影とテクスチャの色を合成
+ //   return shadecolor * texcolor;
 
-	//N = input.normal;
-	//s_baseColor = baseColor + baseTex.Sample(smp, input.uv).rgb;
-	//s_metalness = metalness + metalnessTex.Sample(smp, input.uv).r;
-	//s_roughness = roughness + roughnessTex.Sample(smp, input.uv).r;
+    N = input.normal;
+    s_baseColor = baseColor + baseTex.Sample(smp, input.uv).rgb;
+    s_metalness = metalness + metalnessTex.Sample(smp, input.uv);
+    s_roughness = roughness + roughnessTex.Sample(smp, input.uv);
 
-	//float3 finalRGB = float3(0, 0, 0);
-	//float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
-	//for (int i = 0; i < DIRLIGHT_NUM; i++)
-	//{
- //       if (!lightGroup.dirLights[i].active)
- //       {
- //           continue;
- //       }
- //       finalRGB += BRDF(lightGroup.dirLights[i].lightv, eyedir) * lightGroup.dirLights[i].lightcolor;
- //   }
+    float3 finalRGB = float3(0, 0, 0);
+    float3 eyedir = normalize(cameraPos - input.worldpos.xyz);
+    for (int i = 0; i < DIRLIGHT_NUM; i++)
+    {
+        if (!lightGroup.dirLights[i].active)
+        {
+            continue;
+        }
+        finalRGB += BRDF(lightGroup.dirLights[i].lightv, eyedir) * lightGroup.dirLights[i].lightcolor;
+    }
 
-	//return float4(finalRGB, 1);
+    return float4(finalRGB, 1);
 }

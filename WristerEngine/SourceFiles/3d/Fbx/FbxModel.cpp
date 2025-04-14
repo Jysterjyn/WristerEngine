@@ -158,8 +158,6 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 
 		if (material)
 		{
-			name = material->GetName(); // マテリアル名(デバッグ用)
-
 			// ベースカラー
 			const FbxProperty PROP_BASE_COLOR = FbxSurfaceMaterialUtils::GetProperty("baseColor", material);
 			if (PROP_BASE_COLOR.IsValid())
@@ -177,7 +175,7 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					LoadTexture(&baseTexture, BASE_DIRECTORY + this->name + "/" + name_);
+					LoadTexture(&baseTexture, BASE_DIRECTORY + name + "/" + name_);
 					baseColor = {};
 					textureLoaded = true;
 				}
@@ -376,13 +374,12 @@ void FbxModel::Draw()
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	
 	cmdList->SetGraphicsRootDescriptorTable(0, baseTexture.gpuHandle);
-	cmdList->SetGraphicsRootDescriptorTable(1, baseTexture.gpuHandle);
-	cmdList->SetGraphicsRootDescriptorTable(2, baseTexture.gpuHandle);
+	//cmdList->SetGraphicsRootDescriptorTable(1, baseTexture.gpuHandle);
+	//cmdList->SetGraphicsRootDescriptorTable(2, baseTexture.gpuHandle);
 
-	//cmdList->SetGraphicsRootDescriptorTable(1, metalnessTexture.gpuHandle);
-	//cmdList->SetGraphicsRootDescriptorTable(2, roughnessTexture.gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(1, metalnessTexture.gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(2, roughnessTexture.gpuHandle);
 
-	//cmdList->SetGraphicsRootDescriptorTable(0, descHeap->GetGPUDescriptorHandleForHeapStart());
 	cmdList->SetGraphicsRootConstantBufferView(5, constBuffMaterial->GetGPUVirtualAddress());
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

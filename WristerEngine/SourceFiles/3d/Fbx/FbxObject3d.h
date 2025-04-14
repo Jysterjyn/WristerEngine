@@ -27,10 +27,6 @@ namespace WristerEngine::_3D
 		};
 
 	private: // 静的メンバ変数
-		// ルートシグネチャ
-		static ComPtr<ID3D12RootSignature> rootsignature;
-		// パイプラインステートオブジェクト
-		static ComPtr<ID3D12PipelineState> pipelinestate;
 		static LightGroup* lightGroup;
 
 	protected: // メンバ変数
@@ -46,11 +42,6 @@ namespace WristerEngine::_3D
 
 	public:
 		static void SetLightGroup(LightGroup* lightGroup_) { lightGroup = lightGroup_; }
-
-		/// <summary>
-		/// グラフィックパイプラインの生成
-		/// </summary>
-		static void CreateGraphicsPipeline();
 
 		/// <summary>
 		/// 初期化

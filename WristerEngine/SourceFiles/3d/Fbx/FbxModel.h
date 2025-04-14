@@ -60,7 +60,6 @@ namespace WristerEngine::_3D
 			float metalness;
 			float specular;
 			float roughness;
-			//float pad[2];
 		};
 
 	private:

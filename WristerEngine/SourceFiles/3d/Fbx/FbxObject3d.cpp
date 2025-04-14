@@ -8,47 +8,7 @@ using namespace DirectX;
 using namespace WristerEngine;
 using namespace _3D;
 
-ComPtr<ID3D12RootSignature> FbxObject3d::rootsignature;
-ComPtr<ID3D12PipelineState> FbxObject3d::pipelinestate;
 LightGroup* FbxObject3d::lightGroup = nullptr;
-
-void FbxObject3d::CreateGraphicsPipeline()
-{
-	//PipelineManager pManager;
-	//// シェーダの読み込みとコンパイル
-	//pManager.LoadShaders(L"FBXVS", L"FBXPS");
-	//// 頂点レイアウト
-	//pManager.AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
-	//pManager.AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
-	//pManager.AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	//// 影響を受けるボーン番号(4つ)
-	//pManager.AddInputLayout("BONEINDICES", DXGI_FORMAT_R32G32B32A32_UINT);
-	//// ボーンのスキンウェイト(4つ)
-	//pManager.AddInputLayout("BONEWEIGHTS", DXGI_FORMAT_R32G32B32A32_FLOAT);
-	//// レンダーターゲットのブレンド設定
-	//pManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA);
-	//// デプスステンシルステート
-	//pManager.InitDepthStencilState();
-	//// 深度バッファのフォーマット
-	//pManager.InitDSVFormat();
-	//// 図形の形状設定（三角形）
-	//pManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-	//// ルートパラメータ
-	//pManager.AddRootParameter(PipelineManager::RootParamType::CBV); // CBV（座標変換行列用）
-	//
-	//std::array<CD3DX12_DESCRIPTOR_RANGE, 3> descRangeSRVs{};
-	//for (UINT i = 0; i < descRangeSRVs.size(); i++) { descRangeSRVs[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, i); }
-
-	//CD3DX12_ROOT_PARAMETER rootParam{};
-	//rootParam.InitAsDescriptorTable(descRangeSRVs.size(), descRangeSRVs.data());
-	//pManager.rootParams.push_back(rootParam);
-
-	//pManager.AddRootParameter(PipelineManager::RootParamType::CBV); // CBV（スキニング用）
-	//pManager.AddRootParameter(PipelineManager::RootParamType::CBV); // CBV（マテリアル用）
-	//pManager.AddRootParameter(PipelineManager::RootParamType::CBV); // CBV（ライト用）
-	//// グラフィックスパイプラインの生成
-	//pManager.CreatePipeline(pipelinestate, rootsignature);
-}
 
 void FbxObject3d::Initialize(Transform* transform_, FbxModel* model_)
 {
