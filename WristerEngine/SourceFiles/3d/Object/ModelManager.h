@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseCamera.h"
+#include "CameraManager.h"
 #include "LightGroup.h"
 #include "Object3d.h"
 
@@ -17,10 +17,8 @@ namespace WristerEngine::_3D
 		std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
 		// 生成したオブジェクト
 		std::list<std::unique_ptr<Object3d>> objects;
-		// カメラのポインタ
-		std::unordered_map<std::string, BaseCamera*> cameras;
-		// 現在使っているカメラの名前
-		std::string cameraName = "default";
+		// カメラマネージャー
+		CameraManager* cameraManager = CameraManager::GetInstance();
 
 		ModelManager() = default;
 		~ModelManager() = default;
@@ -33,17 +31,12 @@ namespace WristerEngine::_3D
 		// 更新
 		void Update();
 		// 描画処理
-		void DrawObjects();
+		void Draw();
 		// モデル作成
 		Object3d* Create(const std::string& modelName, bool smoothing = false);
 		// オブジェクトの解放
 		void ClearObjects() { objects.clear(); }
-		// カメラの追加
-		void AddCamera(const std::string& cameraName_, BaseCamera* camera) { cameras[cameraName_] = camera; }
-		// setter
-		void SetCameraName(const std::string& cameraName);
 		// getter
 		LightGroup* GetLightGroup() const { return lightGroup.get(); }
-		BaseCamera* GetCamera() { return cameras[cameraName]; }
 	};
 }

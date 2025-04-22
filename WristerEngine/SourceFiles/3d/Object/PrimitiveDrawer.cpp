@@ -1,5 +1,5 @@
 #include "PrimitiveDrawer.h"
-#include "ModelManager.h"
+#include "CameraManager.h"
 #include "PipelineManager.h"
 using namespace WristerEngine::_3D;
 
@@ -35,7 +35,7 @@ void PrimitiveDrawer::Initialize()
 
 void PrimitiveDrawer::Update()
 {
-	constMap->matCamera = ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
+	constMap->matCamera = CameraManager::GetInstance()->Get()->GetViewProjectionMatrix();
 }
 
 void PrimitiveDrawer::Draw()

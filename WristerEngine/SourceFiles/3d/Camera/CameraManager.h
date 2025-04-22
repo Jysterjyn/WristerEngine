@@ -1,7 +1,5 @@
 #pragma once
 #include <BaseCamera.h>
-#include <DebugCamera.h>
-#include <RailCamera.h>
 
 namespace WristerEngine::_3D
 {
@@ -12,11 +10,7 @@ namespace WristerEngine::_3D
 		Rail // レールカメラ
 	};
 
-	struct CameraProp
-	{
-		DebugCamera::Prop debugProp;
-		RailCamera::Prop railProp;
-	};
+	struct CameraProp;
 
 	class CameraManager
 	{
@@ -33,11 +27,13 @@ namespace WristerEngine::_3D
 		// カメラ作成
 		BaseCamera* Create(const std::string& name, CameraType type = CameraType::Normal, CameraProp* prop = nullptr);
 		// 更新
-		void Update() { Get()->Update(); }
+		void Update() const { Get()->Update(); }
+		// 描画
+		void Draw(UINT rootParameterIndex) const;
 		// カメラの解放
 		void Clear() { cameras.clear(); }
 		// 使用カメラの変更
-		void SetName(const std::string& name);
+		void Change(const std::string& name);
 		// 使用カメラの取得
 		BaseCamera* Get() const { return cameras[name].get(); };
 	};

@@ -1,11 +1,10 @@
 #pragma once
-#include <ModelManager.h>
+#include <BaseCamera.h>
 
 namespace WristerEngine::_3D
 {
 	class RailCamera : public BaseCamera
 	{
-		ModelManager* modelManager = ModelManager::GetInstance();
 		Transform transform;
 		std::vector<Vector3> controlPoints;
 		float t = 0;

@@ -1,7 +1,16 @@
 #include "CameraManager.h"
+#include <DebugCamera.h>
+#include <RailCamera.h>
+#include <DirectXCommon.h>
 using namespace WristerEngine::_3D;
 
 std::unordered_map<std::string, std::unique_ptr<BaseCamera>> CameraManager::cameras;
+
+struct WristerEngine::_3D::CameraProp
+{
+	DebugCamera::Prop debugProp;
+	RailCamera::Prop railProp;
+};
 
 CameraManager* CameraManager::GetInstance()
 {
@@ -29,11 +38,17 @@ BaseCamera* CameraManager::Create(const std::string& name_, CameraType type, Cam
 
 	newCamera->Initialize();
 	cameras[name_] = std::move(newCamera);
-	SetName(name_);
+	Change(name_);
 	return cameras[name_].get();
 }
 
-void WristerEngine::_3D::CameraManager::SetName(const std::string& name_)
+void CameraManager::Draw(UINT rootParameterIndex) const
+{
+	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
+	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex, Get()->constBuffer->GetGPUVirtualAddress());
+}
+
+void CameraManager::Change(const std::string& name_)
 {
 	assert(cameras.contains(name_));
 	name = name_;

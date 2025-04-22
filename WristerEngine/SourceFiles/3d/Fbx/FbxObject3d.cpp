@@ -2,6 +2,7 @@
 #include <PipelineManager.h>
 #include <D3D12Common.h>
 #include <ModelManager.h>
+#include <CameraManager.h>
 #include <array>
 using namespace Microsoft::WRL;
 using namespace DirectX;
@@ -50,11 +51,11 @@ void FbxObject3d::Update()
 		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
 
-	ModelManager* modelManager = ModelManager::GetInstance();
 	// 定数バッファへデータ転送
-	constMap->viewproj = modelManager->GetCamera()->GetViewProjectionMatrix();
+	const BaseCamera* camera = CameraManager::GetInstance()->Get();
+	constMap->viewproj = camera->GetViewProjectionMatrix();
 	constMap->world = model->GetModelTransform() * transform->matWorld;
-	constMap->cameraPos = modelManager->GetCamera()->eye;
+	constMap->cameraPos = camera->eye;
 }
 
 void FbxObject3d::Draw()

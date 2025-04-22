@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include "PipelineManager.h"
+#include <CameraManager.h>
 using namespace Microsoft::WRL;
 using namespace WristerEngine;
 using namespace _3D;
@@ -21,7 +22,7 @@ void ParticleManager::Update()
 {
 	for (auto& particleGroup : particleGroups) { particleGroup.Update(); }
 	// 定数バッファへデータ転送
-	BaseCamera* camera = modelManager->GetCamera();
+	const BaseCamera* camera = CameraManager::GetInstance()->Get();
 	constMap->mat = camera->GetViewProjectionMatrix();
 	constMap->matBillboard = camera->GetBillboard();
 }

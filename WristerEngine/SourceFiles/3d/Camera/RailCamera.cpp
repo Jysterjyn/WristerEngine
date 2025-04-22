@@ -1,9 +1,6 @@
 #include "RailCamera.h"
-#include <ImGuiManager.h>
-#include <ImGui.h>
 using namespace WristerEngine;
 using namespace _3D;
-using namespace _2D;
 
 RailCamera::RailCamera(const Prop* prop)
 {

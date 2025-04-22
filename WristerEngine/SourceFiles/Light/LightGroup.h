@@ -53,7 +53,7 @@ namespace WristerEngine
 		// 更新
 		void Update();
 		// 描画
-		void Draw(UINT rootParameterIndex);
+		void Draw(UINT rootParameterIndex) const;
 		// 環境光を変更
 		void SetAmbientColor(const ColorRGB& color) { ambientColor = color; }
 		// 光沢度を変更

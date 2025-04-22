@@ -1,5 +1,5 @@
 #include "PointAudio.h"
-#include "ModelManager.h"
+#include "CameraManager.h"
 #include "BaseCamera.h"
 #include <cmath>
 using namespace WristerEngine;
@@ -16,7 +16,7 @@ void PointAudio::Update()
 {
 	if (useCamera)
 	{
-		_3D::BaseCamera* vp = _3D::ModelManager::GetInstance()->GetCamera();
+		_3D::BaseCamera* vp = _3D::CameraManager::GetInstance()->Get();
 		micPos = vp->eye;
 		forward = Normalize(vp->target - vp->eye);
 	}

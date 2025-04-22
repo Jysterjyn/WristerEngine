@@ -74,7 +74,7 @@ void LightGroup::Update()
 	}
 }
 
-void LightGroup::Draw(UINT rootParameterIndex)
+void LightGroup::Draw(UINT rootParameterIndex) const
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex, constBuff->GetGPUVirtualAddress());

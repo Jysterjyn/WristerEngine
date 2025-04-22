@@ -20,10 +20,6 @@ void MyGame::Initialize()
 
 	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();
-
-	CameraManager* cMan = CameraManager::GetInstance();
-	cMan->Create("default", CameraType::Rail);
-	cMan->Update();
 }
 
 void MyGame::Update()
@@ -41,7 +37,7 @@ void MyGame::Draw()
 	dxCommon->PreDraw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	modelManager->DrawObjects();
+	modelManager->Draw();
 	WristerEngine::ParticleManager::Draw();
 	ImGuiManager::Draw();
 	dxCommon->PostDraw();

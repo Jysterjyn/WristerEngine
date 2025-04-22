@@ -3,7 +3,6 @@
 #include "D3D12Common.h"
 #include "PipelineManager.h"
 using namespace Microsoft::WRL;
-using namespace std;
 using namespace WristerEngine;
 using namespace _3D;
 
@@ -18,14 +17,12 @@ void ModelManager::Initialize()
 	// ライトグループ生成
 	lightGroup = LightGroup::Create();
 	// カメラ生成
-	BaseCamera* camera = new BaseCamera;
-	camera->Initialize();
-	AddCamera(cameraName, camera);
+	cameraManager->Create("default");
 }
 
-Object3d* ModelManager::Create(const string& modelName, bool smoothing)
+Object3d* ModelManager::Create(const std::string& modelName, bool smoothing)
 {
-	unique_ptr<Object3d> newObj3d = make_unique<Object3d>();
+	std::unique_ptr<Object3d> newObj3d = std::make_unique<Object3d>();
 
 	// モデルの再読み込みをチェック
 	Mesh* mesh = meshes[modelName][smoothing].get();
@@ -37,21 +34,15 @@ Object3d* ModelManager::Create(const string& modelName, bool smoothing)
 		return objects.back().get();
 	}
 
-	unique_ptr<Mesh> newMesh = make_unique<Mesh>();
+	std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>();
 	newMesh->LoadOBJ(modelName, smoothing);
 	newObj3d->Initialize(newMesh.get());
-	meshes[modelName][smoothing] = move(newMesh);
+	meshes[modelName][smoothing] = std::move(newMesh);
 	objects.push_back(move(newObj3d));
 	return objects.back().get();
 }
 
-void ModelManager::SetCameraName(const std::string& cameraName_)
-{
-	assert(cameras.contains(cameraName_));
-	cameraName = cameraName_;
-}
-
-void ModelManager::DrawObjects()
+void ModelManager::Draw()
 {
 	// コマンドリストをセット
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
@@ -62,14 +53,14 @@ void ModelManager::DrawObjects()
 	// ライトの描画
 	lightGroup->Draw((UINT)RootParamNum::Light);
 	// カメラ
-	cmdList->SetGraphicsRootConstantBufferView((UINT)RootParamNum::Camera, GetCamera()->constBuffer->GetGPUVirtualAddress());
+	cameraManager->Draw((UINT)RootParamNum::Camera);
 	for (auto& object : objects) { object->Draw(); }
 }
 
 void ModelManager::Update()
 {
 	lightGroup->Update();
-	GetCamera()->Update();
+	cameraManager->Update();
 	objects.remove_if([](std::unique_ptr<Object3d>& object) { return object->isDestroy; });
 	for (auto& object : objects) { object->Update(); }
 }

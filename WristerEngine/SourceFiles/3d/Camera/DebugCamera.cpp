@@ -6,12 +6,16 @@ using namespace _3D;
 
 DebugCamera::DebugCamera(const Prop* prop)
 {
-	if(prop)
+	if (prop)
 	{
 		distance = prop->distance;
 		target = eye = prop->targetPos;
 		mouseMoveDec = prop->mouseMoveDec;
 		wheelSpdDec = prop->wheelSpdDec;
+	}
+	else
+	{
+		eye = target;
 	}
 	eye.z -= distance;
 }

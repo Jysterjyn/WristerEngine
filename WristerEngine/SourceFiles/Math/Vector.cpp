@@ -1,4 +1,4 @@
-#include "ModelManager.h"
+#include "CameraManager.h"
 #include "DirectXCommon.h"
 #include <cmath>
 #include <Random.h>
@@ -237,7 +237,7 @@ Vector3 Normalize(const Vector3& v) { return Vector3(v).Normalize(); }
 
 static Matrix4 GetViewProjectionViewportMatrix()
 {
-	Matrix4 matVP = WristerEngine::_3D::ModelManager::GetInstance()->GetCamera()->GetViewProjectionMatrix();
+	Matrix4 matVP = WristerEngine::_3D::CameraManager::GetInstance()->Get()->GetViewProjectionMatrix();
 	Matrix4 matV = WristerEngine::DirectXCommon::GetInstance()->GetViewportMatrix();
 	return matVP * matV;
 }
