@@ -1,5 +1,5 @@
 #include "SceneFactory.h"
-#include <TestScene.h>
+#include <GameScene.h>
 
 std::unique_ptr<WristerEngine::BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
 {

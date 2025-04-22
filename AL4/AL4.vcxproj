@@ -13,14 +13,14 @@
   <ItemGroup>
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
-    <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp" />
+    <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
-    <ClInclude Include="SourceFiles\GameScenes\TestScene.h" />
+    <ClInclude Include="SourceFiles\GameScenes\GameScene.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />
   </ItemGroup>
   <ItemGroup>

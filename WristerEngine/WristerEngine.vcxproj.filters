@@ -235,6 +235,9 @@
     <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp">
       <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -408,7 +411,7 @@
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h">
       <Filter>ソース ファイル\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Utility\WristerEngine.h">
+    <ClInclude Include="SourceFiles\Utility\WristerEngineUtility.h">
       <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h">
@@ -426,5 +429,6 @@
     <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h">
       <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
   </ItemGroup>
 </Project>

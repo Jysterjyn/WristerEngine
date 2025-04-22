@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.35821.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WristerEngine", "WristerEngine\WristerEngine.vcxproj", "{8BF34D9C-A65C-49F5-9A77-83FA870060DC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGame", "TestGame\TestGame.vcxproj", "{95AD2923-45B5-46A1-80E7-68B78627A92D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AL4", "AL4\AL4.vcxproj", "{8DFCF86C-D9C2-4C22-95A1-4969F80A310E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Debug|x64.Build.0 = Debug|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Release|x64.ActiveCfg = Release|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Release|x64.Build.0 = Release|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Debug|x64.ActiveCfg = Debug|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Debug|x64.Build.0 = Debug|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Release|x64.ActiveCfg = Release|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Release|x64.Build.0 = Release|x64
+		{8DFCF86C-D9C2-4C22-95A1-4969F80A310E}.Debug|x64.ActiveCfg = Debug|x64
+		{8DFCF86C-D9C2-4C22-95A1-4969F80A310E}.Debug|x64.Build.0 = Debug|x64
+		{8DFCF86C-D9C2-4C22-95A1-4969F80A310E}.Release|x64.ActiveCfg = Release|x64
+		{8DFCF86C-D9C2-4C22-95A1-4969F80A310E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

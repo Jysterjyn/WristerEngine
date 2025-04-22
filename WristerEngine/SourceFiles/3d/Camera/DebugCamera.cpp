@@ -4,12 +4,15 @@
 using namespace WristerEngine;
 using namespace _3D;
 
-DebugCamera::DebugCamera(Vector3 targetPos, float distance_, float mouseMoveDec_, float wheelSpdDec_)
+DebugCamera::DebugCamera(const Prop* prop)
 {
-	distance = distance_;
-	target = eye = targetPos;
-	mouseMoveDec = mouseMoveDec_;
-	wheelSpdDec = wheelSpdDec_;
+	if(prop)
+	{
+		distance = prop->distance;
+		target = eye = prop->targetPos;
+		mouseMoveDec = prop->mouseMoveDec;
+		wheelSpdDec = prop->wheelSpdDec;
+	}
 	eye.z -= distance;
 }
 

@@ -47,7 +47,7 @@
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp">
       <Filter>ソース ファイル\SceneFactory</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp">
+    <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp">
       <Filter>ソース ファイル\GameScenes</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
@@ -61,7 +61,7 @@
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h">
       <Filter>ソース ファイル\SceneFactory</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameScenes\TestScene.h">
+    <ClInclude Include="SourceFiles\GameScenes\GameScene.h">
       <Filter>ソース ファイル\GameScenes</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\Player.h">

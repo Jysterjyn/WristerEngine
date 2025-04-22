@@ -112,6 +112,7 @@
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
+    <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp" />
     <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
     <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h" />
     <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h" />
@@ -213,7 +215,7 @@
     <ClInclude Include="SourceFiles\Input\Input.h" />
     <ClInclude Include="SourceFiles\Timer\TimedCall.h" />
     <ClInclude Include="SourceFiles\Utility\StringUtility.h" />
-    <ClInclude Include="SourceFiles\Utility\WristerEngine.h" />
+    <ClInclude Include="SourceFiles\Utility\WristerEngineUtility.h" />
     <ClInclude Include="SourceFiles\WinApp\WindowsAPI.h" />
     <ClInclude Include="SourceFiles\Utility\Color.h" />
     <ClInclude Include="SourceFiles\Particle\ParticleManager.h" />

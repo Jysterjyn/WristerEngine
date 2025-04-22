@@ -2,7 +2,8 @@
 
 void Player::Initialize()
 {
-	obj = WristerEngine::_3D::ModelManager::Create("cube");
+	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
+	obj = modelManager->Create("cube");
 }
 
 void Player::Update()

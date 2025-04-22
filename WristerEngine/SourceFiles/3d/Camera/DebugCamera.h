@@ -14,6 +14,14 @@ namespace WristerEngine::_3D
 		float wheelSpdDec = 50; // ズームの速度補正
 
 	public:
+		struct Prop
+		{
+			Vector3 targetPos;
+			float distance = 50;
+			float mouseMoveDec = 75;
+			float wheelSpdDec = 50;
+		};
+
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
@@ -21,7 +29,7 @@ namespace WristerEngine::_3D
 		/// <param name="distance">注視点座標までの距離</param>
 		/// <param name="mouseMoveDec">平行移動の速度補正</param>
 		/// <param name="wheelSpdDec">ズームの速度補正</param>
-		DebugCamera(Vector3 targetPos = { 0,0,0 }, float distance = 50, float mouseMoveDec = 75, float wheelSpdDec = 50);
+		DebugCamera(const Prop* prop = nullptr);
 		// 更新
 		void VirtualUpdate() override;
 	};

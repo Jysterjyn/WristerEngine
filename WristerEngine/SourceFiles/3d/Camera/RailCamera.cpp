@@ -5,25 +5,20 @@ using namespace WristerEngine;
 using namespace _3D;
 using namespace _2D;
 
-RailCamera::RailCamera(const Vector3& pos, const Vector3& rot)
+RailCamera::RailCamera(const Prop* prop)
 {
-	transform.translation = pos;
-	transform.rotation = rot;
+	if(prop)
+	{
+		transform.translation = prop->pos;
+		transform.rotation = prop->rot;
+		controlPoints = prop->controlPoints;
+	}
 	SetTransform(&transform);
 }
 
 void RailCamera::VirtualUpdate()
 {
-	std::vector<Vector3> controlPoints =
-	{
-		{0,  0,  0},
-		{10, 10, 0},
-		{10, 15, 0},
-		{20, 15, 0},
-		{20, 0,  0},
-		{30, 0,  0},
-	};
-
+	if (controlPoints.size() <= 1) { return; }
 	const float dt = 1.0f / 600.0f;
 	eye = SplineCurve(controlPoints, t);
 	target = SplineCurve(controlPoints, std::clamp(t + dt, 0.0f, 1.0f));

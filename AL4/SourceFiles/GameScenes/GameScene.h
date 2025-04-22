@@ -5,9 +5,8 @@
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
 	// AbstractUIDrawer ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
-	void Initialize() override;
-	void Update() override;
-	void CreateNewSprite();
+	void Initialize() override {}
+	void Update() override {}
 };
 
 class TestScene : public WristerEngine::BaseScene

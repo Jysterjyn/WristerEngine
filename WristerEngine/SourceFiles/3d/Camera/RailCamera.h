@@ -7,10 +7,17 @@ namespace WristerEngine::_3D
 	{
 		ModelManager* modelManager = ModelManager::GetInstance();
 		Transform transform;
+		std::vector<Vector3> controlPoints;
 		float t = 0;
 
 	public:
-		RailCamera(const Vector3& pos = {}, const Vector3& rot = {});
+		struct Prop
+		{
+			Vector3 pos, rot;
+			std::vector<Vector3> controlPoints;
+		};
+
+		RailCamera(const Prop* prop = nullptr);
 		Transform* GetTransform() { return &transform; }
 
 		// BaseCamera ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
