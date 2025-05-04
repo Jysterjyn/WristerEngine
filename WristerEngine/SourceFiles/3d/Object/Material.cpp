@@ -5,7 +5,7 @@
 #include "ModelManager.h"
 #include "PipelineManager.h"
 using namespace std;
-using namespace WristerEngine;
+using namespace WE;
 using namespace _2D;
 using namespace _3D;
 
@@ -26,8 +26,6 @@ void Material::LoadTexture(istringstream& line_stream, Mesh* mesh, TexType sprit
 	line_stream >> textureFilename;
 	string path = mesh->directoryPath;
 	// スプライトのデフォルトディレクトリパスの文字列を削除
-	string defaultDirectoryPath = TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH;
-	path.erase(path.begin(), path.begin() + defaultDirectoryPath.size());
 	textures[(size_t)spriteIndex].data = TextureData::Load(path + textureFilename);
 }
 
@@ -39,7 +37,7 @@ void Material::ChangeTexture(size_t texIndex, const std::string& texName)
 void Material::Load(Mesh* mesh)
 {
 	ifstream file;
-	file.open(mesh->directoryPath + mesh->materialFileName);
+	file.open(CreateResourcePath(mesh->directoryPath + mesh->materialFileName));
 	assert(!file.fail());
 
 	string line;

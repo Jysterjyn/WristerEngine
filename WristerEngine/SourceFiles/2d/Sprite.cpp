@@ -9,6 +9,9 @@ using namespace DirectX;
 using namespace WristerEngine;
 using namespace _2D;
 
+list<unique_ptr<TextureData>> TextureData::textures;
+list<unique_ptr<Sprite>> Sprite::sprites;
+
 // 平行投影行列
 static Matrix4 OrthoGraphic()
 {
@@ -21,9 +24,6 @@ static Matrix4 OrthoGraphic()
 	return matProj;
 }
 
-string TextureData::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
-list<unique_ptr<TextureData>> TextureData::textures;
-list<unique_ptr<Sprite>> Sprite::sprites;
 const Matrix4 Sprite::matProj = OrthoGraphic();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
@@ -63,7 +63,7 @@ TextureData* TextureData::Load(const std::string& fileName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{}, mipChain{};
 
-	string fullPath = DEFAULT_TEXTURE_DIRECTORY_PATH + fileName;
+	string fullPath = CreateResourcePath(fileName);
 
 	// ワイド文字列に変換
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);

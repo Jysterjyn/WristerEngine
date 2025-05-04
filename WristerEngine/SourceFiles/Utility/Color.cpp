@@ -1,5 +1,5 @@
 #include "Color.h"
-using namespace WristerEngine;
+using namespace WE;
 
 const float Color::MAX = 1.0f;
 
@@ -28,17 +28,17 @@ ColorRGBA& ColorRGBA::operator*=(float rate)
 	return *this;
 }
 
-const Color WristerEngine::operator*(Color color, float rate)
+const Color operator*(Color color, float rate)
 {
 	return Color(color *= rate);
 }
 
-const ColorRGB WristerEngine::operator*(ColorRGB color, float rate)
+const ColorRGB operator*(ColorRGB color, float rate)
 {
 	return ColorRGB(color *= rate);
 }
 
-const ColorRGBA WristerEngine::operator*(ColorRGBA color, float rate)
+const ColorRGBA operator*(ColorRGBA color, float rate)
 {
 	return ColorRGBA(color *= rate);
 }

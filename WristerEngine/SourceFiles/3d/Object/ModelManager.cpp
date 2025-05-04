@@ -3,7 +3,7 @@
 #include "D3D12Common.h"
 #include "PipelineManager.h"
 using namespace Microsoft::WRL;
-using namespace WristerEngine;
+using namespace WE;
 using namespace _3D;
 
 ModelManager* ModelManager::GetInstance()

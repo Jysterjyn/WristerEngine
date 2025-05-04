@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-using namespace WristerEngine;
+using namespace WE;
 using namespace _3D;
 
 void LoadVector3Stream(istringstream& stream, Vector3& vec)
@@ -33,10 +33,10 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 	modelName = modelName_;
 	isSmooth = isSmooth_;
 	const string FILENAME = modelName + ".obj";
-	const string DIRECTORY_PATH = "Resources/Models/" + modelName + "/";
+	const string DIRECTORY_PATH = "Models/" + modelName + "/";
 
 	ifstream file;
-	file.open(DIRECTORY_PATH + FILENAME);
+	file.open(CreateResourcePath(DIRECTORY_PATH + FILENAME));
 	assert(!file.fail());
 
 	vector<Vector3> positions, normals;
@@ -140,7 +140,7 @@ void Mesh::CreateBuffers()
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(Mesh::VertexData);
-	
+
 	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
 	UINT16* indexMap = nullptr;
 	// インデックスバッファ生成

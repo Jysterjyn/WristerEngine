@@ -9,9 +9,6 @@ namespace WristerEngine::_2D
 	// テクスチャ1枚分のデータ
 	struct TextureData : DXCommonGetter
 	{
-		// デフォルトディレクトリ
-		static std::string DEFAULT_TEXTURE_DIRECTORY_PATH;
-
 		static std::list<std::unique_ptr<TextureData>> textures;
 		std::string fileName;
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
