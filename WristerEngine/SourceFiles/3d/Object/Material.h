@@ -38,6 +38,7 @@ namespace WristerEngine::_3D
 		ColorRGB diffuse;
 		ColorRGB specular;
 		float alpha = 1.0f;
+		std::string directoryPath;
 		std::array<MaterialData, (size_t)TexType::Num> textures; // テクスチャの配列
 
 		void ChangeTexture(size_t texIndex, const std::string& texName);
@@ -66,6 +67,6 @@ namespace WristerEngine::_3D
 		// 描画
 		void Draw();
 		// テクスチャ読み込み
-		void LoadTexture(std::istringstream& line_stream, Mesh* mesh, TexType spriteIndex);
+		void LoadTexture(std::istringstream& line_stream, TexType spriteIndex);
 	};
 }

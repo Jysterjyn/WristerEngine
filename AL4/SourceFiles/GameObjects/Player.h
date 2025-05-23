@@ -1,9 +1,11 @@
 #pragma once
 #include <ModelManager.h>
+#include <unordered_map>
 
 class Player
 {
-	WristerEngine::_3D::Object3d* obj = nullptr;
+	std::unordered_map<std::string, WE::_3D::Object3d*> objects;
+	WE::_3D::Transform rootPos;
 
 public:
 	void Initialize();

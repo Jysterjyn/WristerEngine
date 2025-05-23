@@ -29,7 +29,7 @@ float4 main(VSOutput input) : SV_TARGET
     lightData.eyedir = normalize(cameraPos - input.worldpos.xyz); // 頂点から視点への方向ベクトル
     lightData.shininess = lightGroup.shininess; // 光沢度
 	// 環境光
-    float3 ambient = material.ambient.rgb  * lightGroup.ambientColor;
+    float3 ambient = material.ambient.rgb * lightGroup.ambientColor;
 	// シェーディングによる色
     float4 shadecolor = float4(ambient, material.ambient.a);
     shadecolor.rgb += lightGroup.ComputeLightEffect(lightData, material);

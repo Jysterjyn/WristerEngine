@@ -6,6 +6,8 @@ using namespace std;
 using namespace WE;
 using namespace _3D;
 
+std::string Mesh::DEFAULT_DIRECTORY = "Models/";
+
 void LoadVector3Stream(istringstream& stream, Vector3& vec)
 {
 	stream >> vec.x;
@@ -28,12 +30,13 @@ void Mesh::CalculateSmoothedVertexNormals()
 	}
 }
 
-void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
+void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string directoryName)
 {
 	modelName = modelName_;
 	isSmooth = isSmooth_;
+	if (!directoryName.empty()) { directoryName += "/"; }
 	const string FILENAME = modelName + ".obj";
-	const string DIRECTORY_PATH = "Models/" + modelName + "/";
+	const string DIRECTORY_PATH = DEFAULT_DIRECTORY + directoryName + modelName + "/";
 
 	ifstream file;
 	file.open(CreateResourcePath(DIRECTORY_PATH + FILENAME));

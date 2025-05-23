@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp" />
@@ -18,6 +19,7 @@
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceFiles\GameObjects\Ground.h" />
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\GameScene.h" />
@@ -147,7 +149,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -172,7 +174,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

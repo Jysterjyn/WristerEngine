@@ -2,6 +2,8 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include "PipelineManager.h"
+#include <filesystem>
+#include <StringUtility.h>
 using namespace Microsoft::WRL;
 using namespace WE;
 using namespace _3D;
@@ -20,7 +22,7 @@ void ModelManager::Initialize()
 	cameraManager->Create("default");
 }
 
-Object3d* ModelManager::Create(const std::string& modelName, bool smoothing)
+Object3d* ModelManager::Create(const std::string& modelName, bool smoothing, const std::string& directoryName)
 {
 	std::unique_ptr<Object3d> newObj3d = std::make_unique<Object3d>();
 
@@ -35,11 +37,25 @@ Object3d* ModelManager::Create(const std::string& modelName, bool smoothing)
 	}
 
 	std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>();
-	newMesh->LoadOBJ(modelName, smoothing);
+	newMesh->LoadOBJ(modelName, smoothing, directoryName);
 	newObj3d->Initialize(newMesh.get());
 	meshes[modelName][smoothing] = std::move(newMesh);
 	objects.push_back(move(newObj3d));
 	return objects.back().get();
+}
+
+std::unordered_map<std::string, Object3d*> ModelManager::CreateGroup(const std::string& directoryName, bool smoothing)
+{
+	std::unordered_map<std::string, Object3d*> newGroup;
+
+	auto dir_it = std::filesystem::directory_iterator(DEFAULT_RESOURCE_PATH + Mesh::DEFAULT_DIRECTORY + directoryName);
+	for (auto& p : dir_it)
+	{
+		std::string modelName = ExtractFileName(p.path().string());
+		newGroup[modelName] = Create(modelName, smoothing, directoryName);
+	}
+
+	return newGroup;
 }
 
 void ModelManager::Draw()

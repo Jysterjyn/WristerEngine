@@ -38,8 +38,10 @@ namespace WristerEngine::_3D
 		void CreateBuffers();
 
 	public:
+		static std::string DEFAULT_DIRECTORY;
+
 		// objƒtƒ@ƒCƒ‹“Ç‚İ‚İ
-		void LoadOBJ(const std::string& modelName, bool isSmooth);
+		void LoadOBJ(const std::string& modelName, bool isSmooth, std::string directoryName = "");
 		// •`‰æ
 		void Draw();
 	};

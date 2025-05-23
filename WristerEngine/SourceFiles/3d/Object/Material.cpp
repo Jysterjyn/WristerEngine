@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "ModelManager.h"
 #include "PipelineManager.h"
+#include <StringUtility.h>
 using namespace std;
 using namespace WE;
 using namespace _2D;
@@ -20,24 +21,28 @@ void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
 	color.b = colorTemp.z;
 }
 
-void Material::LoadTexture(istringstream& line_stream, Mesh* mesh, TexType spriteIndex)
+void Material::LoadTexture(istringstream& line_stream, TexType spriteIndex)
 {
 	string textureFilename;
 	line_stream >> textureFilename;
-	string path = mesh->directoryPath;
-	// スプライトのデフォルトディレクトリパスの文字列を削除
-	textures[(size_t)spriteIndex].data = TextureData::Load(path + textureFilename);
+	textures[(size_t)spriteIndex].data = TextureData::Load(directoryPath + textureFilename);
 }
 
 void Material::ChangeTexture(size_t texIndex, const std::string& texName)
 {
-	textures[texIndex].data = TextureData::Load(texName);
+	// フルパス指定の場合
+	if (texName.find("./") == std::string::npos) { textures[texIndex].data = TextureData::Load(texName); return; }
+
+	// マテリアルが存在するディレクトリからの相対パス指定の場合
+	std::string fileName = ExtractFileName(texName);
+	textures[texIndex].data = TextureData::Load(directoryPath + fileName);
 }
 
 void Material::Load(Mesh* mesh)
 {
 	ifstream file;
-	file.open(CreateResourcePath(mesh->directoryPath + mesh->materialFileName));
+	directoryPath = mesh->directoryPath;
+	file.open(CreateResourcePath(directoryPath + mesh->materialFileName));
 	assert(!file.fail());
 
 	string line;
@@ -52,11 +57,11 @@ void Material::Load(Mesh* mesh)
 		if (key == "Ka") { LoadColorRGBStream(line_stream, ambient); }
 		if (key == "Kd") { LoadColorRGBStream(line_stream, diffuse); }
 		if (key == "Ks") { LoadColorRGBStream(line_stream, specular); }
-		if (key == "map_Kd") { LoadTexture(line_stream, mesh, TexType::Main); }		// メインテクスチャ
-		if (key == "map_Kds") { LoadTexture(line_stream, mesh, TexType::Sub); }		// サブテクスチャ
-		if (key == "map_Kbm") { LoadTexture(line_stream, mesh, TexType::Blend); }	// ブレンドマスク
-		if (key == "map_Ksm") { LoadTexture(line_stream, mesh, TexType::Specular); }	// スペキュラマスク
-		if (key == "map_Kdm") { LoadTexture(line_stream, mesh, TexType::Dissolve); }	// ディゾルブマスク
+		if (key == "map_Kd") { LoadTexture(line_stream, TexType::Main); }		// メインテクスチャ
+		if (key == "map_Kds") { LoadTexture(line_stream, TexType::Sub); }		// サブテクスチャ
+		if (key == "map_Kbm") { LoadTexture(line_stream, TexType::Blend); }		// ブレンドマスク
+		if (key == "map_Ksm") { LoadTexture(line_stream, TexType::Specular); }	// スペキュラマスク
+		if (key == "map_Kdm") { LoadTexture(line_stream, TexType::Dissolve); }	// ディゾルブマスク
 	}
 	file.close();
 

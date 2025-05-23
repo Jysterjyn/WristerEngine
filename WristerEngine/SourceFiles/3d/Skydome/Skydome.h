@@ -7,7 +7,7 @@ namespace WristerEngine
 	class Skydome
 	{
 	private:
-		_3D::Object3d* object;
+		_3D::Object3d* object = nullptr;
 
 	public:
 		// ‰Šú‰»
