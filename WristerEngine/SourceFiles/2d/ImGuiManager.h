@@ -3,7 +3,7 @@
 #include "Quaternion.h"
 #include "Color.h"
 
-namespace WristerEngine::_2D
+namespace WristerEngine
 {
 	// ImGUI‚ÌŠÇ—
 	class ImGuiManager final

@@ -64,4 +64,9 @@ namespace WristerEngine::_3D
 		// ビュー行列とプロジェクション行列を掛け合わせた行列
 		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
 	};
+
+	struct BaseCameraProp
+	{
+		virtual ~BaseCameraProp() = default;
+	};
 }

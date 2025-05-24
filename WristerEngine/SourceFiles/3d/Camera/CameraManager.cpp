@@ -1,16 +1,11 @@
 #include "CameraManager.h"
 #include <DebugCamera.h>
 #include <RailCamera.h>
+#include <FollowCamera.h>
 #include <DirectXCommon.h>
-using namespace WristerEngine::_3D;
+using namespace WE::_3D;
 
 std::unordered_map<std::string, std::unique_ptr<BaseCamera>> CameraManager::cameras;
-
-struct WristerEngine::_3D::CameraProp
-{
-	DebugCamera::Prop debugProp;
-	RailCamera::Prop railProp;
-};
 
 CameraManager* CameraManager::GetInstance()
 {
@@ -18,7 +13,14 @@ CameraManager* CameraManager::GetInstance()
 	return &instance;
 }
 
-BaseCamera* CameraManager::Create(const std::string& name_, CameraType type, CameraProp* prop)
+template<class T>
+std::unique_ptr<BaseCamera> CreateNewCamera(BaseCameraProp* prop)
+{
+	T::Prop* castProp = dynamic_cast<T::Prop*>(prop);
+	return std::make_unique<T>(castProp);
+}
+
+BaseCamera* CameraManager::Create(const std::string& name_, CameraType type, BaseCameraProp* prop)
 {
 	std::unique_ptr<BaseCamera> newCamera;
 	switch (type)
@@ -26,13 +28,17 @@ BaseCamera* CameraManager::Create(const std::string& name_, CameraType type, Cam
 	case CameraType::Normal:
 		newCamera = std::make_unique<BaseCamera>();
 		break;
+
 	case CameraType::Debug:
-		if (prop) { newCamera = std::make_unique<DebugCamera>(&prop->debugProp); }
-		else { newCamera = std::make_unique<DebugCamera>(); }
+		newCamera = CreateNewCamera<DebugCamera>(prop);
 		break;
+
 	case CameraType::Rail:
-		if (prop) { newCamera = std::make_unique<RailCamera>(&prop->railProp); }
-		else { newCamera = std::make_unique<RailCamera>(); }
+		newCamera = CreateNewCamera<RailCamera>(prop);
+		break;
+
+	case CameraType::Follow:
+		newCamera = CreateNewCamera<FollowCamera>(prop);
 		break;
 	}
 

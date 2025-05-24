@@ -4,7 +4,7 @@ using namespace _3D;
 
 RailCamera::RailCamera(const Prop* prop)
 {
-	if(prop)
+	if (prop)
 	{
 		transform.translation = prop->pos;
 		transform.rotation = prop->rot;

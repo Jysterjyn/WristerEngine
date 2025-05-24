@@ -5,12 +5,11 @@ namespace WristerEngine::_3D
 {
 	enum class CameraType
 	{
-		Normal, // 通常カメラ
-		Debug, // デバッグカメラ
-		Rail // レールカメラ
+		Normal,	// 通常カメラ
+		Debug,	// デバッグカメラ
+		Rail,	// レールカメラ
+		Follow	// 追従カメラ
 	};
-
-	struct CameraProp;
 
 	class CameraManager
 	{
@@ -25,7 +24,7 @@ namespace WristerEngine::_3D
 	public:
 		static CameraManager* GetInstance();
 		// カメラ作成
-		BaseCamera* Create(const std::string& name, CameraType type = CameraType::Normal, CameraProp* prop = nullptr);
+		BaseCamera* Create(const std::string& name, CameraType type = CameraType::Normal, BaseCameraProp* prop = nullptr);
 		// 更新
 		void Update() const { Get()->Update(); }
 		// 描画
@@ -35,6 +34,6 @@ namespace WristerEngine::_3D
 		// 使用カメラの変更
 		void Change(const std::string& name);
 		// 使用カメラの取得
-		BaseCamera* Get() const { return cameras[name].get(); };
+		BaseCamera* Get() const { return cameras[name].get(); }
 	};
 }

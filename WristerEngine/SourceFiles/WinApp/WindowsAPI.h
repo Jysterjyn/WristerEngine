@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Vector.h"
 #include <string>
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {

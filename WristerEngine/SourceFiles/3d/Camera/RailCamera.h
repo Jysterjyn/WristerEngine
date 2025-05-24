@@ -10,7 +10,7 @@ namespace WristerEngine::_3D
 		float t = 0;
 
 	public:
-		struct Prop
+		struct Prop : public BaseCameraProp
 		{
 			Vector3 pos, rot;
 			std::vector<Vector3> controlPoints;

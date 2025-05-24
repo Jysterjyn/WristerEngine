@@ -238,6 +238,9 @@
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Camera\FollowCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -430,5 +433,6 @@
       <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h" />
   </ItemGroup>
 </Project>

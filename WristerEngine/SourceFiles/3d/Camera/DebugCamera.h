@@ -14,7 +14,7 @@ namespace WristerEngine::_3D
 		float wheelSpdDec = 50; // ÉYÅ[ÉÄÇÃë¨ìxï‚ê≥
 
 	public:
-		struct Prop
+		struct Prop : public BaseCameraProp
 		{
 			Vector3 targetPos;
 			float distance = 50;

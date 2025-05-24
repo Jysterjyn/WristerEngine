@@ -243,6 +243,7 @@ namespace WristerEngine
 		MouseMove GetMouseMove() const { return MouseMove(mouseState.lX, mouseState.lY, mouseState.lZ); }
 		PadState GetPadState() const;
 		bool IsConnectGamePad() const { return joystick; }
+		DIJOYSTATE GetJoyState() const { return joyState; }
 		// コントローラーが反応しない範囲を変更
 		void SetUnresponsiveRange(float range) { unresponsiveRange = range; }
 	};
