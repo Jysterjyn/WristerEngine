@@ -7,12 +7,12 @@ void TestScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize();
 
-	skydome.Initialize("skydome", 2);
 	WE::_3D::FollowCamera::Prop prop;
 	prop.target = player->GetTransform();
 	WE::_3D::CameraManager::GetInstance()->Create("Player", WE::_3D::CameraType::Follow, &prop);
-	WE::_3D::CameraManager::GetInstance()->Create("debug", WE::_3D::CameraType::Debug, &prop);
+	player->SetCamera();
 
+	skydome.Initialize("skydome", 2);
 	ground.Initialize("cube", { 100,1,100 });
 }
 

@@ -1,14 +1,17 @@
 #pragma once
 #include "BaseCamera.h"
 #include <Transform.h>
+#include <Input.h>
 
 namespace WristerEngine::_3D
 {
 	class FollowCamera : public BaseCamera
 	{
 	private:
-		// ’ÇÕ‘ÎÛ
-		const Transform* target = nullptr;
+		//’Ç]‘ÎÛ
+		const Transform* targetObject = nullptr;
+		Transform transform;
+		Input* input = Input::GetInstance();
 
 	public:
 		struct Prop : public BaseCameraProp

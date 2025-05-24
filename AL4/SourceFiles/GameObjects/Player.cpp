@@ -7,6 +7,8 @@ void Player::Initialize()
 	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
 	objects = modelManager->CreateGroup("Player", true);
 	rootPos.translation.y = 2;
+	rootPos.scale *= 0.4f;
+	rootPos.rotation.y = Angle(180);
 
 	for (auto o : objects)
 	{
@@ -20,8 +22,6 @@ void Player::Initialize()
 	objects["handRight"]->transform.translation = { -1.4f,1.7f,0 };
 	//objects["footLeft"]->transform.translation = { -0.6f,-0.3f,0 };
 	//objects["footRight"]->transform.translation = { 0.6f,-0.3f,0 };
-
-
 }
 
 void Player::Move()
@@ -31,10 +31,14 @@ void Player::Move()
 	const float SPEED = 0.3f;
 
 	// ˆÚ“®—Ê
-	WE::Input::PadState padState = input->GetPadState();
-	Vector3 move = { padState.dirKey.x,0.0f,padState.dirKey.y };
-	// ˆÚ“®—Ê‚É‘¬‚³‚ð”½‰f
-	move = Normalize(move) * SPEED;
+	Vector2 padMove = input->ConLStick(SPEED);
+	Vector3 move = { padMove.x,0.0f,padMove.y };
+
+	// ˆÚ“®ƒxƒNƒgƒ‹‚ðƒJƒƒ‰‚ÌŠp“x‚¾‚¯‰ñ“]‚·‚é
+	Matrix4 rotMat = Matrix4::RotateY(camera->GetTransform()->rotation.y);
+	move *= rotMat;
+
+	if (move.Length() != 0) { rootPos.rotation.y = std::atan2(move.x, move.z) + Angle(180); }
 
 	// ˆÚ“®
 	rootPos.translation += move;
@@ -44,7 +48,7 @@ void Player::Move()
 void Player::Update()
 {
 	Move();
-	
+
 	ImGui::Text("IsConnectGamePad = %d", input->IsConnectGamePad());
 	WE::Input::PadState padState = input->GetPadState();
 	ImGui::Text("padState.lt_rt = %d", padState.lt_rt);

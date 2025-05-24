@@ -176,7 +176,7 @@ namespace WristerEngine
 		Input() = default;
 		static ComPtr<IDirectInput8> directInput;
 		ComPtr<IDirectInputDevice8> keyboard;
-		std::array<BYTE, 256> key, oldkey;
+		std::array<BYTE, 256> key{}, oldkey{};
 		ComPtr<IDirectInputDevice8> mouse;
 		DIMOUSESTATE2 mouseState{}, mouseStatePre{};
 		ComPtr<IDirectInputDevice8> joystick;
