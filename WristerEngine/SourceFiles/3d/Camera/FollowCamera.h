@@ -8,7 +8,7 @@ namespace WristerEngine::_3D
 	class FollowCamera : public BaseCamera
 	{
 	private:
-		//’Ç]‘ÎÛ
+		// ’Ç]‘ÎÛ
 		const Transform* targetObject = nullptr;
 		Transform transform;
 		Input* input = Input::GetInstance();

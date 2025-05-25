@@ -31,7 +31,7 @@ void Player::Move()
 	const float SPEED = 0.3f;
 
 	// 移動量
-	Vector2 padMove = input->ConLStick(SPEED);
+	Vector2 padMove = input->ConLStick(0, SPEED);
 	Vector3 move = { padMove.x,0.0f,padMove.y };
 
 	// 移動ベクトルをカメラの角度だけ回転する
@@ -50,14 +50,14 @@ void Player::Update()
 	Move();
 
 	ImGui::Text("IsConnectGamePad = %d", input->IsConnectGamePad());
-	WE::Input::PadState padState = input->GetPadState();
+	WE::Input::PadState padState = input->GetPadState(0);
 	ImGui::Text("padState.lt_rt = %d", padState.lt_rt);
 	ImGui::Text("padState.lX = %d", padState.lX);
 	ImGui::Text("padState.lY = %d", padState.lY);
 	ImGui::Text("padState.rX = %d", padState.rX);
 	ImGui::Text("padState.rY = %d", padState.rY);
 	WE::ImGuiManager::PrintVector("padState.dirKey", padState.dirKey);
-	DIJOYSTATE joyState = input->GetJoyState();
+	DIJOYSTATE joyState = input->GetJoyState(0);
 	for (size_t i = 0; i < _countof(joyState.rgbButtons); i++)
 	{
 		ImGui::Text("joyState.rgbButtons[%d] = %d", i, joyState.rgbButtons[i]);

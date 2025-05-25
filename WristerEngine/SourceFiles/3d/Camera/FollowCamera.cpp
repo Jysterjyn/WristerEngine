@@ -13,7 +13,7 @@ void FollowCamera::VirtualUpdate()
 	if (input->IsConnectGamePad())
 	{
 		const float ROT_SPEED = Angle(1);
-		transform.rotation.y += (float)input->ConRStick(ROT_SPEED).x;
+		transform.rotation.y += (float)input->ConRStick(0, ROT_SPEED).x;
 	}
 
 	// 追従対象がいれば
@@ -27,7 +27,7 @@ void FollowCamera::VirtualUpdate()
 
 		// オフセットをカメラの回転に合わせて回転させる
 		offset *= rotMat;
-		
+
 		// 座標をコピーしてオフセット分ずらす
 		transform.translation = targetObject->translation + offset;
 	}

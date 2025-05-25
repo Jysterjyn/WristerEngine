@@ -170,8 +170,22 @@ namespace WristerEngine
 	// 入力
 	class Input final
 	{
-	private:
+	public:
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+		struct Joystick
+		{
+			ComPtr<IDirectInputDevice8> device;
+			// コントローラーが反応しない範囲
+			int32_t deadZoneL = 200;
+			int32_t deadZoneR = 200;
+			DIJOYSTATE state{}, statePre{};
+
+			static std::vector<Input::Joystick> Create();
+			void Update();
+		};
+
+	private:
 
 		Input() = default;
 		static ComPtr<IDirectInput8> directInput;
@@ -179,9 +193,7 @@ namespace WristerEngine
 		std::array<BYTE, 256> key{}, oldkey{};
 		ComPtr<IDirectInputDevice8> mouse;
 		DIMOUSESTATE2 mouseState{}, mouseStatePre{};
-		ComPtr<IDirectInputDevice8> joystick;
-		DIJOYSTATE joyState{}, joyStatePre{};
-		float unresponsiveRange = 200; // コントローラーが反応しない範囲
+		std::vector<Joystick> joysticks;
 
 		// コントローラー接続を確認した際に呼ばれるコールバック関数
 		static int CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
@@ -207,8 +219,8 @@ namespace WristerEngine
 			long lt_rt;
 			Vector2 dirKey;
 
-			Vector2 LNormalize() const; // Lスティックの数値を正規化したものを返す
-			Vector2 RNormalize() const; // Rスティックの数値を正規化したものを返す
+			Vector2 LNormalize(int32_t stickNo) const; // Lスティックの数値を正規化したものを返す
+			Vector2 RNormalize(int32_t stickNo) const; // Rスティックの数値を正規化したものを返す
 		};
 
 		// インスタンス取得
@@ -222,11 +234,11 @@ namespace WristerEngine
 		// キーが押されてるか
 		bool IsInput(Key KEY) const { return key[(int)KEY]; }
 		bool IsInput(Mouse KEY) const { return mouseState.rgbButtons[(int)KEY]; }
-		bool IsInput(JoyPad button) const { return joyState.rgbButtons[(int)button]; }
+		bool IsInput(int32_t stickNo, JoyPad button) const { return joysticks[stickNo].state.rgbButtons[(int)button]; }
 		// キーが押されたか
 		bool IsTrigger(Key KEY) const { return !oldkey[(int)KEY] && key[(int)KEY]; }
 		bool IsTrigger(Mouse KEY) const { return !mouseStatePre.rgbButtons[(int)KEY] && mouseState.rgbButtons[(int)KEY]; }
-		bool IsTrigger(JoyPad button) const { return !joyStatePre.rgbButtons[(int)button] && joyState.rgbButtons[(int)button]; }
+		bool IsTrigger(int32_t stickNo, JoyPad button) const;
 		// キーが離されたか
 		bool IsUp(Key KEY) const { return oldkey[(int)KEY] && !key[(int)KEY]; }
 		// いづれかのキーが押されたらtrueを返す
@@ -237,14 +249,14 @@ namespace WristerEngine
 		// 押されているキーの数
 		size_t KeyInputNum() const { return std::accumulate(key.begin(), key.end(), 0U) / 128; }
 		// 一定以上レバーを傾けたら移動する
-		Vector2 ConLStick(const float spd) const;
-		Vector2 ConRStick(const float spd) const;
+		Vector2 ConLStick(int32_t stickNo, const float spd) const;
+		Vector2 ConRStick(int32_t stickNo, const float spd) const;
 		// getter
 		MouseMove GetMouseMove() const { return MouseMove(mouseState.lX, mouseState.lY, mouseState.lZ); }
-		PadState GetPadState() const;
-		bool IsConnectGamePad() const { return joystick; }
-		DIJOYSTATE GetJoyState() const { return joyState; }
+		PadState GetPadState(int32_t stickNo) const;
+		bool IsConnectGamePad() const { return !joysticks.empty(); }
+		DIJOYSTATE GetJoyState(int32_t stickNo) const { return joysticks[stickNo].state; }
 		// コントローラーが反応しない範囲を変更
-		void SetUnresponsiveRange(float range) { unresponsiveRange = range; }
+		void SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR);
 	};
 }
