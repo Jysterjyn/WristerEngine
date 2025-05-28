@@ -1,5 +1,6 @@
 #pragma once
 #include "Timer.h"
+#include "MathUtility.h"
 
 namespace WristerEngine
 {
@@ -81,7 +82,10 @@ namespace WristerEngine
 	public:
 		enum class Type
 		{
-			Cos,	// cos(x)
+			Sin,		// sin(x)
+			Cos,		// cos(x)
+			Triangle,	// 三角波
+			Sawtooth	// ノコギリ波
 		};
 
 	private:
@@ -90,10 +94,16 @@ namespace WristerEngine
 		Type type;
 
 		// イージングの関数テーブル
-		static float (LoopEasing::* Ease[])();
+		static float (LoopEasing::* Ease[])() const;
 
+		// sine
+		float Sin() const { return std::sin(2.0f * PI * x); }
 		// cosine
-		float Cos();
+		float Cos() const { return std::cos(2.0f * PI * x); }
+		// 三角波
+		float Triangle() const { return std::asin(sin(2.0f * PI * x)) * 2.0f / PI; }
+		// ノコギリ波
+		float Sawtooth() const { return x; }
 
 	public:
 		/// <summary>
@@ -105,11 +115,10 @@ namespace WristerEngine
 		/// <summary>
 		/// 更新
 		/// </summary>
-		/// <returns>イージングの値(0~1)</returns>
+		/// <returns>イージングの値(-1~1 or 0~1)</returns>
 		float Update();
 
 		// リスタート
 		void Restart() { timer = timer.GetInterval(); }
-
 	};
 }

@@ -1,5 +1,4 @@
 #include "Easing.h"
-#include "MathUtility.h"
 
 using namespace WristerEngine;
 
@@ -18,7 +17,10 @@ float(Easing::* Easing::Ease[])() =
 
 float(LoopEasing::* LoopEasing::Ease[])() =
 {
+	&LoopEasing::Sin,
 	&LoopEasing::Cos,
+	&LoopEasing::Triangle,
+	&LoopEasing::Sawtooth,
 };
 
 float Easing::OutElastic()
@@ -85,15 +87,10 @@ float Easing::Update()
 	return easeNum;
 }
 
-void WristerEngine::Easing::SetLoop(int loopInterval_)
+void Easing::SetLoop(int loopInterval_)
 {
 	isLoop = true;
 	loopInterval = loopInterval_;
-}
-
-float LoopEasing::Cos()
-{
-	return (cos(2.0f * PI * x) + 1) * 0.5f;
 }
 
 void LoopEasing::Initialize(int easeTime, Type type_)

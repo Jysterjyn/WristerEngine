@@ -11,7 +11,8 @@ class Player
 	const WE::_3D::BaseCamera* camera = nullptr;
 	float goalAngle = 0;
 	float floatingParameter = 0.0f;
-	Angle angle = 0;
+	int cycle = 60;
+	float amplitude = 0.25f;
 
 	void Move();
 	void InitializeFloatingGimmick();
