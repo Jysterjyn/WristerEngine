@@ -9,8 +9,13 @@ class Player
 	WE::_3D::Transform rootPos;
 	WE::Input* input = WE::Input::GetInstance();
 	const WE::_3D::BaseCamera* camera = nullptr;
+	float goalAngle = 0;
+	float floatingParameter = 0.0f;
+	Angle angle = 0;
 
 	void Move();
+	void InitializeFloatingGimmick();
+	void UpdateFloatingGimmick();
 
 public:
 	void Initialize();

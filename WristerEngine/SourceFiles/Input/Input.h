@@ -177,8 +177,8 @@ namespace WristerEngine
 		{
 			ComPtr<IDirectInputDevice8> device;
 			// コントローラーが反応しない範囲
-			int32_t deadZoneL = 200;
-			int32_t deadZoneR = 200;
+			float deadZoneL = 0.2f;
+			float deadZoneR = 0.2f;
 			DIJOYSTATE state{}, statePre{};
 
 			static std::vector<Input::Joystick> Create();
@@ -197,8 +197,6 @@ namespace WristerEngine
 
 		// コントローラー接続を確認した際に呼ばれるコールバック関数
 		static int CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
-		// ゲームパッドの制御開始
-		void StartGamePadControl();
 
 	public:
 		static const int PADSTICK_MAX_VAL = 1000;
@@ -212,15 +210,10 @@ namespace WristerEngine
 
 		struct PadState
 		{
-			long lX;
-			long lY;
-			long rX;
-			long rY;
+			Vector2 l; // [-1,+1]の範囲で正規化
+			Vector2 r; // [-1,+1]の範囲で正規化
 			long lt_rt;
 			Vector2 dirKey;
-
-			Vector2 LNormalize(int32_t stickNo) const; // Lスティックの数値を正規化したものを返す
-			Vector2 RNormalize(int32_t stickNo) const; // Rスティックの数値を正規化したものを返す
 		};
 
 		// インスタンス取得
@@ -257,6 +250,6 @@ namespace WristerEngine
 		bool IsConnectGamePad() const { return !joysticks.empty(); }
 		DIJOYSTATE GetJoyState(int32_t stickNo) const { return joysticks[stickNo].state; }
 		// コントローラーが反応しない範囲を変更
-		void SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR);
+		void SetDeadZone(int32_t stickNo, float deadZoneL, float deadZoneR);
 	};
 }

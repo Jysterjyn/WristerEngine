@@ -8,7 +8,7 @@ void Player::Initialize()
 	objects = modelManager->CreateGroup("Player", true);
 	rootPos.translation.y = 2;
 	rootPos.scale *= 0.4f;
-	rootPos.rotation.y = Angle(180);
+	rootPos.rotation.y = 0;
 
 	for (auto o : objects)
 	{
@@ -22,11 +22,16 @@ void Player::Initialize()
 	objects["handRight"]->transform.translation = { -1.4f,1.7f,0 };
 	//objects["footLeft"]->transform.translation = { -0.6f,-0.3f,0 };
 	//objects["footRight"]->transform.translation = { 0.6f,-0.3f,0 };
+
+	const float DEAD_ZONE = 0.7f;
+	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
 }
 
 void Player::Move()
 {
 	if (!input->IsConnectGamePad()) { return; }
+	bool isMoving = false;
+
 	// ‘¬‚³
 	const float SPEED = 0.3f;
 
@@ -34,34 +39,41 @@ void Player::Move()
 	Vector2 padMove = input->ConLStick(0, SPEED);
 	Vector3 move = { padMove.x,0.0f,padMove.y };
 
+	isMoving = move.Length() != 0;
+
 	// ˆÚ“®ƒxƒNƒgƒ‹‚ðƒJƒƒ‰‚ÌŠp“x‚¾‚¯‰ñ“]‚·‚é
 	Matrix4 rotMat = Matrix4::RotateY(camera->GetTransform()->rotation.y);
 	move *= rotMat;
 
-	if (move.Length() != 0) { rootPos.rotation.y = std::atan2(move.x, move.z) + Angle(180); }
+	if (isMoving)
+	{
+		// ˆÚ“®
+		rootPos.translation += move;
+		// –Ú•WŠp“x‚ÌŽZo
+		goalAngle = std::atan2(move.x, move.z);
+	}
 
-	// ˆÚ“®
-	rootPos.translation += move;
+	rootPos.rotation.y = LerpShortAngle(rootPos.rotation.y, goalAngle, 0.4f);
 	rootPos.Update();
+}
+
+void Player::InitializeFloatingGimmick()
+{
+	floatingParameter = 0.0f;
+}
+
+void Player::UpdateFloatingGimmick()
+{
+	const uint16_t CYCLE = 60;
+	const float STEP = 2.0f * PI / CYCLE;
+
+	floatingParameter += STEP;
+	floatingParameter = std::fmod(floatingParameter, 2.0f * PI);
 }
 
 void Player::Update()
 {
 	Move();
-
-	ImGui::Text("IsConnectGamePad = %d", input->IsConnectGamePad());
-	WE::Input::PadState padState = input->GetPadState(0);
-	ImGui::Text("padState.lt_rt = %d", padState.lt_rt);
-	ImGui::Text("padState.lX = %d", padState.lX);
-	ImGui::Text("padState.lY = %d", padState.lY);
-	ImGui::Text("padState.rX = %d", padState.rX);
-	ImGui::Text("padState.rY = %d", padState.rY);
-	WE::ImGuiManager::PrintVector("padState.dirKey", padState.dirKey);
-	DIJOYSTATE joyState = input->GetJoyState(0);
-	for (size_t i = 0; i < _countof(joyState.rgbButtons); i++)
-	{
-		ImGui::Text("joyState.rgbButtons[%d] = %d", i, joyState.rgbButtons[i]);
-	}
 }
 
 void Player::Draw()

@@ -153,11 +153,6 @@ int CALLBACK Input::DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 	return DIENUM_CONTINUE;
 }
 
-void Input::StartGamePadControl()
-{
-
-}
-
 void Input::Joystick::Update()
 {
 	device->Acquire();
@@ -193,43 +188,36 @@ bool Input::IsAnyInput(std::vector<Key>& keys) const
 Input::PadState Input::GetPadState(int32_t stickNo) const
 {
 	DIJOYSTATE joyState = GetJoyState(stickNo);
+	// 十字キーの方向
 	float angle = joyState.rgdwPOV[0] * PI / 18000.0f;
 	Vector2 dirKey;
 	if (joyState.rgdwPOV[0] != -1) { dirKey = { std::sin(angle), std::cos(angle) }; }
-	return PadState(joyState.lX, joyState.lY, joyState.lRx, joyState.lRy, joyState.lZ, dirKey);
+
+	// スティック値の正規化
+	Vector2 stickL = { (float)joyState.lX, (float)joyState.lY }; // Lスティック
+	stickL /= (float)Input::PADSTICK_MAX_VAL;
+
+	Vector2 stickR = { (float)joyState.lRx, (float)joyState.lRy };  // Rスティック
+	stickR /= (float)Input::PADSTICK_MAX_VAL;
+
+	return PadState(stickL, stickR, joyState.lZ, dirKey);
 }
 
-void Input::SetJoystickDeadZone(int32_t stickNo, int32_t deadZoneL, int32_t deadZoneR)
+void Input::SetDeadZone(int32_t stickNo, float deadZoneL, float deadZoneR)
 {
 	joysticks[stickNo].deadZoneL = deadZoneL;
 	joysticks[stickNo].deadZoneR = deadZoneR;
-}
-
-Vector2 Input::PadState::LNormalize(int32_t stickNo) const
-{
-	auto padState = Input::GetInstance()->GetPadState(stickNo);
-	Vector2 padStickVec = { (float)padState.lX, (float)padState.lY };
-	padStickVec /= (float)Input::PADSTICK_MAX_VAL;
-	return padStickVec;
-}
-
-Vector2 Input::PadState::RNormalize(int32_t stickNo) const
-{
-	auto padState = Input::GetInstance()->GetPadState(stickNo);
-	Vector2 padStickVec = { (float)padState.rX, (float)padState.rY };
-	padStickVec /= (float)Input::PADSTICK_MAX_VAL;
-	return padStickVec;
 }
 
 Vector2 Input::ConLStick(int32_t stickNo, const float spd) const
 {
 	Vector2 vec;
 	// X軸について
-	if (std::abs(GetPadState(stickNo).lX) > joysticks[stickNo].deadZoneL) { vec.x = (float)GetPadState(stickNo).lX; }
-	else { vec.x = 0.0f; }
+	vec.x = GetPadState(stickNo).l.x;
 	// Y軸について
-	if (std::abs(GetPadState(stickNo).lY) > joysticks[stickNo].deadZoneL) { vec.y = -(float)GetPadState(stickNo).lY; }
-	else { vec.y = 0.0f; }
+	vec.y = -GetPadState(stickNo).l.y;
+
+	if (vec.Length() < joysticks[stickNo].deadZoneL) { return {}; }
 
 	return Normalize(vec) * spd;
 }
@@ -238,11 +226,11 @@ Vector2 Input::ConRStick(int32_t stickNo, const float spd) const
 {
 	Vector2 vec;
 	// X軸について
-	if (std::abs(GetPadState(stickNo).rX) > joysticks[stickNo].deadZoneR) { vec.x = (float)GetPadState(stickNo).rX; }
-	else { vec.x = 0.0f; }
+	vec.x = GetPadState(stickNo).r.x;
 	// Y軸について
-	if (std::abs(GetPadState(stickNo).rY) > joysticks[stickNo].deadZoneR) { vec.y = -(float)GetPadState(stickNo).rY; }
-	else { vec.y = 0.0f; }
+	vec.y = -GetPadState(stickNo).r.y;
+
+	if (vec.Length() < joysticks[stickNo].deadZoneR) { return {}; }
 
 	return Normalize(vec) * spd;
 }

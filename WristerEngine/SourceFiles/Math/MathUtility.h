@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cmath>
 
 const float PI = 3.141592f; // 円周率
 const float ONE_DEG_RAD = PI / 180.0f; // 1°のラジアン変換
@@ -11,20 +12,21 @@ class Angle
 
 	// 度数法をラジアンに変換
 	float ToRadian(int deg) { return (float)deg * ONE_DEG_RAD; }
+	// angleを[-2PI,+2PI]の範囲にする
+	void ModAngle() { angle = std::fmod(angle, 2.0f * PI); }
 
 public:
-	float operator+() const { return angle; }
 	float operator-() const { return -angle; }
 	float operator++(int) { float rAngle = angle; angle += ONE_DEG_RAD; return rAngle; }
 	float operator--(int) { float rAngle = angle; angle -= ONE_DEG_RAD; return rAngle; }
-	void operator+=(float rad) { angle += rad; }
-	void operator+=(int deg) { angle += ToRadian(deg); }
-	void operator-=(float rad) { angle -= rad; }
-	void operator-=(int deg) { angle -= ToRadian(deg); }
+	void operator+=(float rad) { angle += rad; ModAngle(); }
+	void operator+=(int deg) { angle += ToRadian(deg); ModAngle(); }
+	void operator-=(float rad) { angle -= rad;  ModAngle(); }
+	void operator-=(int deg) { angle -= ToRadian(deg);  ModAngle(); }
 	operator float() { return angle; }
 	Angle() = default;
-	Angle(float rad) { angle = rad; } // ラジアン代入
-	Angle(int deg) { angle = ToRadian(deg); } // 度数代入
+	Angle(float rad) { angle = rad; ModAngle(); } // ラジアン代入
+	Angle(int deg) { angle = ToRadian(deg);  ModAngle(); } // 度数代入
 };
 
 // XYZ軸のenum class
@@ -68,3 +70,6 @@ bool IsAny(T n, std::vector<T> list)
 	}
 	return flag;
 }
+
+// 最短角度補間
+float LerpShortAngle(float a, float b, float t);
