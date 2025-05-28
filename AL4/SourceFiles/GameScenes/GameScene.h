@@ -3,6 +3,7 @@
 #include <Player.h>
 #include <skydome.h>
 #include <Ground.h>
+#include <Enemy.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -14,6 +15,7 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class TestScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
+	std::unique_ptr<Enemy> enemy;
 	WE::Skydome skydome;
 	Ground ground;
 

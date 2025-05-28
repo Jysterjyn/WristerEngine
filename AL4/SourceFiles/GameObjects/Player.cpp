@@ -2,14 +2,14 @@
 #include <imgui.h>
 #include <ImGuiManager.h>
 
-void Player::Initialize()
+void Player::Initialize(const std::string& modelGroupName)
 {
-	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
-	objects = modelManager->CreateGroup("Player", true);
+	BaseCharacter::Initialize(modelGroupName);
+
 	rootPos.translation.y = 2;
 	rootPos.scale *= 0.4f;
 
-	for (auto o : objects)
+	for (auto& o : objects)
 	{
 		o.second->material.ambient = { 0,0,0 };
 		o.second->transform.parent = &rootPos;
@@ -86,9 +86,5 @@ void Player::Update()
 {
 	Move();
 	UpdateFloatingGimmick();
-	rootPos.Update();
-}
-
-void Player::Draw()
-{
+	BaseCharacter::Update();
 }

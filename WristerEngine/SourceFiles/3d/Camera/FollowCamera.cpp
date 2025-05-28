@@ -4,7 +4,12 @@ using namespace _3D;
 
 FollowCamera::FollowCamera(const Prop* prop)
 {
-	if (prop) { targetObject = prop->target; }
+	if (prop) 
+	{
+		targetObject = prop->target; 
+		rotSpeed = prop->rotSpeed;
+		posOffset = prop->posOffset;
+	}
 	SetTransform(&transform);
 }
 
@@ -12,15 +17,14 @@ void FollowCamera::VirtualUpdate()
 {
 	if (input->IsConnectGamePad())
 	{
-		const float ROT_SPEED = Angle(1);
-		transform.rotation.y += (float)input->ConRStick(0, ROT_SPEED).x;
+		transform.rotation.y += (float)input->ConRStick(0, rotSpeed).x;
 	}
 
 	// 追従対象がいれば
 	if (targetObject)
 	{
 		// 追従対象からカメラまでのオフセット(0°の時の値)
-		Vector3 offset = { 0.0f,2.0f,-10.0f };
+		Vector3 offset = posOffset;
 
 		// カメラの角度から回転行列を計算する
 		Matrix4 rotMat = Matrix4::Rotate(transform.rotation);
