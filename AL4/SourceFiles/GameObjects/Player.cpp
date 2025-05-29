@@ -60,10 +60,10 @@ void Player::Move()
 		// 移動
 		rootPos.translation += move;
 		// 目標角度の算出
-		goalAngle = std::atan2(move.x, move.z);
+		destinationAngleY = std::atan2(move.x, move.z);
 	}
 
-	rootPos.rotation.y = LerpShortAngle(rootPos.rotation.y, goalAngle, 0.4f);
+	rootPos.rotation.y = LerpShortAngle(rootPos.rotation.y, destinationAngleY, 0.4f);
 }
 
 void Player::InitializeFloatingGimmick()
@@ -105,10 +105,9 @@ void Player::BehaviorRootUpdate()
 	Move();
 	UpdateFloatingGimmick();
 	// 攻撃開始
-	if (input->IsConnectGamePad() && input->IsTrigger(0, WE::JoyPad::A))
-	{
-		behaviorRequest = Behavior::Attack;
-	}
+	if (!input->IsConnectGamePad()) { return; }
+	if (input->IsTrigger(0, WE::JoyPad::A)) { behaviorRequest = Behavior::Attack; }
+	if (input->IsTrigger(0, WE::JoyPad::B)) { behaviorRequest = Behavior::Dash; }
 }
 
 void Player::BehaviorAttackInitialize()
@@ -142,6 +141,30 @@ void Player::BehaviorAttackUpdate()
 	ImGui::End();
 }
 
+void Player::BehaviorDashInitialize()
+{
+	workDash.dashParameter = 0;
+	rootPos.rotation.y = destinationAngleY;
+}
+
+void Player::BehaviorDashUpdate()
+{
+	const float SPEED = 1.5f;
+	const uint32_t behaviorDashTime = 15;
+
+	Vector3 move = { 0.0f,0.0f,1.0f };
+
+	Matrix4 rotMat = Matrix4::RotateY(rootPos.rotation.y);
+	move *= rotMat;
+
+	rootPos.translation += move * SPEED;
+
+	if (++workDash.dashParameter >= behaviorDashTime)
+	{
+		behaviorRequest = Behavior::Root;
+	}
+}
+
 void Player::Update()
 {
 	if (behaviorRequest)
@@ -158,6 +181,9 @@ void Player::Update()
 		case Behavior::Attack:
 			BehaviorAttackInitialize();
 			break;
+		case Behavior::Dash:
+			BehaviorDashInitialize();
+			break;
 		}
 		// 振る舞いリクエストをリセット
 		behaviorRequest = std::nullopt;
@@ -171,6 +197,9 @@ void Player::Update()
 		break;
 	case Behavior::Attack:
 		BehaviorAttackUpdate();
+		break;
+	case Behavior::Dash:
+		BehaviorDashUpdate();
 		break;
 	}
 

@@ -9,15 +9,21 @@ class Player : public BaseCharacter
 {
 	enum class Behavior
 	{
-		Root,Attack
+		Root,Attack,Dash
+	};
+
+	struct WorkDash
+	{
+		uint32_t dashParameter = 0;
 	};
 
 	WE::Input* input = WE::Input::GetInstance();
 	const WE::_3D::BaseCamera* camera = nullptr;
-	float goalAngle = 0;
+	float destinationAngleY = 0.0f;
 	float floatingParameter = 0.0f;
 	int cycle = 60;
 	float amplitude = 0.25f;
+	WorkDash workDash;
 	Behavior behavior = Behavior::Root;
 	// 次の振る舞いリクエスト
 	std::optional<Behavior> behaviorRequest = std::nullopt;
@@ -29,6 +35,8 @@ class Player : public BaseCharacter
 	void BehaviorRootUpdate();
 	void BehaviorAttackInitialize();
 	void BehaviorAttackUpdate();
+	void BehaviorDashInitialize();
+	void BehaviorDashUpdate();
 
 public:
 	void Initialize(const std::string& modelGroupName) override;

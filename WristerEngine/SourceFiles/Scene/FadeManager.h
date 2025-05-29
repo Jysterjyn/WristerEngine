@@ -9,7 +9,7 @@ namespace WristerEngine
 	private:
 		const int FADE_TIME = 30;
 		float fadePerFlame = 1.0f / FADE_TIME;
-		_2D::Sprite* sprite;
+		_2D::Sprite* sprite = nullptr;
 		bool isFade = 0;
 		float alpha = 0;
 		bool isChange = false;
@@ -24,7 +24,7 @@ namespace WristerEngine
 		// フェードをオンにする
 		void FadeScene() { isFade = true; }
 		// getter
-		bool IsChange() { return isChange; }
-		bool IsFade() { return isFade; }
+		bool IsChange() const { return isChange; }
+		bool IsFade() const { return isFade; }
 	};
 }
