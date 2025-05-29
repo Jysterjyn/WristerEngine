@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include <FollowCamera.h>
 #include <DebugCamera.h>
+#include <SceneManager.h>
 
 void GameScene::Initialize()
 {
@@ -31,6 +32,7 @@ void GameScene::Update()
 {
 	if (input->IsTrigger(WE::Key::_1)) { cMan->Change("Debug"); }
 	if (input->IsTrigger(WE::Key::_2)) { cMan->Change("Player"); }
+	if (input->IsTrigger(WE::Key::_3)) { sceneManager->ChangeScene("GameScene"); }
 
 	player->Update();
 	enemy->Update();

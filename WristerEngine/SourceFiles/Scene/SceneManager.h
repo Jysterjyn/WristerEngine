@@ -3,6 +3,7 @@
 #include "FadeManager.h"
 #include "BasePauseMenu.h"
 #include "AbstractSceneFactory.h"
+#include <optional>
 
 namespace WristerEngine
 {
@@ -12,7 +13,7 @@ namespace WristerEngine
 	private:
 		std::unique_ptr<BaseScene> scene;
 		std::string nowScene = "None";
-		std::string nextScene = "None";
+		std::optional<std::string> nextScene = std::nullopt;
 		FadeManager fadeManager;
 		std::unique_ptr<AbstractSceneFactory> sceneFactory;
 		bool isObjectClear = false, isParticleClear = false;

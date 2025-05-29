@@ -25,7 +25,7 @@ void SceneManager::Update()
 	fadeManager.Update();
 
 	bool isChangeScene = fadeManager.IsChange() || !fadeManager.IsFade();
-	isChangeScene &= nextScene != "None";
+	isChangeScene &= nextScene.has_value();
 	if (isChangeScene)
 	{
 		// ƒV[ƒ“‰ð•ú
@@ -35,9 +35,9 @@ void SceneManager::Update()
 			scene.reset();
 		}
 
-		scene = sceneFactory->CreateScene(nextScene);
-		nowScene = nextScene;
-		nextScene = "None";
+		scene = sceneFactory->CreateScene(nextScene.value());
+		nowScene = nextScene.value();
+		nextScene = std::nullopt;
 
 		if (isObjectClear)
 		{
