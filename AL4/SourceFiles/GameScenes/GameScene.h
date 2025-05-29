@@ -4,6 +4,7 @@
 #include <skydome.h>
 #include <Ground.h>
 #include <Enemy.h>
+#include <CameraManager.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -12,12 +13,13 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 	void Update() override {}
 };
 
-class TestScene : public WristerEngine::BaseScene
+class GameScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
 	std::unique_ptr<Enemy> enemy;
 	WE::Skydome skydome;
 	Ground ground;
+	WE::_3D::CameraManager* cMan = WE::_3D::CameraManager::GetInstance();
 
 	// BaseScene ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	void Initialize() override;

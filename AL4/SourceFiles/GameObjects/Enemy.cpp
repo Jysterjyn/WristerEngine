@@ -20,7 +20,7 @@ void Enemy::Move()
 {
 	// ‘¬‚³
 	const float ROT_SPEED = Angle(2);
-	const float SPEED = 0.3f;
+	const float SPEED = 0.2f;
 
 	// ˆÚ“®—Ê
 	rootPos.rotation.y += ROT_SPEED;

@@ -16,7 +16,7 @@ void MyGame::Initialize()
 
 	std::unique_ptr<WristerEngine::AbstractSceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
-	sceneManager->Initialize(sceneFactory, "TestScene");
+	sceneManager->Initialize(sceneFactory, "GameScene");
 
 	modelManager->Initialize();
 	WristerEngine::ParticleManager::Initialize();

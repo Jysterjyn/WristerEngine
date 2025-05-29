@@ -5,7 +5,7 @@ class Enemy : public BaseCharacter
 {
 private:
 	float walkingParameter = 0.0f;
-	int cycle = 60;
+	int cycle = 30;
 	float amplitude = 0.25f;
 
 	void Move();
