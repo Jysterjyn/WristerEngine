@@ -4,7 +4,7 @@
 
 namespace WristerEngine::_3D
 {
-	class PrimitiveDrawer
+	class PrimitiveDrawer final
 	{
 	private:
 		// ü•ª‚ÌÅ‘å”

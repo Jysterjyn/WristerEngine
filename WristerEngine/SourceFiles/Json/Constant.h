@@ -10,7 +10,7 @@
 namespace WristerEngine
 {
 	// ’è”‚Ìî•ñ‚ğ"constant.json"‚©‚ç“Ç‚İæ‚é
-	class Constant : public WristerEngine::JsonLoader
+	class Constant final : public JsonLoader
 	{
 	private:
 		std::unordered_map<std::string, const void*> constants;
@@ -18,6 +18,8 @@ namespace WristerEngine
 
 		Constant() = default;
 		~Constant() = default;
+		Constant(const Constant&) = delete;
+		Constant& operator=(const Constant&) = delete;
 
 		// Œ^•Ê“Ç‚İ‚İ
 		void LoadInt();
@@ -28,9 +30,6 @@ namespace WristerEngine
 		void LoadStruct();
 
 	public:
-		Constant(const Constant& obj) = delete;
-		Constant& operator=(const Constant& obj) = delete;
-
 		static Constant* GetInstance();
 
 		// ’è”‚ğ“Ç‚İ‚Ş

@@ -53,6 +53,8 @@ namespace WristerEngine
 
 		DirectXCommon() = default;
 		~DirectXCommon() = default;
+		DirectXCommon(const DirectXCommon&) = delete;
+		DirectXCommon& operator=(const DirectXCommon&) = delete;
 		// デバイスの生成
 		void CreateDevice();
 		// コマンドリストの生成
@@ -67,9 +69,6 @@ namespace WristerEngine
 		void CreateFence();
 
 	public:
-		DirectXCommon(const DirectXCommon& obj) = delete;
-		DirectXCommon& operator=(const DirectXCommon& obj) = delete;
-
 		// インスタンス取得
 		static DirectXCommon* GetInstance();
 		// 初期化

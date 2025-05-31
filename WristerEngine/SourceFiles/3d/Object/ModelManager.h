@@ -8,20 +8,22 @@ namespace WristerEngine::_3D
 	enum class RootParamNum { MatWorld = (int)TexType::Num, Material, Light, Camera };
 
 	// 3Dオブジェクトの管理
-	class ModelManager
+	class ModelManager final
 	{
 	private:
-		// ライト
-		std::unique_ptr<LightGroup> lightGroup;
 		// 読み込んだモデル情報
 		std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
 		// 生成したオブジェクト
 		std::list<std::unique_ptr<Object3d>> objects;
 		// カメラマネージャー
 		CameraManager* cameraManager = CameraManager::GetInstance();
+		// ライト
+		std::unique_ptr<LightGroup> lightGroup;
 
 		ModelManager() = default;
 		~ModelManager() = default;
+		ModelManager(const ModelManager&) = delete;
+		ModelManager& operator=(const ModelManager&) = delete;
 
 	public:
 		static ModelManager* GetInstance();

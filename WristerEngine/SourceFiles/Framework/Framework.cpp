@@ -3,7 +3,8 @@
 #include "D3D12Common.h"
 #include "ImGuiManager.h"
 #include "PipelineManager.h"
-using namespace WristerEngine;
+#include <GlobalVariables.h>
+using namespace WE;
 using namespace _2D;
 
 void Framework::Initialize()
@@ -18,10 +19,17 @@ void Framework::Initialize()
 
 void Framework::Update()
 {
+	// ImGui受付開始
 	ImGuiManager::Begin();
+	// 入力関連の毎フレーム処理
 	input->Update();
+	// グローバル変数の更新
+	GlobalVariables::GetInstance()->Update();
+	// ゲームシーンの毎フレーム処理
 	sceneManager->Update();
+	// スプライトの更新
 	Sprite::UpdateAll();
+	// ImGui受付終了
 	ImGuiManager::End();
 }
 

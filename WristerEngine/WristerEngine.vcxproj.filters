@@ -241,6 +241,9 @@
     <ClCompile Include="SourceFiles\3d\Camera\FollowCamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Json\GlobalVariables.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -434,5 +437,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
     <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h" />
+    <ClInclude Include="SourceFiles\Json\GlobalVariables.h" />
   </ItemGroup>
 </Project>

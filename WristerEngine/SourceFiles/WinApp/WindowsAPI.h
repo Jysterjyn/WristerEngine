@@ -17,14 +17,16 @@ namespace WristerEngine
 	private:
 		HWND hwnd{};
 		WNDCLASSEX w{};
+
 		WindowsAPI() = default;
+		~WindowsAPI() = default;
+		WindowsAPI(const WindowsAPI&) = delete;
+		WindowsAPI& operator=(const WindowsAPI&) = delete;
 
 		// ウィンドウプロシージャ
 		static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	public:
-		WindowsAPI(const WindowsAPI& obj) = delete;
-
 		// インスタンス取得
 		static WindowsAPI* GetInstance();
 		// 初期化

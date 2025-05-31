@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <imgui.h>
 #include <ImGuiManager.h>
+#include <GlobalVariables.h>
 
 void Player::Initialize(const std::string& modelGroupName)
 {
@@ -35,6 +36,12 @@ void Player::Initialize(const std::string& modelGroupName)
 	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
 
 	InitializeFloatingGimmick();
+
+	WE::GlobalVariables* globalVariables = WE::GlobalVariables::GetInstance();
+	std::string groupName = "Player";
+	globalVariables->SetValue(groupName, "Test_int32_t", 90);
+	globalVariables->SetValue(groupName, "Test_float", 90.0f);
+	globalVariables->SetValue(groupName, "Test_Vector3", {1,2,3});
 }
 
 void Player::Move()
@@ -82,15 +89,15 @@ void Player::UpdateFloatingGimmick()
 	objects["handLeft"]->transform.rotation.x = param;
 	objects["handRight"]->transform.rotation.x = -param;
 
-	ImGui::Begin("Player");
-	float min = -5.0f, max = 5.0f;
-	WE::ImGuiManager::SliderVector("Head Translation", objects["head"]->transform.translation, min, max);
-	WE::ImGuiManager::SliderVector("ArmL Translation", objects["handLeft"]->transform.translation, min, max);
-	WE::ImGuiManager::SliderVector("ArmR Translation", objects["handRight"]->transform.translation, min, max);
-	WE::ImGuiManager::SliderVector("Sword Translation", objects["sword"]->transform.translation, min, max);
-	ImGui::SliderInt("cycle", &cycle, 1, 120);
-	ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//float min = -5.0f, max = 5.0f;
+	//WE::ImGuiManager::SliderVector("Head Translation", objects["head"]->transform.translation, min, max);
+	//WE::ImGuiManager::SliderVector("ArmL Translation", objects["handLeft"]->transform.translation, min, max);
+	//WE::ImGuiManager::SliderVector("ArmR Translation", objects["handRight"]->transform.translation, min, max);
+	//WE::ImGuiManager::SliderVector("Sword Translation", objects["sword"]->transform.translation, min, max);
+	//ImGui::SliderInt("cycle", &cycle, 1, 120);
+	//ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
+	//ImGui::End();
 }
 
 void Player::BehaviorRootInitialize()
@@ -130,15 +137,15 @@ void Player::BehaviorAttackUpdate()
 	objects["handRight"]->transform.rotation.x = -Angle(180) + floatingParameter;
 	objects["sword"]->transform.rotation.x = floatingParameter;
 
-	ImGui::Begin("Player");
-	float min = -2 * PI, max = 2 * PI;
-	WE::ImGuiManager::SliderVector("Head rotation", objects["head"]->transform.rotation, min, max);
-	WE::ImGuiManager::SliderVector("ArmL rotation", objects["handLeft"]->transform.rotation, min, max);
-	WE::ImGuiManager::SliderVector("ArmR rotation", objects["handRight"]->transform.rotation, min, max);
-	WE::ImGuiManager::SliderVector("Sword rotation", objects["sword"]->transform.rotation, min, max);
-	ImGui::SliderInt("cycle", &cycle, 1, 120);
-	ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
-	ImGui::End();
+	//ImGui::Begin("Player");
+	//float min = -2 * PI, max = 2 * PI;
+	//WE::ImGuiManager::SliderVector("Head rotation", objects["head"]->transform.rotation, min, max);
+	//WE::ImGuiManager::SliderVector("ArmL rotation", objects["handLeft"]->transform.rotation, min, max);
+	//WE::ImGuiManager::SliderVector("ArmR rotation", objects["handRight"]->transform.rotation, min, max);
+	//WE::ImGuiManager::SliderVector("Sword rotation", objects["sword"]->transform.rotation, min, max);
+	//ImGui::SliderInt("cycle", &cycle, 1, 120);
+	//ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
+	//ImGui::End();
 }
 
 void Player::BehaviorDashInitialize()

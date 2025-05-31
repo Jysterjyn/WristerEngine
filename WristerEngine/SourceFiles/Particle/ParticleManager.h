@@ -27,7 +27,9 @@ namespace WristerEngine
 		static _3D::ModelManager* modelManager;
 
 		ParticleManager() = delete;
-		ParticleManager(const ParticleManager& obj) = delete;
+		~ParticleManager() = delete;
+		ParticleManager(const ParticleManager&) = delete;
+		ParticleManager& operator=(const ParticleManager&) = delete;
 
 	public:
 		// Ã“I‰Šú‰»

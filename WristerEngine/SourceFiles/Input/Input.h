@@ -186,14 +186,17 @@ namespace WristerEngine
 		};
 
 	private:
-
-		Input() = default;
 		static ComPtr<IDirectInput8> directInput;
 		ComPtr<IDirectInputDevice8> keyboard;
 		std::array<BYTE, 256> key{}, oldkey{};
 		ComPtr<IDirectInputDevice8> mouse;
 		DIMOUSESTATE2 mouseState{}, mouseStatePre{};
 		std::vector<Joystick> joysticks;
+
+		Input() = default;
+		~Input() = default;
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
 
 		// コントローラー接続を確認した際に呼ばれるコールバック関数
 		static int CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
@@ -218,8 +221,6 @@ namespace WristerEngine
 
 		// インスタンス取得
 		static Input* GetInstance();
-		Input(const Input& obj) = delete;
-		Input& operator=(const Input& obj) = delete;
 		// 初期化
 		void Initialize();
 		// 更新
@@ -234,7 +235,7 @@ namespace WristerEngine
 		bool IsTrigger(int32_t stickNo, JoyPad button) const;
 		// キーが離されたか
 		bool IsUp(Key KEY) const { return oldkey[(int)KEY] && !key[(int)KEY]; }
-		// いづれかのキーが押されたらtrueを返す
+		// いずれかのキーが押されたらtrueを返す
 		bool IsAnyInput() const { return std::accumulate(key.begin(), key.end(), false); }
 		bool IsAnyInput(std::vector<Key>& keys) const;
 		// KEY1が押されてたらプラス、KEY2が押されてたらマイナス

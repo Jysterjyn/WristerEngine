@@ -21,10 +21,10 @@ namespace WristerEngine
 
 		SceneManager() = default;
 		~SceneManager() = default;
+		SceneManager(const SceneManager&) = delete;
+		SceneManager& operator=(const SceneManager&) = delete;
 
 	public:
-		SceneManager(const SceneManager& obj) = delete;
-		SceneManager& operator=(const SceneManager& obj) = delete;
 		// インスタンス取得
 		static SceneManager* GetInstance();
 		// 初期化

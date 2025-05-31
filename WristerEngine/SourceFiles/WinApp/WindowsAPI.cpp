@@ -2,7 +2,7 @@
 #include <imgui_impl_win32.h>
 #pragma comment(lib,"winmm.lib")
 
-using namespace WristerEngine;
+using namespace WE;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
