@@ -166,12 +166,12 @@ void Player::BehaviorDashUpdate()
 void Player::ApplyGlobalVariables()
 {
 	std::string groupName = "Player";
-	objects["head"]->transform.translation = globalVariables->GetVector3Value(groupName, "Head Translation");
-	objects["handLeft"]->transform.translation = globalVariables->GetVector3Value(groupName, "ArmL Translation");
-	objects["handRight"]->transform.translation = globalVariables->GetVector3Value(groupName, "ArmR Translation");
-	objects["sword"]->transform.translation = globalVariables->GetVector3Value(groupName, "Sword Translation");
-	cycle = globalVariables->GetIntValue(groupName, "cycle");
-	amplitude = globalVariables->GetFloatValue(groupName, "amplitude");
+	objects["head"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
+	objects["handLeft"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
+	objects["handRight"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
+	objects["sword"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Sword Translation");
+	cycle = globalVariables->GetValue<int32_t>(groupName, "cycle");
+	amplitude = globalVariables->GetValue<float>(groupName, "amplitude");
 }
 
 void Player::Update()

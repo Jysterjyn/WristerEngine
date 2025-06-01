@@ -11,17 +11,11 @@ namespace WristerEngine
 	class GlobalVariables final
 	{
 	public:
-		// 項目(usingですっきりさせる:クラス完成後)
-		struct Item
-		{
-			std::variant<int32_t, float, Vector3> value;
-		};
+		// 項目
+		using Item = std::variant<int32_t, float, Vector3>;
 
 		// グループ
-		struct Group
-		{
-			std::map<std::string, Item> items;
-		};
+		using Group = std::map<std::string, Item>;
 
 	private:
 		using json = nlohmann::json;
@@ -36,6 +30,12 @@ namespace WristerEngine
 		GlobalVariables(const GlobalVariables&) = delete;
 		GlobalVariables& operator=(const GlobalVariables&) = delete;
 
+		/// <summary>
+		/// ファイルから読み込む
+		/// </summary>
+		/// <param name="groupName">グループ</param>
+		void LoadFile(const std::string& groupName);
+
 	public:
 		static GlobalVariables* GetInstance();
 
@@ -48,32 +48,39 @@ namespace WristerEngine
 		/// <param name="groupName">グループ</param>
 		void SaveFile(const std::string& groupName);
 
-		/// <summary>
-		/// ファイルから読み込む
-		/// </summary>
-		/// <param name="groupName">グループ</param>
-		void LoadFile(const std::string& groupName);
-
 		// ディレクトリの全ファイル読み込み
 		void LoadFiles();
 
-		// 後で関数テンプレートでまとめる
-		// 値をセット(int)
-		void SetValue(const std::string& groupName, const std::string& key, int32_t value);
-		// 値をセット(float)
-		void SetValue(const std::string& groupName, const std::string& key, float value);
-		// 値をセット(Vector3)
-		void SetValue(const std::string& groupName, const std::string& key, const Vector3& value);
-		// 項目の追加(int)
-		void AddItem(const std::string& groupName, const std::string& key, int32_t value);
-		// 項目の追加(float)
-		void AddItem(const std::string& groupName, const std::string& key, float value);
-		// 項目の追加(Vector3)
-		void AddItem(const std::string& groupName, const std::string& key, const Vector3& value);
-		
-		// 値の取得(後で関数テンプレートでまとめる)
-		int32_t GetIntValue(const std::string& groupName, const std::string& key) const;
-		float GetFloatValue(const std::string& groupName, const std::string& key) const;
-		Vector3 GetVector3Value(const std::string& groupName, const std::string& key) const;
+		// 値をセット
+		template<class T>
+		void SetValue(const std::string& groupName, const std::string& key, const T& value)
+		{
+			// グループの参照を取得
+			Group& group = datas[groupName];
+			// 新しい項目のデータを設定
+			Item newItem{};
+			newItem = value;
+			// 設定した項目をstd::mapに追加
+			group[key] = newItem;
+		}
+
+		// 項目の追加
+		template<class T>
+		void AddItem(const std::string& groupName, const std::string& key, const T& value)
+		{
+			// 項目が未登録なら
+			if (!datas[groupName].contains(key)) { SetValue(groupName, key, value); }
+		}
+
+		// 値の取得
+		template<class T>
+		T GetValue(const std::string& groupName, const std::string& key) const
+		{
+			assert(datas.contains(groupName));
+			// グループの参照を取得
+			const Group& group = datas.at(groupName);
+			assert(group.contains(key));
+			return std::get<T>(group.at(key));
+		}
 	};
 }
