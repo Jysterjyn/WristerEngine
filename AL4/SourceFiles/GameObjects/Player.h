@@ -4,12 +4,13 @@
 #include <Input.h>
 #include <BaseCharacter.h>
 #include <optional>
+#include <GlobalVariables.h>
 
 class Player : public BaseCharacter
 {
 	enum class Behavior
 	{
-		Root,Attack,Dash
+		Root, Attack, Dash
 	};
 
 	struct WorkDash
@@ -27,6 +28,7 @@ class Player : public BaseCharacter
 	Behavior behavior = Behavior::Root;
 	// 次の振る舞いリクエスト
 	std::optional<Behavior> behaviorRequest = std::nullopt;
+	WE::GlobalVariables* globalVariables = WE::GlobalVariables::GetInstance();
 
 	void Move();
 	void InitializeFloatingGimmick();
@@ -37,9 +39,10 @@ class Player : public BaseCharacter
 	void BehaviorAttackUpdate();
 	void BehaviorDashInitialize();
 	void BehaviorDashUpdate();
+	void ApplyGlobalVariables();
 
 public:
 	void Initialize(const std::string& modelGroupName) override;
 	void Update() override;
-	void SetCamera(){ camera = WE::_3D::CameraManager::GetInstance()->Get(); }
+	void SetCamera() { camera = WE::_3D::CameraManager::GetInstance()->Get(); }
 };

@@ -1,0 +1,26 @@
+{
+    "Player": {
+        "ArmL Translation": [
+            1.399999976158142,
+            0.699999988079071,
+            0.0
+        ],
+        "ArmR Translation": [
+            -1.399999976158142,
+            0.699999988079071,
+            -0.0
+        ],
+        "Head Translation": [
+            0.0,
+            2.5,
+            0.0
+        ],
+        "Sword Translation": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "amplitude": 0.25,
+        "cycle": 60
+    }
+}

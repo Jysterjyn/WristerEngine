@@ -1,7 +1,6 @@
 #include "Player.h"
 #include <imgui.h>
 #include <ImGuiManager.h>
-#include <GlobalVariables.h>
 
 void Player::Initialize(const std::string& modelGroupName)
 {
@@ -37,11 +36,13 @@ void Player::Initialize(const std::string& modelGroupName)
 
 	InitializeFloatingGimmick();
 
-	WE::GlobalVariables* globalVariables = WE::GlobalVariables::GetInstance();
 	std::string groupName = "Player";
-	globalVariables->SetValue(groupName, "Test_int32_t", 90);
-	globalVariables->SetValue(groupName, "Test_float", 90.0f);
-	globalVariables->SetValue(groupName, "Test_Vector3", {1,2,3});
+	globalVariables->AddItem(groupName, "Head Translation", objects["head"]->transform.translation);
+	globalVariables->AddItem(groupName, "ArmL Translation", objects["handLeft"]->transform.translation);
+	globalVariables->AddItem(groupName, "ArmR Translation", objects["handRight"]->transform.translation);
+	globalVariables->AddItem(groupName, "Sword Translation", objects["sword"]->transform.translation);
+	globalVariables->AddItem(groupName, "cycle", cycle);
+	globalVariables->AddItem(groupName, "amplitude", amplitude);
 }
 
 void Player::Move()
@@ -88,16 +89,6 @@ void Player::UpdateFloatingGimmick()
 	objects["chest"]->transform.translation.y = param;
 	objects["handLeft"]->transform.rotation.x = param;
 	objects["handRight"]->transform.rotation.x = -param;
-
-	//ImGui::Begin("Player");
-	//float min = -5.0f, max = 5.0f;
-	//WE::ImGuiManager::SliderVector("Head Translation", objects["head"]->transform.translation, min, max);
-	//WE::ImGuiManager::SliderVector("ArmL Translation", objects["handLeft"]->transform.translation, min, max);
-	//WE::ImGuiManager::SliderVector("ArmR Translation", objects["handRight"]->transform.translation, min, max);
-	//WE::ImGuiManager::SliderVector("Sword Translation", objects["sword"]->transform.translation, min, max);
-	//ImGui::SliderInt("cycle", &cycle, 1, 120);
-	//ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
-	//ImGui::End();
 }
 
 void Player::BehaviorRootInitialize()
@@ -172,6 +163,17 @@ void Player::BehaviorDashUpdate()
 	}
 }
 
+void Player::ApplyGlobalVariables()
+{
+	std::string groupName = "Player";
+	objects["head"]->transform.translation = globalVariables->GetVector3Value(groupName, "Head Translation");
+	objects["handLeft"]->transform.translation = globalVariables->GetVector3Value(groupName, "ArmL Translation");
+	objects["handRight"]->transform.translation = globalVariables->GetVector3Value(groupName, "ArmR Translation");
+	objects["sword"]->transform.translation = globalVariables->GetVector3Value(groupName, "Sword Translation");
+	cycle = globalVariables->GetIntValue(groupName, "cycle");
+	amplitude = globalVariables->GetFloatValue(groupName, "amplitude");
+}
+
 void Player::Update()
 {
 	if (behaviorRequest)
@@ -210,5 +212,6 @@ void Player::Update()
 		break;
 	}
 
+	ApplyGlobalVariables();
 	BaseCharacter::Update();
 }

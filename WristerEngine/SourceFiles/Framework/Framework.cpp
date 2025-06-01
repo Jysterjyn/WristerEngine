@@ -15,6 +15,8 @@ void Framework::Initialize()
 	PipelineManager::Initialize();
 	constant->LoadConstants();
 	ImGuiManager::Initialize();
+	// ƒOƒ[ƒoƒ‹•Ï”‚Ì“Ç‚Ýž‚Ý
+	GlobalVariables::GetInstance()->LoadFiles();
 }
 
 void Framework::Update()

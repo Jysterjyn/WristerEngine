@@ -35,6 +35,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\GlobalVariables\Player.json" />
     <None Include="Resources\Shaders\Functions.hlsli" />
     <None Include="Resources\Shaders\Light.hlsli" />
     <None Include="Resources\Shaders\Obj.hlsli" />
