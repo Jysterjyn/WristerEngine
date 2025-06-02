@@ -18,17 +18,13 @@ const std::array<AttackBehavior::ConstAttack, AttackBehavior::ComboNum> AttackBe
 	}
 };
 
-
-void BaseBehavior::Move()
+void BaseBehavior::Move() const
 {
 	if (!input->IsConnectGamePad()) { return; }
 	bool isMoving = false;
 
-	// ‘¬‚³
-	const float SPEED = 0.3f;
-
 	// ˆÚ“®—Ê
-	Vector2 padMove = input->ConLStick(0, SPEED);
+	Vector2 padMove = input->ConLStick(0, moveSpeed);
 	velocity = { padMove.x,0.0f,padMove.y };
 
 	isMoving = velocity.Length() != 0;
@@ -51,7 +47,6 @@ void BaseBehavior::Move()
 void RootBehavior::Initialize()
 {
 	ApplyGlobalVariables();
-	(*objects)["sword"]->isInvisible = true;
 
 	globalVariables->AddItem(groupName, "floatCycle", cycle);
 	globalVariables->AddItem(groupName, "amplitude", amplitude);
@@ -88,7 +83,6 @@ void RootBehavior::ApplyGlobalVariables()
 void AttackBehavior::Initialize()
 {
 	ApplyGlobalVariables();
-	globalVariables->AddItem(groupName, "attackCycle", 20);
 	(*objects)["sword"]->isInvisible = false;
 	globalVariables->AddItem(groupName, "Sword Translation", (*objects)["sword"]->transform.translation);
 }
@@ -96,53 +90,84 @@ void AttackBehavior::Initialize()
 void AttackBehavior::Update()
 {
 	ApplyGlobalVariables();
-	
-	//if (workAttack.comboIndex >= ComboNum - 1)
-	//{
-	//	if (input->IsTrigger(0, WE::JoyPad::A)) { workAttack.comboNext = true; }
-	//}
 
-	//if (++workAttack.attackParameter >= kConstAttacks[workAttack.comboIndex].GetComboTime())
-	//{
-	//	if (workAttack.comboNext)
-	//	{
-	//		workAttack.comboIndex++;
-	//		BehaviorAttackInitialize();
-	//		Move();
-	//	}
-	//	else
-	//	{
-	//		behaviorRequest = Behavior::Root;
-	//	}
-	//}
+	if (comboIndex >= ComboNum - 1)
+	{
+		if (input->IsTrigger(0, WE::JoyPad::A)) { comboNext = true; }
+	}
 
-	//switch (workAttack.comboIndex)
-	//{
-	//case 0:
-	//	break;
-	//case 1:
-	//	break;
-	//case 2:
-	//default:
-	//	break;
-	//}
+	if (++parameter >= kConstAttacks[comboIndex].GetComboTime())
+	{
+		if (comboNext)
+		{
+			comboIndex++;
+			parameter = 0;
+			attackParameter = 0.0f;
+			inComboPhase = 0;
+		}
+		else
+		{
+			behaviorRequest = Behavior::Root;
+			(*objects)["sword"]->isInvisible = true;
+		}
+	}
 
-	const float STEP = Angle(90) / cycle;
-	const float END_ANGLE = Angle(90);
+	switch (comboIndex)
+	{
+	case 0:
+		Combo1();
+		break;
+	case 1:
+		Combo2();
+		break;
+	case 2:
+	default:
+		Combo3();
+		break;
+	}
 
-	parameter += STEP;
-	// UŒ‚I—¹
-	if (parameter >= END_ANGLE) { behaviorRequest = Behavior::Root; }
-	parameter = min(parameter, END_ANGLE);
-	(*objects)["handLeft"]->transform.rotation.x = -Angle(180) + parameter;
-	(*objects)["handRight"]->transform.rotation.x = -Angle(180) + parameter;
-	(*objects)["sword"]->transform.rotation.x = parameter;
+	//Move();
 }
 
 void AttackBehavior::ApplyGlobalVariables()
 {
 	(*objects)["sword"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Sword Translation");
-	cycle = globalVariables->GetValue<int32_t>(groupName, "attackCycle");
+}
+
+void AttackBehavior::Combo1()
+{
+	const ConstAttack at = kConstAttacks[comboIndex];
+
+	if (inComboPhase == 0)
+	{
+		if (parameter >= at.GetComboTime(0)) { inComboPhase++; }
+	}
+	if (inComboPhase == 1)
+	{
+		if (parameter >= at.GetComboTime(1)) { inComboPhase++; }
+	}
+	if (inComboPhase == 2) 
+	{
+		if (parameter >= at.GetComboTime(2)) { inComboPhase++; }
+		
+		const float STEP = Angle(90) / at.swingTime;
+		const float END_ANGLE = Angle(90);
+
+		attackParameter += STEP;
+		min(END_ANGLE, attackParameter);
+
+		(*objects)["handLeft"]->transform.rotation.x = -Angle(180) + attackParameter;
+		(*objects)["handRight"]->transform.rotation.x = -Angle(180) + attackParameter;
+		(*objects)["sword"]->transform.rotation.x = attackParameter;
+	}
+}
+
+void AttackBehavior::Combo2()
+{
+}
+
+void AttackBehavior::Combo3()
+{
 }
 
 void DashBehavior::Initialize()

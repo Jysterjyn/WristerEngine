@@ -28,9 +28,10 @@ protected:
 	// 次の振る舞いリクエスト
 	static std::optional<Behavior> behaviorRequest;
 
+	float moveSpeed = 0.3f;
 	std::string groupName = "Player";
 
-	void Move();
+	void Move() const;
 
 public:
 	virtual ~BaseBehavior() = default;
@@ -73,16 +74,20 @@ private:
 		float chargeSpeed;
 		float swingSpeed;
 
-		uint32_t GetComboTime() const
+		uint32_t GetComboTime(uint32_t inComboPhase = 3) const
 		{
-			return anticipationTime + chargeTime + swingTime + recoveryTime;
+			uint32_t sumTime = 0;
+			sumTime += anticipationTime;
+			if (inComboPhase >= 1) { sumTime += chargeTime; }
+			if (inComboPhase >= 2) { sumTime += swingTime; }
+			if (inComboPhase >= 3) { sumTime += recoveryTime; }
+			return sumTime;
 		}
 	};
 
 	static const std::array<ConstAttack, ComboNum> kConstAttacks;
-	float parameter = 0;
-	int cycle = 0;
-	uint32_t attackParameter = 0;
+	float attackParameter = 0;
+	uint32_t parameter = 0;
 	uint32_t comboIndex = 0;
 	uint32_t inComboPhase = 0;
 	bool comboNext = false;
@@ -91,6 +96,10 @@ private:
 	void Initialize() override;
 	void Update() override;
 	void ApplyGlobalVariables() override;
+
+	void Combo1();
+	void Combo2();
+	void Combo3();
 };
 
 class DashBehavior : public BaseBehavior
