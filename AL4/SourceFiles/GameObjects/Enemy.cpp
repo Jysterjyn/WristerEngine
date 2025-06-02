@@ -4,7 +4,6 @@ void Enemy::Initialize(const std::string& modelGroupName)
 {
 	BaseCharacter::Initialize(modelGroupName);
 
-	rootPos.translation = { 0,2,10 };
 	rootPos.scale *= 0.4f;
 
 	for (auto& o : objects)

@@ -6,8 +6,6 @@ void Player::Initialize(const std::string& modelGroupName)
 {
 	BaseCharacter::Initialize(modelGroupName);
 
-	rootPos.translation.y = 2.0f;
-
 	for (auto& o : objects)
 	{
 		o.second->material.ambient = { 0,0,0 };
@@ -28,8 +26,6 @@ void Player::Initialize(const std::string& modelGroupName)
 	objects["handLeft"]->transform.translation = { 1.4f,0.7f,0 };
 	objects["handRight"]->transform.translation = { -1.4f,0.7f,0 };
 	objects["sword"]->isInvisible = true;
-	//objects["footLeft"]->transform.translation = { -0.6f,-0.3f,0 };
-	//objects["footRight"]->transform.translation = { 0.6f,-0.3f,0 };
 
 	const float DEAD_ZONE = 0.7f;
 	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
@@ -55,20 +51,20 @@ void Player::Move()
 
 	// 移動量
 	Vector2 padMove = input->ConLStick(0, SPEED);
-	Vector3 move = { padMove.x,0.0f,padMove.y };
+	velocity = { padMove.x,0.0f,padMove.y };
 
-	isMoving = move.Length() != 0;
+	isMoving = velocity.Length() != 0;
 
 	// 移動ベクトルをカメラの角度だけ回転する
 	Matrix4 rotMat = Matrix4::RotateY(camera->GetTransform()->rotation.y);
-	move *= rotMat;
+	velocity *= rotMat;
 
 	if (isMoving)
 	{
 		// 移動
-		rootPos.translation += move;
+		rootPos.translation += velocity;
 		// 目標角度の算出
-		destinationAngleY = std::atan2(move.x, move.z);
+		destinationAngleY = std::atan2(velocity.x, velocity.z);
 	}
 
 	rootPos.rotation.y = LerpShortAngle(rootPos.rotation.y, destinationAngleY, 0.4f);
@@ -105,7 +101,8 @@ void Player::BehaviorRootUpdate()
 	// 攻撃開始
 	if (!input->IsConnectGamePad()) { return; }
 	if (input->IsTrigger(0, WE::JoyPad::A)) { behaviorRequest = Behavior::Attack; }
-	if (input->IsTrigger(0, WE::JoyPad::B)) { behaviorRequest = Behavior::Dash; }
+	if (input->IsTrigger(0, WE::JoyPad::Y)) { behaviorRequest = Behavior::Dash; }
+	if (input->IsTrigger(0, WE::JoyPad::B)) { behaviorRequest = Behavior::Jump; }
 }
 
 void Player::BehaviorAttackInitialize()
@@ -127,16 +124,6 @@ void Player::BehaviorAttackUpdate()
 	objects["handLeft"]->transform.rotation.x = -Angle(180) + floatingParameter;
 	objects["handRight"]->transform.rotation.x = -Angle(180) + floatingParameter;
 	objects["sword"]->transform.rotation.x = floatingParameter;
-
-	//ImGui::Begin("Player");
-	//float min = -2 * PI, max = 2 * PI;
-	//WE::ImGuiManager::SliderVector("Head rotation", objects["head"]->transform.rotation, min, max);
-	//WE::ImGuiManager::SliderVector("ArmL rotation", objects["handLeft"]->transform.rotation, min, max);
-	//WE::ImGuiManager::SliderVector("ArmR rotation", objects["handRight"]->transform.rotation, min, max);
-	//WE::ImGuiManager::SliderVector("Sword rotation", objects["sword"]->transform.rotation, min, max);
-	//ImGui::SliderInt("cycle", &cycle, 1, 120);
-	//ImGui::SliderFloat("amplitude", &amplitude, 0.0f, 5.0f);
-	//ImGui::End();
 }
 
 void Player::BehaviorDashInitialize()
@@ -150,15 +137,39 @@ void Player::BehaviorDashUpdate()
 	const float SPEED = 1.5f;
 	const uint32_t behaviorDashTime = 15;
 
-	Vector3 move = { 0.0f,0.0f,1.0f };
+	velocity = { 0.0f,0.0f,1.0f };
 
 	Matrix4 rotMat = Matrix4::RotateY(rootPos.rotation.y);
-	move *= rotMat;
+	velocity *= rotMat;
 
-	rootPos.translation += move * SPEED;
+	rootPos.translation += velocity * SPEED;
 
 	if (++workDash.dashParameter >= behaviorDashTime)
 	{
+		behaviorRequest = Behavior::Root;
+	}
+}
+
+void Player::BehaviorJumpInitialize()
+{
+	rootPos.translation.y = 0;
+	objects["handLeft"]->transform.rotation.x = 0;
+	objects["handRight"]->transform.rotation.x = 0;
+
+	const float kJumpFirstSpeed = 1.0f;
+	velocity.y = kJumpFirstSpeed;
+}
+
+void Player::BehaviorJumpUpdate()
+{
+	rootPos.translation += velocity;
+	const float kGravityAcceleration = 0.05f;
+	Vector3 accelerationVector = { 0,-kGravityAcceleration,0 };
+	velocity += accelerationVector;
+
+	if (rootPos.translation.y <= 0.0f)
+	{
+		rootPos.translation.y = 0;
 		behaviorRequest = Behavior::Root;
 	}
 }
@@ -193,6 +204,9 @@ void Player::Update()
 		case Behavior::Dash:
 			BehaviorDashInitialize();
 			break;
+		case Behavior::Jump:
+			BehaviorJumpInitialize();
+			break;
 		}
 		// 振る舞いリクエストをリセット
 		behaviorRequest = std::nullopt;
@@ -209,6 +223,9 @@ void Player::Update()
 		break;
 	case Behavior::Dash:
 		BehaviorDashUpdate();
+		break;
+	case Behavior::Jump:
+		BehaviorJumpUpdate();
 		break;
 	}
 

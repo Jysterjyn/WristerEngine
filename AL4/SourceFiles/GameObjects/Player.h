@@ -10,7 +10,7 @@ class Player : public BaseCharacter
 {
 	enum class Behavior
 	{
-		Root, Attack, Dash
+		Root, Attack, Dash, Jump
 	};
 
 	struct WorkDash
@@ -24,6 +24,7 @@ class Player : public BaseCharacter
 	float floatingParameter = 0.0f;
 	int cycle = 60;
 	float amplitude = 0.25f;
+	Vector3 velocity;
 	WorkDash workDash;
 	Behavior behavior = Behavior::Root;
 	// 次の振る舞いリクエスト
@@ -39,6 +40,8 @@ class Player : public BaseCharacter
 	void BehaviorAttackUpdate();
 	void BehaviorDashInitialize();
 	void BehaviorDashUpdate();
+	void BehaviorJumpInitialize();
+	void BehaviorJumpUpdate();
 	void ApplyGlobalVariables();
 
 public:
