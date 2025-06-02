@@ -15,6 +15,7 @@
     <ClCompile Include="SourceFiles\GameObjects\Enemy.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\PlayerBehavior.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />
@@ -25,6 +26,7 @@
     <ClInclude Include="SourceFiles\GameObjects\Enemy.h" />
     <ClInclude Include="SourceFiles\GameObjects\Ground.h" />
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
+    <ClInclude Include="SourceFiles\GameObjects\PlayerBehavior.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\GameScene.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />

@@ -1,0 +1,112 @@
+#pragma once
+#include <numeric>
+#include <unordered_map>
+#include <string>
+#include <Object3d.h>
+#include <GlobalVariables.h>
+#include <Input.h>
+#include <optional>
+#include <Transform.h>
+#include <CameraManager.h>
+
+class BaseBehavior
+{
+public:
+	enum class Behavior
+	{
+		Root, Attack, Dash, Jump
+	};
+
+protected:
+	static std::unordered_map<std::string, WE::_3D::Object3d*>* objects;
+	static WE::_3D::Transform* rootPos;
+	static const WE::_3D::BaseCamera* camera;
+	static float destinationAngleY;
+	static Vector3 velocity;
+	static WE::GlobalVariables* globalVariables;
+	static WE::Input* input;
+	// Ÿ‚ÌU‚é•‘‚¢ƒŠƒNƒGƒXƒg
+	static std::optional<Behavior> behaviorRequest;
+
+	std::string groupName = "Player";
+
+	void Move();
+
+public:
+	virtual ~BaseBehavior() = default;
+	static void SetObjects(std::unordered_map<std::string, WE::_3D::Object3d*>* objects_) { objects = objects_; }
+	static void SetTransform(WE::_3D::Transform* rootPos_) { rootPos = rootPos_; }
+	static void SetCamera() { camera = WE::_3D::CameraManager::GetInstance()->Get(); }
+	static void SetBehaviorRequest(std::optional<Behavior> nextBehavior) { behaviorRequest = nextBehavior; }
+	static std::optional<Behavior> GetBehaviorRequest() { return behaviorRequest; }
+	virtual void Initialize() = 0;
+	virtual void Update() = 0;
+	virtual void ApplyGlobalVariables() {}
+};
+
+class RootBehavior : public BaseBehavior
+{
+	float parameter = 0.0f;
+	int cycle = 0;
+	float amplitude = 0.0f;
+	float idleArmAngleMax = 0;
+
+	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	void Initialize() override;
+	void Update() override;
+	void ApplyGlobalVariables() override;
+};
+
+class AttackBehavior : public BaseBehavior
+{
+public:
+	static const int ComboNum = 3;
+
+private:
+	struct ConstAttack
+	{
+		uint32_t anticipationTime;
+		uint32_t chargeTime;
+		uint32_t swingTime;
+		uint32_t recoveryTime;
+		float anticipationSpeed;
+		float chargeSpeed;
+		float swingSpeed;
+
+		uint32_t GetComboTime() const
+		{
+			return anticipationTime + chargeTime + swingTime + recoveryTime;
+		}
+	};
+
+	static const std::array<ConstAttack, ComboNum> kConstAttacks;
+	float parameter = 0;
+	int cycle = 0;
+	uint32_t attackParameter = 0;
+	uint32_t comboIndex = 0;
+	uint32_t inComboPhase = 0;
+	bool comboNext = false;
+
+	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	void Initialize() override;
+	void Update() override;
+	void ApplyGlobalVariables() override;
+};
+
+class DashBehavior : public BaseBehavior
+{
+	uint32_t parameter = 0;
+
+	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	void Initialize() override;
+	void Update() override;
+};
+
+class JumpBehavior : public BaseBehavior
+{
+	uint32_t parameter = 0;
+
+	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	void Initialize() override;
+	void Update() override;
+};

@@ -16,16 +16,19 @@ void GameScene::Initialize()
 	prop.target = player->GetTransform();
 	prop.posOffset = { 0.0f,2.0f,-12.0f };
 	WE::_3D::DebugCamera::Prop dprop;
-	dprop.targetPos = { 0,4,0 };
+	dprop.targetPos = { 0,2,0 };
 	dprop.distance = 10;
 	dprop.mouseMoveDec = 200;
 	dprop.wheelSpdDec = 100;
 	cMan->Create("Debug", WE::_3D::CameraType::Debug, &dprop);
 	cMan->Create("Player", WE::_3D::CameraType::Follow, &prop);
-	player->SetCamera();
+	BaseBehavior::SetCamera();
 
 	skydome.Initialize("skydome", 2);
 	ground.Initialize("cube", { 100,1,100 });
+
+	const float DEAD_ZONE = 0.7f;
+	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
 }
 
 void GameScene::Update()
