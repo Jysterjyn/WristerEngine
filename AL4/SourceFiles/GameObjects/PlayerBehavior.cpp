@@ -85,6 +85,7 @@ void AttackBehavior::Initialize()
 	ApplyGlobalVariables();
 	(*objects)["sword"]->isInvisible = false;
 	globalVariables->AddItem(groupName, "Sword Translation", (*objects)["sword"]->transform.translation);
+	moveSpeed = 0.0f;
 }
 
 void AttackBehavior::Update()
@@ -126,7 +127,7 @@ void AttackBehavior::Update()
 		break;
 	}
 
-	//Move();
+	Move();
 }
 
 void AttackBehavior::ApplyGlobalVariables()
@@ -146,10 +147,11 @@ void AttackBehavior::Combo1()
 	{
 		if (parameter >= at.GetComboTime(1)) { inComboPhase++; }
 	}
-	if (inComboPhase == 2) 
+	if (inComboPhase == 2)
 	{
 		if (parameter >= at.GetComboTime(2)) { inComboPhase++; }
-		
+
+		moveSpeed = at.swingSpeed;
 		const float STEP = Angle(90) / at.swingTime;
 		const float END_ANGLE = Angle(90);
 
@@ -164,6 +166,31 @@ void AttackBehavior::Combo1()
 
 void AttackBehavior::Combo2()
 {
+	const ConstAttack at = kConstAttacks[comboIndex];
+
+	if (inComboPhase == 0)
+	{
+		if (parameter >= at.GetComboTime(0)) { inComboPhase++; }
+	}
+	if (inComboPhase == 1)
+	{
+		if (parameter >= at.GetComboTime(1)) { inComboPhase++; }
+	}
+	if (inComboPhase == 2)
+	{
+		if (parameter >= at.GetComboTime(2)) { inComboPhase++; }
+
+		moveSpeed = at.swingSpeed;
+		const float STEP = Angle(90) / at.swingTime;
+		const float END_ANGLE = Angle(90);
+
+		attackParameter += STEP;
+		min(END_ANGLE, attackParameter);
+
+		(*objects)["handLeft"]->transform.rotation.x = -Angle(180) + attackParameter;
+		(*objects)["handRight"]->transform.rotation.x = -Angle(180) + attackParameter;
+		(*objects)["sword"]->transform.rotation.x = attackParameter;
+	}
 }
 
 void AttackBehavior::Combo3()
