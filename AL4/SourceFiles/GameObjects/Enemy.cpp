@@ -18,8 +18,8 @@ void Enemy::Initialize(const std::string& modelGroupName)
 void Enemy::Move()
 {
 	// ‘¬‚³
-	const float ROT_SPEED = Angle(2);
-	const float SPEED = 0.2f;
+	const float ROT_SPEED = Angle(1);
+	const float SPEED = 0.1f;
 
 	// ˆÚ“®—Ê
 	rootPos.rotation.y += ROT_SPEED;
@@ -29,7 +29,7 @@ void Enemy::Move()
 	Matrix4 rotMat = Matrix4::RotateY(rootPos.rotation.y);
 	move *= rotMat;
 
-	rootPos.translation += move* SPEED;
+	rootPos.translation += move * SPEED;
 }
 
 void Enemy::InitializeWalkingGimmick()

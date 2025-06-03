@@ -9,8 +9,18 @@ void GameScene::Initialize()
 	player = std::make_unique<Player>();
 	player->Initialize("Player");
 
-	enemy = std::make_unique<Enemy>();
-	enemy->Initialize("Tomorou");
+	const std::vector<Vector3> enemiesPos =
+	{
+		{0,0,0},{10,0,0},{0,0,10}
+	};
+
+	for (auto& p : enemiesPos)
+	{
+		std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+		newEnemy->Initialize("Tomorou");
+		newEnemy->SetPosition(p);
+		enemies.push_back(std::move(newEnemy));
+	}
 
 	WE::_3D::FollowCamera::Prop prop;
 	prop.target = player->GetTransform();
@@ -29,6 +39,9 @@ void GameScene::Initialize()
 
 	const float DEAD_ZONE = 0.7f;
 	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
+
+	lockOn = std::make_unique<LockOn>();
+	lockOn->Initialize();
 }
 
 void GameScene::Update()
@@ -38,5 +51,6 @@ void GameScene::Update()
 	if (input->IsTrigger(WE::Key::Q)) { sceneManager->ChangeScene("GameScene", true, true, false); }
 
 	player->Update();
-	enemy->Update();
+	for (auto& e : enemies) { e->Update(); }
+	lockOn->Update(enemies);
 }

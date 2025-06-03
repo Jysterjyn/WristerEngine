@@ -181,7 +181,6 @@ namespace WristerEngine
 			float deadZoneR = 0.2f;
 			DIJOYSTATE state{}, statePre{};
 
-			static std::vector<Input::Joystick> Create();
 			void Update();
 		};
 
@@ -200,6 +199,9 @@ namespace WristerEngine
 
 		// コントローラー接続を確認した際に呼ばれるコールバック関数
 		static int CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
+
+		// StickNoがジョイパッド配列内か確認する
+		bool IsInArray(uint32_t stickNo) const { return stickNo < joysticks.size(); }
 
 	public:
 		static const int PADSTICK_MAX_VAL = 1000;
@@ -225,32 +227,43 @@ namespace WristerEngine
 		void Initialize();
 		// 更新
 		void Update();
+
 		// キーが押されてるか
 		bool IsInput(Key KEY) const { return key[(int)KEY]; }
 		bool IsInput(Mouse KEY) const { return mouseState.rgbButtons[(int)KEY]; }
-		bool IsInput(int32_t stickNo, JoyPad button) const { return joysticks[stickNo].state.rgbButtons[(int)button]; }
+		bool IsInput(uint32_t stickNo, JoyPad button) const;
+
 		// キーが押されたか
 		bool IsTrigger(Key KEY) const { return !oldkey[(int)KEY] && key[(int)KEY]; }
 		bool IsTrigger(Mouse KEY) const { return !mouseStatePre.rgbButtons[(int)KEY] && mouseState.rgbButtons[(int)KEY]; }
-		bool IsTrigger(int32_t stickNo, JoyPad button) const;
+		bool IsTrigger(uint32_t stickNo, JoyPad button) const;
+
 		// キーが離されたか
 		bool IsUp(Key KEY) const { return oldkey[(int)KEY] && !key[(int)KEY]; }
+		bool IsUp(Mouse KEY) const { return mouseStatePre.rgbButtons[(int)KEY] && !mouseStatePre.rgbButtons[(int)KEY]; }
+		bool IsUp(uint32_t stickNo, JoyPad button) const;
+
 		// いずれかのキーが押されたらtrueを返す
 		bool IsAnyInput() const { return std::accumulate(key.begin(), key.end(), false); }
 		bool IsAnyInput(std::vector<Key>& keys) const;
+
 		// KEY1が押されてたらプラス、KEY2が押されてたらマイナス
 		float Move(Key KEY1, Key KEY2, const float spd) const { return (IsInput(KEY1) - IsInput(KEY2)) * spd; }
+		
 		// 押されているキーの数
 		size_t KeyInputNum() const { return std::accumulate(key.begin(), key.end(), 0U) / 128; }
+		
 		// 一定以上レバーを傾けたら移動する
-		Vector2 ConLStick(int32_t stickNo, const float spd) const;
-		Vector2 ConRStick(int32_t stickNo, const float spd) const;
+		Vector2 ConLStick(uint32_t stickNo, const float spd) const;
+		Vector2 ConRStick(uint32_t stickNo, const float spd) const;
+		
 		// getter
 		MouseMove GetMouseMove() const { return MouseMove(mouseState.lX, mouseState.lY, mouseState.lZ); }
-		PadState GetPadState(int32_t stickNo) const;
+		PadState GetPadState(uint32_t stickNo) const;
 		bool IsConnectGamePad() const { return !joysticks.empty(); }
-		DIJOYSTATE GetJoyState(int32_t stickNo) const { return joysticks[stickNo].state; }
+		DIJOYSTATE GetJoyState(uint32_t stickNo) const;
+		
 		// コントローラーが反応しない範囲を変更
-		void SetDeadZone(int32_t stickNo, float deadZoneL, float deadZoneR);
+		void SetDeadZone(uint32_t stickNo, float deadZoneL, float deadZoneR);
 	};
 }

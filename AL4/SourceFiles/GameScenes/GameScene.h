@@ -5,6 +5,8 @@
 #include <Ground.h>
 #include <Enemy.h>
 #include <CameraManager.h>
+#include <list>
+#include <LockOn.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -16,12 +18,14 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class GameScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
-	std::unique_ptr<Enemy> enemy;
+	std::list<std::unique_ptr<Enemy>> enemies;
 	WE::Skydome skydome;
 	Ground ground;
 	WE::_3D::CameraManager* cMan = WE::_3D::CameraManager::GetInstance();
+	std::unique_ptr<LockOn> lockOn;
 
 	// BaseScene ‚ð‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;
 	void Update() override;
+	void Draw() { lockOn->Draw(); }
 };

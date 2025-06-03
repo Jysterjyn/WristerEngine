@@ -36,6 +36,9 @@
     <Filter Include="ソース ファイル\GameObjects">
       <UniqueIdentifier>{898bf4eb-1bd3-45b5-aa1e-b5eded0121a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\LockOn">
+      <UniqueIdentifier>{2862d148-6dfe-4310-853e-f618668f8a86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\main.cpp">
@@ -65,6 +68,9 @@
     <ClCompile Include="SourceFiles\GameObjects\PlayerBehavior.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\LockOn\LockOn.cpp">
+      <Filter>ソース ファイル\LockOn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\MyGame\MyGame.h">
@@ -90,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\PlayerBehavior.h">
       <Filter>ソース ファイル\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\LockOn\LockOn.h">
+      <Filter>ソース ファイル\LockOn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

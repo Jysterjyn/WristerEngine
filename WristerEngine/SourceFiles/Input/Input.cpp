@@ -10,7 +10,7 @@ Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
 //ゲームパッドデバイスの作成-デバイス列挙の結果を受け取る構造体
 struct DeviceEnumParameter
 {
-	std::vector<Input::Joystick> joysticks;
+	std::vector<Input::Joystick>* joysticks;
 };
 
 Input* Input::GetInstance()
@@ -19,9 +19,23 @@ Input* Input::GetInstance()
 	return &input;
 }
 
-std::vector<Input::Joystick> Input::Joystick::Create()
+void Input::Initialize()
 {
-	DeviceEnumParameter parameter{};
+	Result result;
+	WindowsAPI* wAPI = WindowsAPI::GetInstance();
+
+	result = DirectInput8Create(wAPI->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+	// キーボード生成
+	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+	result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	// マウス生成
+	result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
+	result = mouse->SetDataFormat(&c_dfDIMouse2);
+	result = mouse->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+
+	// ゲームパッド生成
+	DeviceEnumParameter parameter{ &joysticks };
 
 	// GAMEPADを調べる
 	directInput->EnumDevices(
@@ -39,12 +53,10 @@ std::vector<Input::Joystick> Input::Joystick::Create()
 		DIEDFL_ATTACHEDONLY
 	);
 
-	std::vector<Input::Joystick> joysticks = parameter.joysticks;
-
 	// どちらも見つけることが出来なかったら失敗
-	if (parameter.joysticks.empty()) { return parameter.joysticks; }
+	if (joysticks.empty()) { return; }
 
-	for(auto& j:parameter.joysticks)
+	for (auto& j : joysticks)
 	{
 		// デバイスが生成されてない
 		if (!j.device) { continue; }
@@ -60,30 +72,9 @@ std::vector<Input::Joystick> Input::Joystick::Create()
 			j.device->Poll();
 		}
 	}
-
-	return parameter.joysticks;
 }
 
-void Input::Initialize()
-{
-	Result result;
-	WindowsAPI* wAPI = WindowsAPI::GetInstance();
-
-	result = DirectInput8Create(wAPI->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	// キーボード
-	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	// マウス
-	result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
-	result = mouse->SetDataFormat(&c_dfDIMouse2);
-	result = mouse->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-
-	// ゲームパッド
-	joysticks = Joystick::Create();
-}
-
-bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
+static bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 {
 	// 軸モードを絶対値モードとして設定
 	DIPROPDWORD diprop;
@@ -148,7 +139,7 @@ int CALLBACK Input::DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 	WindowsAPI* wAPI = WindowsAPI::GetInstance();
 	device->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 
-	parameter->joysticks.push_back(joysticks);
+	parameter->joysticks->push_back(joysticks);
 
 	return DIENUM_CONTINUE;
 }
@@ -173,10 +164,24 @@ void Input::Update()
 	for (auto& j : joysticks) { j.Update(); }
 }
 
-bool WristerEngine::Input::IsTrigger(int32_t stickNo, JoyPad button) const
+bool Input::IsInput(uint32_t stickNo, JoyPad button) const
 {
+	if (!IsInArray(stickNo)) { return false; }
+	return joysticks[stickNo].state.rgbButtons[(int)button];
+}
+
+bool Input::IsTrigger(uint32_t stickNo, JoyPad button) const
+{
+	if (!IsInArray(stickNo)) { return false; }
 	Joystick stick = joysticks[stickNo];
 	return !stick.statePre.rgbButtons[(int)button] && stick.state.rgbButtons[(int)button];
+}
+
+bool Input::IsUp(uint32_t stickNo, JoyPad button) const
+{
+	if (!IsInArray(stickNo)) { return false; }
+	Joystick stick = joysticks[stickNo];
+	return stick.statePre.rgbButtons[(int)button] && !stick.statePre.rgbButtons[(int)button];
 }
 
 bool Input::IsAnyInput(std::vector<Key>& keys) const
@@ -185,8 +190,10 @@ bool Input::IsAnyInput(std::vector<Key>& keys) const
 	return false;
 }
 
-Input::PadState Input::GetPadState(int32_t stickNo) const
+Input::PadState Input::GetPadState(uint32_t stickNo) const
 {
+	if (!IsInArray(stickNo)) { return {}; }
+
 	DIJOYSTATE joyState = GetJoyState(stickNo);
 	// 十字キーの方向
 	float angle = joyState.rgdwPOV[0] * PI / 18000.0f;
@@ -203,33 +210,36 @@ Input::PadState Input::GetPadState(int32_t stickNo) const
 	return PadState(stickL, stickR, joyState.lZ, dirKey);
 }
 
-void Input::SetDeadZone(int32_t stickNo, float deadZoneL, float deadZoneR)
+DIJOYSTATE Input::GetJoyState(uint32_t stickNo) const
 {
+	if (!IsInArray(stickNo)) { return DIJOYSTATE(); }
+	return joysticks[stickNo].state;
+}
+
+void Input::SetDeadZone(uint32_t stickNo, float deadZoneL, float deadZoneR)
+{
+	if (!IsInArray(stickNo)) { return; }
 	joysticks[stickNo].deadZoneL = deadZoneL;
 	joysticks[stickNo].deadZoneR = deadZoneR;
 }
 
-Vector2 Input::ConLStick(int32_t stickNo, const float spd) const
+Vector2 Input::ConLStick(uint32_t stickNo, const float spd) const
 {
-	Vector2 vec;
-	// X軸について
-	vec.x = GetPadState(stickNo).l.x;
-	// Y軸について
-	vec.y = -GetPadState(stickNo).l.y;
+	if (!IsInArray(stickNo)) { return {}; }
 
+	Vector2 vec = GetPadState(stickNo).l;
+	vec.y = -vec.y;
 	if (vec.Length() < joysticks[stickNo].deadZoneL) { return {}; }
 
 	return Normalize(vec) * spd;
 }
 
-Vector2 Input::ConRStick(int32_t stickNo, const float spd) const
+Vector2 Input::ConRStick(uint32_t stickNo, const float spd) const
 {
-	Vector2 vec;
-	// X軸について
-	vec.x = GetPadState(stickNo).r.x;
-	// Y軸について
-	vec.y = -GetPadState(stickNo).r.y;
+	if (!IsInArray(stickNo)) { return {}; }
 
+	Vector2 vec = GetPadState(stickNo).r;
+	vec.y = -vec.y;
 	if (vec.Length() < joysticks[stickNo].deadZoneR) { return {}; }
 
 	return Normalize(vec) * spd;
