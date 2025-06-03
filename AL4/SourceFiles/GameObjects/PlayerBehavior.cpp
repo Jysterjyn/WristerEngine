@@ -67,7 +67,6 @@ void RootBehavior::Update()
 	(*objects)["handLeft"]->transform.rotation.x = param;
 	(*objects)["handRight"]->transform.rotation.x = -param;
 
-	if (!input->IsConnectGamePad()) { return; }
 	if (input->IsTrigger(0, WE::JoyPad::A)) { behaviorRequest = Behavior::Attack; }
 	if (input->IsTrigger(0, WE::JoyPad::Y)) { behaviorRequest = Behavior::Dash; }
 	if (input->IsTrigger(0, WE::JoyPad::B)) { behaviorRequest = Behavior::Jump; }

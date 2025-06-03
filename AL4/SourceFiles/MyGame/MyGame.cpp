@@ -35,9 +35,9 @@ void MyGame::Draw()
 {
 	// 描画処理
 	dxCommon->PreDraw();
+	modelManager->Draw();
 	Sprite::PreDraw();
 	sceneManager->Draw();
-	modelManager->Draw();
 	WE::ParticleManager::Draw();
 	WE::ImGuiManager::Draw();
 	dxCommon->PostDraw();

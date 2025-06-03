@@ -54,3 +54,9 @@ void Enemy::Update()
 	UpdateWalkingGimmick();
 	BaseCharacter::Update();
 }
+
+Vector3 Enemy::GetCenterPos() const
+{
+	const Vector3 offset = { -0.5f,1.0f,0.0f };
+	return offset + rootPos.GetWorldPosition();
+}

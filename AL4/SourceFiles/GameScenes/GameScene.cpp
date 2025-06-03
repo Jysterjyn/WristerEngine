@@ -38,7 +38,7 @@ void GameScene::Initialize()
 	ground.Initialize("cube", { 100,1,100 });
 
 	const float DEAD_ZONE = 0.7f;
-	if (input->IsConnectGamePad()) { input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE); }
+	input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE);
 
 	lockOn = std::make_unique<LockOn>();
 	lockOn->Initialize();

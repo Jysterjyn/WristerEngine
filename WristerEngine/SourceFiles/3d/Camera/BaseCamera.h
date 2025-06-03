@@ -61,6 +61,8 @@ namespace WristerEngine::_3D
 		Matrix4 GetBillboard() const;
 		// ワールド行列をセット
 		const Transform* GetTransform() const { return pTransform; }
+		// ビュー行列
+		const Matrix4& GetViewMatrix() const { return matView; }
 		// ビュー行列とプロジェクション行列を掛け合わせた行列
 		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
 	};

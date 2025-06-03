@@ -16,5 +16,6 @@ public:
 	void Initialize(const std::string& modelGroupName) override;
 	void Update() override;
 	void SetPosition(const Vector3& position) { rootPos.translation = position; }
+	Vector3 GetCenterPos() const;
 };
 

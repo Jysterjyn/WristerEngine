@@ -13,6 +13,9 @@ class LockOn
 	float maxDistance = 30.0f;
 	float angleRange = Angle(20);
 
+	void Search(const std::list<std::unique_ptr<Enemy>>& enemies);
+	bool IsOutRange();
+
 public:
 	void Initialize();
 	void Update(const std::list<std::unique_ptr<Enemy>>& enemies);
