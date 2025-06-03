@@ -14,7 +14,7 @@ class LockOn
 	float angleRange = Angle(20);
 
 	void Search(const std::list<std::unique_ptr<Enemy>>& enemies);
-	bool IsOutRange();
+	bool IsOutRange(const Enemy* enemy, float* positionViewZ = nullptr);
 
 public:
 	void Initialize();

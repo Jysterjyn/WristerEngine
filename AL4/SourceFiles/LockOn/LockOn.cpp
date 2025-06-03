@@ -14,7 +14,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies)
 	if (target)
 	{
 		if (input->IsTrigger(0, WE::JoyPad::X)) { target = nullptr; }
-		else if (IsOutRange()) { target = nullptr; }
+		else if (IsOutRange(target)) { target = nullptr; }
 	}
 	else
 	{
@@ -30,19 +30,10 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies)
 
 	for (auto& enemy : enemies)
 	{
-		Vector3 positionWorld = enemy->GetCenterPos();
-		Vector3 positionView = positionWorld * camera->GetViewMatrix();
-
-		if (minDistance <= positionView.z && positionView.z <= maxDistance)
+		float positionViewZ = 0;
+		if (!IsOutRange(enemy.get(), &positionViewZ))
 		{
-			float arcTangent = std::atan2(std::sqrt(
-				positionView.x * positionView.x + positionView.y * positionView.y),
-				positionView.z);
-
-			if (std::abs(arcTangent) <= angleRange)
-			{
-				targets.emplace_back(std::make_pair(positionView.z, enemy.get()));
-			}
+			targets.emplace_back(std::make_pair(positionViewZ, enemy.get()));
 		}
 	}
 
@@ -54,10 +45,11 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies)
 	}
 }
 
-bool LockOn::IsOutRange()
+bool LockOn::IsOutRange(const Enemy* enemy, float* positionViewZ)
 {
-	Vector3 positionWorld = target->GetCenterPos();
+	Vector3 positionWorld = enemy->GetCenterPos();
 	Vector3 positionView = positionWorld * camera->GetViewMatrix();
+	if (positionViewZ) { *positionViewZ = positionView.z; }
 
 	if (minDistance <= positionView.z && positionView.z <= maxDistance)
 	{
@@ -73,8 +65,5 @@ bool LockOn::IsOutRange()
 
 void LockOn::Draw()
 {
-	if (target)
-	{
-		lockOnMark->Draw();
-	}
+	if (target) { lockOnMark->Draw(); }
 }
