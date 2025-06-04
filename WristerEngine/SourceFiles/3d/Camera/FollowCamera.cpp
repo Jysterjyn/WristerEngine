@@ -30,9 +30,9 @@ FollowCamera::FollowCamera(const Prop* prop)
 
 void FollowCamera::VirtualUpdate()
 {
-	if (lockOn && lockOn->GetTarget())
+	if (lockOn && lockOn->ExistTarget())
 	{
-		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 lockOnPos = lockOn->GetTargetPosition();
 		Vector3 sub = lockOnPos - transform.translation;
 		transform.rotation.y = std::atan2(sub.x, sub.z);
 	}
@@ -57,7 +57,7 @@ void FollowCamera::VirtualUpdate()
 	if (targetObject)
 	{
 		// 追従座標の補間
-		interTarget = Lerp(interTarget, targetObject->translation, lerpPosRate);
+		interTarget = Lerp(interTarget, targetObject->GetWorldPosition(), lerpPosRate);
 
 		// 追従対象からのオフセット
 		Vector3 offset = CalculateOffset();
@@ -75,7 +75,7 @@ void FollowCamera::Reset()
 	if (targetObject)
 	{
 		// 追従座標・角度の初期化
-		interTarget = targetObject->translation;
+		interTarget = targetObject->GetWorldPosition();
 		transform.rotation.y = targetObject->rotation.y;
 	}
 	destinationAngleY = transform.rotation.y;
@@ -85,7 +85,7 @@ void FollowCamera::Reset()
 	transform.translation = interTarget + offset;
 }
 
-void WristerEngine::_3D::FollowCamera::SetTarget(const Transform* target_)
+void FollowCamera::SetTarget(const Transform* target_)
 {
 	targetObject = target_;
 	Reset();

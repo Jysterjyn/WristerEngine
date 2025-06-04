@@ -41,12 +41,13 @@ void GameScene::Initialize()
 	input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE);
 
 	lockOn = std::make_unique<LockOn>();
-	lockOn->Initialize();
+	lockOn->Initialize({ "Reticle.png" });
+	lockOn->SetLockOnObjects(&enemies);
 
 	WE::_3D::BaseCamera* camera = cMan->Get();
 	WE::_3D::FollowCamera* fCamera = dynamic_cast<WE::_3D::FollowCamera*>(camera);
 	if (fCamera) { fCamera->SetLockOn(lockOn.get()); }
-	
+
 	BaseBehavior::SetLockOn(lockOn.get());
 }
 
@@ -58,5 +59,5 @@ void GameScene::Update()
 
 	player->Update();
 	for (auto& e : enemies) { e->Update(); }
-	lockOn->Update(enemies);
+	lockOn->Update();
 }

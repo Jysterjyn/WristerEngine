@@ -43,9 +43,9 @@ void BaseBehavior::Move()
 
 		rootPos->rotation.y = LerpShortAngle(rootPos->rotation.y, destinationAngleY, 0.4f);
 	}
-	else if (lockOn && lockOn->GetTarget())
+	else if (lockOn && lockOn->ExistTarget())
 	{
-		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 lockOnPos = lockOn->GetTargetPosition();
 		Vector3 sub = lockOnPos - rootPos->translation;
 		rootPos->rotation.y = std::atan2(sub.x, sub.z);
 	}
@@ -135,9 +135,9 @@ void AttackBehavior::Update()
 
 	if (!input->IsConnectGamePad()) { return; }
 
-	if (lockOn && lockOn->GetTarget())
+	if (lockOn && lockOn->ExistTarget())
 	{
-		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 lockOnPos = lockOn->GetTargetPosition();
 		Vector3 sub = lockOnPos - rootPos->translation;
 
 		float distance = sub.Length();

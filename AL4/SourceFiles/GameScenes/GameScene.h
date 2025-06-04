@@ -18,7 +18,7 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class GameScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
-	std::list<std::unique_ptr<Enemy>> enemies;
+	std::list<std::unique_ptr<LockOnObject>> enemies;
 	WE::Skydome skydome;
 	Ground ground;
 	WE::_3D::CameraManager* cMan = WE::_3D::CameraManager::GetInstance();

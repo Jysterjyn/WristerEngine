@@ -1,7 +1,8 @@
 #pragma once
 #include "BaseCharacter.h"
+#include <LockOn.h>
 
-class Enemy : public BaseCharacter
+class Enemy : public BaseCharacter, public LockOnObject
 {
 private:
 	float walkingParameter = 0.0f;
@@ -16,6 +17,6 @@ public:
 	void Initialize(const std::string& modelGroupName) override;
 	void Update() override;
 	void SetPosition(const Vector3& position) { rootPos.translation = position; }
-	Vector3 GetCenterPos() const;
+	Vector3 GetCenterPos() const override;
 };
 
