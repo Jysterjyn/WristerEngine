@@ -69,7 +69,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)SourceFiles\2d;$(ProjectDir)SourceFiles\3d\Camera;$(ProjectDir)SourceFiles\3d\Object;$(ProjectDir)SourceFiles\Audio;$(ProjectDir)SourceFiles\DirectX;$(ProjectDir)SourceFiles\Framework;$(ProjectDir)SourceFiles\Utility;$(ProjectDir)SourceFiles\GameObject;$(ProjectDir)SourceFiles\Input;$(ProjectDir)SourceFiles\Json;$(ProjectDir)SourceFiles\Light;$(ProjectDir)SourceFiles\LevelLoader;$(ProjectDir)SourceFiles\Math;$(ProjectDir)SourceFiles\Particle;$(ProjectDir)SourceFiles\Physics;$(ProjectDir)SourceFiles\Scene;$(ProjectDir)SourceFiles\Timer;$(ProjectDir)SourceFiles\WinApp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SourceFiles\2d;$(ProjectDir)SourceFiles\3d\Camera;$(ProjectDir)SourceFiles\3d\Object;$(ProjectDir)SourceFiles\Audio;$(ProjectDir)SourceFiles\DirectX;$(ProjectDir)SourceFiles\Framework;$(ProjectDir)SourceFiles\Utility;$(ProjectDir)SourceFiles\GameObject;$(ProjectDir)SourceFiles\Input;$(ProjectDir)SourceFiles\Json;$(ProjectDir)SourceFiles\Light;$(ProjectDir)SourceFiles\LevelLoader;$(ProjectDir)SourceFiles\Math;$(ProjectDir)SourceFiles\Particle;$(ProjectDir)SourceFiles\Physics;$(ProjectDir)SourceFiles\Scene;$(ProjectDir)SourceFiles\Timer;$(ProjectDir)SourceFiles\WinApp;$(SolutionDir)AL4\SourceFiles\LockOn;$(SolutionDir)AL4\SourceFiles\GameObjects</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -94,7 +94,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)SourceFiles\2d;$(ProjectDir)SourceFiles\3d\Camera;$(ProjectDir)SourceFiles\3d\Object;$(ProjectDir)SourceFiles\Audio;$(ProjectDir)SourceFiles\DirectX;$(ProjectDir)SourceFiles\Framework;$(ProjectDir)SourceFiles\Utility;$(ProjectDir)SourceFiles\GameObject;$(ProjectDir)SourceFiles\Input;$(ProjectDir)SourceFiles\Json;$(ProjectDir)SourceFiles\Light;$(ProjectDir)SourceFiles\LevelLoader;$(ProjectDir)SourceFiles\Math;$(ProjectDir)SourceFiles\Particle;$(ProjectDir)SourceFiles\Physics;$(ProjectDir)SourceFiles\Scene;$(ProjectDir)SourceFiles\Timer;$(ProjectDir)SourceFiles\WinApp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SourceFiles\2d;$(ProjectDir)SourceFiles\3d\Camera;$(ProjectDir)SourceFiles\3d\Object;$(ProjectDir)SourceFiles\Audio;$(ProjectDir)SourceFiles\DirectX;$(ProjectDir)SourceFiles\Framework;$(ProjectDir)SourceFiles\Utility;$(ProjectDir)SourceFiles\GameObject;$(ProjectDir)SourceFiles\Input;$(ProjectDir)SourceFiles\Json;$(ProjectDir)SourceFiles\Light;$(ProjectDir)SourceFiles\LevelLoader;$(ProjectDir)SourceFiles\Math;$(ProjectDir)SourceFiles\Particle;$(ProjectDir)SourceFiles\Physics;$(ProjectDir)SourceFiles\Scene;$(ProjectDir)SourceFiles\Timer;$(ProjectDir)SourceFiles\WinApp;$(SolutionDir)AL4\SourceFiles\LockOn;$(SolutionDir)AL4\SourceFiles\GameObjects</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
       <Optimization>MinSpace</Optimization>

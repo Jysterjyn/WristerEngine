@@ -32,6 +32,16 @@ namespace WristerEngine::_3D
 		// プロジェクション行列を更新
 		void UpdateProjectionMatrix();
 
+	protected:
+		// カメラ計算モード
+		enum class CalMode
+		{
+			ETU, // eye, target, upで計算
+			Transform // ワールド行列から計算
+		};
+
+		CalMode calMode = CalMode::ETU;
+
 	public:
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;

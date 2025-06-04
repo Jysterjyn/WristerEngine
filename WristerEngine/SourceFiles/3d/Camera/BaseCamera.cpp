@@ -32,13 +32,14 @@ Vector3 BaseCamera::UpdateViewMatrix()
 	if (shake) { shakeVal = shake->Update(); }
 
 	// ワールド行列からビュー行列を計算
-	if (pTransform)
+	if (calMode == CalMode::Transform)
 	{
 		// シェイクの値だけ位置をずらす
 		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
 		matView = Inverse(sMatWorld);
 		return sMatWorld.GetVector(3);
 	}
+
 	// eye, target, upから行列を計算
 	Vector3 sTarget = target + shakeVal;
 	Vector3 sEye = eye + shakeVal;

@@ -29,14 +29,25 @@ FollowCamera::FollowCamera(const Prop* prop)
 
 void FollowCamera::VirtualUpdate()
 {
-	// 旋回操作
-	if (input->IsConnectGamePad())
+	if (lockOn->GetTarget())
 	{
-		destinationAngleY += (float)input->ConRStick(0, rotSpeed).x;
-		// 右スティック押し込みでリセット
-		if (input->IsTrigger(0, JoyPad::Rstick)) 
+		calMode = CalMode::ETU;
+		eye = transform.translation;
+		target = lockOn->GetTarget()->GetCenterPos();
+		target.y = eye.y;
+	}
+	else
+	{
+		calMode = CalMode::Transform;
+		// 旋回操作
+		if (input->IsConnectGamePad())
 		{
-			destinationAngleY = targetObject->rotation.y;
+			destinationAngleY += (float)input->ConRStick(0, rotSpeed).x;
+			// 右スティック押し込みでリセット
+			if (input->IsTrigger(0, JoyPad::Rstick))
+			{
+				destinationAngleY = targetObject->rotation.y;
+			}
 		}
 	}
 

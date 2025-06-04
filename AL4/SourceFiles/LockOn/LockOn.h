@@ -20,4 +20,5 @@ public:
 	void Initialize();
 	void Update(const std::list<std::unique_ptr<Enemy>>& enemies);
 	void Draw();
+	const Enemy* GetTarget() const { return target; }
 };

@@ -42,6 +42,10 @@ void GameScene::Initialize()
 
 	lockOn = std::make_unique<LockOn>();
 	lockOn->Initialize();
+
+	WE::_3D::BaseCamera* camera = cMan->Get();
+	WE::_3D::FollowCamera* fCamera = dynamic_cast<WE::_3D::FollowCamera*>(camera);
+	if (fCamera) { fCamera->SetLockOn(lockOn.get()); }
 }
 
 void GameScene::Update()

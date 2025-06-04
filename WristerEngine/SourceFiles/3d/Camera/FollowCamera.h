@@ -2,6 +2,7 @@
 #include "BaseCamera.h"
 #include <Transform.h>
 #include <Input.h>
+#include <LockOn.h>
 
 namespace WristerEngine::_3D
 {
@@ -19,6 +20,7 @@ namespace WristerEngine::_3D
 		float destinationAngleY = 0; // –Ú•WŠp“x
 		float lerpPosRate = 0;
 		float lerpAngleRate = 0;
+		const LockOn* lockOn = nullptr;
 
 		Vector3 CalculateOffset() const;
 
@@ -40,5 +42,6 @@ namespace WristerEngine::_3D
 		void SetLerpPosRate(float lerpPosRate_) { lerpPosRate = lerpPosRate_; }
 		void SetLerpAngleRate(float lerpAngleRate_) { lerpAngleRate = lerpAngleRate_; }
 		void SetRotSpeed(float rotSpeed_) { rotSpeed = rotSpeed_; }
+		void SetLockOn(const LockOn* lockOn_) { lockOn = lockOn_; }
 	};
 }

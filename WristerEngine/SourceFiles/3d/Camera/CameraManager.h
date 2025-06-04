@@ -34,6 +34,6 @@ namespace WristerEngine::_3D
 		// 使用カメラの変更
 		void Change(const std::string& name);
 		// 使用カメラの取得
-		BaseCamera* Get() const { return cameras[name].get(); }
+		BaseCamera* Get(const std::string& cameraName = "") const;
 	};
 }

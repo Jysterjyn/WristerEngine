@@ -1,5 +1,6 @@
 #include "LockOn.h"
 #include <Input.h>
+#include <FollowCamera.h>
 
 void LockOn::Initialize()
 {
