@@ -114,6 +114,7 @@
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\FollowCamera.cpp" />
+    <ClCompile Include="SourceFiles\3d\Camera\LockOn.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp" />
     <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
     <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\LockOn.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
     <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h" />
     <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h" />

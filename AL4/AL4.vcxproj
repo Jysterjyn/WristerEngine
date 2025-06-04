@@ -18,7 +18,6 @@
     <ClCompile Include="SourceFiles\GameObjects\PlayerBehavior.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp" />
-    <ClCompile Include="SourceFiles\LockOn\LockOn.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp" />
   </ItemGroup>
@@ -30,7 +29,6 @@
     <ClInclude Include="SourceFiles\GameObjects\PlayerBehavior.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\GameScene.h" />
-    <ClInclude Include="SourceFiles\LockOn\LockOn.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ float BaseBehavior::destinationAngleY = 0.0f;
 Vector3 BaseBehavior::velocity;
 WE::GlobalVariables* BaseBehavior::globalVariables = WE::GlobalVariables::GetInstance();
 WE::Input* BaseBehavior::input = WE::Input::GetInstance();
-const LockOn* BaseBehavior::lockOn = nullptr;
+const WE::_3D::LockOn* BaseBehavior::lockOn = nullptr;
 
 const std::array<AttackBehavior::ConstAttack, AttackBehavior::ComboNum> AttackBehavior::kConstAttacks =
 {

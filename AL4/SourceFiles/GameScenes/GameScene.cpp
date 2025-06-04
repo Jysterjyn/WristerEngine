@@ -40,7 +40,7 @@ void GameScene::Initialize()
 	const float DEAD_ZONE = 0.7f;
 	input->SetDeadZone(0, DEAD_ZONE, DEAD_ZONE);
 
-	lockOn = std::make_unique<LockOn>();
+	lockOn = std::make_unique<WE::_3D::LockOn>();
 	lockOn->Initialize({ "Reticle.png" });
 	lockOn->SetLockOnObjects(&enemies);
 

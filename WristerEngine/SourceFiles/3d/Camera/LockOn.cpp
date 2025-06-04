@@ -2,24 +2,27 @@
 #include <Input.h>
 #include <FollowCamera.h>
 
+using namespace WE;
+using namespace _3D;
+
 void LockOn::Initialize(std::initializer_list<const std::string> textureNames)
 {
-	lockOnMark = WE::_2D::Sprite::Create(textureNames);
-	camera = WE::_3D::CameraManager::GetInstance()->Get();
+	lockOnMark = _2D::Sprite::Create(textureNames);
+	camera = _3D::CameraManager::GetInstance()->Get();
 }
 
 void LockOn::Update()
 {
-	WE::Input* input = WE::Input::GetInstance();
+	Input* input = Input::GetInstance();
 
 	if (target)
 	{
-		if (input->IsTrigger(0, WE::JoyPad::X)) { target = nullptr; }
+		if (input->IsTrigger(0, JoyPad::X)) { target = nullptr; }
 		else if (IsOutRange(target)) { target = nullptr; }
 	}
 	else
 	{
-		if (input->IsTrigger(0, WE::JoyPad::X)) { Search(); }
+		if (input->IsTrigger(0, JoyPad::X)) { Search(); }
 	}
 
 	if (target) { lockOnMark->position = To2DVector(target->GetCenterPos()); }

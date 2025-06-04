@@ -236,13 +236,16 @@
       <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\FollowCamera.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Json\GlobalVariables.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\3d\Camera\LockOn.cpp">
+      <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -435,8 +438,17 @@
     <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h">
       <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
-    <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h" />
-    <ClInclude Include="SourceFiles\Json\GlobalVariables.h" />
+    <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h">
+      <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h">
+      <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Json\GlobalVariables.h">
+      <Filter>ソース ファイル\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\3d\Camera\LockOn.h">
+      <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -18,11 +18,11 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 class GameScene : public WristerEngine::BaseScene
 {
 	std::unique_ptr<Player> player;
-	std::list<std::unique_ptr<LockOnObject>> enemies;
+	std::list<std::unique_ptr<WE::_3D::LockOnObject>> enemies;
 	WE::Skydome skydome;
 	Ground ground;
 	WE::_3D::CameraManager* cMan = WE::_3D::CameraManager::GetInstance();
-	std::unique_ptr<LockOn> lockOn;
+	std::unique_ptr<WE::_3D::LockOn> lockOn;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

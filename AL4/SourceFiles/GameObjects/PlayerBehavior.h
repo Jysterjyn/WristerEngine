@@ -26,7 +26,7 @@ protected:
 	static Vector3 velocity;
 	static WE::GlobalVariables* globalVariables;
 	static WE::Input* input;
-	static const LockOn* lockOn;
+	static const WE::_3D::LockOn* lockOn;
 	// 次の振る舞いリクエスト
 	static std::optional<Behavior> behaviorRequest;
 
@@ -41,7 +41,7 @@ public:
 	static void SetTransform(WE::_3D::Transform* rootPos_) { rootPos = rootPos_; }
 	static void SetCamera() { camera = WE::_3D::CameraManager::GetInstance()->Get(); }
 	static void SetBehaviorRequest(std::optional<Behavior> nextBehavior) { behaviorRequest = nextBehavior; }
-	static void SetLockOn(const LockOn* lockOn_) { lockOn = lockOn_; }
+	static void SetLockOn(const WE::_3D::LockOn* lockOn_) { lockOn = lockOn_; }
 	static std::optional<Behavior> GetBehaviorRequest() { return behaviorRequest; }
 	virtual void Initialize() = 0;
 	virtual void Update() = 0;

@@ -2,7 +2,7 @@
 #include "BaseCharacter.h"
 #include <LockOn.h>
 
-class Enemy : public BaseCharacter, public LockOnObject
+class Enemy : public BaseCharacter, public WE::_3D::LockOnObject
 {
 private:
 	float walkingParameter = 0.0f;
