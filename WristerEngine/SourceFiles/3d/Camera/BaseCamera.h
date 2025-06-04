@@ -8,8 +8,30 @@
 
 namespace WristerEngine::_3D
 {
+	// プロジェクション行列
+	class Projection
+	{
+	private:
+		Matrix4 matProjection;
+
+	protected:
+		// プロジェクション行列を更新
+		void UpdateMatrix();
+
+		// プロジェクション行列を取得
+		const Matrix4& GetProjectionMatrix() const { return matProjection; }
+
+	public:
+		// 画角(度)
+		Angle fovAngleY = 45;
+		// アスペクト比(基本はWIN_SIZEに準拠)
+		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
+		// 映る範囲
+		float nearZ = 0.1f, farZ = 1000.0f;
+	};
+
 	// カメラ基底クラス
-	class BaseCamera
+	class BaseCamera : Projection
 	{
 	private:
 		// 定数バッファ用データ構造体
@@ -21,16 +43,16 @@ namespace WristerEngine::_3D
 
 		// ワールド行列を使った計算を行うためのTransformポインタ
 		const Transform* pTransform = nullptr;
-		Matrix4 matView, matProjection, matViewProjection;
+		Matrix4 matView, matViewProjection;
+
+		// シェイク値込みのカメラ座標
+		Vector3 cameraPos;
 
 		/// <summary>
 		/// ビュー行列を更新
 		/// </summary>
 		/// <returns>シェイク値を含んだカメラの座標</returns>
-		Vector3 UpdateViewMatrix();
-
-		// プロジェクション行列を更新
-		void UpdateProjectionMatrix();
+		void UpdateViewMatrix();
 
 	protected:
 		// カメラ計算モード
@@ -46,10 +68,6 @@ namespace WristerEngine::_3D
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
 		Vector3 eye = { 0, 0, -50.0f }, target, up = Vector3::MakeAxis(Axis::Y);
-		Angle fovAngleY = 45; // 画角(度)
-		// アスペクト比(基本はWIN_SIZEに準拠)
-		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
-		float nearZ = 0.1f, farZ = 1000.0f; // 映る範囲
 		// シェイク機能
 		std::unique_ptr<Shake> shake;
 

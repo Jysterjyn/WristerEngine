@@ -4,6 +4,16 @@
 using namespace WristerEngine;
 using namespace _3D;
 
+void Projection::UpdateMatrix()
+{
+	matProjection = Matrix4::Zero();
+	matProjection.m[0][0] = 1.0f / (aspectRatio * std::tan(fovAngleY / 2.0f));
+	matProjection.m[1][1] = 1.0f / std::tan(fovAngleY / 2.0f);
+	matProjection.m[2][2] = farZ / (farZ - nearZ);
+	matProjection.m[2][3] = 1.0f;
+	matProjection.m[3][2] = -nearZ * farZ / (farZ - nearZ);
+}
+
 void BaseCamera::Initialize()
 {
 	CreateBuffer(constBuffer.GetAddressOf(), &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
@@ -11,21 +21,20 @@ void BaseCamera::Initialize()
 
 void BaseCamera::Update()
 {
-	UpdateProjectionMatrix();
-
+	// プロジェクション行列の更新
+	Projection::UpdateMatrix();
+	// 固有の更新
 	VirtualUpdate();
-
-	Vector3 cameraPos = UpdateViewMatrix();
-
+	// 全カメラ共通の更新処理
+	UpdateViewMatrix();
 	// 2行列を掛ける
-	matViewProjection = matView * matProjection;
-
+	matViewProjection = matView * GetProjectionMatrix();
 	// GPU転送
 	constMap->viewproj = matViewProjection;
 	constMap->cameraPos = cameraPos;
 }
 
-Vector3 BaseCamera::UpdateViewMatrix()
+void BaseCamera::UpdateViewMatrix()
 {
 	// シェイクを計算
 	Vector3 shakeVal;
@@ -37,7 +46,8 @@ Vector3 BaseCamera::UpdateViewMatrix()
 		// シェイクの値だけ位置をずらす
 		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
 		matView = Inverse(sMatWorld);
-		return sMatWorld.GetVector(3);
+		cameraPos = sMatWorld.GetVector(3);
+		return;
 	}
 
 	// eye, target, upから行列を計算
@@ -49,17 +59,7 @@ Vector3 BaseCamera::UpdateViewMatrix()
 	matView = CreateFromVector(axis[(int)Axis::X], axis[(int)Axis::Y], axis[(int)Axis::Z]);
 	matView = Inverse(matView);
 	matView.SetVector(-cameraMove, 3);
-	return sEye;
-}
-
-void BaseCamera::UpdateProjectionMatrix()
-{
-	matProjection = Matrix4::Zero();
-	matProjection.m[0][0] = 1.0f / (aspectRatio * std::tan(fovAngleY / 2.0f));
-	matProjection.m[1][1] = 1.0f / std::tan(fovAngleY / 2.0f);
-	matProjection.m[2][2] = farZ / (farZ - nearZ);
-	matProjection.m[2][3] = 1.0f;
-	matProjection.m[3][2] = -nearZ * farZ / (farZ - nearZ);
+	cameraPos = sEye;
 }
 
 void BaseCamera::CreateShake(const Shake::Prop& shakeProp)

@@ -8,6 +8,7 @@
 #include <optional>
 #include <Transform.h>
 #include <CameraManager.h>
+#include <LockOn.h>
 
 class BaseBehavior
 {
@@ -25,13 +26,14 @@ protected:
 	static Vector3 velocity;
 	static WE::GlobalVariables* globalVariables;
 	static WE::Input* input;
+	static const LockOn* lockOn;
 	// 次の振る舞いリクエスト
 	static std::optional<Behavior> behaviorRequest;
 
 	float moveSpeed = 0.3f;
 	std::string groupName = "Player";
 
-	void Move() const;
+	void Move();
 
 public:
 	virtual ~BaseBehavior() = default;
@@ -39,6 +41,7 @@ public:
 	static void SetTransform(WE::_3D::Transform* rootPos_) { rootPos = rootPos_; }
 	static void SetCamera() { camera = WE::_3D::CameraManager::GetInstance()->Get(); }
 	static void SetBehaviorRequest(std::optional<Behavior> nextBehavior) { behaviorRequest = nextBehavior; }
+	static void SetLockOn(const LockOn* lockOn_) { lockOn = lockOn_; }
 	static std::optional<Behavior> GetBehaviorRequest() { return behaviorRequest; }
 	virtual void Initialize() = 0;
 	virtual void Update() = 0;

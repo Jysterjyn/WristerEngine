@@ -16,6 +16,7 @@ Vector3 FollowCamera::CalculateOffset() const
 
 FollowCamera::FollowCamera(const Prop* prop)
 {
+	calMode = CalMode::Transform;
 	if (prop)
 	{
 		SetTarget(prop->target);
@@ -29,16 +30,14 @@ FollowCamera::FollowCamera(const Prop* prop)
 
 void FollowCamera::VirtualUpdate()
 {
-	if (lockOn->GetTarget())
+	if (lockOn && lockOn->GetTarget())
 	{
-		calMode = CalMode::ETU;
-		eye = transform.translation;
-		target = lockOn->GetTarget()->GetCenterPos();
-		target.y = eye.y;
+		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 sub = lockOnPos - transform.translation;
+		transform.rotation.y = std::atan2(sub.x, sub.z);
 	}
 	else
 	{
-		calMode = CalMode::Transform;
 		// ù‰ñ‘€ì
 		if (input->IsConnectGamePad())
 		{

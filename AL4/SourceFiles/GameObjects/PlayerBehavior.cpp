@@ -1,4 +1,5 @@
 #include "PlayerBehavior.h"
+#include <imgui.h>
 
 std::unordered_map<std::string, WE::_3D::Object3d*>* BaseBehavior::objects = nullptr;
 WE::_3D::Transform* BaseBehavior::rootPos = nullptr;
@@ -8,6 +9,7 @@ float BaseBehavior::destinationAngleY = 0.0f;
 Vector3 BaseBehavior::velocity;
 WE::GlobalVariables* BaseBehavior::globalVariables = WE::GlobalVariables::GetInstance();
 WE::Input* BaseBehavior::input = WE::Input::GetInstance();
+const LockOn* BaseBehavior::lockOn = nullptr;
 
 const std::array<AttackBehavior::ConstAttack, AttackBehavior::ComboNum> AttackBehavior::kConstAttacks =
 {
@@ -18,17 +20,16 @@ const std::array<AttackBehavior::ConstAttack, AttackBehavior::ComboNum> AttackBe
 	}
 };
 
-void BaseBehavior::Move() const
+void BaseBehavior::Move()
 {
 	if (!input->IsConnectGamePad()) { return; }
 	bool isMoving = false;
 
 	// ˆÚ“®—Ê
 	Vector2 padMove = input->ConLStick(0, moveSpeed);
+	isMoving = padMove.Length() != 0;
+
 	velocity = { padMove.x,0.0f,padMove.y };
-
-	isMoving = velocity.Length() != 0;
-
 	// ˆÚ“®ƒxƒNƒgƒ‹‚ðƒJƒƒ‰‚ÌŠp“x‚¾‚¯‰ñ“]‚·‚é
 	Matrix4 rotMat = Matrix4::RotateY(camera->GetTransform()->rotation.y);
 	velocity *= rotMat;
@@ -39,9 +40,15 @@ void BaseBehavior::Move() const
 		rootPos->translation += velocity;
 		// –Ú•WŠp“x‚ÌŽZo
 		destinationAngleY = std::atan2(velocity.x, velocity.z);
-	}
 
-	rootPos->rotation.y = LerpShortAngle(rootPos->rotation.y, destinationAngleY, 0.4f);
+		rootPos->rotation.y = LerpShortAngle(rootPos->rotation.y, destinationAngleY, 0.4f);
+	}
+	else if (lockOn && lockOn->GetTarget())
+	{
+		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 sub = lockOnPos - rootPos->translation;
+		rootPos->rotation.y = std::atan2(sub.x, sub.z);
+	}
 }
 
 void RootBehavior::Initialize()
@@ -91,9 +98,9 @@ void AttackBehavior::Update()
 {
 	ApplyGlobalVariables();
 
-	if (comboIndex >= ComboNum - 1)
+	if (comboIndex <= ComboNum - 1)
 	{
-		if (input->IsTrigger(0, WE::JoyPad::A)) { comboNext = true; }
+		//if (input->IsTrigger(0, WE::JoyPad::A)) { comboNext = true; }
 	}
 
 	if (++parameter >= kConstAttacks[comboIndex].GetComboTime())
@@ -126,7 +133,31 @@ void AttackBehavior::Update()
 		break;
 	}
 
-	Move();
+	if (!input->IsConnectGamePad()) { return; }
+
+	if (lockOn && lockOn->GetTarget())
+	{
+		Vector3 lockOnPos = lockOn->GetTarget()->GetCenterPos();
+		Vector3 sub = lockOnPos - rootPos->translation;
+
+		float distance = sub.Length();
+		const float threshold = 0.2f;
+		if (distance > threshold)
+		{
+			rootPos->rotation.y = std::atan2(sub.x, sub.z);
+			if (moveSpeed > distance - threshold)
+			{
+				moveSpeed = distance - threshold;
+			}
+		}
+	}
+
+	velocity = { 0,0,moveSpeed };
+	Matrix4 rotMat = Matrix4::RotateY(rootPos->rotation.y);
+	velocity *= rotMat;
+
+	// ˆÚ“®
+	rootPos->translation += velocity;
 }
 
 void AttackBehavior::ApplyGlobalVariables()
