@@ -13,7 +13,7 @@ namespace WristerEngine
 	{
 	public:
 		// €–Ú
-		using Item = std::variant<int32_t, float, Vector3>;
+		using Item = std::variant<int32_t, float, Vector3, bool>;
 
 		// ƒOƒ‹[ƒv
 		using Group = std::map<std::string, Item>;

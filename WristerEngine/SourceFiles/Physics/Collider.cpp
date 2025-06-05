@@ -7,7 +7,11 @@ float IncludeCollider::includeRadius = 0.1f;
 
 BoxCollider::BoxCollider() { CollisionManager::PushCollider(this); }
 BoxCollider::~BoxCollider() { CollisionManager::PopCollider(this); }
-SphereCollider::SphereCollider() { CollisionManager::PushCollider(this); }
+SphereCollider::SphereCollider()
+{
+	CollisionManager::PushCollider(this);
+	debugObject = _3D::ModelManager::GetInstance()->Create("TestSphere");
+}
 SphereCollider::~SphereCollider() { CollisionManager::PopCollider(this); }
 RayCollider::RayCollider() { CollisionManager::PushCollider(this); }
 RayCollider::~RayCollider() { CollisionManager::PopCollider(this); }
@@ -27,8 +31,8 @@ WristerEngine::_2D::ColliderGroup::~ColliderGroup()
 
 void PolygonCollider::SetVertices()
 {
-	Vector3 objPos = transform->translation;
-	Vector3 objRad = transform->scale;
+	Vector3 objPos = pTransform->translation;
+	Vector3 objRad = pTransform->scale;
 	vertices.clear();
 	vertices.push_back(objPos + Vector3(-objRad.x, objRad.y, -objRad.z));
 	vertices.push_back(objPos + Vector3(objRad.x, objRad.y, -objRad.z));
@@ -48,13 +52,13 @@ void PolygonCollider::ComputeNormal()
 void PolygonCollider::ToPlaneCollider(PlaneCollider* planeCollider)
 {
 	planeCollider->SetDistance(distance);
-	planeCollider->SetRotation(transform->rotation);
+	planeCollider->SetRotation(pTransform->rotation);
 	planeCollider->SetBaseNormal(baseNormal);
 }
 
 void PolygonCollider::UpdateVertices()
 {
-	for (Vector3& vertex : vertices) { vertex *= transform->matWorld; }
+	for (Vector3& vertex : vertices) { vertex *= pTransform->matWorld; }
 }
 
 //void MeshCollider::ConstructTriangles(ModelManager* model)

@@ -75,3 +75,8 @@ void Player::Update()
 	ApplyGlobalVariables();
 	BaseCharacter::Update();
 }
+
+void Player::OnCollision([[maybe_unused]] WE::SphereCollider* collider)
+{
+	BaseBehavior::SetBehaviorRequest(BaseBehavior::Behavior::Jump);
+}

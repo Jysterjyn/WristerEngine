@@ -15,6 +15,7 @@ namespace WristerEngine
 		static std::list<PolygonCollider*> polygonColliders;
 		static std::list<RayCollider*> rayColliders;
 		static std::list<_2D::ColliderGroup*> _2DColliders;
+		static bool isPrint;
 
 	public:
 		// ŒÂ•Ê“–‚½‚è”»’è
@@ -66,5 +67,7 @@ namespace WristerEngine
 		static bool CheckCollision2ColliderGroups(_2D::ColliderGroup* groupA, _2D::ColliderGroup* groupB);
 		// ‘S“–‚½‚è”»’è
 		static void CheckAllCollisions();
+
+		static bool IsPrint() { return isPrint; }
 	};
 }

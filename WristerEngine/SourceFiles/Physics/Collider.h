@@ -6,6 +6,7 @@
 #include <memory>
 #include "Sprite.h"
 #include <map>
+#include <ModelManager.h>
 
 // コライダーの属性
 enum class CollisionAttribute
@@ -128,8 +129,9 @@ namespace WristerEngine
 	protected:
 		CollisionAttribute collisionAttribute = CollisionAttribute::All;
 		CollisionMask collisionMask = CollisionMask::All;
-		_3D::Transform* transform = nullptr;
+		_3D::Transform* pTransform = nullptr;
 		std::unique_ptr<Physics> physics;
+		_3D::Object3d* debugObject = nullptr;
 
 	public:
 		virtual ~BaseCollider() = default;
@@ -145,11 +147,11 @@ namespace WristerEngine
 		// setter
 		void SetCollisionAttribute(CollisionAttribute collisionAttribute_) { collisionAttribute = collisionAttribute_; }
 		void SetCollisionMask(CollisionMask collisionMask_) { collisionMask = collisionMask_; }
-		void SetWorldTransform(_3D::Transform* worldTransform_) { transform = worldTransform_; }
+		void SetWorldTransform(_3D::Transform* worldTransform_) { pTransform = worldTransform_; }
 		// getter
 		CollisionAttribute GetCollisionAttribute() { return collisionAttribute; }
 		CollisionMask GetCollisionMask() { return collisionMask; }
-		virtual Vector3 GetWorldPosition() { return transform->GetWorldPosition(); }
+		virtual Vector3 GetWorldPosition() { return pTransform->GetWorldPosition(); }
 		Physics* GetPhysics() { return physics.get(); }
 	};
 
@@ -162,7 +164,7 @@ namespace WristerEngine
 		// 仮想デストラクタ
 		virtual ~BoxCollider();
 		// 3軸方向の半径を取得
-		virtual Vector3 GetRadius3D() { return transform->scale; }
+		virtual Vector3 GetRadius3D() { return pTransform->scale; }
 	};
 
 	// 完全包含のボックスコライダー(AABB方式)
@@ -199,7 +201,7 @@ namespace WristerEngine
 		// 仮想デストラクタ
 		virtual ~SphereCollider();
 		// 半径取得
-		virtual float GetRadius() { return transform->scale.x; }
+		virtual float GetRadius() { return pTransform->scale.x; }
 	};
 
 	// 平面コライダー
@@ -219,10 +221,10 @@ namespace WristerEngine
 		// setter
 		void SetInter(const Vector3& inter_) { inter = inter_; }
 		void SetDistance(float distance_) { distance = distance_; }
-		void SetRotation(const Vector3& rotation) { transform->rotation = rotation; }
+		void SetRotation(const Vector3& rotation) { pTransform->rotation = rotation; }
 		void SetBaseNormal(const Vector3& baseNormal_) { baseNormal = baseNormal_; }
 		// getter
-		virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(transform->rotation); }
+		virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
 		virtual Vector3* GetInter() { return &inter; }
 		virtual float GetDistance() { return distance; }
 	};
@@ -258,7 +260,7 @@ namespace WristerEngine
 		void SetBaseNormal(Vector3 baseNormal_) { baseNormal = baseNormal_; }
 		virtual void SetVertices();
 		// getter
-		virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(transform->rotation); }
+		virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
 		virtual std::vector<Vector3> GetVertices() { return vertices; }
 	};
 
@@ -273,7 +275,7 @@ namespace WristerEngine
 		// 仮想デストラクタ
 		virtual ~RayCollider();
 		// レイ方向を取得
-		virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(transform->rotation); }
+		virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
 	};
 }
 

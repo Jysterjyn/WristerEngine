@@ -59,6 +59,13 @@ void GlobalVariables::Update()
 				Vector3* ptr = std::get_if<Vector3>(&item);
 				ImGuiManager::SliderVector(itemName.c_str(), *ptr, -10.0f, 10.0f);
 			}
+
+			// boolŒ^‚Ì’l‚ğ•Û‚µ‚Ä‚¢‚ê‚Î
+			else if (std::holds_alternative<bool>(item))
+			{
+				bool* ptr = std::get_if<bool>(&item);
+				ImGui::Checkbox(itemName.c_str(), ptr);
+			}
 		}
 
 		// ‰üs
@@ -119,6 +126,13 @@ void GlobalVariables::SaveFile(const std::string& groupName)
 			// floatŒ^‚Ìjson”z—ñ“o˜^
 			Vector3 value = std::get<Vector3>(item);
 			root[groupName][itemName] = json::array({ value.x,value.y,value.z });
+		}
+
+		// boolŒ^‚Ì’l‚ğ•Û‚µ‚Ä‚¢‚ê‚Î
+		else if (std::holds_alternative<bool>(item))
+		{
+			// boolŒ^‚Ì’l‚ğ“o˜^
+			root[groupName][itemName] = std::get<bool>(item);
 		}
 	}
 
@@ -200,6 +214,14 @@ void GlobalVariables::LoadFile(const std::string& groupName)
 		{
 			// floatŒ^‚Ìjson”z—ñ“o˜^
 			Vector3 value = { itItem->at(0),itItem->at(1),itItem->at(2) };
+			SetValue(groupName, itemName, value);
+		}
+	
+		// boolŒ^‚Ì’l‚ğ•Û‚µ‚Ä‚¢‚ê‚Î
+		else if (itItem->is_boolean())
+		{
+			// boolŒ^‚Ì’l‚ğ“o˜^
+			bool value = itItem->get<bool>();
 			SetValue(groupName, itemName, value);
 		}
 	}

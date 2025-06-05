@@ -1,7 +1,7 @@
 #include "CollisionManager.h"
 #include <algorithm>
 #include "ImGuiManager.h"
-#include <imgui.h>
+#include <GlobalVariables.h>
 using namespace std;
 using namespace WristerEngine;
 
@@ -12,6 +12,7 @@ list<PlaneCollider*> CollisionManager::planeColliders;
 list<PolygonCollider*> CollisionManager::polygonColliders;
 list<RayCollider*> CollisionManager::rayColliders;
 list<_2D::ColliderGroup*> CollisionManager::_2DColliders;
+bool CollisionManager::isPrint = false;
 
 bool CollisionManager::CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB)
 {
@@ -626,6 +627,10 @@ void WristerEngine::CollisionManager::Check2DCollisions()
 
 void CollisionManager::CheckAllCollisions()
 {
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	gv->AddItem<bool>("Collision", "visible", isPrint);
+	isPrint = gv->GetValue<bool>("Collision", "visible");
+		
 	CheckBoxCollisions();
 	CheckIncludeCollisions();
 	CheckSphereCollisions();

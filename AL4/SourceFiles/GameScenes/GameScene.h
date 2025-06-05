@@ -1,7 +1,7 @@
 #pragma once
 #include <BaseScene.h>
 #include <Player.h>
-#include <skydome.h>
+#include <Skydome.h>
 #include <Ground.h>
 #include <Enemy.h>
 #include <CameraManager.h>
