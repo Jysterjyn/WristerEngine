@@ -8,6 +8,7 @@
 
 namespace WristerEngine
 {
+	// ƒOƒ[ƒoƒ‹•Ï”
 	class GlobalVariables final
 	{
 	public:

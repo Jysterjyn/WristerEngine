@@ -32,8 +32,11 @@ void FollowCamera::VirtualUpdate()
 {
 	if (lockOn && lockOn->ExistTarget())
 	{
+		// ロックオン座標
 		Vector3 lockOnPos = lockOn->GetTargetPosition();
+		// 追従対象からロックオン対象へのベクトル
 		Vector3 sub = lockOnPos - transform.translation;
+		// Y軸周り角度
 		transform.rotation.y = std::atan2(sub.x, sub.z);
 	}
 	else
@@ -58,10 +61,8 @@ void FollowCamera::VirtualUpdate()
 	{
 		// 追従座標の補間
 		interTarget = Lerp(interTarget, targetObject->GetWorldPosition(), lerpPosRate);
-
 		// 追従対象からのオフセット
 		Vector3 offset = CalculateOffset();
-
 		// カメラ座標
 		transform.translation = interTarget + offset;
 	}

@@ -15,23 +15,41 @@ void LockOn::Update()
 {
 	Input* input = Input::GetInstance();
 
+	// ロックオン状態なら
 	if (target)
 	{
-		if (input->IsTrigger(0, JoyPad::X)) { target = nullptr; }
-		else if (IsOutRange(target)) { target = nullptr; }
+		// ロックオンボタンをトリガーしたら
+		if (input->IsTrigger(0, JoyPad::X))
+		{
+			// ロックオンを外す
+			target = nullptr; 
+		}
+		// 範囲外判定
+		else if (IsOutRange(target)) 
+		{ 
+			// ロックオンを外す
+			target = nullptr;
+		}
 	}
 	else
 	{
+		// ロックオンボタンをトリガーしたらロックオン対象の検索
 		if (input->IsTrigger(0, JoyPad::X)) { Search(); }
 	}
 
-	if (target) { lockOnMark->position = To2DVector(target->GetCenterPos()); }
+	// ロックオン状態なら
+	if (target)
+	{
+		// スプライトの座標を設定
+		lockOnMark->position = To2DVector(target->GetCenterPos());
+	}
 }
 
 void LockOn::Search()
 {
+	// 目標
 	std::list<std::pair<float, const LockOnObject*>> targets;
-
+	// 全ての対象に対して順にロックオン判定
 	for (auto& object : *objects)
 	{
 		float positionViewZ = 0;
@@ -41,28 +59,41 @@ void LockOn::Search()
 		}
 	}
 
+	// ロックオン対象をリセット
 	target = nullptr;
 	if (!targets.empty())
 	{
+		// 距離で昇順にソート
 		targets.sort([](auto& pair1, auto& pair2) { return pair1.first < pair2.first; });
+		// ソートの結果一番近い対象をロックオン対象とする
 		target = targets.front().second;
 	}
 }
 
 bool LockOn::IsOutRange(const LockOnObject* object, float* positionViewZ)
 {
+	// 対象のロックオン座標取得
 	Vector3 positionWorld = object->GetCenterPos();
+	// ワールド→ビュー座標変換
 	Vector3 positionView = positionWorld * camera->GetViewMatrix();
 	if (positionViewZ) { *positionViewZ = positionView.z; }
 
+	// 距離条件チェック
 	if (minDistance <= positionView.z && positionView.z <= maxDistance)
 	{
+		// カメラ前方との角度を計算
 		float arcTangent = std::atan2(std::sqrt(
 			positionView.x * positionView.x + positionView.y * positionView.y),
 			positionView.z);
 
-		if (std::abs(arcTangent) <= angleRange) { return false; }
+		// 角度条件チェック(コーンに収まっているか)
+		if (std::abs(arcTangent) <= angleRange)
+		{
+			// 範囲外ではない
+			return false; 
+		}
 	}
+	// 範囲外である
 	return true;
 }
 

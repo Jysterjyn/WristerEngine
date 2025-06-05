@@ -6,6 +6,7 @@
 
 namespace WristerEngine::_3D
 {
+	// ’Ç]ƒJƒƒ‰
 	class FollowCamera : public BaseCamera
 	{
 	private:

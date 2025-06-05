@@ -4,6 +4,7 @@
 
 namespace WristerEngine::_3D
 {
+	// ロックオン対象の基底クラス
 	class LockOnObject
 	{
 	public:
@@ -12,15 +13,21 @@ namespace WristerEngine::_3D
 		virtual Vector3 GetCenterPos() const = 0;
 	};
 
+	// ロックオン
 	class LockOn
 	{
+		// ロックオンマーク用スプライト
 		WE::_2D::Sprite* lockOnMark = nullptr;
+		// ロックオン対象
 		const LockOnObject* target = nullptr;
 		const WE::_3D::BaseCamera* camera = nullptr;
 		const std::list<std::unique_ptr<LockOnObject>>* objects = nullptr;
 
+		// 最小距離
 		float minDistance = 10.0f;
+		// 最大距離
 		float maxDistance = 30.0f;
+		// 角度範囲
 		float angleRange = Angle(20);
 
 		void Search();
