@@ -20,6 +20,7 @@ void MyGame::Initialize()
 
 	modelManager->Initialize();
 	WE::ParticleManager::Initialize();
+	WE::ParticleManager::AddParticleGroup("particle3.png");
 }
 
 void MyGame::Update()

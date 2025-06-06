@@ -1,5 +1,7 @@
 #include "PlayerBehavior.h"
 #include <imgui.h>
+#include <Enemy.h>
+#include <ParticleManager.h>
 
 std::unordered_map<std::string, WE::_3D::Object3d*>* BaseBehavior::objects = nullptr;
 WE::_3D::Transform* BaseBehavior::rootPos = nullptr;
@@ -89,9 +91,10 @@ void RootBehavior::ApplyGlobalVariables()
 void AttackBehavior::Initialize()
 {
 	ApplyGlobalVariables();
-	(*objects)["sword"]->isInvisible = false;
+	//(*objects)["sword"]->isInvisible = false;
 	globalVariables->AddItem(groupName, "Sword Translation", (*objects)["sword"]->transform.translation);
 	moveSpeed = 0.0f;
+	sword.SetParent(rootPos);
 }
 
 void AttackBehavior::Update()
@@ -115,7 +118,7 @@ void AttackBehavior::Update()
 		else
 		{
 			behaviorRequest = Behavior::Root;
-			(*objects)["sword"]->isInvisible = true;
+			//(*objects)["sword"]->isInvisible = true;
 		}
 	}
 
@@ -162,7 +165,7 @@ void AttackBehavior::Update()
 
 void AttackBehavior::ApplyGlobalVariables()
 {
-	(*objects)["sword"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Sword Translation");
+	//(*objects)["sword"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Sword Translation");
 }
 
 void AttackBehavior::Combo1()
@@ -190,37 +193,13 @@ void AttackBehavior::Combo1()
 
 		(*objects)["handLeft"]->transform.rotation.x = -Angle(180) + attackParameter;
 		(*objects)["handRight"]->transform.rotation.x = -Angle(180) + attackParameter;
-		(*objects)["sword"]->transform.rotation.x = attackParameter;
+		sword.SetRotation({ attackParameter,0,0 });
+		sword.Update();
 	}
 }
 
 void AttackBehavior::Combo2()
 {
-	const ConstAttack at = kConstAttacks[comboIndex];
-
-	if (inComboPhase == 0)
-	{
-		if (parameter >= at.GetComboTime(0)) { inComboPhase++; }
-	}
-	if (inComboPhase == 1)
-	{
-		if (parameter >= at.GetComboTime(1)) { inComboPhase++; }
-	}
-	if (inComboPhase == 2)
-	{
-		if (parameter >= at.GetComboTime(2)) { inComboPhase++; }
-
-		moveSpeed = at.swingSpeed;
-		const float STEP = Angle(90) / at.swingTime;
-		const float END_ANGLE = Angle(90);
-
-		attackParameter += STEP;
-		min(END_ANGLE, attackParameter);
-
-		(*objects)["handLeft"]->transform.rotation.x = -Angle(180) + attackParameter;
-		(*objects)["handRight"]->transform.rotation.x = -Angle(180) + attackParameter;
-		(*objects)["sword"]->transform.rotation.x = attackParameter;
-	}
 }
 
 void AttackBehavior::Combo3()
@@ -271,5 +250,23 @@ void JumpBehavior::Update()
 	{
 		rootPos->translation.y = 0;
 		behaviorRequest = Behavior::Root;
+	}
+}
+
+void Sword::OnCollision(WE::SphereCollider* collider)
+{
+	CollisionAttribute typeID = collider->GetCollisionAttribute();
+	if (typeID == CollisionAttribute::Enemy)
+	{
+		Enemy* enemy = static_cast<Enemy*>(collider);
+		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+		WE::DiffuseParticle::AddProp addProp;
+		addProp.posOffset = enemy->GetWorldPosition();
+		addProp.posRange = {};
+		addProp.velRange = {};
+		addProp.accRange = {};
+		addProp.startScale = 1.0f;
+		addProp.endScale = 3.0f;
+		pGroup->Add(addProp);
 	}
 }

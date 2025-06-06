@@ -13,6 +13,8 @@ void Enemy::Initialize(const std::string& modelGroupName)
 	}
 
 	InitializeWalkingGimmick();
+
+	collisionAttribute = CollisionAttribute::Enemy;
 }
 
 void Enemy::Move()

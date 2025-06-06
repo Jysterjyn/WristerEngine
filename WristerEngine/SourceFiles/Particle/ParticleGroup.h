@@ -30,9 +30,9 @@ namespace WristerEngine
 		static const int PARTICLE_MAX = 30000; // パーティクル最大数
 		// 頂点バッファ
 		ComPtr<ID3D12Resource> vertBuff;
-		VertexPos* vertMap;
+		VertexPos* vertMap = nullptr;
 		// 頂点バッファビュー
-		D3D12_VERTEX_BUFFER_VIEW vbView;
+		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		// テクスチャインデックス
 		_2D::TextureData* texture = nullptr;
 		// 拡散するパーティクル

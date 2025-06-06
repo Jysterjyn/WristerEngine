@@ -25,8 +25,6 @@ void Player::Initialize(const std::string& modelGroupName)
 	objects["head"]->transform.translation.y = 2.5f;
 	objects["handLeft"]->transform.translation = { 1.4f,0.7f,0 };
 	objects["handRight"]->transform.translation = { -1.4f,0.7f,0 };
-	objects["sword"]->isInvisible = true;
-
 
 	BaseBehavior::SetObjects(&objects);
 	BaseBehavior::SetTransform(&rootPos);
@@ -40,7 +38,6 @@ void Player::ApplyGlobalVariables()
 	objects["head"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Head Translation");
 	objects["handLeft"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "ArmL Translation");
 	objects["handRight"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "ArmR Translation");
-	objects["sword"]->transform.translation = globalVariables->GetValue<Vector3>(groupName, "Sword Translation");
 }
 
 void Player::Update()
@@ -78,5 +75,4 @@ void Player::Update()
 
 void Player::OnCollision([[maybe_unused]] WE::SphereCollider* collider)
 {
-	BaseBehavior::SetBehaviorRequest(BaseBehavior::Behavior::Jump);
 }

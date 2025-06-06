@@ -11,8 +11,10 @@
 // コライダーの属性
 enum class CollisionAttribute
 {
+	None = 0,
 	Player = 0b1,
-	Enemy = 0b1 << 1,
+	PlayerWeapon = 0b1 << 1,
+	Enemy = 0b1 << 2,
 	All = -1
 };
 
@@ -21,8 +23,6 @@ enum class CollisionMask
 {
 	None = 0,
 	All = -1,
-	Player = (int)CollisionAttribute::Enemy,
-	Enemy = (int)CollisionAttribute::Player,
 };
 
 namespace WristerEngine
@@ -149,8 +149,8 @@ namespace WristerEngine
 		void SetCollisionMask(CollisionMask collisionMask_) { collisionMask = collisionMask_; }
 		void SetWorldTransform(_3D::Transform* worldTransform_) { pTransform = worldTransform_; }
 		// getter
-		CollisionAttribute GetCollisionAttribute() { return collisionAttribute; }
-		CollisionMask GetCollisionMask() { return collisionMask; }
+		CollisionAttribute GetCollisionAttribute() const { return collisionAttribute; }
+		CollisionMask GetCollisionMask() const { return collisionMask; }
 		virtual Vector3 GetWorldPosition() { return pTransform->GetWorldPosition(); }
 		Physics* GetPhysics() { return physics.get(); }
 	};

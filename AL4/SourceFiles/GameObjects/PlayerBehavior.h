@@ -2,13 +2,12 @@
 #include <numeric>
 #include <unordered_map>
 #include <string>
-#include <Object3d.h>
 #include <GlobalVariables.h>
 #include <Input.h>
 #include <optional>
-#include <Transform.h>
-#include <CameraManager.h>
 #include <LockOn.h>
+#include <ModelManager.h>
+#include <CollisionManager.h>
 
 class BaseBehavior
 {
@@ -61,6 +60,31 @@ class RootBehavior : public BaseBehavior
 	void ApplyGlobalVariables() override;
 };
 
+class Sword : public WE::SphereCollider
+{
+private:
+	WE::_3D::Object3d* object = nullptr;
+
+public:
+	Sword()
+	{
+		object = WE::_3D::ModelManager::GetInstance()->Create("Sword"); 
+		pTransform = &object->transform;
+		debugObject->isInvisible = !WE::CollisionManager::IsPrint();
+		collisionAttribute = CollisionAttribute::PlayerWeapon;
+		object->material.ambient = { 0,0,0 };
+	}
+	~Sword() { object->isDestroy = true; }
+	void SetParent(WE::_3D::Transform* parent) { object->transform.parent = parent; }
+	const Vector3& GetRotation() const { return object->transform.rotation; }
+	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
+	void OnCollision(WE::SphereCollider* collider) override;
+	void Update()
+	{
+		debugObject->transform = *pTransform;
+	}
+};
+
 class AttackBehavior : public BaseBehavior
 {
 public:
@@ -94,6 +118,7 @@ private:
 	uint32_t comboIndex = 0;
 	uint32_t inComboPhase = 0;
 	bool comboNext = false;
+	Sword sword;
 
 	// BaseBehavior ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	void Initialize() override;
