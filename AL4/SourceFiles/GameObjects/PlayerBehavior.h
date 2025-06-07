@@ -8,6 +8,7 @@
 #include <LockOn.h>
 #include <ModelManager.h>
 #include <CollisionManager.h>
+#include <ContactRecord.h>
 
 class BaseBehavior
 {
@@ -64,6 +65,7 @@ class Sword : public WE::SphereCollider
 {
 private:
 	WE::_3D::Object3d* object = nullptr;
+	ContactRecord contactRecord;
 
 public:
 	Sword()
@@ -83,6 +85,7 @@ public:
 	{
 		debugObject->transform = *pTransform;
 	}
+	void ClearRecord() { contactRecord.Clear(); }
 };
 
 class AttackBehavior : public BaseBehavior

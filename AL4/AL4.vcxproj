@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\GameObjects\BaseCharacter.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\ContactRecord.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Enemy.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
@@ -23,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\GameObjects\BaseCharacter.h" />
+    <ClInclude Include="SourceFiles\GameObjects\ContactRecord.h" />
     <ClInclude Include="SourceFiles\GameObjects\Enemy.h" />
     <ClInclude Include="SourceFiles\GameObjects\Ground.h" />
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />

@@ -35,11 +35,14 @@ namespace WristerEngine
 		bool ProcessMessage();
 		// 終了
 		void Finalize() const;
-		// マウス座標を取得する
-		Vector2 GetScreenCursorPos() const;
+		
+		// カーソルの位置を設定
+		void SetCursorPosition(Vector2 pos) { SetCursorPos((int32_t)pos.x, (int32_t)pos.y); }
 
 		// getter
 		HWND GetHwnd() const { return hwnd; }
 		HINSTANCE GetHInstance() const { return w.hInstance; }
+		// マウス座標を取得する
+		Vector2 GetScreenCursorPos() const;
 	};
 }

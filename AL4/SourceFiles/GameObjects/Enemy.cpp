@@ -1,5 +1,13 @@
 #include "Enemy.h"
 
+uint32_t Enemy::nextSerialNumber = 0;
+
+Enemy::Enemy()
+{
+	serialNumber = nextSerialNumber;
+	++nextSerialNumber;
+}
+
 void Enemy::Initialize(const std::string& modelGroupName)
 {
 	BaseCharacter::Initialize(modelGroupName);

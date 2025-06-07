@@ -259,6 +259,11 @@ void Sword::OnCollision(WE::SphereCollider* collider)
 	if (typeID == CollisionAttribute::Enemy)
 	{
 		Enemy* enemy = static_cast<Enemy*>(collider);
+		uint32_t serialNumber = enemy->GetSerialNumber();
+
+		if (contactRecord.CheckRecord(serialNumber)) { return; }
+		contactRecord.AddRecord(serialNumber);
+		
 		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
 		WE::DiffuseParticle::AddProp addProp;
 		addProp.posOffset = enemy->GetWorldPosition();

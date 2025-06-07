@@ -65,6 +65,9 @@
     <ClCompile Include="SourceFiles\GameObjects\PlayerBehavior.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\ContactRecord.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\MyGame\MyGame.h">
@@ -89,6 +92,9 @@
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\PlayerBehavior.h">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\ContactRecord.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
