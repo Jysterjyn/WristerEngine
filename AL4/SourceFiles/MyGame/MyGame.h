@@ -9,11 +9,12 @@ class MyGame : public WristerEngine::Framework
 	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
 
 	// 初期化(オーバーライド)
-	void Initialize();
+	void Initialize() override;
 	// 更新(オーバーライド)
-	void Update();
+	void Update() override;
 	// 描画(オーバーライド)
-	void Draw();
+	void Draw() override;
 	// 終了処理(オーバーライド)
-	void Finalize();
+	void Finalize() override;
+	bool IsEndRequest() override;
 };

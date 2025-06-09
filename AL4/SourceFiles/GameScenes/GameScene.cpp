@@ -3,6 +3,7 @@
 #include <FollowCamera.h>
 #include <DebugCamera.h>
 #include <SceneManager.h>
+#include <WindowsAPI.h>
 
 void GameScene::Initialize()
 {

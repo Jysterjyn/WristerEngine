@@ -1,5 +1,6 @@
 #include "WindowsAPI.h"
 #include <imgui_impl_win32.h>
+#include <algorithm>
 #pragma comment(lib,"winmm.lib")
 
 using namespace WE;
@@ -33,6 +34,8 @@ WindowsAPI* WindowsAPI::GetInstance()
 
 bool WindowsAPI::ProcessMessage()
 {
+	InWindowCursor();
+
 	MSG msg{}; // メッセージ
 
 	// メッセージがある?
@@ -95,4 +98,26 @@ Vector2 WindowsAPI::GetScreenCursorPos() const
 	// クライアントエリア座標に変換する
 	ScreenToClient(hwnd, &mousePosition);
 	return Vector2((float)mousePosition.x, (float)mousePosition.y);
+}
+
+void WindowsAPI::InWindowCursor() const
+{
+	if (!isInWindowCursor) { return; }
+
+	// ウィンドウ四隅の座標を取得
+	RECT lect{};
+	GetWindowRect(hwnd, &lect);
+
+	// オフセットを加算
+	lect.left += inWindowCursorOffset.left;
+	lect.right += inWindowCursorOffset.right;
+	lect.top += inWindowCursorOffset.top;
+	lect.bottom += inWindowCursorOffset.bottom;
+
+	// カーソルが画面外に出たら画面内に戻す
+	POINT point{};
+	GetCursorPos(&point);
+	point.x = std::clamp(point.x, lect.left, lect.right);
+	point.y = std::clamp(point.y, lect.top, lect.bottom);
+	SetCursorPos(point.x, point.y);
 }
