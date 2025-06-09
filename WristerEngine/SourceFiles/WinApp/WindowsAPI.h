@@ -14,11 +14,24 @@ namespace WristerEngine
 	// ウィンドウクラス処理
 	class WindowsAPI final
 	{
+	public:
+		enum class SizeChangeMode 
+		{
+			None,        // サイズ変更不可
+			Normal,      // 自由変更
+			FixedAspect, // アスペクト比一定
+		};
+
 	private:
 		HWND hwnd{};
 		WNDCLASSEX w{};
 		bool isInWindowCursor = false;
+		RECT windowRect{};
 		RECT inWindowCursorOffset{};
+		SizeChangeMode sizeChangeMode = SizeChangeMode::Normal;
+		UINT windowStyle = WS_OVERLAPPEDWINDOW;
+		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
+		bool isFullscreen = false;
 
 		WindowsAPI() = default;
 		~WindowsAPI() = default;
@@ -47,7 +60,19 @@ namespace WristerEngine
 		void SetShowCursor(bool isShow) const { ShowCursor(isShow); }
 		// カーソルが画面外に出ないようにするフラグ
 		void SetIsInWindowCursor(bool isInWindowCursor_) { isInWindowCursor = isInWindowCursor_; }
-		void InWindowCursorOffset(const RECT& inWindowCursorOffset_) { inWindowCursorOffset = inWindowCursorOffset_; }
+		void SetInWindowCursorOffset(const RECT& inWindowCursorOffset_) { inWindowCursorOffset = inWindowCursorOffset_; }
+
+		/// <summary>
+		/// フルスクリーン設定
+		/// </summary>
+		/// <param name="fullscreen">フルスクリーンにするかどうか</param>
+		void SetFullscreen(bool fullscreen);
+
+		/// <summary>
+		/// サイズ変更モードの設定
+		/// </summary>
+		/// <returns></returns>
+		void SetSizeChangeMode(SizeChangeMode sizeChangeMode);
 
 		// getter
 		HWND GetHwnd() const { return hwnd; }

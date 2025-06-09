@@ -13,7 +13,6 @@ void AudioManager::Initialize()
 
 void AudioManager::Finalize()
 {
-	CoUninitialize(); // COMèIóπ
 }
 
 Audio* AudioManager::Create(const std::string& fileName, bool isLoop)
