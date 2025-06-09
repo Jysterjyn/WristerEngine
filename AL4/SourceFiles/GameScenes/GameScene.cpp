@@ -50,6 +50,10 @@ void GameScene::Initialize()
 	if (fCamera) { fCamera->SetLockOn(lockOn.get()); }
 
 	BaseBehavior::SetLockOn(lockOn.get());
+
+	audio = WE::AudioManager::CreatePointAudio("Clean Tears - SAKURA feat.‰‰¹ƒ~ƒN.mp3", true);
+	audio->Play();
+	audio->SetPanStrength(10000);
 }
 
 void GameScene::Update()

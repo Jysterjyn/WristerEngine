@@ -75,4 +75,7 @@ void DebugCamera::VirtualUpdate()
 	// 注視点からずらした位置に視点座標を決定
 	eye = target + vTargetEye;
 	up = vUp;
+
+	// デバッグカメラ操作中はカーソルがウィンドウ外に出ないようにする
+	WindowsAPI::GetInstance()->InWindowCursor();
 }

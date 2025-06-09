@@ -11,15 +11,9 @@ namespace WristerEngine
 	class AudioManager
 	{
 	private:
-		static std::map<bool, std::list<std::unique_ptr<Audio>>> audios;
-		static std::map<bool, std::list<std::unique_ptr<PointAudio>>> pointAudios;
+		static std::list<std::unique_ptr<Audio>> audios;
 
 	public:
-		// 初期化
-		static void Initialize();
-		// 終了
-		static void Finalize();
-
 		/// <summary>
 		/// オーディオ生成
 		/// </summary>

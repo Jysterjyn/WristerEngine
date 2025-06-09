@@ -7,6 +7,7 @@
 #include <CameraManager.h>
 #include <list>
 #include <LockOn.h>
+#include <AudioManager.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -25,6 +26,7 @@ class GameScene : public WristerEngine::BaseScene
 	std::unique_ptr<WE::_3D::LockOn> lockOn;
 	bool inScreen = false;
 	int32_t left = 0, right = 0, top = 0, bottom = 0;
+	WE::PointAudio* audio = nullptr;
 
 	// BaseScene ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
 	void Initialize() override;

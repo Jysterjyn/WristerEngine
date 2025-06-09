@@ -2,11 +2,11 @@
 #include "CameraManager.h"
 #include "BaseCamera.h"
 #include <cmath>
-using namespace WristerEngine;
+using namespace WE;
 
-void PointAudio::Initialize(const std::string& fileName, Vector3 audioPos_, bool useCamera_, bool usePan_)
+void PointAudio::Initialize(const std::string& fileName, Vector3 audioPos_, bool useCamera_, bool usePan_, bool isLoop_)
 {
-	Audio::Initialize(fileName);
+	Audio::Initialize(fileName, isLoop_);
 	useCamera = useCamera_;
 	audioPos = audioPos_;
 	usePan = usePan_;
@@ -14,6 +14,9 @@ void PointAudio::Initialize(const std::string& fileName, Vector3 audioPos_, bool
 
 void PointAudio::Update()
 {
+	// ƒ‹[ƒvÄ¶‚·‚é
+	Audio::Update();
+
 	if (useCamera)
 	{
 		_3D::BaseCamera* vp = _3D::CameraManager::GetInstance()->Get();

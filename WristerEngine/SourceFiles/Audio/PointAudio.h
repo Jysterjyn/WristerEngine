@@ -13,10 +13,9 @@ namespace WristerEngine
 		Vector3 forward;
 		bool useCamera = true;
 		bool usePan = true;
-		float sPressRate = 1.0f; // Œ´‹È‚Æ‚Ì‰¹ˆ³‚Ì”ä—¦
 		long panStrength = 2500; // ƒpƒ“‚Ì‹­‚³(‘å‚«‚¢‚Ù‚Ç¶‰E‚Ì‰¹—Ê·‚ª‘å‚«‚­‚È‚é)
 
-		void Initialize(const std::string& fileName, Vector3 audioPos, bool useCamera, bool usePan);
+		void Initialize(const std::string& fileName, Vector3 audioPos, bool useCamera, bool usePan, bool isLoop);
 		void Update();
 
 	public:

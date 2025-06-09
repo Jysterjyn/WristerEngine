@@ -2,11 +2,11 @@
 #include "D3D12Common.h"
 #include <fstream>
 #include <StringUtility.h>
-using namespace WristerEngine;
+using namespace WE;
 
-std::string Audio::DEFAULT_DIRECTORY_PATH = "Resources/Sounds/";
+std::string Audio::DIRECTORY_PATH = "Sounds/";
 
-void Audio::Initialize(const std::string& fileName)
+void Audio::Initialize(const std::string& fileName, bool isLoop_)
 {
 	Result result;
 	// FilterGraph‚ð¶¬
@@ -20,13 +20,20 @@ void Audio::Initialize(const std::string& fileName)
 	result = graphBuilder->QueryInterface(IID_IMediaPosition, (LPVOID*)&mediaPosition);
 	result = graphBuilder->QueryInterface(IID_IBasicAudio, (LPVOID*)&basicAudio);
 
-	std::string fullPath = DEFAULT_DIRECTORY_PATH + fileName;
+	std::string fullPath = CreateResourcePath(DIRECTORY_PATH + fileName);
 
 	// ƒƒCƒh•¶Žš—ñ‚É•ÏŠ·
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
 	// Graph‚ð¶¬
 	result = mediaControl->RenderFile((BSTR)wfilePath.data());
+
+	isLoop = isLoop_;
+}
+
+void Audio::Update()
+{
+	if (isLoop && IsFinished()) { SetPlayPosition(0); }
 }
 
 bool Audio::IsFinished()

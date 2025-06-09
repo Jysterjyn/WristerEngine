@@ -20,15 +20,19 @@ namespace WristerEngine
 		Microsoft::WRL::ComPtr<IMediaControl> mediaControl;
 		Microsoft::WRL::ComPtr<IMediaPosition> mediaPosition;
 		Microsoft::WRL::ComPtr<IBasicAudio> basicAudio;
+		bool isLoop = false;
+
 		// デフォルトディレクトリ
-		static std::string DEFAULT_DIRECTORY_PATH;
+		static std::string DIRECTORY_PATH;
 
 		// 再生が終わったか
 		bool IsFinished();
 
 	protected:
 		// 初期化
-		void Initialize(const std::string& fileName);
+		void Initialize(const std::string& fileName, bool isLoop);
+		// 更新
+		virtual void Update();
 
 	public:
 		friend AudioManager;

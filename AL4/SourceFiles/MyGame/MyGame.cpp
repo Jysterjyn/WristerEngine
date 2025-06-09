@@ -30,6 +30,7 @@ void MyGame::Update()
 	WE::CollisionManager::CheckAllCollisions();
 	WE::Physics::ResetCollideList();
 	WE::ParticleManager::Update();
+	WE::AudioManager::Update();
 }
 
 void MyGame::Draw()

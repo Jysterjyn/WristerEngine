@@ -41,9 +41,6 @@ namespace WristerEngine
 		// ウィンドウプロシージャ
 		static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-		// カーソルが画面外に出ないようにする
-		void InWindowCursor() const;
-
 	public:
 		// インスタンス取得
 		static WindowsAPI* GetInstance();
@@ -53,6 +50,9 @@ namespace WristerEngine
 		bool ProcessMessage();
 		// 終了
 		void Finalize() const;
+
+		// カーソルが画面外に出ないようにする
+		void InWindowCursor() const;
 
 		// カーソルの位置を設定
 		void SetCursorPosition(const Vector2& pos) const { SetCursorPos((int32_t)pos.x, (int32_t)pos.y); }

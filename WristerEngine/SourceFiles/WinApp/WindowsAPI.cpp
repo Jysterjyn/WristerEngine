@@ -125,7 +125,7 @@ void WindowsAPI::Initialize(const std::wstring& windowName)
 
 bool WindowsAPI::ProcessMessage()
 {
-	InWindowCursor();
+	if (isInWindowCursor) { InWindowCursor(); }
 
 	MSG msg{}; // メッセージ
 
@@ -160,8 +160,6 @@ Vector2 WindowsAPI::GetScreenCursorPos() const
 
 void WindowsAPI::InWindowCursor() const
 {
-	if (!isInWindowCursor) { return; }
-
 	// ウィンドウ四隅の座標を取得
 	RECT lect{};
 	GetWindowRect(hwnd, &lect);
