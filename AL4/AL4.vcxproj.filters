@@ -97,6 +97,9 @@
     <ClInclude Include="SourceFiles\GameObjects\ContactRecord.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\CollisionConfig.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\SpritePS.hlsl">

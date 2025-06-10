@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <CollisionConfig.h>
 
 uint32_t Enemy::nextSerialNumber = 0;
 
@@ -22,7 +23,7 @@ void Enemy::Initialize(const std::string& modelGroupName)
 
 	InitializeWalkingGimmick();
 
-	collisionAttribute = CollisionAttribute::Enemy;
+	SetAttribute(static_cast<uint32_t>(CollisionAttribute::Enemy));
 }
 
 void Enemy::Move()
@@ -60,8 +61,8 @@ void Enemy::UpdateWalkingGimmick()
 
 void Enemy::Update()
 {
-	Move();
-	UpdateWalkingGimmick();
+	//Move();
+	//UpdateWalkingGimmick();
 	BaseCharacter::Update();
 }
 

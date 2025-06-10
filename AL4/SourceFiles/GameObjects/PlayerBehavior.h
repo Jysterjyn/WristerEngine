@@ -9,6 +9,7 @@
 #include <ModelManager.h>
 #include <CollisionManager.h>
 #include <ContactRecord.h>
+#include <CollisionConfig.h>
 
 class BaseBehavior
 {
@@ -70,10 +71,9 @@ private:
 public:
 	Sword()
 	{
-		object = WE::_3D::ModelManager::GetInstance()->Create("Sword"); 
-		pTransform = &object->transform;
+		object = WE::_3D::ModelManager::GetInstance()->Create("Sword");
 		debugObject->isInvisible = !WE::CollisionManager::IsPrint();
-		collisionAttribute = CollisionAttribute::PlayerWeapon;
+		SetAttribute(static_cast<uint32_t>(CollisionAttribute::PlayerWeapon));
 		object->material.ambient = { 0,0,0 };
 	}
 	~Sword() { object->isDestroy = true; }
@@ -81,9 +81,11 @@ public:
 	const Vector3& GetRotation() const { return object->transform.rotation; }
 	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
 	void OnCollision(WE::SphereCollider* collider) override;
-	void Update()
+	void Update() 
 	{
-		debugObject->transform = *pTransform;
+		debugObject->transform = object->transform; 
+		object->transform.Update();
+		SetCenterPosition(object->transform.GetWorldPosition());
 	}
 	void ClearRecord() { contactRecord.Clear(); }
 };

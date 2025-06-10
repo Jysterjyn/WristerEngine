@@ -255,8 +255,8 @@ void JumpBehavior::Update()
 
 void Sword::OnCollision(WE::SphereCollider* collider)
 {
-	CollisionAttribute typeID = collider->GetCollisionAttribute();
-	if (typeID == CollisionAttribute::Enemy)
+	uint32_t typeID = collider->GetAttribute();
+	if (typeID == static_cast<uint32_t>(CollisionAttribute::Enemy))
 	{
 		Enemy* enemy = static_cast<Enemy*>(collider);
 		uint32_t serialNumber = enemy->GetSerialNumber();
@@ -266,7 +266,7 @@ void Sword::OnCollision(WE::SphereCollider* collider)
 		
 		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
 		WE::DiffuseParticle::AddProp addProp;
-		addProp.posOffset = enemy->GetWorldPosition();
+		addProp.posOffset = enemy->GetCenterPosition();
 		addProp.posRange = {};
 		addProp.velRange = {};
 		addProp.accRange = {};
