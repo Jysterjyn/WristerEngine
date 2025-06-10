@@ -8,6 +8,8 @@ std::string Audio::DIRECTORY_PATH = "Sounds/";
 
 void Audio::Initialize(const std::string& fileName, bool isLoop_)
 {
+	MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
+	
 	Result result;
 	// FilterGraph‚ð¶¬
 	result = CoCreateInstance(CLSID_FilterGraph,
@@ -34,6 +36,7 @@ void Audio::Initialize(const std::string& fileName, bool isLoop_)
 void Audio::Update()
 {
 	if (isLoop && IsFinished()) { SetPlayPosition(0); }
+	mediaPosition->get_CurrentPosition(&time);
 }
 
 bool Audio::IsFinished()

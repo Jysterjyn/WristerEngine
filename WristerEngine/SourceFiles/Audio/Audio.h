@@ -6,8 +6,8 @@
 #include <mfapi.h>
 #include <dshow.h>
 #include <memory>
-#include <wrl.h>
-
+#include <mfmediaengine.h>
+ 
 namespace WristerEngine
 {
 	class AudioManager;
@@ -21,6 +21,7 @@ namespace WristerEngine
 		Microsoft::WRL::ComPtr<IMediaPosition> mediaPosition;
 		Microsoft::WRL::ComPtr<IBasicAudio> basicAudio;
 		bool isLoop = false;
+		bool isSE = false;
 
 		// デフォルトディレクトリ
 		static std::string DIRECTORY_PATH;
@@ -39,7 +40,8 @@ namespace WristerEngine
 		// 仮想デストラクタ
 		virtual ~Audio() = default;
 		// 再生
-		void Play() { mediaControl->Run(); SetPlayPosition(0); }
+		void Play() { PlayResume(); SetPlayPosition(0); }
+		void PlayResume() { mediaControl->Run(); }
 		// 中断
 		void Stop() { mediaControl->Stop(); }
 		// スピード変更
@@ -50,5 +52,7 @@ namespace WristerEngine
 		void SetVolume(long volume) { basicAudio->put_Volume(volume); }
 		// -10000(左)～10000(右)
 		void SetBalance(long balance) { basicAudio->put_Balance(balance); }
+
+		REFTIME time = 0;
 	};
 }

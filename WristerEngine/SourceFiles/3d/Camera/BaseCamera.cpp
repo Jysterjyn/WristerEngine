@@ -43,10 +43,14 @@ void BaseCamera::UpdateViewMatrix()
 	// ワールド行列からビュー行列を計算
 	if (calMode == CalMode::Transform)
 	{
+		assert(pTransform);
 		// シェイクの値だけ位置をずらす
 		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
 		matView = Inverse(sMatWorld);
 		cameraPos = sMatWorld.GetVector(3);
+		// eye, targetに変換
+		eye = pTransform->GetWorldPosition();
+		target = Vector3(0, 0, 1) * Matrix4::Rotate(pTransform->rotation);
 		return;
 	}
 

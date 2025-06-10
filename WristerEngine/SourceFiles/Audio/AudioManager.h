@@ -34,6 +34,8 @@ namespace WristerEngine
 		static PointAudio* CreatePointAudio(const std::string& fileName,
 			bool isLoop = false, const Vector3& audioPos = {}, bool useCamera = true, bool usePan = true);
 
+		static void PlaySE(const std::string& fileName);
+
 		// 全オーディオインスタンスの更新
 		static void Update();
 	};

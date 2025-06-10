@@ -51,15 +51,19 @@ void GameScene::Initialize()
 
 	BaseBehavior::SetLockOn(lockOn.get());
 
-	audio = WE::AudioManager::CreatePointAudio("Clean Tears - SAKURA feat.初音ミク.mp3", true);
-	audio->Play();
-	audio->SetPanStrength(10000);
+	audio = WE::AudioManager::Create("ボカロPOPS[ふたつ星プラネタリウムの空]初音ミク.mp3", false);
+	//WE::AudioManager::PlaySE("Clean Tears - SAKURA feat.初音ミク.mp3")
 }
 
 void GameScene::Update()
 {
 	if (input->IsTrigger(WE::Key::_1)) { cMan->Change("Debug"); }
 	if (input->IsTrigger(WE::Key::_2)) { cMan->Change("Player"); }
+	if (input->IsTrigger(WE::Key::J)) { audio->Play(); }
+	if (input->IsTrigger(WE::Key::K)) { audio->PlayResume(); }
+	if (input->IsTrigger(WE::Key::L)) { audio->Stop(); }
+
+	ImGui::Text("time = %f", audio->time);
 
 	player->Update();
 	for (auto& e : enemies) { e->Update(); }

@@ -21,8 +21,17 @@ PointAudio* AudioManager::CreatePointAudio(const std::string& fileName,
 	return static_cast<PointAudio*>(audios.back().get());
 }
 
+void AudioManager::PlaySE(const std::string& fileName)
+{
+	Audio* newAudio = Create(fileName);
+	newAudio->isSE = true;
+	newAudio->Play();
+}
+
 void AudioManager::Update()
 {
+	audios.remove_if([](auto& audio) { return audio->isSE && audio->IsFinished(); });
+
 	// XVˆ—
 	for (auto& audio : audios) { audio->Update(); }
 }
