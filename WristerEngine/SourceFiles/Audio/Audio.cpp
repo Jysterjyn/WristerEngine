@@ -8,8 +8,6 @@ std::string Audio::DIRECTORY_PATH = "Sounds/";
 
 void Audio::Initialize(const std::string& fileName, bool isLoop_)
 {
-	MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
-	
 	Result result;
 	// FilterGraphÇê∂ê¨
 	result = CoCreateInstance(CLSID_FilterGraph,
