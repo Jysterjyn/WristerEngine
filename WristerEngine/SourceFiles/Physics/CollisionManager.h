@@ -26,9 +26,10 @@ namespace WristerEngine
 	public:
 		static CollisionManager* GetInstance();
 
-		bool CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB);
+		bool CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 		// ŒÂ•Ê“–‚½‚è”»’è
 		bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
+		bool CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB);
 		//bool CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB);
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
@@ -62,6 +63,7 @@ namespace WristerEngine
 		// void PopAll2DCollider() { _2DColliders.clear(); }
 		// Ží—Þ•Ê“–‚½‚è”»’è
 		void CheckSphereCollisions();
+		void CheckGroupCollisions();
 		// void CheckBoxCollisions();
 		// void CheckIncludeCollisions();
 		// void CheckSpherePlaneCollisions();

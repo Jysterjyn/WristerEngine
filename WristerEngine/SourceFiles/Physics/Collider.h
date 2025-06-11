@@ -117,17 +117,30 @@ namespace WristerEngine
 		Mesh
 	};
 
-	// コライダー基底クラス
-	class BaseCollider
+	struct CollisionInfo
 	{
-	private:
+	protected:
 		uint32_t attribute = 0;
 		uint32_t mask = static_cast<uint32_t>(-1);
+
+	public:
+		// setter
+		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
+		void SetMask(uint32_t mask_) { mask = mask_; }
+		// getter
+		uint32_t GetAttribute() const { return attribute; }
+		uint32_t GetMask() const { return mask; }
+	};
+
+	// コライダー基底クラス
+	class BaseCollider : public CollisionInfo
+	{
+	private:
 		std::unique_ptr<Physics> physics;
-		_3D::Object3d* debugObject = nullptr;
 		bool isDestroy = false;
 
 	protected:
+		_3D::Object3d* debugObject = nullptr;
 		CollisionShapeType shapeType = CollisionShapeType::Unknown;
 
 	public:
@@ -141,23 +154,19 @@ namespace WristerEngine
 		//virtual void OnCollision([[maybe_unused]] RayCollider* sphereCollider) {}
 		//virtual void OnCollision([[maybe_unused]] IncludeCollider* sphereCollider) {}
 
-		// setter
-		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
-		void SetMask(uint32_t mask_) { mask = mask_; }
 		// getter
-		uint32_t GetAttribute() const { return attribute; }
-		uint32_t GetMask() const { return mask; }
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
 	};
 
-	class ColliderGroup
+	class ColliderGroup : public CollisionInfo
 	{
 	private:
-		uint32_t attribute = 0;
-		uint32_t mask = static_cast<uint32_t>(-1);
 		std::list<std::unique_ptr<BaseCollider>> colliders;
+
+		// 当たったペアの記録
+		std::vector<std::pair<BaseCollider*, BaseCollider*>> collisionPair;
 
 	public:
 		ColliderGroup(const std::string& groupName);
@@ -172,13 +181,12 @@ namespace WristerEngine
 
 		// コライダーの削除
 		void PopCollider();
-		// setter
-		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
-		void SetMask(uint32_t mask_) { mask = mask_; }
+
+		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
+
 		// getter
-		uint32_t GetAttribute() const { return attribute; }
-		uint32_t GetMask() const { return mask; }
-		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
+		const std::list<std::unique_ptr<BaseCollider>>& GetColliders() const { return colliders; }
+		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
 
 		// 衝突コールバック関数
 		virtual void OnCollision([[maybe_unused]] ColliderGroup* collisionGroup) {}
@@ -190,7 +198,6 @@ namespace WristerEngine
 	protected:
 		Vector3 center;	// 中心座標
 		float radius = 1.0f;	// 半径
-		_3D::Object3d* debugObject = nullptr;
 
 	public:
 		// コンストラクタ

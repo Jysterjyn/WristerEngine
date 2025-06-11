@@ -12,6 +12,6 @@ void BaseCharacter::Update()
 {
 	rootPos.Update();
 	SetCenterPosition(rootPos.GetWorldPosition());
-	debugObject->transform = rootPos;
-	debugObject->isInvisible = !collisionManager->IsPrint();
+	//debugObject->transform = rootPos;
+	//debugObject->isInvisible = !collisionManager->IsPrint();
 }

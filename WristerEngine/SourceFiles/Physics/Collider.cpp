@@ -1,7 +1,7 @@
 #include "Collider.h"
 #include "CollisionManager.h"
 #include <cassert>
-using namespace WristerEngine;
+using namespace WE;
 
 CollisionManager* collisionManager = collisionManager->GetInstance();
 
@@ -12,6 +12,7 @@ CollisionManager* collisionManager = collisionManager->GetInstance();
 SphereCollider::SphereCollider()
 {
 	collisionManager->PushCollider(this);
+	shapeType = CollisionShapeType::Sphere;
 	debugObject = _3D::ModelManager::GetInstance()->Create("TestSphere");
 	debugObject->transform.scale *= radius;
 }
@@ -205,4 +206,9 @@ void WristerEngine::ColliderGroup::PopCollider()
 {
 	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
 		{ return collider.get()->IsDestroy(); });
+}
+
+void WristerEngine::ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
+{
+	collisionPair.push_back({ colliderA ,colliderB });
 }

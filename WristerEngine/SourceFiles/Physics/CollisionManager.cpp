@@ -3,7 +3,7 @@
 #include "ImGuiManager.h"
 #include <GlobalVariables.h>
 using namespace std;
-using namespace WristerEngine;
+using namespace WE;
 
 CollisionManager* CollisionManager::GetInstance()
 {
@@ -11,11 +11,11 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-bool CollisionManager::CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB)
+bool WristerEngine::CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
 {
 	return
-		colliderA->GetAttribute() & colliderB->GetMask() &&
-		colliderB->GetAttribute() & colliderA->GetMask();
+		infoA->GetAttribute() & infoB->GetMask() &&
+		infoB->GetAttribute() & infoA->GetMask();
 }
 
 //bool CollisionManager::CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB)
@@ -154,6 +154,33 @@ bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereC
 	float radAB = colliderA->GetRadius() + colliderB->GetRadius();
 
 	return vecAB.Length() <= radAB;
+}
+
+bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
+{
+	const std::list<std::unique_ptr<BaseCollider>>& collidersA = colliderGroupA->GetColliders();
+	const std::list<std::unique_ptr<BaseCollider>>& collidersB = colliderGroupB->GetColliders();
+	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
+	bool isHit = false;
+	
+	for (auto& colliderA : collidersA)
+	{
+		for (auto& colliderB : collidersB)
+		{
+			if (colliderA->GetShapeType() == CollisionShapeType::Sphere &&
+				colliderB->GetShapeType() == CollisionShapeType::Sphere)
+			{
+				if (CheckCollision2Spheres(static_cast<SphereCollider*>(colliderA.get()),
+					static_cast<SphereCollider*>(colliderB.get())))
+				{
+					isHit = true;
+					colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
+					colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
+				}
+			}
+		}
+	}
+	return isHit;
 }
 
 //bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter)
@@ -444,6 +471,23 @@ void CollisionManager::CheckSphereCollisions()
 	}
 }
 
+void WristerEngine::CollisionManager::CheckGroupCollisions()
+{
+	auto itrA = colliderGroups.begin();
+	for (; itrA != colliderGroups.end(); itrA++)
+	{
+		auto itrB = itrA;
+		itrB++;
+		for (; itrB != colliderGroups.end(); itrB++)
+		{
+			if (!CheckCollision2Groups(itrA->second.get(), itrB->second.get())) { continue; }
+
+			itrA->second->OnCollision(itrB->second.get());
+			itrB->second->OnCollision(itrA->second.get());
+		}
+	}
+}
+
 //void CollisionManager::CheckSpherePlaneCollisions()
 //{
 //	for (SphereCollider* sphereCollider : sphereColliders) {
@@ -629,6 +673,8 @@ void CollisionManager::CheckAllCollisions()
 	isPrint = gv->GetValue<bool>("Collision", "visible");
 		
 	CheckSphereCollisions();
+	CheckGroupCollisions();
+
 	//CheckBoxCollisions();
 	//CheckIncludeCollisions();
 	//CheckSpherePlaneCollisions();
