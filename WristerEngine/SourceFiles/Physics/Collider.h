@@ -126,6 +126,9 @@ namespace WristerEngine
 		std::unique_ptr<Physics> physics;
 		_3D::Object3d* debugObject = nullptr;
 
+	protected:
+		CollisionShapeType shapeType = CollisionShapeType::Unknown;
+
 	public:
 		virtual ~BaseCollider() = default;
 
@@ -144,6 +147,23 @@ namespace WristerEngine
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
 		Physics* GetPhysics() { return physics.get(); }
+		CollisionShapeType GetShapeType() const { return shapeType; }
+	};
+
+	class ColliderGroup
+	{
+	private:
+		uint32_t attribute = 0;
+		uint32_t mask = static_cast<uint32_t>(-1);
+
+	public:
+		ColliderGroup(const std::string& groupName);
+		// setter
+		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
+		void SetMask(uint32_t mask_) { mask = mask_; }
+		// getter
+		uint32_t GetAttribute() const { return attribute; }
+		uint32_t GetMask() const { return mask; }
 	};
 
 	// 球コライダー

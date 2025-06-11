@@ -15,6 +15,7 @@ namespace WristerEngine
 		//static std::list<PolygonCollider*> polygonColliders;
 		//static std::list<RayCollider*> rayColliders;
 		//static std::list<_2D::ColliderGroup*> _2DColliders;
+		static std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
 		static bool isPrint;
 
 	public:
@@ -36,6 +37,7 @@ namespace WristerEngine
 		CollisionManager() = delete;
 		// ÉRÉâÉCÉ_Å[ìoò^ä÷êî
 		static void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
+		static void PushColliderGroup(const std::string& groupName, std::unique_ptr<ColliderGroup> collider) { colliderGroups[groupName] = std::move(collider); }
 		//static void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
 		//static void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
 		//static void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }

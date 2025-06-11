@@ -12,6 +12,7 @@ list<SphereCollider*> CollisionManager::sphereColliders;
 //list<PolygonCollider*> CollisionManager::polygonColliders;
 //list<RayCollider*> CollisionManager::rayColliders;
 //list<_2D::ColliderGroup*> CollisionManager::_2DColliders;
+std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> CollisionManager::colliderGroups;
 bool CollisionManager::isPrint = false;
 
 bool CollisionManager::CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB)

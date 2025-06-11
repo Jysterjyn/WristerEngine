@@ -164,3 +164,10 @@ std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() cons
 //	}
 //	return itr->get()->GetColliderName();
 //}
+
+ColliderGroup::ColliderGroup(const std::string& groupName)
+{
+	std::unique_ptr<ColliderGroup> newColliderGroup;
+	newColliderGroup.reset(this);
+	CollisionManager::PushColliderGroup(groupName, std::move(newColliderGroup));
+}

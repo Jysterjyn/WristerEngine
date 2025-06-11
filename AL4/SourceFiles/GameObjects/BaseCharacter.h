@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <Collider.h>
 
-class BaseCharacter : public WE::SphereCollider 
+class BaseCharacter : public WE::SphereCollider
 {
 protected:
 	std::unordered_map<std::string, WE::_3D::Object3d*> objects;
