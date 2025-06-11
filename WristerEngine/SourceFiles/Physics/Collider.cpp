@@ -171,3 +171,36 @@ ColliderGroup::ColliderGroup(const std::string& groupName)
 	newColliderGroup.reset(this);
 	CollisionManager::PushColliderGroup(groupName, std::move(newColliderGroup));
 }
+
+BaseCollider* WristerEngine::ColliderGroup::PushCollider(CollisionShapeType shapeType)
+{
+	std::unique_ptr<BaseCollider> newCollider;
+
+	switch (shapeType)
+	{
+	case WristerEngine::CollisionShapeType::Sphere:
+		newCollider = std::unique_ptr<SphereCollider>();
+		break;
+	case WristerEngine::CollisionShapeType::Box:
+		break;
+	case WristerEngine::CollisionShapeType::IncludeBox:
+		break;
+	case WristerEngine::CollisionShapeType::Plane:
+		break;
+	case WristerEngine::CollisionShapeType::Ray:
+		break;
+	case WristerEngine::CollisionShapeType::Mesh:
+		break;
+	default:
+		break;
+	}
+
+	colliders.push_back(std::move(newCollider));
+	return colliders.back().get();
+}
+
+void WristerEngine::ColliderGroup::PopCollider()
+{
+	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
+		{ return collider.get()->IsDestroy(); });
+}

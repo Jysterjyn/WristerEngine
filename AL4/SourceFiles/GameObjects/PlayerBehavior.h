@@ -62,17 +62,16 @@ class RootBehavior : public BaseBehavior
 	void ApplyGlobalVariables() override;
 };
 
-class Sword : public WE::SphereCollider
+class Sword : public WE::ColliderGroup
 {
 private:
 	WE::_3D::Object3d* object = nullptr;
 	ContactRecord contactRecord;
 
 public:
-	Sword()
+	Sword() : WE::ColliderGroup("Player")
 	{
 		object = WE::_3D::ModelManager::GetInstance()->Create("Sword");
-		debugObject->isInvisible = !WE::CollisionManager::IsPrint();
 		SetAttribute(static_cast<uint32_t>(CollisionAttribute::PlayerWeapon));
 		object->material.ambient = { 0,0,0 };
 	}
@@ -80,12 +79,12 @@ public:
 	void SetParent(WE::_3D::Transform* parent) { object->transform.parent = parent; }
 	const Vector3& GetRotation() const { return object->transform.rotation; }
 	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
-	void OnCollision(WE::SphereCollider* collider) override;
+	
+	void OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup) override {};
 	void Update() 
 	{
-		debugObject->transform = object->transform; 
 		object->transform.Update();
-		SetCenterPosition(object->transform.GetWorldPosition());
+		//SetCenterPosition(object->transform.GetWorldPosition());
 	}
 	void ClearRecord() { contactRecord.Clear(); }
 };

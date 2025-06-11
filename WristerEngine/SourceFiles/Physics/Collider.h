@@ -125,6 +125,7 @@ namespace WristerEngine
 		uint32_t mask = static_cast<uint32_t>(-1);
 		std::unique_ptr<Physics> physics;
 		_3D::Object3d* debugObject = nullptr;
+		bool isDestroy = false;
 
 	protected:
 		CollisionShapeType shapeType = CollisionShapeType::Unknown;
@@ -148,6 +149,7 @@ namespace WristerEngine
 		uint32_t GetMask() const { return mask; }
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
+		bool IsDestroy() const { return isDestroy; }
 	};
 
 	class ColliderGroup
@@ -155,15 +157,31 @@ namespace WristerEngine
 	private:
 		uint32_t attribute = 0;
 		uint32_t mask = static_cast<uint32_t>(-1);
+		std::list<std::unique_ptr<BaseCollider>> colliders;
 
 	public:
 		ColliderGroup(const std::string& groupName);
+		virtual ~ColliderGroup() { colliders.clear(); };
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		BaseCollider* PushCollider(CollisionShapeType shapeType);
+
+		// コライダーの削除
+		void PopCollider();
 		// setter
 		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
 		void SetMask(uint32_t mask_) { mask = mask_; }
 		// getter
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
+		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
+
+		// 衝突コールバック関数
+		virtual void OnCollision([[maybe_unused]] ColliderGroup* collisionGroup) {}
 	};
 
 	// 球コライダー
