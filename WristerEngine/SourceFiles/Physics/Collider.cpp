@@ -3,31 +3,33 @@
 #include <cassert>
 using namespace WristerEngine;
 
+CollisionManager* collisionManager = collisionManager->GetInstance();
+
 //float IncludeCollider::includeRadius = 0.1f;
 
-//BoxCollider::BoxCollider() { CollisionManager::PushCollider(this); }
-//BoxCollider::~BoxCollider() { CollisionManager::PopCollider(this); }
+//BoxCollider::BoxCollider() { collisionManager->PushCollider(this); }
+//BoxCollider::~BoxCollider() { collisionManager->PopCollider(this); }
 SphereCollider::SphereCollider()
 {
-	CollisionManager::PushCollider(this);
+	collisionManager->PushCollider(this);
 	debugObject = _3D::ModelManager::GetInstance()->Create("TestSphere");
 	debugObject->transform.scale *= radius;
 }
-SphereCollider::~SphereCollider() { CollisionManager::PopCollider(this); }
-//RayCollider::RayCollider() { CollisionManager::PushCollider(this); }
-//RayCollider::~RayCollider() { CollisionManager::PopCollider(this); }
-//PolygonCollider::PolygonCollider() { CollisionManager::PushCollider(this); }
-//PolygonCollider::~PolygonCollider() { CollisionManager::PopCollider(this); }
-//PlaneCollider::PlaneCollider() { CollisionManager::PushCollider(this); }
-//PlaneCollider::~PlaneCollider() { CollisionManager::PopCollider(this); }
-//IncludeCollider::IncludeCollider() { CollisionManager::PushCollider(this); }
-//IncludeCollider::~IncludeCollider() { CollisionManager::PopCollider(this); }
-//WristerEngine::_2D::ColliderGroup::ColliderGroup() { CollisionManager::PushCollider(this); }
+SphereCollider::~SphereCollider() { collisionManager->PopCollider(this); }
+//RayCollider::RayCollider() { collisionManager->PushCollider(this); }
+//RayCollider::~RayCollider() { collisionManager->PopCollider(this); }
+//PolygonCollider::PolygonCollider() { collisionManager->PushCollider(this); }
+//PolygonCollider::~PolygonCollider() { collisionManager->PopCollider(this); }
+//PlaneCollider::PlaneCollider() { collisionManager->PushCollider(this); }
+//PlaneCollider::~PlaneCollider() { collisionManager->PopCollider(this); }
+//IncludeCollider::IncludeCollider() { collisionManager->PushCollider(this); }
+//IncludeCollider::~IncludeCollider() { collisionManager->PopCollider(this); }
+//WristerEngine::_2D::ColliderGroup::ColliderGroup() { collisionManager->PushCollider(this); }
 
 //WristerEngine::_2D::ColliderGroup::~ColliderGroup()
 //{
 //	colliders.clear();
-//	CollisionManager::PopCollider(this);
+//	collisionManager->PopCollider(this);
 //}
 //
 //void PolygonCollider::SetVertices()
@@ -169,7 +171,7 @@ ColliderGroup::ColliderGroup(const std::string& groupName)
 {
 	std::unique_ptr<ColliderGroup> newColliderGroup;
 	newColliderGroup.reset(this);
-	CollisionManager::PushColliderGroup(groupName, std::move(newColliderGroup));
+	collisionManager->PushColliderGroup(groupName, std::move(newColliderGroup));
 }
 
 BaseCollider* WristerEngine::ColliderGroup::PushCollider(CollisionShapeType shapeType)

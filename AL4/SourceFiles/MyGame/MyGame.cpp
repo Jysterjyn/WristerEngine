@@ -27,7 +27,7 @@ void MyGame::Update()
 {
 	Framework::Update();
 	modelManager->Update();
-	WE::CollisionManager::CheckAllCollisions();
+	collisionManager->CheckAllCollisions();
 	WE::Physics::ResetCollideList();
 	WE::ParticleManager::Update();
 	WE::AudioManager::Update();

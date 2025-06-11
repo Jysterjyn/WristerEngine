@@ -5,15 +5,11 @@
 using namespace std;
 using namespace WristerEngine;
 
-list<SphereCollider*> CollisionManager::sphereColliders;
-//list<BoxCollider*> CollisionManager::boxColliders;
-//list<IncludeCollider*> CollisionManager::includeColliders;
-//list<PlaneCollider*> CollisionManager::planeColliders;
-//list<PolygonCollider*> CollisionManager::polygonColliders;
-//list<RayCollider*> CollisionManager::rayColliders;
-//list<_2D::ColliderGroup*> CollisionManager::_2DColliders;
-std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> CollisionManager::colliderGroups;
-bool CollisionManager::isPrint = false;
+CollisionManager* CollisionManager::GetInstance()
+{
+	static CollisionManager instance;
+	return &instance;
+}
 
 bool CollisionManager::CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB)
 {

@@ -8,68 +8,74 @@ namespace WristerEngine
 	class CollisionManager final
 	{
 	private:
-		static std::list<SphereCollider*> sphereColliders;
-		//static std::list<BoxCollider*> boxColliders;
-		//static std::list<IncludeCollider*> includeColliders;
-		//static std::list<PlaneCollider*> planeColliders;
-		//static std::list<PolygonCollider*> polygonColliders;
-		//static std::list<RayCollider*> rayColliders;
-		//static std::list<_2D::ColliderGroup*> _2DColliders;
-		static std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		static bool isPrint;
+		std::list<SphereCollider*> sphereColliders;
+		//std::list<BoxCollider*> boxColliders;
+		//std::list<IncludeCollider*> includeColliders;
+		//std::list<PlaneCollider*> planeColliders;
+		//std::list<PolygonCollider*> polygonColliders;
+		//std::list<RayCollider*> rayColliders;
+		//std::list<_2D::ColliderGroup*> _2DColliders;
+		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
+		bool isPrint;
+
+		CollisionManager() = default;
+		~CollisionManager() = default;
+		CollisionManager(const CollisionManager&) = delete;
+		CollisionManager& operator=(const CollisionManager&) = delete;
 
 	public:
-		static bool CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB);
-		// 個別当たり判定
-		static bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
-		//static bool CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB);
-		//static bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
-		//static bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
-		//static bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
-		//static bool CheckCollision2IncludeObjects(IncludeCollider* colliderA, IncludeCollider* colliderB);
-		//static bool CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter = nullptr);
-		//static bool CheckCollisionSpherePolygon(SphereCollider* colliderA, PolygonCollider* colliderB, Vector3* inter = nullptr);
-		//static bool CheckCollisionRayPlane(RayCollider* colliderA, PlaneCollider* colliderB, float* distance = nullptr);
-		//static bool CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance = nullptr);
-		//static bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
-		//static bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
+		static CollisionManager* GetInstance();
 
-		CollisionManager() = delete;
+		bool CheckCollisionFiltering(BaseCollider* colliderA, BaseCollider* colliderB);
+		// 個別当たり判定
+		bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
+		//bool CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB);
+		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
+		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
+		//bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
+		//bool CheckCollision2IncludeObjects(IncludeCollider* colliderA, IncludeCollider* colliderB);
+		//bool CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter = nullptr);
+		//bool CheckCollisionSpherePolygon(SphereCollider* colliderA, PolygonCollider* colliderB, Vector3* inter = nullptr);
+		//bool CheckCollisionRayPlane(RayCollider* colliderA, PlaneCollider* colliderB, float* distance = nullptr);
+		//bool CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance = nullptr);
+		//bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
+		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
+
 		// コライダー登録関数
-		static void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
-		static void PushColliderGroup(const std::string& groupName, std::unique_ptr<ColliderGroup> collider) { colliderGroups[groupName] = std::move(collider); }
-		//static void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
-		//static void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
-		//static void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }
-		//static void PushCollider(PolygonCollider* collider) { polygonColliders.push_back(collider); }
-		//static void PushCollider(RayCollider* collider) { rayColliders.push_back(collider); }
-		//static void PushCollider(_2D::ColliderGroup* collider) { _2DColliders.push_back(collider); }
+		void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
+		void PushColliderGroup(const std::string& groupName, std::unique_ptr<ColliderGroup> collider) { colliderGroups[groupName] = std::move(collider); }
+		// void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
+		// void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
+		// void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }
+		// void PushCollider(PolygonCollider* collider) { polygonColliders.push_back(collider); }
+		// void PushCollider(RayCollider* collider) { rayColliders.push_back(collider); }
+		// void PushCollider(_2D::ColliderGroup* collider) { _2DColliders.push_back(collider); }
 
 		// コライダー削除関数
-		static void PopCollider(SphereCollider* collider) { sphereColliders.remove(collider); }
-		//static void PopCollider(BoxCollider* collider) { boxColliders.remove(collider); }
-		//static void PopCollider(IncludeCollider* collider) { includeColliders.remove(collider); }
-		//static void PopCollider(PlaneCollider* collider) { planeColliders.remove(collider); }
-		//static void PopCollider(PolygonCollider* collider) { polygonColliders.remove(collider); }
-		//static void PopCollider(RayCollider* collider) { rayColliders.remove(collider); }
-		//static void PopCollider(_2D::ColliderGroup* collider) { _2DColliders.remove(collider); }
-		//static void PopAll2DCollider() { _2DColliders.clear(); }
+		void PopCollider(SphereCollider* collider) { sphereColliders.remove(collider); }
+		// void PopCollider(BoxCollider* collider) { boxColliders.remove(collider); }
+		// void PopCollider(IncludeCollider* collider) { includeColliders.remove(collider); }
+		// void PopCollider(PlaneCollider* collider) { planeColliders.remove(collider); }
+		// void PopCollider(PolygonCollider* collider) { polygonColliders.remove(collider); }
+		// void PopCollider(RayCollider* collider) { rayColliders.remove(collider); }
+		// void PopCollider(_2D::ColliderGroup* collider) { _2DColliders.remove(collider); }
+		// void PopAll2DCollider() { _2DColliders.clear(); }
 		// 種類別当たり判定
-		static void CheckSphereCollisions();
-		//static void CheckBoxCollisions();
-		//static void CheckIncludeCollisions();
-		//static void CheckSpherePlaneCollisions();
-		//static void CheckSpherePolygonCollisions();
-		//static void CheckRayPlaneCollisions();
-		//static void CheckRayPolygonCollisions();
-		//static void CheckRaySphereCollisions();
-		//static void CheckRayBoxCollisions();
-		//static void CheckRayCastCollision(RayCollider* collider);
-		//static void Check2DCollisions();
-		//static bool CheckCollision2ColliderGroups(_2D::ColliderGroup* groupA, _2D::ColliderGroup* groupB);
+		void CheckSphereCollisions();
+		// void CheckBoxCollisions();
+		// void CheckIncludeCollisions();
+		// void CheckSpherePlaneCollisions();
+		// void CheckSpherePolygonCollisions();
+		// void CheckRayPlaneCollisions();
+		// void CheckRayPolygonCollisions();
+		// void CheckRaySphereCollisions();
+		// void CheckRayBoxCollisions();
+		// void CheckRayCastCollision(RayCollider* collider);
+		// void Check2DCollisions();
+		// bool CheckCollision2ColliderGroups(_2D::ColliderGroup* groupA, _2D::ColliderGroup* groupB);
 		// 全当たり判定
-		static void CheckAllCollisions();
+		void CheckAllCollisions();
 
-		static bool IsPrint() { return isPrint; }
+		bool IsPrint() const { return isPrint; }
 	};
 }

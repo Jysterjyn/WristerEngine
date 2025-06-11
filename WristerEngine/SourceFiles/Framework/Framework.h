@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "DirectXCommon.h"
 #include "Constant.h"
+#include <CollisionManager.h>
 
 namespace WristerEngine
 {
@@ -15,6 +16,7 @@ namespace WristerEngine
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		SceneManager* sceneManager = SceneManager::GetInstance();
 		Constant* constant = Constant::GetInstance();
+		CollisionManager* collisionManager = CollisionManager::GetInstance();
 
 	public:
 		virtual ~Framework() = default;
