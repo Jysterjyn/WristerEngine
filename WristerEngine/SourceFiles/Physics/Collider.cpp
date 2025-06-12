@@ -25,9 +25,9 @@ SphereCollider::~SphereCollider() { collisionManager->PopCollider(this); }
 //PlaneCollider::~PlaneCollider() { collisionManager->PopCollider(this); }
 //IncludeCollider::IncludeCollider() { collisionManager->PushCollider(this); }
 //IncludeCollider::~IncludeCollider() { collisionManager->PopCollider(this); }
-//WristerEngine::_2D::ColliderGroup::ColliderGroup() { collisionManager->PushCollider(this); }
+//_2D::Collider::Collider() { collisionManager->PushCollider(this); }
 
-//WristerEngine::_2D::ColliderGroup::~ColliderGroup()
+//_2D::Collider::~Collider()
 //{
 //	colliders.clear();
 //	collisionManager->PopCollider(this);
@@ -95,14 +95,14 @@ SphereCollider::~SphereCollider() { collisionManager->PopCollider(this); }
 //	}
 //}
 
-void WristerEngine::_2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
+void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
 {
 	transform = transform_;
 	shapeType = shapeType_;
 	colliderName = colliderName_;
 }
 
-std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() const
+std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 {
 	std::map<std::string, Vector2> ans;
 	ans["LT"] = ans["RB"] = ans["LB"] = ans["RT"] = transform->position;
@@ -118,15 +118,15 @@ std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() cons
 	return ans;
 }
 
-//void WristerEngine::_2D::ColliderGroup::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
+//void _2D::Collider::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
 //{
 //	std::unique_ptr<Base2DCollider> newCollider;
 //	switch (shapeType)
 //	{
-//	case WristerEngine::_2D::CollisionShapeType::Box:
+//	case _2D::CollisionShapeType::Box:
 //		newCollider = std::make_unique<_2D::BoxCollider>();
 //		break;
-//	case WristerEngine::_2D::CollisionShapeType::TwoRay:
+//	case _2D::CollisionShapeType::TwoRay:
 //		assert(option);
 //		newCollider = std::make_unique<TwoRayCollider>(option->fov);
 //		break;
@@ -138,17 +138,17 @@ std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() cons
 //	colliders.push_back(move(newCollider));
 //}
 
-//void WristerEngine::_2D::ColliderGroup::DeleteCollider(const std::string& colliderName)
+//void _2D::Collider::DeleteCollider(const std::string& colliderName)
 //{
 //	colliders.remove_if([&](const std::unique_ptr<Base2DCollider>& collider) { return collider->GetColliderName() == colliderName; });
 //}
 //
-//void WristerEngine::_2D::ColliderGroup::AddCollisionPair(size_t myIndex, size_t youIndex)
+//void _2D::Collider::AddCollisionPair(size_t myIndex, size_t youIndex)
 //{
 //	collisionPair[myIndex].push_back(youIndex);
 //}
 //
-//void WristerEngine::_2D::ColliderGroup::DeletePair()
+//void _2D::Collider::DeletePair()
 //{
 //	for (auto& pair : collisionPair)
 //	{
@@ -157,7 +157,7 @@ std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() cons
 //	collisionPair.clear();
 //}
 //
-//const std::string WristerEngine::_2D::ColliderGroup::GetColliderName(size_t index) const
+//const std::string _2D::Collider::GetColliderName(size_t index) const
 //{
 //	if (colliders.size() <= index) { return "Null"; }
 //	auto itr = colliders.begin();
@@ -168,31 +168,24 @@ std::map<std::string, Vector2> WristerEngine::_2D::BoxCollider::GetVertex() cons
 //	return itr->get()->GetColliderName();
 //}
 
-ColliderGroup::ColliderGroup(const std::string& groupName)
-{
-	std::unique_ptr<ColliderGroup> newColliderGroup;
-	newColliderGroup.reset(this);
-	collisionManager->PushColliderGroup(groupName, std::move(newColliderGroup));
-}
-
-BaseCollider* WristerEngine::ColliderGroup::PushCollider(CollisionShapeType shapeType)
+BaseCollider* ColliderGroup::PushCollider(CollisionShapeType shapeType)
 {
 	std::unique_ptr<BaseCollider> newCollider;
 
 	switch (shapeType)
 	{
-	case WristerEngine::CollisionShapeType::Sphere:
+	case CollisionShapeType::Sphere:
 		newCollider = std::unique_ptr<SphereCollider>();
 		break;
-	case WristerEngine::CollisionShapeType::Box:
+	case CollisionShapeType::Box:
 		break;
-	case WristerEngine::CollisionShapeType::IncludeBox:
+	case CollisionShapeType::IncludeBox:
 		break;
-	case WristerEngine::CollisionShapeType::Plane:
+	case CollisionShapeType::Plane:
 		break;
-	case WristerEngine::CollisionShapeType::Ray:
+	case CollisionShapeType::Ray:
 		break;
-	case WristerEngine::CollisionShapeType::Mesh:
+	case CollisionShapeType::Mesh:
 		break;
 	default:
 		break;
@@ -202,13 +195,23 @@ BaseCollider* WristerEngine::ColliderGroup::PushCollider(CollisionShapeType shap
 	return colliders.back().get();
 }
 
-void WristerEngine::ColliderGroup::PopCollider()
+void ColliderGroup::PopCollider()
 {
 	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
 		{ return collider.get()->IsDestroy(); });
 }
 
-void WristerEngine::ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
+void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
 {
 	collisionPair.push_back({ colliderA ,colliderB });
+}
+
+void Collider::SetGroup(const std::string& groupName)
+{
+	group = collisionManager->GetGroup(groupName);
+}
+
+void Collider::AddCollider(const std::string& colliderName)
+{
+	collisionManager->PushCollider(colliderName, this);
 }

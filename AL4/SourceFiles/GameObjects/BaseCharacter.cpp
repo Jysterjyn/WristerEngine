@@ -11,7 +11,7 @@ void BaseCharacter::Initialize(const std::string& modelGroupName)
 void BaseCharacter::Update()
 {
 	rootPos.Update();
-	SetCenterPosition(rootPos.GetWorldPosition());
+	//SetCenterPosition(rootPos.GetWorldPosition());
 	//debugObject->transform = rootPos;
 	//debugObject->isInvisible = !collisionManager->IsPrint();
 }

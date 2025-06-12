@@ -62,17 +62,17 @@ class RootBehavior : public BaseBehavior
 	void ApplyGlobalVariables() override;
 };
 
-class Sword : public WE::ColliderGroup
+class Sword : public WE::Collider
 {
 private:
 	WE::_3D::Object3d* object = nullptr;
 	ContactRecord contactRecord;
 
 public:
-	Sword() : WE::ColliderGroup("Player")
+	Sword()
 	{
 		object = WE::_3D::ModelManager::GetInstance()->Create("Sword");
-		SetAttribute(static_cast<uint32_t>(CollisionAttribute::PlayerWeapon));
+		SetGroup("Player");
 		object->material.ambient = { 0,0,0 };
 	}
 	~Sword() { object->isDestroy = true; }
@@ -80,7 +80,7 @@ public:
 	const Vector3& GetRotation() const { return object->transform.rotation; }
 	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
 	
-	void OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup) override {};
+	//void OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup) override {};
 	void Update() 
 	{
 		object->transform.Update();

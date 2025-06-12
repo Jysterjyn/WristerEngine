@@ -23,7 +23,9 @@ void Enemy::Initialize(const std::string& modelGroupName)
 
 	InitializeWalkingGimmick();
 
-	SetAttribute(static_cast<uint32_t>(CollisionAttribute::Enemy));
+	AddCollider("Enemy");
+	SetGroup("Enemy");
+	GetGroup()->SetAttribute(static_cast<uint32_t>(CollisionAttribute::Enemy));
 }
 
 void Enemy::Move()

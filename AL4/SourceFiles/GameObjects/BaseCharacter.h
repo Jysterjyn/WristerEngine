@@ -4,7 +4,7 @@
 #include <Collider.h>
 #include <CollisionManager.h>
 
-class BaseCharacter : public WE::SphereCollider
+class BaseCharacter : public WE::Collider
 {
 protected:
 	std::unordered_map<std::string, WE::_3D::Object3d*> objects;

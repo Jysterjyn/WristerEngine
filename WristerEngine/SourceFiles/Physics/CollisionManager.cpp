@@ -11,6 +11,16 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
+ColliderGroup* WristerEngine::CollisionManager::GetGroup(const std::string& groupName)
+{
+	if (!colliderGroups.contains(groupName))
+	{
+		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>();
+		colliderGroups[groupName] = std::move(newGroup);
+	}
+	return colliderGroups[groupName].get();
+}
+
 bool WristerEngine::CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
 {
 	return
@@ -18,7 +28,7 @@ bool WristerEngine::CollisionManager::CheckCollisionFiltering(const CollisionInf
 		infoB->GetAttribute() & infoA->GetMask();
 }
 
-//bool CollisionManager::CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB)
+//bool CollisionManager::CheckCollisionFiltering(_2D::Collider* colliderA, _2D::Collider* colliderB)
 //{
 //	return
 //		(UINT)colliderA->GetAttribute() & (UINT)colliderB->GetMask() &&
@@ -158,14 +168,14 @@ bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereC
 
 bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
 {
-	const std::list<std::unique_ptr<BaseCollider>>& collidersA = colliderGroupA->GetColliders();
-	const std::list<std::unique_ptr<BaseCollider>>& collidersB = colliderGroupB->GetColliders();
+	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
+	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
 	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
 	bool isHit = false;
 	
-	for (auto& colliderA : collidersA)
+	for (auto& colliderA : *collidersA)
 	{
-		for (auto& colliderB : collidersB)
+		for (auto& colliderB : *collidersB)
 		{
 			if (colliderA->GetShapeType() == CollisionShapeType::Sphere &&
 				colliderB->GetShapeType() == CollisionShapeType::Sphere)
@@ -181,6 +191,14 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 		}
 	}
 	return isHit;
+}
+
+void WristerEngine::CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
+{
+	if (!colliders.contains(colliderName))
+	{
+		colliders[colliderName] = collider;
+	}
 }
 
 //bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter)
@@ -373,7 +391,7 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 //	return CheckCollisionRayPolygon(colliderA, &pCollider);
 //}
 //
-//bool WristerEngine::CollisionManager::CheckCollision2ColliderGroups(_2D::ColliderGroup* groupA, _2D::ColliderGroup* groupB)
+//bool WristerEngine::CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
 //{
 //	if (!CheckCollisionFiltering(groupA, groupB)) { return false; }
 //
@@ -473,17 +491,17 @@ void CollisionManager::CheckSphereCollisions()
 
 void WristerEngine::CollisionManager::CheckGroupCollisions()
 {
-	auto itrA = colliderGroups.begin();
-	for (; itrA != colliderGroups.end(); itrA++)
+	auto itrA = colliders.begin();
+	for (; itrA != colliders.end(); itrA++)
 	{
 		auto itrB = itrA;
 		itrB++;
-		for (; itrB != colliderGroups.end(); itrB++)
+		for (; itrB != colliders.end(); itrB++)
 		{
-			if (!CheckCollision2Groups(itrA->second.get(), itrB->second.get())) { continue; }
+			if (!CheckCollision2Groups(itrA->second->GetGroup(), itrB->second->GetGroup())) { continue; }
 
-			itrA->second->OnCollision(itrB->second.get());
-			itrB->second->OnCollision(itrA->second.get());
+			itrA->second->OnCollision(itrB->second->GetGroup());
+			itrB->second->OnCollision(itrA->second->GetGroup());
 		}
 	}
 }
@@ -654,7 +672,7 @@ void WristerEngine::CollisionManager::CheckGroupCollisions()
 //	auto itrA = _2DColliders.begin();
 //	for (; itrA != _2DColliders.end(); itrA++)
 //	{
-//		list<_2D::ColliderGroup*>::iterator itrB = itrA;
+//		list<_2D::Collider*>::iterator itrB = itrA;
 //		itrB++;
 //		for (; itrB != _2DColliders.end(); itrB++)
 //		{

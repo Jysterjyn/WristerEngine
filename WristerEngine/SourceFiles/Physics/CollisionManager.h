@@ -14,9 +14,10 @@ namespace WristerEngine
 		//std::list<PlaneCollider*> planeColliders;
 		//std::list<PolygonCollider*> polygonColliders;
 		//std::list<RayCollider*> rayColliders;
-		//std::list<_2D::ColliderGroup*> _2DColliders;
+		//std::list<_2D::Collider*> _2DColliders;
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		bool isPrint;
+		std::unordered_map<std::string, Collider*> colliders;
+		bool isPrint = false;
 
 		CollisionManager() = default;
 		~CollisionManager() = default;
@@ -26,11 +27,13 @@ namespace WristerEngine
 	public:
 		static CollisionManager* GetInstance();
 
+		ColliderGroup* GetGroup(const std::string& groupName);
+
 		bool CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 		// 個別当たり判定
 		bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
 		bool CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB);
-		//bool CheckCollisionFiltering(_2D::ColliderGroup* colliderA, _2D::ColliderGroup* colliderB);
+		//bool CheckCollisionFiltering(_2D::Collider* colliderA, _2D::Collider* colliderB);
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
@@ -44,13 +47,13 @@ namespace WristerEngine
 
 		// コライダー登録関数
 		void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
-		void PushColliderGroup(const std::string& groupName, std::unique_ptr<ColliderGroup> collider) { colliderGroups[groupName] = std::move(collider); }
+		void PushCollider(const std::string& colliderName, Collider* collider);
 		// void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
 		// void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
 		// void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }
 		// void PushCollider(PolygonCollider* collider) { polygonColliders.push_back(collider); }
 		// void PushCollider(RayCollider* collider) { rayColliders.push_back(collider); }
-		// void PushCollider(_2D::ColliderGroup* collider) { _2DColliders.push_back(collider); }
+		// void PushCollider(_2D::Collider* collider) { _2DColliders.push_back(collider); }
 
 		// コライダー削除関数
 		void PopCollider(SphereCollider* collider) { sphereColliders.remove(collider); }
@@ -59,7 +62,7 @@ namespace WristerEngine
 		// void PopCollider(PlaneCollider* collider) { planeColliders.remove(collider); }
 		// void PopCollider(PolygonCollider* collider) { polygonColliders.remove(collider); }
 		// void PopCollider(RayCollider* collider) { rayColliders.remove(collider); }
-		// void PopCollider(_2D::ColliderGroup* collider) { _2DColliders.remove(collider); }
+		// void PopCollider(_2D::Collider* collider) { _2DColliders.remove(collider); }
 		// void PopAll2DCollider() { _2DColliders.clear(); }
 		// 種類別当たり判定
 		void CheckSphereCollisions();
@@ -74,7 +77,7 @@ namespace WristerEngine
 		// void CheckRayBoxCollisions();
 		// void CheckRayCastCollision(RayCollider* collider);
 		// void Check2DCollisions();
-		// bool CheckCollision2ColliderGroups(_2D::ColliderGroup* groupA, _2D::ColliderGroup* groupB);
+		// bool CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB);
 		// 全当たり判定
 		void CheckAllCollisions();
 

@@ -24,7 +24,7 @@ namespace WristerEngine
 			Angle fov;
 		};
 
-		//class ColliderGroup;
+		//class Collider;
 
 		class Base2DCollider
 		{
@@ -63,7 +63,7 @@ namespace WristerEngine
 			Angle GetFOV() const { return fov; }
 		};
 
-		//class ColliderGroup
+		//class Collider
 		//{
 		//protected:
 		//	std::list<std::unique_ptr<Base2DCollider>> colliders;
@@ -73,9 +73,9 @@ namespace WristerEngine
 
 		//public:
 		//	// コンストラクタ
-		//	ColliderGroup();
+		//	Collider();
 		//	// 仮想デストラクタ
-		//	virtual ~ColliderGroup();
+		//	virtual ~Collider();
 
 		//	// コライダーの追加
 		//	void AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option = nullptr);
@@ -93,7 +93,7 @@ namespace WristerEngine
 		//	const std::list<std::unique_ptr<Base2DCollider>>& GetColliders() const { return colliders; }
 
 		//	// 衝突コールバック関数
-		//	virtual void OnCollision([[maybe_unused]] ColliderGroup* colliderGroup) {}
+		//	virtual void OnCollision([[maybe_unused]] Collider* colliderGroup) {}
 
 		//};
 	}
@@ -160,17 +160,15 @@ namespace WristerEngine
 		bool IsDestroy() const { return isDestroy; }
 	};
 
-	class ColliderGroup : public CollisionInfo
+	struct ColliderGroup : public CollisionInfo
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
-
 		// 当たったペアの記録
 		std::vector<std::pair<BaseCollider*, BaseCollider*>> collisionPair;
 
 	public:
-		ColliderGroup(const std::string& groupName);
-		virtual ~ColliderGroup() { colliders.clear(); };
+		~ColliderGroup() { colliders.clear(); }
 
 		/// <summary>
 		/// コライダーを登録
@@ -179,14 +177,28 @@ namespace WristerEngine
 		/// <returns>登録されたコライダー</returns>
 		BaseCollider* PushCollider(CollisionShapeType shapeType);
 
+		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
+		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
 		// コライダーの削除
 		void PopCollider();
 
-		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
+		// getter
+		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
+	};
+
+	class Collider
+	{
+	private:
+		ColliderGroup* group = nullptr;
+
+	public:
+		void SetGroup(const std::string& groupName);
+
+		void AddCollider(const std::string& colliderName);
 
 		// getter
-		const std::list<std::unique_ptr<BaseCollider>>& GetColliders() const { return colliders; }
-		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
+		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }
+		ColliderGroup* GetGroup() const { return group; }
 
 		// 衝突コールバック関数
 		virtual void OnCollision([[maybe_unused]] ColliderGroup* collisionGroup) {}
@@ -332,16 +344,16 @@ namespace WristerEngine
 	//	// レイ方向を取得
 	//	virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
 	//};
+	// 
+	// メッシュコライダー
+	//class MeshCollider : public BaseCollider
+	//{
+	//private:
+	//	// ワールド行列の逆行列
+	//	Matrix4 invMatWorld;
+	//
+	//public:
+	//	std::vector<PolygonCollider> triangles;
+	//	void ConstructTriangles(ModelManager* model);
+	//};
 }
-
-// メッシュコライダー
-//class MeshCollider : public BaseCollider
-//{
-//private:
-//	// ワールド行列の逆行列
-//	Matrix4 invMatWorld;
-//
-//public:
-//	std::vector<PolygonCollider> triangles;
-//	void ConstructTriangles(ModelManager* model);
-//};

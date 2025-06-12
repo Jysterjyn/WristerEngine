@@ -32,7 +32,9 @@ void Player::Initialize(const std::string& modelGroupName)
 	pBehavior = std::make_unique<RootBehavior>();
 	pBehavior->Initialize();
 
-	SetAttribute(static_cast<uint32_t>(CollisionAttribute::Player));
+	AddCollider("Player");
+	SetGroup("Player");
+	GetGroup()->SetAttribute(static_cast<uint32_t>(CollisionAttribute::Player));
 }
 
 void Player::ApplyGlobalVariables()
@@ -75,6 +77,7 @@ void Player::Update()
 	BaseCharacter::Update();
 }
 
-void Player::OnCollision([[maybe_unused]] WE::SphereCollider* collider)
+void Player::OnCollision([[maybe_unused]] WE::ColliderGroup* collider)
 {
+	ImGui::Text("PlayerHit!");
 }
