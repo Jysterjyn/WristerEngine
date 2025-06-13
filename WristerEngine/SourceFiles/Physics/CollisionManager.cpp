@@ -152,8 +152,6 @@ bool CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const
 
 bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB)
 {
-	if (!CheckCollisionFiltering(colliderA, colliderB)) { return false; }
-
 	Vector3 vecAB = colliderA->GetCenterPosition() - colliderB->GetCenterPosition();
 	float radAB = colliderA->GetRadius() + colliderB->GetRadius();
 
@@ -165,36 +163,29 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
 	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
 	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
-	bool isHit = false;
 
 	for (auto& colliderA : *collidersA)
 	{
 		for (auto& colliderB : *collidersB)
 		{
+			if (!CheckCollisionFiltering(colliderA.get(), colliderB.get())) { continue; }
+
 			if (colliderA->GetShapeType() == CollisionShapeType::Sphere &&
 				colliderB->GetShapeType() == CollisionShapeType::Sphere)
 			{
 				if (CheckCollision2Spheres(static_cast<SphereCollider*>(colliderA.get()),
 					static_cast<SphereCollider*>(colliderB.get())))
 				{
-					isHit = true;
 					colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
 					colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
 				}
 			}
 		}
 	}
-	return isHit;
+
+	return !colliderGroupA->GetCollisionPair().empty();
 }
 
-//void CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
-//{
-//	if (!colliders.contains(colliderName))
-//	{
-//		colliders[colliderName] = collider;
-//	}
-//}
-//
 //bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter)
 //{
 //	// 座標系の原点から球の中心座標への距離
@@ -466,45 +457,6 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //	}
 //}
 
-void CollisionManager::CheckSphereCollisions()
-{
-	auto itrA = sphereColliders.begin();
-	for (; itrA != sphereColliders.end(); itrA++)
-	{
-		list<SphereCollider*>::iterator itrB = itrA;
-		itrB++;
-		for (; itrB != sphereColliders.end(); itrB++)
-		{
-			if (!CheckCollision2Spheres(*itrA, *itrB)) { continue; }
-
-			(*itrA)->OnCollision(*itrB);
-			(*itrB)->OnCollision(*itrA);
-		}
-	}
-}
-
-void CollisionManager::CheckGroupCollisions()
-{
-	auto itrA = colliderGroups.begin();
-	for (; itrA != colliderGroups.end(); itrA++)
-	{
-		auto itrB = itrA;
-		itrB++;
-		for (; itrB != colliderGroups.end(); itrB++)
-		{
-			ColliderGroup* groupA = itrA->second.get();
-			ColliderGroup* groupB = itrB->second.get();
-			if (!CheckCollision2Groups(groupA, groupB)) { continue; }
-
-			for (auto& pair : groupA->GetCollisionPair())
-			{
-				pair.first->GetOwner()->OnCollision(groupB);
-				pair.second->GetOwner()->OnCollision(groupA);
-			}
-		}
-	}
-}
-
 //void CollisionManager::CheckSpherePlaneCollisions()
 //{
 //	for (SphereCollider* sphereCollider : sphereColliders) {
@@ -683,26 +635,30 @@ void CollisionManager::CheckGroupCollisions()
 //	}
 //}
 
-void CollisionManager::CheckAllCollisions()
+void CollisionManager::CheckCollisions()
 {
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	gv->AddItem<bool>("Collision", "visible", isPrint);
 	isPrint = gv->GetValue<bool>("Collision", "visible");
-	
-	ImGui::Text("PlayerColliderOwnersNum = %d", colliderGroups["Player"]->GetOwners().size());
-	ImGui::Text("EnemyColliderOwnersNum = %d", colliderGroups["Enemy"]->GetOwners().size());
+
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
 
-	CheckSphereCollisions();
-	CheckGroupCollisions();
+	auto itrA = colliderGroups.begin();
+	for (; itrA != colliderGroups.end(); itrA++)
+	{
+		auto itrB = itrA;
+		itrB++;
+		for (; itrB != colliderGroups.end(); itrB++)
+		{
+			ColliderGroup* groupA = itrA->second.get();
+			ColliderGroup* groupB = itrB->second.get();
+			if (!CheckCollision2Groups(groupA, groupB)) { continue; }
 
-	//CheckBoxCollisions();
-	//CheckIncludeCollisions();
-	//CheckSpherePlaneCollisions();
-	//CheckSpherePolygonCollisions();
-	//CheckRayPlaneCollisions();
-	//CheckRayPolygonCollisions();
-	//CheckRaySphereCollisions();
-	//CheckRayBoxCollisions();
-	//Check2DCollisions();
+			for (auto& pair : groupA->GetCollisionPair())
+			{
+				pair.first->GetOwner()->OnCollision(groupB);
+				pair.second->GetOwner()->OnCollision(groupA);
+			}
+		}
+	}
 }

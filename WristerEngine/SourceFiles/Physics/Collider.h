@@ -98,14 +98,6 @@ namespace WristerEngine
 		//};
 	}
 
-	//class BoxCollider;
-	class SphereCollider;
-	//class PlaneCollider;
-	//class PolygonCollider;
-	//class RayCollider;
-	//class IncludeCollider;
-	//class MeshCollider;
-
 	enum class CollisionShapeType
 	{
 		Unknown = -1,
@@ -140,7 +132,6 @@ namespace WristerEngine
 	private:
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
-		uint32_t serialNumber = 0;
 		Collider* owner = nullptr;
 
 	protected:
@@ -152,14 +143,6 @@ namespace WristerEngine
 
 		virtual void Update() {}
 
-		// 衝突コールバック関数
-		//virtual void OnCollision([[maybe_unused]] BoxCollider* boxCollider) {}
-		virtual void OnCollision([[maybe_unused]] SphereCollider* sphereCollider) {}
-		//virtual void OnCollision([[maybe_unused]] PlaneCollider* boxCollider) {}
-		//virtual void OnCollision([[maybe_unused]] PolygonCollider* sphereCollider) {}
-		//virtual void OnCollision([[maybe_unused]] RayCollider* sphereCollider) {}
-		//virtual void OnCollision([[maybe_unused]] IncludeCollider* sphereCollider) {}
-
 		void Destroy() { isDestroy = true; }
 
 		void SetOwner(Collider* owner_) { owner = owner_; }
@@ -168,15 +151,12 @@ namespace WristerEngine
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
-		void SetSerialNumber(uint32_t num) { serialNumber = num; }
-		uint32_t GetSerialNumber() const { return serialNumber; }
 		Collider* GetOwner() { return owner; }
 	};
 
 	class ColliderGroup : public CollisionInfo
 	{
 	private:
-		std::list<Collider*> owners;
 		std::list<std::unique_ptr<BaseCollider>> colliders;
 		
 		/// <summary>
@@ -200,13 +180,9 @@ namespace WristerEngine
 
 		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
 
-		void AddOwner(Collider* owner) { owners.push_back(owner); }
-		void PopOwner(Collider* owner) { owners.remove(owner); }
-
 		// getter
 		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
-		std::list<Collider*>& GetOwners() { return owners; }
 	};
 
 	class Collider
@@ -217,11 +193,6 @@ namespace WristerEngine
 		void Initialize(const std::string& groupName);
 
 	public:
-		virtual ~Collider()
-		{
-			group->PopOwner(this);
-		}
-
 		// getter
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }
 		ColliderGroup* GetGroup() const { return group; }
@@ -258,7 +229,7 @@ namespace WristerEngine
 	//private:
 	//	Vector3 center={1,1,1};	// 中心座標
 	//	Vector3 radius;	// 各軸方向の半径
-
+	//
 	//public:
 	//	// コンストラクタ
 	//	BoxCollider();
@@ -271,24 +242,22 @@ namespace WristerEngine
 	//	// 3軸方向の半径を設定
 	//	void SetRadius(const Vector3& radius_) { radius = radius_; }
 	//};
-
+	//
 	//// 完全包含のボックスコライダー(AABB方式)
 	//class IncludeCollider : public virtual BaseCollider
 	//{
 	//public:
 	//	enum class Axis { X, Y, Z };
-
+	//
 	//private:
 	//	// 完全包含半径
 	//	static float includeRadius;
 	//	// 当たり判定を取るペアのtrueが少ないほうが計算に反映される
 	//	std::array<bool, 3> isUseAxis = { true,true,true };
-
+	//
 	//public:
 	//	// コンストラクタ
 	//	IncludeCollider();
-	//	// 仮想デストラクタ
-	//	virtual ~IncludeCollider();
 	//	// 完全包含半径の取得
 	//	static float GetIncludeRadius() { return includeRadius; }
 	//	// 使う軸の設定
@@ -296,7 +265,7 @@ namespace WristerEngine
 	//	// 使う軸の取得
 	//	std::array<bool, 3> GetUseAxis() { return isUseAxis; }
 	//};
-
+	//
 	//// 平面コライダー
 	//class PlaneCollider : public virtual BaseCollider
 	//{
@@ -305,12 +274,10 @@ namespace WristerEngine
 	//	Vector3 baseNormal = Vector3::MakeAxis(Axis::Z);
 	//	float distance = 0;
 	//	Vector3 inter;
-
+	//
 	//public:
 	//	// コンストラクタ
 	//	PlaneCollider();
-	//	// 仮想デストラクタ
-	//	virtual ~PlaneCollider();
 	//	// setter
 	//	void SetInter(const Vector3& inter_) { inter = inter_; }
 	//	void SetDistance(float distance_) { distance = distance_; }
@@ -321,7 +288,7 @@ namespace WristerEngine
 	//	virtual Vector3* GetInter() { return &inter; }
 	//	virtual float GetDistance() { return distance; }
 	//};
-
+	//
 	//// 多角形平面コライダー
 	//class PolygonCollider : public virtual BaseCollider
 	//{
@@ -333,12 +300,10 @@ namespace WristerEngine
 	//	float distance = 0;
 	//	// メッシュコライダーで使う
 	//	Vector3 normal;
-
+	//
 	//public:
 	//	// コンストラクタ
 	//	PolygonCollider();
-	//	// 仮想デストラクタ
-	//	virtual ~PolygonCollider();
 	//	// 頂点更新
 	//	void UpdateVertices();
 	//	// 距離を計算
@@ -356,7 +321,7 @@ namespace WristerEngine
 	//	virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
 	//	virtual std::vector<Vector3> GetVertices() { return vertices; }
 	//};
-
+//
 	//// レイコライダー
 	//class RayCollider : public virtual BaseCollider
 	//{
@@ -365,8 +330,6 @@ namespace WristerEngine
 	//	Vector3 baseRayDirection = Vector3::MakeAxis(Axis::Z);
 	//	// コンストラクタ
 	//	RayCollider();
-	//	// 仮想デストラクタ
-	//	virtual ~RayCollider();
 	//	// レイ方向を取得
 	//	virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
 	//};

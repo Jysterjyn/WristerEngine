@@ -81,5 +81,4 @@ void Player::Update()
 
 void Player::OnCollision([[maybe_unused]] WE::ColliderGroup* collisionGroup)
 {
-	ImGui::Text("PlayerHit");
 }

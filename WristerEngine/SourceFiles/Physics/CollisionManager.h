@@ -8,13 +8,6 @@ namespace WristerEngine
 	class CollisionManager final
 	{
 	private:
-		std::list<SphereCollider*> sphereColliders;
-		//std::list<BoxCollider*> boxColliders;
-		//std::list<IncludeCollider*> includeColliders;
-		//std::list<PlaneCollider*> planeColliders;
-		//std::list<PolygonCollider*> polygonColliders;
-		//std::list<RayCollider*> rayColliders;
-		//std::list<_2D::Collider*> _2DColliders;
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
 		bool isPrint = false;
 
@@ -23,16 +16,9 @@ namespace WristerEngine
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-	public:
-		static CollisionManager* GetInstance();
-
-		ColliderGroup* GetGroup(const std::string& groupName);
-
-		bool CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 		// 個別当たり判定
-		bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
 		bool CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB);
-		//bool CheckCollisionFiltering(_2D::Collider* colliderA, _2D::Collider* colliderB);
+		bool CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB);
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
@@ -44,41 +30,15 @@ namespace WristerEngine
 		//bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
 
-		// コライダー登録関数
-		void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
-		//void PushCollider(const std::string& colliderName, Collider* collider);
-		// void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
-		// void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
-		// void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }
-		// void PushCollider(PolygonCollider* collider) { polygonColliders.push_back(collider); }
-		// void PushCollider(RayCollider* collider) { rayColliders.push_back(collider); }
-		// void PushCollider(_2D::Collider* collider) { _2DColliders.push_back(collider); }
+	public:
+		static CollisionManager* GetInstance();
 
-		// コライダー削除関数
-		void PopCollider(SphereCollider* collider) { sphereColliders.remove(collider); }
-		// void PopCollider(BoxCollider* collider) { boxColliders.remove(collider); }
-		// void PopCollider(IncludeCollider* collider) { includeColliders.remove(collider); }
-		// void PopCollider(PlaneCollider* collider) { planeColliders.remove(collider); }
-		// void PopCollider(PolygonCollider* collider) { polygonColliders.remove(collider); }
-		// void PopCollider(RayCollider* collider) { rayColliders.remove(collider); }
-		// void PopCollider(_2D::Collider* collider) { _2DColliders.remove(collider); }
-		// void PopAll2DCollider() { _2DColliders.clear(); }
-		// 種類別当たり判定
-		void CheckSphereCollisions();
-		void CheckGroupCollisions();
-		// void CheckBoxCollisions();
-		// void CheckIncludeCollisions();
-		// void CheckSpherePlaneCollisions();
-		// void CheckSpherePolygonCollisions();
-		// void CheckRayPlaneCollisions();
-		// void CheckRayPolygonCollisions();
-		// void CheckRaySphereCollisions();
-		// void CheckRayBoxCollisions();
-		// void CheckRayCastCollision(RayCollider* collider);
-		// void Check2DCollisions();
-		// bool CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB);
+		ColliderGroup* GetGroup(const std::string& groupName);
+
+		bool CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
+
 		// 全当たり判定
-		void CheckAllCollisions();
+		void CheckCollisions();
 
 		bool IsPrint() const { return isPrint; }
 	};

@@ -3,21 +3,7 @@
 #include <cassert>
 using namespace WE;
 
-CollisionManager* collisionManager = collisionManager->GetInstance();
-
 //float IncludeCollider::includeRadius = 0.1f;
-//
-//BoxCollider::BoxCollider() { collisionManager->PushCollider(this); }
-//BoxCollider::~BoxCollider() { collisionManager->PopCollider(this); }
-//RayCollider::RayCollider() { collisionManager->PushCollider(this); }
-//RayCollider::~RayCollider() { collisionManager->PopCollider(this); }
-//PolygonCollider::PolygonCollider() { collisionManager->PushCollider(this); }
-//PolygonCollider::~PolygonCollider() { collisionManager->PopCollider(this); }
-//PlaneCollider::PlaneCollider() { collisionManager->PushCollider(this); }
-//PlaneCollider::~PlaneCollider() { collisionManager->PopCollider(this); }
-//IncludeCollider::IncludeCollider() { collisionManager->PushCollider(this); }
-//IncludeCollider::~IncludeCollider() { collisionManager->PopCollider(this); }
-//_2D::Collider::Collider() { collisionManager->PushCollider(this); }
 
 //_2D::Collider::~Collider()
 //{
@@ -205,6 +191,5 @@ void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* coll
 
 void Collider::Initialize(const std::string& groupName)
 {
-	group = collisionManager->GetGroup(groupName);
-	group->AddOwner(this);
+	group = CollisionManager::GetInstance()->GetGroup(groupName);
 }

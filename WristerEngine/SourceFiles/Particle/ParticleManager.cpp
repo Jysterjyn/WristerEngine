@@ -4,7 +4,7 @@
 #include "PipelineManager.h"
 #include <CameraManager.h>
 using namespace Microsoft::WRL;
-using namespace WristerEngine;
+using namespace WE;
 using namespace _3D;
 
 // Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì

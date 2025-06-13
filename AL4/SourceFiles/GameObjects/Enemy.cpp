@@ -17,7 +17,6 @@ void Enemy::Initialize(const std::string& modelGroupName)
 
 	BaseCharacter::Initialize(modelGroupName);
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Enemy));
-	collider->SetSerialNumber(serialNumber);
 
 	rootPos.scale *= 0.4f;
 
