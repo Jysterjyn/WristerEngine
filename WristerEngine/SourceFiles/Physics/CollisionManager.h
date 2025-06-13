@@ -16,7 +16,6 @@ namespace WristerEngine
 		//std::list<RayCollider*> rayColliders;
 		//std::list<_2D::Collider*> _2DColliders;
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		std::unordered_map<std::string, Collider*> colliders;
 		bool isPrint = false;
 
 		CollisionManager() = default;
@@ -47,7 +46,7 @@ namespace WristerEngine
 
 		// コライダー登録関数
 		void PushCollider(SphereCollider* collider) { sphereColliders.push_back(collider); }
-		void PushCollider(const std::string& colliderName, Collider* collider);
+		//void PushCollider(const std::string& colliderName, Collider* collider);
 		// void PushCollider(BoxCollider* collider) { boxColliders.push_back(collider); }
 		// void PushCollider(IncludeCollider* collider) { includeColliders.push_back(collider); }
 		// void PushCollider(PlaneCollider* collider) { planeColliders.push_back(collider); }

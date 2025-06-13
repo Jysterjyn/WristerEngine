@@ -6,7 +6,7 @@ using namespace WE;
 CollisionManager* collisionManager = collisionManager->GetInstance();
 
 //float IncludeCollider::includeRadius = 0.1f;
-
+//
 //BoxCollider::BoxCollider() { collisionManager->PushCollider(this); }
 //BoxCollider::~BoxCollider() { collisionManager->PopCollider(this); }
 //RayCollider::RayCollider() { collisionManager->PushCollider(this); }
@@ -160,7 +160,7 @@ std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 //	return itr->get()->GetColliderName();
 //}
 
-BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType)
+BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType, Collider* owner)
 {
 	std::unique_ptr<BaseCollider> newCollider;
 
@@ -183,6 +183,7 @@ BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType)
 		break;
 	}
 
+	newCollider->SetOwner(owner);
 	colliders.push_back(std::move(newCollider));
 	return colliders.back().get();
 }
@@ -199,17 +200,11 @@ void ColliderGroup::Update()
 
 void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
 {
-	collisionPair.push_back({ colliderA ,colliderB });
+	collisionPair.push_back({ colliderA,colliderB });
 }
 
-void Collider::Initialize(const std::string& colliderName)
-{ 
-	collisionManager->PushCollider(colliderName, this);
-	group = collisionManager->GetGroup(colliderName);
-}
-
-void Collider::Initialize(const std::string& colliderName, const std::string& groupName)
-{ 
-	collisionManager->PushCollider(colliderName, this);
+void Collider::Initialize(const std::string& groupName)
+{
 	group = collisionManager->GetGroup(groupName);
+	group->AddOwner(this);
 }

@@ -194,14 +194,14 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 	return isHit;
 }
 
-void WristerEngine::CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
-{
-	if (!colliders.contains(colliderName))
-	{
-		colliders[colliderName] = collider;
-	}
-}
-
+//void WristerEngine::CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
+//{
+//	if (!colliders.contains(colliderName))
+//	{
+//		colliders[colliderName] = collider;
+//	}
+//}
+//
 //bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter)
 //{
 //	// 座標系の原点から球の中心座標への距離
@@ -492,17 +492,25 @@ void CollisionManager::CheckSphereCollisions()
 
 void WristerEngine::CollisionManager::CheckGroupCollisions()
 {
-	auto itrA = colliders.begin();
-	for (; itrA != colliders.end(); itrA++)
+	auto itrA = colliderGroups.begin();
+	for (; itrA != colliderGroups.end(); itrA++)
 	{
 		auto itrB = itrA;
 		itrB++;
-		for (; itrB != colliders.end(); itrB++)
+		for (; itrB != colliderGroups.end(); itrB++)
 		{
-			if (!CheckCollision2Groups(itrA->second->GetGroup(), itrB->second->GetGroup())) { continue; }
+			ColliderGroup* groupA = itrA->second.get();
+			ColliderGroup* groupB = itrB->second.get();
+			if (!CheckCollision2Groups(groupA, groupB)) { continue; }
 
-			itrA->second->OnCollision(itrB->second->GetGroup());
-			itrB->second->OnCollision(itrA->second->GetGroup());
+			for (auto& pair : groupA->GetCollisionPair())
+			{
+				pair.first->GetOwner()->OnCollision(groupB);
+				pair.second->GetOwner()->OnCollision(groupA);
+			}
+
+			//for (auto& owner : groupA->GetOwners()) { owner->OnCollision(groupB); }
+			//for (auto& owner : groupB->GetOwners()) { owner->OnCollision(groupA); }
 		}
 	}
 }
@@ -691,8 +699,8 @@ void CollisionManager::CheckAllCollisions()
 	gv->AddItem<bool>("Collision", "visible", isPrint);
 	isPrint = gv->GetValue<bool>("Collision", "visible");
 	
-	ImGui::Text("PlayerColliderNum = %d", colliderGroups["Player"]->GetColliders()->size());
-	ImGui::Text("EnemyColliderNum = %d", colliderGroups["Enemy"]->GetColliders()->size());
+	ImGui::Text("PlayerColliderOwnersNum = %d", colliderGroups["Player"]->GetOwners().size());
+	ImGui::Text("EnemyColliderOwnersNum = %d", colliderGroups["Enemy"]->GetOwners().size());
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
 
 	CheckSphereCollisions();

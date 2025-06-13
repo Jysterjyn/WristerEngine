@@ -132,6 +132,8 @@ namespace WristerEngine
 		uint32_t GetMask() const { return mask; }
 	};
 
+	class Collider;
+
 	// コライダー基底クラス
 	class BaseCollider : public CollisionInfo
 	{
@@ -139,6 +141,7 @@ namespace WristerEngine
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
 		uint32_t serialNumber = 0;
+		Collider* owner = nullptr;
 
 	protected:
 		_3D::Object3d* debugObject = nullptr;
@@ -159,17 +162,21 @@ namespace WristerEngine
 
 		void Destroy() { isDestroy = true; }
 
+		void SetOwner(Collider* owner_) { owner = owner_; }
+
 		// getter
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
 		void SetSerialNumber(uint32_t num) { serialNumber = num; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
+		Collider* GetOwner() { return owner; }
 	};
 
-	struct ColliderGroup : public CollisionInfo
+	class ColliderGroup : public CollisionInfo
 	{
 	private:
+		std::list<Collider*> owners;
 		std::list<std::unique_ptr<BaseCollider>> colliders;
 		// 当たったペアの記録
 		std::vector<std::pair<BaseCollider*, BaseCollider*>> collisionPair;
@@ -184,13 +191,17 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* AddCollider(CollisionShapeType shapeType);
+		BaseCollider* AddCollider(CollisionShapeType shapeType, Collider* owner);
 
 		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
+
+		void AddOwner(Collider* owner) { owners.push_back(owner); }
+		void PopOwner(Collider* owner) { owners.remove(owner); }
 
 		// getter
 		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
+		std::list<Collider*>& GetOwners() { return owners; }
 	};
 
 	class Collider
@@ -198,11 +209,13 @@ namespace WristerEngine
 	protected:
 		ColliderGroup* group = nullptr;
 
-		void Initialize(const std::string& colliderName);
-		void Initialize(const std::string& colliderName, const std::string& groupName);
+		void Initialize(const std::string& groupName);
 
 	public:
-		virtual ~Collider() = default;
+		virtual ~Collider()
+		{
+			group->PopOwner(this);
+		}
 
 		// getter
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }

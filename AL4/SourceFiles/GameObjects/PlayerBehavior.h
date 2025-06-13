@@ -75,7 +75,7 @@ public:
 		object = WE::_3D::ModelManager::GetInstance()->Create("Sword");
 		Initialize("Player");
 		object->material.ambient = { 0,0,0 };
-		collider = static_cast<WE::SphereCollider*>(group->AddCollider(WE::CollisionShapeType::Sphere));
+		collider = static_cast<WE::SphereCollider*>(group->AddCollider(WE::CollisionShapeType::Sphere, this));
 		collider->SetTransform(&object->transform);
 	}
 	~Sword() { object->isDestroy = true; collider->Destroy(); }
