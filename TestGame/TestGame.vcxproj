@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp" />
@@ -18,6 +19,8 @@
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h" />
+    <ClInclude Include="SourceFiles\GameObjects\Ground.h" />
     <ClInclude Include="SourceFiles\GameObjects\Player.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\TestScene.h" />

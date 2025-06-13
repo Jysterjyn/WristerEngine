@@ -1,5 +1,6 @@
 #pragma once
 #include <BaseScene.h>
+#include <Ground.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -10,6 +11,8 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 
 class TestScene : public WristerEngine::BaseScene
 {
+	Ground ground;
+	Sphere sphere;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

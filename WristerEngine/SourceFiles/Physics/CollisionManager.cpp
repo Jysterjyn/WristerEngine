@@ -509,8 +509,8 @@ void CollisionManager::CheckCollisions()
 
 			for (auto& pair : groupA->GetCollisionPair())
 			{
-				pair.first->GetOwner()->OnCollision(groupB);
-				pair.second->GetOwner()->OnCollision(groupA);
+				pair.first->GetOwner()->OnCollision();
+				pair.second->GetOwner()->OnCollision();
 			}
 		}
 	}

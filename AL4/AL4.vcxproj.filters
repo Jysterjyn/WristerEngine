@@ -53,9 +53,6 @@
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\GameObjects\Ground.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\BaseCharacter.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\ContactRecord.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Ground.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,9 +82,6 @@
     <ClInclude Include="SourceFiles\GameObjects\Player.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObjects\Ground.h">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\BaseCharacter.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
@@ -99,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\CollisionConfig.h">
       <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Ground.h">
+      <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

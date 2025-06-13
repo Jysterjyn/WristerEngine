@@ -198,7 +198,7 @@ namespace WristerEngine
 		ColliderGroup* GetGroup() const { return group; }
 
 		// 衝突コールバック関数
-		virtual void OnCollision([[maybe_unused]] ColliderGroup* collisionGroup) {}
+		virtual void OnCollision() {}
 	};
 
 	// 球コライダー
@@ -216,6 +216,7 @@ namespace WristerEngine
 		const Vector3& GetCenterPosition() const { return center; }
 		// 半径を取得
 		float GetRadius() const { return radius; }
+		// トランスフォームを設定
 		void SetTransform(_3D::Transform* pTransform_) { pTransform = pTransform_; }
 		// 中心座標を設定
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
@@ -270,8 +271,9 @@ namespace WristerEngine
 	class PlaneCollider : public BaseCollider
 	{
 	protected:
-		// 基準法線
-		Vector3 baseNormal = Vector3::MakeAxis(Axis::Z);
+		// 法線ベクトル
+		Vector3 normal = Vector3::MakeAxis(Axis::Y);
+		// 原点(0,0,0)からの距離
 		float distance = 0;
 		Vector3 inter;
 
@@ -282,11 +284,11 @@ namespace WristerEngine
 		void SetInter(const Vector3& inter_) { inter = inter_; }
 		void SetDistance(float distance_) { distance = distance_; }
 		//void SetRotation(const Vector3& rotation) { pTransform->rotation = rotation; }
-		void SetBaseNormal(const Vector3& baseNormal_) { baseNormal = baseNormal_; }
+		void SetBaseNormal(const Vector3& normal_) { normal = normal_; }
 		// getter
-		//virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
-		virtual Vector3* GetInter() { return &inter; }
-		virtual float GetDistance() { return distance; }
+		//Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
+		Vector3* GetInter() { return &inter; }
+		float GetDistance() { return distance; }
 	};
 
 	//// 多角形平面コライダー
