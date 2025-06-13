@@ -10,6 +10,7 @@ protected:
 	std::unordered_map<std::string, WE::_3D::Object3d*> objects;
 	WE::_3D::Transform rootPos;
 	WE::CollisionManager* collisionManager = WE::CollisionManager::GetInstance();
+	WE::SphereCollider* collider = nullptr;
 
 public:
 	virtual void Initialize(const std::string& modelGroupName);

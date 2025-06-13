@@ -138,6 +138,7 @@ namespace WristerEngine
 	private:
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
+		uint32_t serialNumber = 0;
 
 	protected:
 		_3D::Object3d* debugObject = nullptr;
@@ -145,6 +146,8 @@ namespace WristerEngine
 
 	public:
 		virtual ~BaseCollider() = default;
+
+		virtual void Update() {}
 
 		// 衝突コールバック関数
 		//virtual void OnCollision([[maybe_unused]] BoxCollider* boxCollider) {}
@@ -154,10 +157,14 @@ namespace WristerEngine
 		//virtual void OnCollision([[maybe_unused]] RayCollider* sphereCollider) {}
 		//virtual void OnCollision([[maybe_unused]] IncludeCollider* sphereCollider) {}
 
+		void Destroy() { isDestroy = true; }
+
 		// getter
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
+		void SetSerialNumber(uint32_t num) { serialNumber = num; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
 	struct ColliderGroup : public CollisionInfo
@@ -170,31 +177,32 @@ namespace WristerEngine
 	public:
 		~ColliderGroup() { colliders.clear(); }
 
+		void Update();
+
 		/// <summary>
 		/// コライダーを登録
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* PushCollider(CollisionShapeType shapeType);
+		BaseCollider* AddCollider(CollisionShapeType shapeType);
 
-		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
 		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
-		// コライダーの削除
-		void PopCollider();
 
 		// getter
+		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
 	};
 
 	class Collider
 	{
-	private:
+	protected:
 		ColliderGroup* group = nullptr;
 
-	public:
-		void SetGroup(const std::string& groupName);
+		void Initialize(const std::string& colliderName);
+		void Initialize(const std::string& colliderName, const std::string& groupName);
 
-		void AddCollider(const std::string& colliderName);
+	public:
+		virtual ~Collider() = default;
 
 		// getter
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }
@@ -207,19 +215,19 @@ namespace WristerEngine
 	// 球コライダー
 	class SphereCollider : public BaseCollider
 	{
-	protected:
+	private:
 		Vector3 center;	// 中心座標
 		float radius = 1.0f;	// 半径
+		const _3D::Transform* pTransform = nullptr;
 
 	public:
-		// コンストラクタ
-		SphereCollider();
-		// 仮想デストラクタ
-		virtual ~SphereCollider();
+		SphereCollider() { shapeType = CollisionShapeType::Sphere; }
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 半径を取得
 		float GetRadius() const { return radius; }
+		void SetTransform(_3D::Transform* pTransform_) { pTransform = pTransform_; }
 		// 中心座標を設定
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
 		// 半径を設定

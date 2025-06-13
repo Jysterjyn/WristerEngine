@@ -18,8 +18,6 @@ namespace WristerEngine
 		Constant* constant = Constant::GetInstance();
 		CollisionManager* collisionManager = CollisionManager::GetInstance();
 
-	public:
-		virtual ~Framework() = default;
 		// 初期化
 		virtual void Initialize();
 		// 更新
@@ -27,9 +25,12 @@ namespace WristerEngine
 		// 描画
 		virtual void Draw() = 0;
 		// 終了チェック
-		virtual bool IsEndRequest();
+		virtual bool IsEndRequest() { return false; }
 		// 終了
 		virtual void Finalize();
+
+	public:
+		virtual ~Framework() = default;
 		// 実行
 		void Run();
 	};

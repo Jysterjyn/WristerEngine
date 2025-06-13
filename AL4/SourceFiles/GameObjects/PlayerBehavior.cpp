@@ -253,25 +253,25 @@ void JumpBehavior::Update()
 	}
 }
 
-//void Sword::OnCollision(WE::SphereCollider* collider)
-//{
-//	uint32_t typeID = collider->GetAttribute();
-//	if (typeID == static_cast<uint32_t>(CollisionAttribute::Enemy))
-//	{
-//		Enemy* enemy = static_cast<Enemy*>(collider);
-//		uint32_t serialNumber = enemy->GetSerialNumber();
-//
-//		if (contactRecord.CheckRecord(serialNumber)) { return; }
-//		contactRecord.AddRecord(serialNumber);
-//		
-//		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-//		WE::DiffuseParticle::AddProp addProp;
-//		addProp.posOffset = enemy->GetCenterPosition();
-//		addProp.posRange = {};
-//		addProp.velRange = {};
-//		addProp.accRange = {};
-//		addProp.startScale = 1.0f;
-//		addProp.endScale = 3.0f;
-//		pGroup->Add(addProp);
-//	}
-//}
+void Sword::OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup)
+{
+	//uint32_t typeID = collider->GetAttribute();
+	//if (typeID == static_cast<uint32_t>(CollisionAttribute::Enemy))
+	//{
+	//	Enemy* enemy = static_cast<Enemy*>(collider);
+	//	uint32_t serialNumber = enemy->GetSerialNumber();
+
+	//	if (contactRecord.CheckRecord(serialNumber)) { return; }
+	//	contactRecord.AddRecord(serialNumber);
+	//	
+	//	WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+	//	WE::DiffuseParticle::AddProp addProp;
+	//	addProp.posOffset = enemy->GetCenterPosition();
+	//	addProp.posRange = {};
+	//	addProp.velRange = {};
+	//	addProp.accRange = {};
+	//	addProp.startScale = 1.0f;
+	//	addProp.endScale = 3.0f;
+	//	pGroup->Add(addProp);
+	//}
+}

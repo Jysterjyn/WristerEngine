@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include <CollisionConfig.h>
+#include <imgui.h>
 
 uint32_t Enemy::nextSerialNumber = 0;
 
@@ -11,7 +12,12 @@ Enemy::Enemy()
 
 void Enemy::Initialize(const std::string& modelGroupName)
 {
+	WE::Collider::Initialize("Enemy");
+	GetGroup()->SetAttribute(ChangeVal(CollisionAttribute::Enemy));
+
 	BaseCharacter::Initialize(modelGroupName);
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Enemy));
+	collider->SetSerialNumber(serialNumber);
 
 	rootPos.scale *= 0.4f;
 
@@ -22,10 +28,6 @@ void Enemy::Initialize(const std::string& modelGroupName)
 	}
 
 	InitializeWalkingGimmick();
-
-	AddCollider("Enemy");
-	SetGroup("Enemy");
-	GetGroup()->SetAttribute(static_cast<uint32_t>(CollisionAttribute::Enemy));
 }
 
 void Enemy::Move()
@@ -72,4 +74,15 @@ Vector3 Enemy::GetCenterPos() const
 {
 	const Vector3 offset = { -0.5f,1.0f,0.0f };
 	return offset + rootPos.GetWorldPosition();
+}
+
+void Enemy::OnCollision([[maybe_unused]] WE::ColliderGroup* collisionGroup)
+{
+	for (auto& pair : group->GetCollisionPair())
+	{
+		if (pair.second->GetAttribute() == ChangeVal(CollisionAttribute::Player))
+		{
+			isDead = true;
+		}
+	}
 }

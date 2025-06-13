@@ -52,6 +52,5 @@ void MyGame::Finalize()
 
 bool MyGame::IsEndRequest()
 {
-	if (WE::Framework::IsEndRequest()) { return true; }
 	return input->IsTrigger(WE::Key::Escape);
 }

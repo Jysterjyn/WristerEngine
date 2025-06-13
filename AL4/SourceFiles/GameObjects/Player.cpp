@@ -4,7 +4,11 @@
 
 void Player::Initialize(const std::string& modelGroupName)
 {
+	WE::Collider::Initialize("Player");
+	GetGroup()->SetAttribute(static_cast<uint32_t>(CollisionAttribute::Player));
+
 	BaseCharacter::Initialize(modelGroupName);
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Player));
 
 	for (auto& o : objects)
 	{
@@ -22,6 +26,8 @@ void Player::Initialize(const std::string& modelGroupName)
 		}
 	}
 
+	rootPos.translation.z = -10;
+
 	objects["head"]->transform.translation.y = 2.5f;
 	objects["handLeft"]->transform.translation = { 1.4f,0.7f,0 };
 	objects["handRight"]->transform.translation = { -1.4f,0.7f,0 };
@@ -31,10 +37,6 @@ void Player::Initialize(const std::string& modelGroupName)
 
 	pBehavior = std::make_unique<RootBehavior>();
 	pBehavior->Initialize();
-
-	AddCollider("Player");
-	SetGroup("Player");
-	GetGroup()->SetAttribute(static_cast<uint32_t>(CollisionAttribute::Player));
 }
 
 void Player::ApplyGlobalVariables()
@@ -77,7 +79,7 @@ void Player::Update()
 	BaseCharacter::Update();
 }
 
-void Player::OnCollision([[maybe_unused]] WE::ColliderGroup* collider)
+void Player::OnCollision([[maybe_unused]] WE::ColliderGroup* collisionGroup)
 {
-	ImGui::Text("PlayerHit!");
+	ImGui::Text("PlayerHit");
 }

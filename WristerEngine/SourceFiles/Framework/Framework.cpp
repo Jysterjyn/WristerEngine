@@ -21,8 +21,6 @@ void Framework::Initialize()
 
 void Framework::Update()
 {
-	// ImGui受付開始
-	ImGuiManager::Begin();
 	// 入力関連の毎フレーム処理
 	input->Update();
 	// グローバル変数の更新
@@ -31,8 +29,6 @@ void Framework::Update()
 	sceneManager->Update();
 	// スプライトの更新
 	Sprite::UpdateAll();
-	// ImGui受付終了
-	ImGuiManager::End();
 }
 
 void Framework::Finalize()
@@ -43,19 +39,20 @@ void Framework::Finalize()
 	wAPI->Finalize();
 }
 
-bool Framework::IsEndRequest()
-{
-	// Xボタンで終了メッセージが来たらゲームループを抜ける
-	return wAPI->ProcessMessage();
-}
-
 void Framework::Run()
 {
 	Initialize();
 
-	while (!IsEndRequest())
+	// Xボタンで終了メッセージが来たらゲームループを抜ける
+	while (!(IsEndRequest() || wAPI->ProcessMessage()))
 	{
+		// ImGui受付開始
+		ImGuiManager::Begin();
+
 		Update();
+
+		// ImGui受付終了
+		ImGuiManager::End();
 
 		// デスクリプタヒープをセット
 		dxCommon->SetDescriptorHeap();

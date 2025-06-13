@@ -16,5 +16,5 @@ private:
 public:	
 	void Initialize(const std::string& modelGroupName) override;
 	void Update() override;
-	void OnCollision(WE::ColliderGroup* collider) override;
+	void OnCollision(WE::ColliderGroup* collisionGroup) override;
 };

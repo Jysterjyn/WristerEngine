@@ -9,14 +9,6 @@ CollisionManager* collisionManager = collisionManager->GetInstance();
 
 //BoxCollider::BoxCollider() { collisionManager->PushCollider(this); }
 //BoxCollider::~BoxCollider() { collisionManager->PopCollider(this); }
-SphereCollider::SphereCollider()
-{
-	collisionManager->PushCollider(this);
-	shapeType = CollisionShapeType::Sphere;
-	debugObject = _3D::ModelManager::GetInstance()->Create("TestSphere");
-	debugObject->transform.scale *= radius;
-}
-SphereCollider::~SphereCollider() { collisionManager->PopCollider(this); }
 //RayCollider::RayCollider() { collisionManager->PushCollider(this); }
 //RayCollider::~RayCollider() { collisionManager->PopCollider(this); }
 //PolygonCollider::PolygonCollider() { collisionManager->PushCollider(this); }
@@ -168,14 +160,14 @@ std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 //	return itr->get()->GetColliderName();
 //}
 
-BaseCollider* ColliderGroup::PushCollider(CollisionShapeType shapeType)
+BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType)
 {
 	std::unique_ptr<BaseCollider> newCollider;
 
 	switch (shapeType)
 	{
 	case CollisionShapeType::Sphere:
-		newCollider = std::unique_ptr<SphereCollider>();
+		newCollider = std::make_unique<SphereCollider>();
 		break;
 	case CollisionShapeType::Box:
 		break;
@@ -195,10 +187,14 @@ BaseCollider* ColliderGroup::PushCollider(CollisionShapeType shapeType)
 	return colliders.back().get();
 }
 
-void ColliderGroup::PopCollider()
+void ColliderGroup::Update()
 {
+	// コライダーの削除
 	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
 		{ return collider.get()->IsDestroy(); });
+
+	for (auto& collider : colliders) { collider->Update(); }
+	collisionPair.clear();
 }
 
 void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
@@ -206,12 +202,14 @@ void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* coll
 	collisionPair.push_back({ colliderA ,colliderB });
 }
 
-void Collider::SetGroup(const std::string& groupName)
-{
-	group = collisionManager->GetGroup(groupName);
+void Collider::Initialize(const std::string& colliderName)
+{ 
+	collisionManager->PushCollider(colliderName, this);
+	group = collisionManager->GetGroup(colliderName);
 }
 
-void Collider::AddCollider(const std::string& colliderName)
-{
+void Collider::Initialize(const std::string& colliderName, const std::string& groupName)
+{ 
 	collisionManager->PushCollider(colliderName, this);
+	group = collisionManager->GetGroup(groupName);
 }

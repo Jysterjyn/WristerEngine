@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "ImGuiManager.h"
 #include <GlobalVariables.h>
+#include <imgui.h>
 using namespace std;
 using namespace WE;
 
@@ -172,7 +173,7 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
 	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
 	bool isHit = false;
-	
+
 	for (auto& colliderA : *collidersA)
 	{
 		for (auto& colliderB : *collidersB)
@@ -689,7 +690,11 @@ void CollisionManager::CheckAllCollisions()
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	gv->AddItem<bool>("Collision", "visible", isPrint);
 	isPrint = gv->GetValue<bool>("Collision", "visible");
-		
+	
+	ImGui::Text("PlayerColliderNum = %d", colliderGroups["Player"]->GetColliders()->size());
+	ImGui::Text("EnemyColliderNum = %d", colliderGroups["Enemy"]->GetColliders()->size());
+	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
+
 	CheckSphereCollisions();
 	CheckGroupCollisions();
 

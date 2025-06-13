@@ -58,6 +58,12 @@ void GameScene::Update()
 	if (input->IsTrigger(WE::Key::_2)) { cMan->Change("Player"); }
 
 	player->Update();
+
+	enemies.remove_if([](std::unique_ptr<WE::_3D::LockOnObject>& enemy) 
+		{ 
+			return static_cast<Enemy*>(enemy.get())->IsDead();
+		});
+
 	for (auto& e : enemies) { e->Update(); }
 	lockOn->Update();
 }

@@ -67,24 +67,26 @@ class Sword : public WE::Collider
 private:
 	WE::_3D::Object3d* object = nullptr;
 	ContactRecord contactRecord;
+	WE::SphereCollider* collider = nullptr;
 
 public:
 	Sword()
 	{
 		object = WE::_3D::ModelManager::GetInstance()->Create("Sword");
-		SetGroup("Player");
+		Initialize("Player");
 		object->material.ambient = { 0,0,0 };
+		collider = static_cast<WE::SphereCollider*>(group->AddCollider(WE::CollisionShapeType::Sphere));
+		collider->SetTransform(&object->transform);
 	}
-	~Sword() { object->isDestroy = true; }
+	~Sword() { object->isDestroy = true; collider->Destroy(); }
 	void SetParent(WE::_3D::Transform* parent) { object->transform.parent = parent; }
 	const Vector3& GetRotation() const { return object->transform.rotation; }
 	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
-	
-	//void OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup) override {};
-	void Update() 
+
+	void OnCollision(WE::ColliderGroup* colliderGroup);
+	void Update()
 	{
 		object->transform.Update();
-		//SetCenterPosition(object->transform.GetWorldPosition());
 	}
 	void ClearRecord() { contactRecord.Clear(); }
 };
