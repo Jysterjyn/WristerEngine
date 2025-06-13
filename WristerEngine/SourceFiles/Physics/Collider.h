@@ -178,7 +178,12 @@ namespace WristerEngine
 	private:
 		std::list<Collider*> owners;
 		std::list<std::unique_ptr<BaseCollider>> colliders;
-		// 当たったペアの記録
+		
+		/// <summary>
+		/// 当たったペアの記録
+		/// </summary>
+		/// <param name="first">自分のコライダー</param>
+		/// <param name="second">相手のコライダー</param>
 		std::vector<std::pair<BaseCollider*, BaseCollider*>> collisionPair;
 
 	public:

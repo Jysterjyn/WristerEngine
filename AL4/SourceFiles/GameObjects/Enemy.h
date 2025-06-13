@@ -20,7 +20,7 @@ public:
 	Enemy();
 	~Enemy()
 	{
-		collider->Destroy(); for (auto& object : objects) { object.second->isDestroy = true; }
+		collider->Destroy(); for (auto& object : objects) { object.second->Destroy(); }
 	}
 	void Initialize(const std::string& modelGroupName) override;
 	void Update() override;

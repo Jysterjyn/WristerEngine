@@ -65,24 +65,17 @@ void Enemy::UpdateWalkingGimmick()
 
 void Enemy::Update()
 {
-	//Move();
-	//UpdateWalkingGimmick();
+	Move();
+	UpdateWalkingGimmick();
 	BaseCharacter::Update();
 }
 
 Vector3 Enemy::GetCenterPos() const
 {
-	const Vector3 offset = { -0.5f,1.0f,0.0f };
+	const Vector3 offset = { 0,0.5f,0.0f };
 	return offset + rootPos.GetWorldPosition();
 }
 
 void Enemy::OnCollision([[maybe_unused]] WE::ColliderGroup* collisionGroup)
 {
-	for (auto& pair : group->GetCollisionPair())
-	{
-		if (pair.second->GetAttribute() == ChangeVal(CollisionAttribute::Player))
-		{
-			isDead = true;
-		}
-	}
 }

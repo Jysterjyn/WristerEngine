@@ -255,23 +255,27 @@ void JumpBehavior::Update()
 
 void Sword::OnCollision([[maybe_unused]] WE::ColliderGroup* colliderGroup)
 {
-	//uint32_t typeID = collider->GetAttribute();
-	//if (typeID == static_cast<uint32_t>(CollisionAttribute::Enemy))
-	//{
-	//	Enemy* enemy = static_cast<Enemy*>(collider);
-	//	uint32_t serialNumber = enemy->GetSerialNumber();
+	for (auto& pair : group->GetCollisionPair())
+	{
+		if (pair.first->GetAttribute() != ChangeVal(CollisionAttribute::PlayerWeapon)) { continue; }
+		uint32_t typeID = pair.second->GetAttribute();
+		if (typeID == ChangeVal(CollisionAttribute::Enemy))
+		{
+			Enemy* enemy = static_cast<Enemy*>(pair.second->GetOwner());
+			uint32_t serialNumber = enemy->GetSerialNumber();
 
-	//	if (contactRecord.CheckRecord(serialNumber)) { return; }
-	//	contactRecord.AddRecord(serialNumber);
-	//	
-	//	WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-	//	WE::DiffuseParticle::AddProp addProp;
-	//	addProp.posOffset = enemy->GetCenterPosition();
-	//	addProp.posRange = {};
-	//	addProp.velRange = {};
-	//	addProp.accRange = {};
-	//	addProp.startScale = 1.0f;
-	//	addProp.endScale = 3.0f;
-	//	pGroup->Add(addProp);
-	//}
+			if (contactRecord.CheckRecord(serialNumber)) { return; }
+			contactRecord.AddRecord(serialNumber);
+
+			WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+			WE::DiffuseParticle::AddProp addProp;
+			addProp.posOffset = enemy->GetCenterPos();
+			addProp.posRange = {};
+			addProp.velRange = {};
+			addProp.accRange = {};
+			addProp.startScale = 1.0f;
+			addProp.endScale = 3.0f;
+			pGroup->Add(addProp);
+		}
+	}
 }

@@ -12,7 +12,7 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-ColliderGroup* WristerEngine::CollisionManager::GetGroup(const std::string& groupName)
+ColliderGroup* CollisionManager::GetGroup(const std::string& groupName)
 {
 	if (!colliderGroups.contains(groupName))
 	{
@@ -22,21 +22,14 @@ ColliderGroup* WristerEngine::CollisionManager::GetGroup(const std::string& grou
 	return colliderGroups[groupName].get();
 }
 
-bool WristerEngine::CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
+bool CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
 {
 	return
 		infoA->GetAttribute() & infoB->GetMask() &&
 		infoB->GetAttribute() & infoA->GetMask();
 }
 
-//bool CollisionManager::CheckCollisionFiltering(_2D::Collider* colliderA, _2D::Collider* colliderB)
-//{
-//	return
-//		(UINT)colliderA->GetAttribute() & (UINT)colliderB->GetMask() &&
-//		(UINT)colliderB->GetAttribute() & (UINT)colliderA->GetMask();
-//}
-
-//bool WristerEngine::CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
+//bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
 //	for (size_t i = 0; i < colliders.size(); i++)
@@ -64,7 +57,7 @@ bool WristerEngine::CollisionManager::CheckCollisionFiltering(const CollisionInf
 //	return false;
 //}
 //
-//bool WristerEngine::CollisionManager::Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders)
+//bool CollisionManager::Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	const _2D::TwoRayCollider* rayCollider = nullptr;
 //	const _2D::BoxCollider* boxCollider = nullptr;
@@ -167,7 +160,7 @@ bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereC
 	return vecAB.Length() <= radAB;
 }
 
-bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
+bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
 {
 	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
 	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
@@ -194,7 +187,7 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 	return isHit;
 }
 
-//void WristerEngine::CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
+//void CollisionManager::PushCollider(const std::string& colliderName, Collider* collider)
 //{
 //	if (!colliders.contains(colliderName))
 //	{
@@ -392,7 +385,7 @@ bool WristerEngine::CollisionManager::CheckCollision2Groups(ColliderGroup* colli
 //	return CheckCollisionRayPolygon(colliderA, &pCollider);
 //}
 //
-//bool WristerEngine::CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
+//bool CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
 //{
 //	if (!CheckCollisionFiltering(groupA, groupB)) { return false; }
 //
@@ -490,7 +483,7 @@ void CollisionManager::CheckSphereCollisions()
 	}
 }
 
-void WristerEngine::CollisionManager::CheckGroupCollisions()
+void CollisionManager::CheckGroupCollisions()
 {
 	auto itrA = colliderGroups.begin();
 	for (; itrA != colliderGroups.end(); itrA++)
@@ -508,9 +501,6 @@ void WristerEngine::CollisionManager::CheckGroupCollisions()
 				pair.first->GetOwner()->OnCollision(groupB);
 				pair.second->GetOwner()->OnCollision(groupA);
 			}
-
-			//for (auto& owner : groupA->GetOwners()) { owner->OnCollision(groupB); }
-			//for (auto& owner : groupB->GetOwners()) { owner->OnCollision(groupA); }
 		}
 	}
 }
@@ -671,7 +661,7 @@ void WristerEngine::CollisionManager::CheckGroupCollisions()
 //	nearly.OnCollision(collider);
 //}
 //
-//void WristerEngine::CollisionManager::Check2DCollisions()
+//void CollisionManager::Check2DCollisions()
 //{
 //	for (auto& collider : _2DColliders)
 //	{

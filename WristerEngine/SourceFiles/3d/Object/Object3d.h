@@ -10,12 +10,15 @@ namespace WristerEngine::_3D
 	public:
 		Material material;
 		Transform transform;
-		bool isDestroy = false;
 		bool isInvisible = false;
+
+		void Destroy() { isDestroy = true; }
 
 	private:
 		friend class ModelManager;
 		Mesh* mesh = nullptr;
+		bool isDestroy = false;
+
 		/// <summary>
 		/// ‰Šú‰»
 		/// </summary>

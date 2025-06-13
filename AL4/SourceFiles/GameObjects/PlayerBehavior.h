@@ -77,8 +77,9 @@ public:
 		object->material.ambient = { 0,0,0 };
 		collider = static_cast<WE::SphereCollider*>(group->AddCollider(WE::CollisionShapeType::Sphere, this));
 		collider->SetTransform(&object->transform);
+		collider->SetAttribute(ChangeVal(CollisionAttribute::PlayerWeapon));
 	}
-	~Sword() { object->isDestroy = true; collider->Destroy(); }
+	~Sword() { object->Destroy(); collider->Destroy(); }
 	void SetParent(WE::_3D::Transform* parent) { object->transform.parent = parent; }
 	const Vector3& GetRotation() const { return object->transform.rotation; }
 	void SetRotation(const Vector3& rotation) { object->transform.rotation = rotation; }
