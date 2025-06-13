@@ -158,27 +158,70 @@ bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereC
 	return vecAB.Length() <= radAB;
 }
 
+bool WristerEngine::CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB)
+{
+	CollisionShapeType aST = colliderA->GetShapeType();
+	CollisionShapeType bST = colliderB->GetShapeType();
+
+	assert(aST != CollisionShapeType::Unknown);
+	assert(bST != CollisionShapeType::Unknown);
+	assert(aST <= bST);
+
+	switch (aST)
+	{
+	case WristerEngine::CollisionShapeType::Sphere:
+
+		switch (bST)
+		{
+		case WristerEngine::CollisionShapeType::Sphere:
+
+			return CheckCollision2Spheres(static_cast<SphereCollider*>(colliderA),
+				static_cast<SphereCollider*>(colliderB));
+
+		case WristerEngine::CollisionShapeType::Plane:
+			break;
+		case WristerEngine::CollisionShapeType::Ray:
+			break;
+		}
+
+		break;
+
+	case WristerEngine::CollisionShapeType::Box:
+		break;
+	case WristerEngine::CollisionShapeType::IncludeBox:
+		break;
+	case WristerEngine::CollisionShapeType::Plane:
+		break;
+	case WristerEngine::CollisionShapeType::Ray:
+		break;
+	case WristerEngine::CollisionShapeType::Mesh:
+		break;
+	}
+
+	return false;
+}
+
 bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
 {
 	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
 	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
 	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
 
-	for (auto& colliderA : *collidersA)
-	{
+	for (auto& colliderA : *collidersA) {
 		for (auto& colliderB : *collidersB)
 		{
 			if (!CheckCollisionFiltering(colliderA.get(), colliderB.get())) { continue; }
 
-			if (colliderA->GetShapeType() == CollisionShapeType::Sphere &&
-				colliderB->GetShapeType() == CollisionShapeType::Sphere)
-			{
-				if (CheckCollision2Spheres(static_cast<SphereCollider*>(colliderA.get()),
-					static_cast<SphereCollider*>(colliderB.get())))
+			std::list<BaseCollider*> colliderPair({ colliderA.get(),colliderB.get() });
+			colliderPair.sort([](BaseCollider* c1, BaseCollider* c2)
 				{
-					colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
-					colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
-				}
+					return c1->GetShapeType() < c2->GetShapeType();
+				});
+
+			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
+			{
+				colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
+				colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
 			}
 		}
 	}
@@ -355,7 +398,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //	if (inter) { *inter = colliderA->GetWorldPosition() + t * colliderA->GetRayDirection(); }
 //	return true;
 //}
-//
+
 //bool CollisionManager::CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB)
 //{
 //	if (!CheckCollisionFiltering(colliderA, colliderB)) { return false; }
@@ -375,7 +418,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //
 //	return CheckCollisionRayPolygon(colliderA, &pCollider);
 //}
-//
+
 //bool CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
 //{
 //	if (!CheckCollisionFiltering(groupA, groupB)) { return false; }
@@ -422,197 +465,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //
 //	return isHitGroup;
 //}
-//
-//void CollisionManager::CheckBoxCollisions()
-//{
-//	auto itrA = boxColliders.begin();
-//	for (; itrA != boxColliders.end(); itrA++)
-//	{
-//		list<BoxCollider*>::iterator itrB = itrA;
-//		itrB++;
-//		for (; itrB != boxColliders.end(); itrB++)
-//		{
-//			if (!CheckCollision2Boxes(*itrA, *itrB)) { continue; }
-//
-//			(*itrA)->OnCollision(*itrB);
-//			(*itrB)->OnCollision(*itrA);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckIncludeCollisions()
-//{
-//	auto itrA = includeColliders.begin();
-//	for (; itrA != includeColliders.end(); itrA++)
-//	{
-//		list<IncludeCollider*>::iterator itrB = itrA;
-//		itrB++;
-//		for (; itrB != includeColliders.end(); itrB++)
-//		{
-//			if (!CheckCollision2IncludeObjects(*itrA, *itrB)) { continue; }
-//
-//			(*itrA)->OnCollision(*itrB);
-//			(*itrB)->OnCollision(*itrA);
-//		}
-//	}
-//}
 
-//void CollisionManager::CheckSpherePlaneCollisions()
-//{
-//	for (SphereCollider* sphereCollider : sphereColliders) {
-//		for (PlaneCollider* planeCollider : planeColliders)
-//		{
-//			if (!CheckCollisionSpherePlane(sphereCollider, planeCollider)) { continue; }
-//
-//			sphereCollider->OnCollision(planeCollider);
-//			planeCollider->OnCollision(sphereCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckSpherePolygonCollisions()
-//{
-//	for (SphereCollider* sphereCollider : sphereColliders) {
-//		for (PolygonCollider* polygonCollider : polygonColliders)
-//		{
-//			if (!CheckCollisionSpherePolygon(sphereCollider, polygonCollider)) { continue; }
-//
-//			sphereCollider->OnCollision(polygonCollider);
-//			polygonCollider->OnCollision(sphereCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckRayPlaneCollisions()
-//{
-//	if (rayColliders.empty() || planeColliders.empty()) { return; }
-//	for (RayCollider* rayCollider : rayColliders) {
-//		for (PlaneCollider* planeCollider : planeColliders)
-//		{
-//			if (!CheckCollisionRayPlane(rayCollider, planeCollider)) { continue; }
-//
-//			rayCollider->OnCollision(planeCollider);
-//			planeCollider->OnCollision(rayCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckRayPolygonCollisions()
-//{
-//	if (rayColliders.empty() || polygonColliders.empty()) { return; }
-//	for (RayCollider* rayCollider : rayColliders) {
-//		for (PolygonCollider* polygonCollider : polygonColliders)
-//		{
-//			if (!CheckCollisionRayPolygon(rayCollider, polygonCollider)) { continue; }
-//
-//			rayCollider->OnCollision(polygonCollider);
-//			polygonCollider->OnCollision(rayCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckRaySphereCollisions()
-//{
-//	if (rayColliders.empty() || sphereColliders.empty()) { return; }
-//	for (RayCollider* rayCollider : rayColliders) {
-//		for (SphereCollider* sphereCollider : sphereColliders)
-//		{
-//			if (!CheckCollisionRaySphere(rayCollider, sphereCollider)) { continue; }
-//
-//			rayCollider->OnCollision(sphereCollider);
-//			sphereCollider->OnCollision(rayCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckRayBoxCollisions()
-//{
-//	for (RayCollider* rayCollider : rayColliders) {
-//		for (BoxCollider* boxCollider : boxColliders)
-//		{
-//			if (!CheckCollisionRayBox(rayCollider, boxCollider)) { continue; }
-//
-//			rayCollider->OnCollision(boxCollider);
-//			boxCollider->OnCollision(rayCollider);
-//		}
-//	}
-//}
-//
-//void CollisionManager::CheckRayCastCollision(RayCollider* collider)
-//{
-//	if (rayColliders.empty()) { return; }
-//
-//	struct RayCastHit
-//	{
-//		float distance = 0;
-//		PlaneCollider* planeCollider = nullptr;
-//		PolygonCollider* polygonCollider = nullptr;
-//		SphereCollider* sphereCollider = nullptr;
-//
-//		void OnCollision(RayCollider* collider)
-//		{
-//			if (this->planeCollider)
-//			{
-//				collider->OnCollision(this->planeCollider);
-//				this->planeCollider->OnCollision(collider);
-//			}
-//			else if (this->sphereCollider)
-//			{
-//				collider->OnCollision(this->sphereCollider);
-//				this->sphereCollider->OnCollision(collider);
-//			}
-//			else if (this->polygonCollider)
-//			{
-//				collider->OnCollision(this->polygonCollider);
-//				this->sphereCollider->OnCollision(collider);
-//			}
-//		}
-//	};
-//
-//	float distance = 0;
-//	vector<RayCastHit> collisionInfo;
-//
-//	for (PlaneCollider* planeCollider : planeColliders)
-//	{
-//		if (!CheckCollisionRayPlane(collider, planeCollider, &distance)) { continue; }
-//		RayCastHit newInfo;
-//		newInfo.distance = distance;
-//		newInfo.planeCollider = planeCollider;
-//		collisionInfo.push_back(newInfo);
-//	}
-//	for (PolygonCollider* polygonCollider : polygonColliders)
-//	{
-//		if (!CheckCollisionRayPolygon(collider, polygonCollider, &distance)) { continue; }
-//		RayCastHit newInfo;
-//		newInfo.distance = distance;
-//		newInfo.polygonCollider = polygonCollider;
-//		collisionInfo.push_back(newInfo);
-//	}
-//	for (SphereCollider* sphereCollider : sphereColliders)
-//	{
-//		if (!CheckCollisionRaySphere(collider, sphereCollider, &distance)) { continue; }
-//		RayCastHit newInfo;
-//		newInfo.distance = distance;
-//		newInfo.sphereCollider = sphereCollider;
-//		collisionInfo.push_back(newInfo);
-//	}
-//
-//	// ‰½‚Æ‚à“–‚Á‚Ä‚¢‚È‚¢
-//	if (collisionInfo.empty()) { return; }
-//	if (collisionInfo.size() == 1)
-//	{
-//		collisionInfo[0].OnCollision(collider);
-//		return;
-//	}
-//
-//	RayCastHit nearly = collisionInfo[0];
-//	for (size_t i = 1; i < collisionInfo.size(); i++)
-//	{
-//		if (nearly.distance > collisionInfo[i].distance) { nearly = collisionInfo[i]; }
-//	}
-//	nearly.OnCollision(collider);
-//}
-//
 //void CollisionManager::Check2DCollisions()
 //{
 //	for (auto& collider : _2DColliders)

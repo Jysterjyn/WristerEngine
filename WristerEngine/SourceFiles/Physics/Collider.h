@@ -158,7 +158,7 @@ namespace WristerEngine
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
-		
+
 		/// <summary>
 		/// 当たったペアの記録
 		/// </summary>
@@ -205,7 +205,7 @@ namespace WristerEngine
 	class SphereCollider : public BaseCollider
 	{
 	private:
-		Vector3 center;	// 中心座標
+		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
 		const _3D::Transform* pTransform = nullptr;
 
@@ -223,72 +223,72 @@ namespace WristerEngine
 		void SetRadius(float radius_) { radius = radius_; }
 	};
 
-	//// ボックスコライダー(AABB方式)
-	//class BoxCollider : public BaseCollider
-	//{
-	//private:
-	//	Vector3 center={1,1,1};	// 中心座標
-	//	Vector3 radius;	// 各軸方向の半径
-	//
-	//public:
-	//	// コンストラクタ
-	//	BoxCollider();
-	//	// 中心座標を取得
-	//	const Vector3& GetCenterPosition() const { return center; }
-	//	// 3軸方向の半径を取得
-	//	const Vector3& GetRadius() const { return radius; }
-	//	// 中心座標を設定
-	//	void SetCenterPosition(const Vector3& center_) { center = center_; }
-	//	// 3軸方向の半径を設定
-	//	void SetRadius(const Vector3& radius_) { radius = radius_; }
-	//};
-	//
-	//// 完全包含のボックスコライダー(AABB方式)
-	//class IncludeCollider : public virtual BaseCollider
-	//{
-	//public:
-	//	enum class Axis { X, Y, Z };
-	//
-	//private:
-	//	// 完全包含半径
-	//	static float includeRadius;
-	//	// 当たり判定を取るペアのtrueが少ないほうが計算に反映される
-	//	std::array<bool, 3> isUseAxis = { true,true,true };
-	//
-	//public:
-	//	// コンストラクタ
-	//	IncludeCollider();
-	//	// 完全包含半径の取得
-	//	static float GetIncludeRadius() { return includeRadius; }
-	//	// 使う軸の設定
-	//	void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
-	//	// 使う軸の取得
-	//	std::array<bool, 3> GetUseAxis() { return isUseAxis; }
-	//};
-	//
-	//// 平面コライダー
-	//class PlaneCollider : public virtual BaseCollider
-	//{
-	//protected:
-	//	// 基準法線
-	//	Vector3 baseNormal = Vector3::MakeAxis(Axis::Z);
-	//	float distance = 0;
-	//	Vector3 inter;
-	//
-	//public:
-	//	// コンストラクタ
-	//	PlaneCollider();
-	//	// setter
-	//	void SetInter(const Vector3& inter_) { inter = inter_; }
-	//	void SetDistance(float distance_) { distance = distance_; }
-	//	void SetRotation(const Vector3& rotation) { pTransform->rotation = rotation; }
-	//	void SetBaseNormal(const Vector3& baseNormal_) { baseNormal = baseNormal_; }
-	//	// getter
-	//	virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
-	//	virtual Vector3* GetInter() { return &inter; }
-	//	virtual float GetDistance() { return distance; }
-	//};
-	//
+	// ボックスコライダー(AABB方式)
+	class BoxCollider : public BaseCollider
+	{
+	private:
+		Vector3 center;				// 中心座標
+		Vector3 radius = { 1,1,1 };	// 各軸方向の半径
+
+	public:
+		// コンストラクタ
+		BoxCollider() { shapeType = CollisionShapeType::Box; }
+		// 中心座標を取得
+		const Vector3& GetCenterPosition() const { return center; }
+		// 3軸方向の半径を取得
+		const Vector3& GetRadius() const { return radius; }
+		// 中心座標を設定
+		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		// 3軸方向の半径を設定
+		void SetRadius(const Vector3& radius_) { radius = radius_; }
+	};
+
+	// 完全包含のボックスコライダー(AABB方式)
+	class IncludeCollider : public BaseCollider
+	{
+	public:
+		enum class Axis { X, Y, Z };
+
+	private:
+		// 完全包含半径
+		static float includeRadius;
+		// 当たり判定を取るペアのtrueが少ないほうが計算に反映される
+		std::array<bool, 3> isUseAxis = { true,true,true };
+
+	public:
+		// コンストラクタ
+		IncludeCollider() { shapeType = CollisionShapeType::IncludeBox; }
+		// 完全包含半径の取得
+		static float GetIncludeRadius() { return includeRadius; }
+		// 使う軸の設定
+		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
+		// 使う軸の取得
+		std::array<bool, 3> GetUseAxis() { return isUseAxis; }
+	};
+
+	// 平面コライダー
+	class PlaneCollider : public BaseCollider
+	{
+	protected:
+		// 基準法線
+		Vector3 baseNormal = Vector3::MakeAxis(Axis::Z);
+		float distance = 0;
+		Vector3 inter;
+
+	public:
+		// コンストラクタ
+		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
+		// setter
+		void SetInter(const Vector3& inter_) { inter = inter_; }
+		void SetDistance(float distance_) { distance = distance_; }
+		//void SetRotation(const Vector3& rotation) { pTransform->rotation = rotation; }
+		void SetBaseNormal(const Vector3& baseNormal_) { baseNormal = baseNormal_; }
+		// getter
+		//virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
+		virtual Vector3* GetInter() { return &inter; }
+		virtual float GetDistance() { return distance; }
+	};
+
 	//// 多角形平面コライダー
 	//class PolygonCollider : public virtual BaseCollider
 	//{
@@ -321,19 +321,19 @@ namespace WristerEngine
 	//	virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
 	//	virtual std::vector<Vector3> GetVertices() { return vertices; }
 	//};
-//
-	//// レイコライダー
-	//class RayCollider : public virtual BaseCollider
-	//{
-	//public:
-	//	// 基準レイ
-	//	Vector3 baseRayDirection = Vector3::MakeAxis(Axis::Z);
-	//	// コンストラクタ
-	//	RayCollider();
-	//	// レイ方向を取得
-	//	virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
-	//};
-	// 
+
+	// レイコライダー
+	class RayCollider : public BaseCollider
+	{
+	public:
+		// 基準レイ
+		Vector3 baseRayDirection = Vector3::MakeAxis(Axis::Z);
+		// コンストラクタ
+		RayCollider() { shapeType = CollisionShapeType::Ray; }
+		// レイ方向を取得
+		//virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
+	};
+
 	// メッシュコライダー
 	//class MeshCollider : public BaseCollider
 	//{

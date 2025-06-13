@@ -30,7 +30,8 @@ void WristerEngine::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR
 		0,
 		shaderBlob, &errorBlob);
 	// エラーなら
-	if (FAILED(result)) {
+	if (FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		string error;
 		error.resize(errorBlob->GetBufferSize());

@@ -10,6 +10,8 @@ void Player::Initialize(const std::string& modelGroupName)
 	BaseCharacter::Initialize(modelGroupName);
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Player));
 
+	group->AddCollider(WE::CollisionShapeType::Plane, this)->SetAttribute(ChangeVal(CollisionAttribute::Player));
+
 	for (auto& o : objects)
 	{
 		o.second->material.ambient = { 0,0,0 };

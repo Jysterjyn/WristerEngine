@@ -18,21 +18,6 @@
     <Filter Include="ソース ファイル\SceneFactory">
       <UniqueIdentifier>{68cab597-fc1f-463b-90da-2d6600c88117}</UniqueIdentifier>
     </Filter>
-    <Filter Include="シェーダー ファイル">
-      <UniqueIdentifier>{1f626633-d66f-4fbf-b6f5-cd711bd2656a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="シェーダー ファイル\Sprite">
-      <UniqueIdentifier>{16c53619-8757-4d50-a009-c64e862478ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="シェーダー ファイル\Object">
-      <UniqueIdentifier>{9a18dc76-05d7-438c-91c4-9cde5294f931}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="シェーダー ファイル\PostEffect">
-      <UniqueIdentifier>{fc54fa8b-f9de-4733-8ba0-ae692d775d70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="シェーダー ファイル\Particle">
-      <UniqueIdentifier>{d00bc41c-470d-41dc-99cc-f88394d2d92c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\GameObjects">
       <UniqueIdentifier>{898bf4eb-1bd3-45b5-aa1e-b5eded0121a8}</UniqueIdentifier>
     </Filter>
@@ -67,69 +52,5 @@
     <ClInclude Include="SourceFiles\GameObjects\Player.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
-      <Filter>シェーダー ファイル\Sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
-      <Filter>シェーダー ファイル\Sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
-      <Filter>シェーダー ファイル\Object</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjPS.hlsl">
-      <Filter>シェーダー ファイル\Object</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\MultiTexturePS.hlsl">
-      <Filter>シェーダー ファイル\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectPS.hlsl">
-      <Filter>シェーダー ファイル\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
-      <Filter>シェーダー ファイル\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <Filter>シェーダー ファイル\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <Filter>シェーダー ファイル\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
-      <Filter>シェーダー ファイル\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Shaders\Sprite.hlsli">
-      <Filter>シェーダー ファイル\Sprite</Filter>
-    </None>
-    <None Include="Resources\Shaders\Functions.hlsli">
-      <Filter>シェーダー ファイル\Object</Filter>
-    </None>
-    <None Include="Resources\Shaders\Light.hlsli">
-      <Filter>シェーダー ファイル\Object</Filter>
-    </None>
-    <None Include="Resources\Shaders\Obj.hlsli">
-      <Filter>シェーダー ファイル\Object</Filter>
-    </None>
-    <None Include="Resources\Shaders\PostEffect.hlsli">
-      <Filter>シェーダー ファイル\PostEffect</Filter>
-    </None>
-    <None Include="Resources\Shaders\PostEffectFunctions.hlsli">
-      <Filter>シェーダー ファイル\PostEffect</Filter>
-    </None>
-    <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>シェーダー ファイル\Particle</Filter>
-    </None>
-    <None Include="Resources\Shaders\FBX.hlsli">
-      <Filter>シェーダー ファイル</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@ void MyGame::Update()
 {
 	Framework::Update();
 	modelManager->Update();
-	WristerEngine::CollisionManager::CheckAllCollisions();
+	collisionManager->CheckCollisions();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
 }
@@ -39,9 +39,9 @@ void MyGame::Draw()
 	dxCommon->PreDraw();
 	//Sprite::PreDraw();
 	sceneManager->Draw();
-	//modelManager->DrawObjects();
+	modelManager->Draw();
 	//WristerEngine::ParticleManager::Draw();
-	ImGuiManager::Draw();
+	WE::ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
 

@@ -156,17 +156,20 @@ BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType, Collider*
 		newCollider = std::make_unique<SphereCollider>();
 		break;
 	case CollisionShapeType::Box:
+		newCollider = std::make_unique<BoxCollider>();
 		break;
 	case CollisionShapeType::IncludeBox:
+		newCollider = std::make_unique<IncludeCollider>();
 		break;
 	case CollisionShapeType::Plane:
+		newCollider = std::make_unique<PlaneCollider>();
 		break;
 	case CollisionShapeType::Ray:
+		newCollider = std::make_unique<RayCollider>();
 		break;
-	case CollisionShapeType::Mesh:
-		break;
-	default:
-		break;
+	//case CollisionShapeType::Mesh:
+	//	newCollider = std::make_unique<SphereCollider>();
+	//	break;
 	}
 
 	newCollider->SetOwner(owner);
