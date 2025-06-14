@@ -4,7 +4,10 @@
 #include <map>
 #include <string>
 #include <WristerEngineUtility.h>
+#pragma warning(push)
+#pragma warning(disable:26819)
 #include <json.hpp>
+#pragma warning(pop)
 
 namespace WristerEngine
 {

@@ -3,7 +3,10 @@
 
 enum class CollisionAttribute
 {
-	Sphere, Box, Plane, Ray
+	Sphere = 0b1,
+	Plane = 0b1 << 1,
+	Box = 0b1 << 2,
+	Ray = 0b1 << 3
 };
 
 uint32_t ChangeVal(CollisionAttribute attribute) { return static_cast<uint32_t>(attribute); }

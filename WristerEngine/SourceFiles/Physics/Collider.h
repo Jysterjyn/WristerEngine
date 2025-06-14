@@ -1,9 +1,5 @@
 #pragma once
-#include "Transform.h"
 #include "Physics.h"
-#include <vector>
-#include <array>
-#include <memory>
 #include "Sprite.h"
 #include <map>
 #include <ModelManager.h>
@@ -133,9 +129,9 @@ namespace WristerEngine
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
 		Collider* owner = nullptr;
+		Vector3 inter;
 
 	protected:
-		_3D::Object3d* debugObject = nullptr;
 		CollisionShapeType shapeType = CollisionShapeType::Unknown;
 
 	public:
@@ -146,12 +142,14 @@ namespace WristerEngine
 		void Destroy() { isDestroy = true; }
 
 		void SetOwner(Collider* owner_) { owner = owner_; }
+		void SetInter(const Vector3& inter_) { inter = inter_; }
 
 		// getter
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
 		Collider* GetOwner() { return owner; }
+		Vector3* GetInter() { return &inter; }
 	};
 
 	class ColliderGroup : public CollisionInfo
@@ -176,7 +174,7 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* AddCollider(CollisionShapeType shapeType, Collider* owner);
+		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
 
 		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
 
@@ -193,6 +191,13 @@ namespace WristerEngine
 		void Initialize(const std::string& groupName);
 
 	public:
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		BaseCollider* AddCollider(CollisionShapeType shapeType);
+
 		// getter
 		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }
 		ColliderGroup* GetGroup() const { return group; }
@@ -217,7 +222,7 @@ namespace WristerEngine
 		// 半径を取得
 		float GetRadius() const { return radius; }
 		// トランスフォームを設定
-		void SetTransform(_3D::Transform* pTransform_) { pTransform = pTransform_; }
+		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; }
 		// 中心座標を設定
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
 		// 半径を設定
@@ -275,20 +280,16 @@ namespace WristerEngine
 		Vector3 normal = Vector3::MakeAxis(Axis::Y);
 		// 原点(0,0,0)からの距離
 		float distance = 0;
-		Vector3 inter;
 
 	public:
 		// コンストラクタ
 		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
 		// setter
-		void SetInter(const Vector3& inter_) { inter = inter_; }
 		void SetDistance(float distance_) { distance = distance_; }
-		//void SetRotation(const Vector3& rotation) { pTransform->rotation = rotation; }
 		void SetBaseNormal(const Vector3& normal_) { normal = normal_; }
 		// getter
-		//Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
-		Vector3* GetInter() { return &inter; }
-		float GetDistance() { return distance; }
+		Vector3 GetNormal() const { return normal; }
+		float GetDistance() const { return distance; }
 	};
 
 	//// 多角形平面コライダー

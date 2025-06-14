@@ -13,17 +13,28 @@ void Ground::Initialize(const std::string& modelName, const Vector3& scale)
 	object->material.ChangeTexture((size_t)WE::_3D::TexType::Main, "./dirt.jpg");
 	object->material.ambient = { 1,1,1 };
 
-	WE::PlaneCollider* collider = static_cast<WE::PlaneCollider*>(group->AddCollider(WE::CollisionShapeType::Plane, this));
+	WE::PlaneCollider* collider = static_cast<WE::PlaneCollider*>(AddCollider(WE::CollisionShapeType::Plane));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Plane));
+	collider->SetDistance(-1.0f);
+	group->SetAttribute(ChangeVal(CollisionAttribute::Plane));
 }
 
 void Sphere::Initialize()
 {
 	WE::Collider::Initialize("Sphere");
 
-	object = mm->Create("TestSphere",true);
+	object = mm->Create("TestSphere", true);
 	object->material.ambient = { 0.1f,0.1f,0.1f };
 
-	WE::SphereCollider* collider = static_cast<WE::SphereCollider*>(group->AddCollider(WE::CollisionShapeType::Plane, this));
+	WE::SphereCollider* collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
+	collider->SetTransform(&object->transform);
+
+	group->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
+}
+
+void Sphere::Update()
+{
+	object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
+	object->material.ambient = { 0.1f,0.1f,0.1f };
 }

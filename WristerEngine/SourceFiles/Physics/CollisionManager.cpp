@@ -12,7 +12,7 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-ColliderGroup* CollisionManager::GetGroup(const std::string& groupName)
+ColliderGroup* CollisionManager::AddGroup(const std::string& groupName)
 {
 	if (!colliderGroups.contains(groupName))
 	{
@@ -22,11 +22,138 @@ ColliderGroup* CollisionManager::GetGroup(const std::string& groupName)
 	return colliderGroups[groupName].get();
 }
 
+void CollisionManager::CheckCollisions()
+{
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	gv->AddItem<bool>("Collision", "visible", isPrint);
+	isPrint = gv->GetValue<bool>("Collision", "visible");
+
+	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
+
+	auto itrA = colliderGroups.begin();
+	for (; itrA != colliderGroups.end(); itrA++)
+	{
+		auto itrB = itrA;
+		itrB++;
+		for (; itrB != colliderGroups.end(); itrB++)
+		{
+			ColliderGroup* groupA = itrA->second.get();
+			ColliderGroup* groupB = itrB->second.get();
+			if (!CheckCollisionFiltering(groupA, groupB)) { continue; }
+			if (!CheckCollision2Groups(groupA, groupB)) { continue; }
+
+			for (auto& pair : groupA->GetCollisionPair())
+			{
+				pair.first->GetOwner()->OnCollision();
+				pair.second->GetOwner()->OnCollision();
+			}
+		}
+	}
+}
+
 bool CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
 {
 	return
 		infoA->GetAttribute() & infoB->GetMask() &&
 		infoB->GetAttribute() & infoA->GetMask();
+}
+
+bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
+{
+	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
+	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
+
+	for (auto& colliderA : *collidersA) {
+		for (auto& colliderB : *collidersB)
+		{
+			if (!CheckCollisionFiltering(colliderA.get(), colliderB.get())) { continue; }
+
+			std::list<BaseCollider*> colliderPair({ colliderA.get(),colliderB.get() });
+			colliderPair.sort([](BaseCollider* c1, BaseCollider* c2)
+				{
+					return c1->GetShapeType() < c2->GetShapeType();
+				});
+
+			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
+			{
+				colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
+				colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
+			}
+		}
+	}
+
+	return !colliderGroupA->GetCollisionPair().empty();
+}
+
+bool CollisionManager::CheckCollision2Spheres(const SphereCollider* colliderA, const SphereCollider* colliderB)
+{
+	Vector3 vecAB = colliderA->GetCenterPosition() - colliderB->GetCenterPosition();
+	float radAB = colliderA->GetRadius() + colliderB->GetRadius();
+
+	return vecAB.Length() <= radAB;
+}
+
+bool WristerEngine::CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB)
+{
+	CollisionShapeType aST = colliderA->GetShapeType();
+	CollisionShapeType bST = colliderB->GetShapeType();
+
+	assert(aST != CollisionShapeType::Unknown);
+	assert(bST != CollisionShapeType::Unknown);
+	assert(aST <= bST);
+
+	switch (aST)
+	{
+	case WristerEngine::CollisionShapeType::Sphere:
+	{
+		SphereCollider* sphere = static_cast<SphereCollider*>(colliderA);
+
+		switch (bST)
+		{
+		case WristerEngine::CollisionShapeType::Sphere:
+
+			return CheckCollision2Spheres(sphere, static_cast<SphereCollider*>(colliderB));
+
+		case WristerEngine::CollisionShapeType::Plane:
+
+			return CheckCollisionSpherePlane(sphere, static_cast<PlaneCollider*>(colliderB));
+
+		case WristerEngine::CollisionShapeType::Ray:
+			break;
+		}
+
+		break;
+	}
+	case WristerEngine::CollisionShapeType::Box:
+		break;
+	case WristerEngine::CollisionShapeType::IncludeBox:
+		break;
+	case WristerEngine::CollisionShapeType::Plane:
+		break;
+	case WristerEngine::CollisionShapeType::Ray:
+		break;
+	case WristerEngine::CollisionShapeType::Mesh:
+		break;
+	}
+
+	return false;
+}
+
+bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB)
+{
+	// 座標系の原点から球の中心座標への距離
+	float dist = Dot(colliderA->GetCenterPosition(), colliderB->GetNormal());
+	// 平面の原点座標を減算することで、平面と球の中心との距離が出る
+	dist -= colliderB->GetDistance();
+	// 距離の絶対値が半径より大きければ当たっていない
+	if (fabsf(dist) > colliderA->GetRadius()) { return false; }
+	// 疑似交点を計算
+	Vector3 inter = -dist * colliderB->GetNormal() + colliderA->GetCenterPosition();
+	// 平面上の最近接点を疑似交点とする
+	colliderA->SetInter(inter);
+	colliderB->SetInter(inter);
+
+	return true;
 }
 
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
@@ -149,100 +276,6 @@ bool CollisionManager::CheckCollisionFiltering(const CollisionInfo* infoA, const
 //
 //	return vecAB.Length() <= IncludeCollider::GetIncludeRadius();
 //}
-
-bool CollisionManager::CheckCollision2Spheres(SphereCollider* colliderA, SphereCollider* colliderB)
-{
-	Vector3 vecAB = colliderA->GetCenterPosition() - colliderB->GetCenterPosition();
-	float radAB = colliderA->GetRadius() + colliderB->GetRadius();
-
-	return vecAB.Length() <= radAB;
-}
-
-bool WristerEngine::CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB)
-{
-	CollisionShapeType aST = colliderA->GetShapeType();
-	CollisionShapeType bST = colliderB->GetShapeType();
-
-	assert(aST != CollisionShapeType::Unknown);
-	assert(bST != CollisionShapeType::Unknown);
-	assert(aST <= bST);
-
-	switch (aST)
-	{
-	case WristerEngine::CollisionShapeType::Sphere:
-
-		switch (bST)
-		{
-		case WristerEngine::CollisionShapeType::Sphere:
-
-			return CheckCollision2Spheres(static_cast<SphereCollider*>(colliderA),
-				static_cast<SphereCollider*>(colliderB));
-
-		case WristerEngine::CollisionShapeType::Plane:
-			break;
-		case WristerEngine::CollisionShapeType::Ray:
-			break;
-		}
-
-		break;
-
-	case WristerEngine::CollisionShapeType::Box:
-		break;
-	case WristerEngine::CollisionShapeType::IncludeBox:
-		break;
-	case WristerEngine::CollisionShapeType::Plane:
-		break;
-	case WristerEngine::CollisionShapeType::Ray:
-		break;
-	case WristerEngine::CollisionShapeType::Mesh:
-		break;
-	}
-
-	return false;
-}
-
-bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB)
-{
-	const std::list<std::unique_ptr<BaseCollider>>* collidersA = colliderGroupA->GetColliders();
-	const std::list<std::unique_ptr<BaseCollider>>* collidersB = colliderGroupB->GetColliders();
-	if (!CheckCollisionFiltering(colliderGroupA, colliderGroupB)) { return false; }
-
-	for (auto& colliderA : *collidersA) {
-		for (auto& colliderB : *collidersB)
-		{
-			if (!CheckCollisionFiltering(colliderA.get(), colliderB.get())) { continue; }
-
-			std::list<BaseCollider*> colliderPair({ colliderA.get(),colliderB.get() });
-			colliderPair.sort([](BaseCollider* c1, BaseCollider* c2)
-				{
-					return c1->GetShapeType() < c2->GetShapeType();
-				});
-
-			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
-			{
-				colliderGroupA->AddCollisionPair(colliderA.get(), colliderB.get());
-				colliderGroupB->AddCollisionPair(colliderB.get(), colliderA.get());
-			}
-		}
-	}
-
-	return !colliderGroupA->GetCollisionPair().empty();
-}
-
-//bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB, Vector3* inter)
-//{
-//	// 座標系の原点から球の中心座標への距離
-//	float dist = Dot(colliderA->GetWorldPosition(), colliderB->GetNormal());
-//	// 平面の原点座標を減算することで、平面と球の中心との距離が出る
-//	dist -= colliderB->GetDistance();
-//	// 距離の絶対値が半径より大きければ当たっていない
-//	if (fabsf(dist) > colliderA->GetRadius()) { return false; }
-//	// 疑似交点を計算
-//	if (inter) { *inter = -dist * colliderB->GetNormal() + colliderA->GetWorldPosition(); } // 平面上の最近接点を疑似交点とする
-//
-//	return true;
-//}
-//
 //void ClosestPtPoint2Triangle(const Vector3& point, PolygonCollider* triangle, Vector3* closest)
 //{
 //	vector<Vector3> p0_p; p0_p.push_back({});
@@ -398,7 +431,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //	if (inter) { *inter = colliderA->GetWorldPosition() + t * colliderA->GetRayDirection(); }
 //	return true;
 //}
-
+//
 //bool CollisionManager::CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB)
 //{
 //	if (!CheckCollisionFiltering(colliderA, colliderB)) { return false; }
@@ -418,7 +451,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //
 //	return CheckCollisionRayPolygon(colliderA, &pCollider);
 //}
-
+//
 //bool CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
 //{
 //	if (!CheckCollisionFiltering(groupA, groupB)) { return false; }
@@ -465,7 +498,7 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //
 //	return isHitGroup;
 //}
-
+//
 //void CollisionManager::Check2DCollisions()
 //{
 //	for (auto& collider : _2DColliders)
@@ -487,31 +520,3 @@ bool CollisionManager::CheckCollision2Groups(ColliderGroup* colliderGroupA, Coll
 //		}
 //	}
 //}
-
-void CollisionManager::CheckCollisions()
-{
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	gv->AddItem<bool>("Collision", "visible", isPrint);
-	isPrint = gv->GetValue<bool>("Collision", "visible");
-
-	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
-
-	auto itrA = colliderGroups.begin();
-	for (; itrA != colliderGroups.end(); itrA++)
-	{
-		auto itrB = itrA;
-		itrB++;
-		for (; itrB != colliderGroups.end(); itrB++)
-		{
-			ColliderGroup* groupA = itrA->second.get();
-			ColliderGroup* groupB = itrB->second.get();
-			if (!CheckCollision2Groups(groupA, groupB)) { continue; }
-
-			for (auto& pair : groupA->GetCollisionPair())
-			{
-				pair.first->GetOwner()->OnCollision();
-				pair.second->GetOwner()->OnCollision();
-			}
-		}
-	}
-}

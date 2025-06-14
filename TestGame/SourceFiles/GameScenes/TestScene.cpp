@@ -23,4 +23,6 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
+	ground.Update();
+	sphere.Update();
 }

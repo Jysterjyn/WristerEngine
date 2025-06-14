@@ -29,6 +29,7 @@ void MyGame::Update()
 	Framework::Update();
 	modelManager->Update();
 	collisionManager->CheckCollisions();
+	modelManager->Update();
 	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
 }

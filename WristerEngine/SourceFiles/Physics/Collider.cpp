@@ -4,7 +4,7 @@
 using namespace WE;
 
 //float IncludeCollider::includeRadius = 0.1f;
-
+//
 //_2D::Collider::~Collider()
 //{
 //	colliders.clear();
@@ -42,7 +42,7 @@ using namespace WE;
 //{
 //	for (Vector3& vertex : vertices) { vertex *= pTransform->matWorld; }
 //}
-
+//
 //void MeshCollider::ConstructTriangles(ModelManager* model)
 //{
 //	triangles.clear();
@@ -72,30 +72,30 @@ using namespace WE;
 //		tri.ComputeNormal();
 //	}
 //}
-
-void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
-{
-	transform = transform_;
-	shapeType = shapeType_;
-	colliderName = colliderName_;
-}
-
-std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
-{
-	std::map<std::string, Vector2> ans;
-	ans["LT"] = ans["RB"] = ans["LB"] = ans["RT"] = transform->position;
-	// ·•ª
-	Vector2 ltSub = Vector2(transform->size.x * transform->anchorPoint.x, transform->size.y * transform->anchorPoint.y);
-	Vector2 rbSub = Vector2(transform->size.x * (1.0f - transform->anchorPoint.x), transform->size.y * (1.0f - transform->anchorPoint.y));
-	if (transform->isFlipX) { ltSub.x = -ltSub.x; rbSub.x = -rbSub.x; }
-	if (transform->isFlipY) { ltSub.y = -ltSub.y; rbSub.y = -rbSub.y; }
-	ans["LT"] -= ltSub;
-	ans["LB"] += ltSub;
-	ans["RT"] -= rbSub;
-	ans["RB"] += rbSub;
-	return ans;
-}
-
+//
+//void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
+//{
+//	transform = transform_;
+//	shapeType = shapeType_;
+//	colliderName = colliderName_;
+//}
+//
+//std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
+//{
+//	std::map<std::string, Vector2> ans;
+//	ans["LT"] = ans["RB"] = ans["LB"] = ans["RT"] = transform->position;
+//	// ·•ª
+//	Vector2 ltSub = Vector2(transform->size.x * transform->anchorPoint.x, transform->size.y * transform->anchorPoint.y);
+//	Vector2 rbSub = Vector2(transform->size.x * (1.0f - transform->anchorPoint.x), transform->size.y * (1.0f - transform->anchorPoint.y));
+//	if (transform->isFlipX) { ltSub.x = -ltSub.x; rbSub.x = -rbSub.x; }
+//	if (transform->isFlipY) { ltSub.y = -ltSub.y; rbSub.y = -rbSub.y; }
+//	ans["LT"] -= ltSub;
+//	ans["LB"] += ltSub;
+//	ans["RT"] -= rbSub;
+//	ans["RB"] += rbSub;
+//	return ans;
+//}
+//
 //void _2D::Collider::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
 //{
 //	std::unique_ptr<Base2DCollider> newCollider;
@@ -115,7 +115,7 @@ std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 //	newCollider->Initialize(transform, shapeType, colliderName);
 //	colliders.push_back(move(newCollider));
 //}
-
+//
 //void _2D::Collider::DeleteCollider(const std::string& colliderName)
 //{
 //	colliders.remove_if([&](const std::unique_ptr<Base2DCollider>& collider) { return collider->GetColliderName() == colliderName; });
@@ -146,33 +146,8 @@ std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 //	return itr->get()->GetColliderName();
 //}
 
-BaseCollider* ColliderGroup::AddCollider(CollisionShapeType shapeType, Collider* owner)
+BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollider)
 {
-	std::unique_ptr<BaseCollider> newCollider;
-
-	switch (shapeType)
-	{
-	case CollisionShapeType::Sphere:
-		newCollider = std::make_unique<SphereCollider>();
-		break;
-	case CollisionShapeType::Box:
-		newCollider = std::make_unique<BoxCollider>();
-		break;
-	case CollisionShapeType::IncludeBox:
-		newCollider = std::make_unique<IncludeCollider>();
-		break;
-	case CollisionShapeType::Plane:
-		newCollider = std::make_unique<PlaneCollider>();
-		break;
-	case CollisionShapeType::Ray:
-		newCollider = std::make_unique<RayCollider>();
-		break;
-	//case CollisionShapeType::Mesh:
-	//	newCollider = std::make_unique<SphereCollider>();
-	//	break;
-	}
-
-	newCollider->SetOwner(owner);
 	colliders.push_back(std::move(newCollider));
 	return colliders.back().get();
 }
@@ -194,5 +169,35 @@ void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* coll
 
 void Collider::Initialize(const std::string& groupName)
 {
-	group = CollisionManager::GetInstance()->GetGroup(groupName);
+	group = CollisionManager::GetInstance()->AddGroup(groupName);
+}
+
+BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
+{
+	std::unique_ptr<BaseCollider> newCollider;
+
+	switch (shapeType)
+	{
+	case CollisionShapeType::Sphere:
+		newCollider = std::make_unique<SphereCollider>();
+		break;
+	case CollisionShapeType::Box:
+		newCollider = std::make_unique<BoxCollider>();
+		break;
+	case CollisionShapeType::IncludeBox:
+		newCollider = std::make_unique<IncludeCollider>();
+		break;
+	case CollisionShapeType::Plane:
+		newCollider = std::make_unique<PlaneCollider>();
+		break;
+	case CollisionShapeType::Ray:
+		newCollider = std::make_unique<RayCollider>();
+		break;
+		//case CollisionShapeType::Mesh:
+		//	newCollider = std::make_unique<SphereCollider>();
+		//	break;
+	}
+
+	newCollider->SetOwner(this);
+	return group->AddCollider(std::move(newCollider));
 }
