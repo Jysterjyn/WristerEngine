@@ -21,6 +21,9 @@
     <Filter Include="ソース ファイル\GameObjects">
       <UniqueIdentifier>{898bf4eb-1bd3-45b5-aa1e-b5eded0121a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Collider">
+      <UniqueIdentifier>{8e4eb4a0-3e5b-450f-aa95-71d8157b6486}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\main.cpp">
@@ -35,11 +38,14 @@
     <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp">
       <Filter>ソース ファイル\GameScenes</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Collider\Collider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,14 +58,17 @@
     <ClInclude Include="SourceFiles\GameScenes\TestScene.h">
       <Filter>ソース ファイル\GameScenes</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObjects\Player.h">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\Ground.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
       <Filter>ソース ファイル\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Collider\Collider.h">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Collider\CollisionManager.h">
+      <Filter>ソース ファイル\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,16 @@
+#pragma once
+#include "Object3d.h"
+
+namespace WristerEngine
+{
+	// 天球オブジェクト
+	class Skydome
+	{
+	private:
+		_3D::Object3d* object = nullptr;
+
+	public:
+		// 初期化
+		void Initialize(const std::string& modelName, float scale);
+	};
+}

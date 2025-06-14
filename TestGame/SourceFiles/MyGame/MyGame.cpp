@@ -5,7 +5,6 @@
 #include "NonEffectDrawer.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
-#include <FbxLoader.h>
 using namespace WristerEngine::_2D;
 using namespace WristerEngine::_3D;
 
@@ -19,9 +18,8 @@ void MyGame::Initialize()
 	sceneManager->Initialize(sceneFactory, "TestScene");
 
 	modelManager->Initialize();
-	WristerEngine::ParticleManager::Initialize();
-
-	WristerEngine::_3D::FbxLoader::Initialize();
+	WE::ParticleManager::Initialize();
+	WE::ParticleManager::AddParticleGroup("particle1.png");
 }
 
 void MyGame::Update()
@@ -30,7 +28,6 @@ void MyGame::Update()
 	modelManager->Update();
 	collisionManager->CheckCollisions();
 	modelManager->Update();
-	WristerEngine::Physics::ResetCollideList();
 	WristerEngine::ParticleManager::Update();
 }
 
@@ -38,10 +35,9 @@ void MyGame::Draw()
 {
 	// 描画処理
 	dxCommon->PreDraw();
-	//Sprite::PreDraw();
 	sceneManager->Draw();
 	modelManager->Draw();
-	//WristerEngine::ParticleManager::Draw();
+	WristerEngine::ParticleManager::Draw();
 	WE::ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
@@ -49,5 +45,4 @@ void MyGame::Draw()
 void MyGame::Finalize()
 {
 	Framework::Finalize();
-	WristerEngine::_3D::FbxLoader::Finalize();
 }

@@ -165,8 +165,6 @@
     <ClCompile Include="SourceFiles\Math\Quaternion.cpp" />
     <ClCompile Include="SourceFiles\Math\Vector.cpp" />
     <ClCompile Include="SourceFiles\Scene\FadeManager.cpp" />
-    <ClCompile Include="SourceFiles\Physics\Collider.cpp" />
-    <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp" />
     <ClCompile Include="SourceFiles\Physics\Physics.cpp" />
     <ClCompile Include="SourceFiles\Scene\SceneManager.cpp" />
   </ItemGroup>
@@ -235,8 +233,6 @@
     <ClInclude Include="SourceFiles\Physics\Physics.h" />
     <ClInclude Include="SourceFiles\Scene\BaseScene.h" />
     <ClInclude Include="SourceFiles\Scene\FadeManager.h" />
-    <ClInclude Include="SourceFiles\Physics\Collider.h" />
-    <ClInclude Include="SourceFiles\Physics\CollisionManager.h" />
     <ClInclude Include="SourceFiles\Scene\SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
