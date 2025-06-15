@@ -303,34 +303,30 @@ namespace WristerEngine
 		float GetDistance() const { return distance; }
 	};
 
-	// 多角形平面コライダー
+	// 三角形コライダー
 	class TriangleCollider : public BaseCollider
 	{
+	private:
+		// トランスフォーム未適用時の頂点座標
+		std::array<Vector3, 3> initV;
+
 	protected:
-		// 基準法線
-		//Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
 		// 頂点座標3つ
 		std::array<Vector3, 3> vertices;
-		//float distance = 0;
 		// 法線ベクトル
-		Vector3 normal;
+		Vector3 normal = Vector3::MakeAxis(Axis::Y);
+		// 基準法線(トランスフォームから計算する場合)
+		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
 
 	public:
 		// コンストラクタ
 		TriangleCollider() { shapeType = CollisionShapeType::Triangle; }
 		// 頂点更新
-		//void UpdateVertices();
-		//// 距離を計算
-		//void ComputeDistance() { distance = Dot(GetNormal(), vertices[0]); }
-		//// 法線を計算
-		//void ComputeNormal();
-		//// 平面に変換する
-		//void ToPlaneCollider(PlaneCollider* planeCollider);
-		//// 頂点を追加
-		//void AddVertices(Vector3 pos) { vertices.push_back(pos); }
+		void Update() override;
 		// setter
-		//void SetBaseNormal(Vector3 baseNormal_) { baseNormal = baseNormal_; }
-		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = vertices_; }
+		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = initV = vertices_; }
+		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
+		void SetBaseNormal(const Vector3& normal_) { baseNormal = Normalize(normal_); }
 		// getter
 		Vector3 GetNormal() const { return normal; }
 		const std::array<Vector3, 3>& GetVertices() const { return vertices; }

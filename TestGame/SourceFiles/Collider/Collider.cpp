@@ -216,3 +216,14 @@ void PlaneCollider::Update()
 	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
 	distance = Dot(pTransform->GetWorldPosition(), normal);
 }
+
+void TriangleCollider::Update()
+{
+	if (!pTransform) { return; }
+	for (size_t i = 0; i < initV.size(); i++)
+	{
+		vertices[i] = initV[i] * pTransform->matWorld;
+	}
+	
+	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
+}

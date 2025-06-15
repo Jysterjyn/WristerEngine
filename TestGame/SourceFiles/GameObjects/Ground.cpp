@@ -38,14 +38,6 @@ void Ground::Update()
 void Ground::OnCollision()
 {
 	object->material.ambient = { 1,0,0 };
-	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
-	if (inter)
-	{
-		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-		WE::DiffuseParticle::AddProp dprop;
-		dprop.posOffset = inter.value();
-		pGroup->Add(dprop);
-	}
 }
 
 void Sphere::Initialize()
@@ -69,10 +61,38 @@ void Sphere::Update()
 		object->transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
 		object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
 		object->transform.translation.z += input->Move(WE::Key::Up, WE::Key::Down, 0.1f);
-	
+
 		WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
 	}
 	object->material.ambient = { 0.1f,0.1f,0.1f };
+}
+
+void Sphere::OnCollision()
+{
+	object->material.ambient = { 1,0,0 };
+	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
+	if (inter)
+	{
+		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+		WE::DiffuseParticle::AddProp dprop;
+		dprop.posOffset = inter.value();
+		dprop.posRange = { 0,0,0 };
+		dprop.velOffset = { 0,0,0 };
+		dprop.velRange = { 0.05f,0.05f,0.05f };
+		dprop.accOffset = { 0,0,0 };
+		dprop.accRange = { 0,0,0 };
+		pGroup->Add(dprop);
+	}
+}
+
+void Triangle::CalculationVertices()
+{
+	std::array<Vector3, 3> v;
+	for (size_t i = 0; i < p.size(); i++)
+	{
+		v[i] = p[i] * object->transform.matWorld;
+	}
+	collider->SetVertices(v);
 }
 
 void Triangle::Initialize()
@@ -96,6 +116,7 @@ void Triangle::Initialize()
 	collider = static_cast<WE::TriangleCollider*>(AddCollider(WE::CollisionShapeType::Triangle));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 	collider->SetTransform(&object->transform);
+	collider->SetVertices(p);
 	group->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 }
 
@@ -106,16 +127,8 @@ void Triangle::Update()
 	{
 		object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
 		object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
-		WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
+		object->transform.rotation.y += input->Move(WE::Key::Left, WE::Key::Right, Angle(1));
 
-		std::array<Vector3, 3> v;
-		for (size_t i = 0; i < p.size(); i++)
-		{
-			v[i] = p[i] * object->transform.matWorld;
-		}
-		collider->SetVertices(v);
-		WE::ImGuiManager::PrintVector("TriangleVertex0", v[0]);
-		WE::ImGuiManager::PrintVector("TriangleVertex1", v[1]);
-		WE::ImGuiManager::PrintVector("TriangleVertex2", v[2]);
+		WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
 	}
 }

@@ -34,13 +34,15 @@ class Sphere : public BaseObject
 public:
 	void Initialize();
 	void Update() override;
-	void OnCollision() override { object->material.ambient = { 1,0,0 }; }
+	void OnCollision() override;
 };
 
 class Triangle : public BaseObject
 {
 	WE::TriangleCollider* collider = nullptr;
 	std::array<Vector3, 3> p;
+
+	void CalculationVertices();
 
 public:
 	void Initialize();
