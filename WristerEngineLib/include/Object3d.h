@@ -14,6 +14,8 @@ namespace WristerEngine::_3D
 
 		void Destroy() { isDestroy = true; }
 
+		const Mesh* GetMesh() { return mesh; }
+
 	private:
 		friend class ModelManager;
 		Mesh* mesh = nullptr;

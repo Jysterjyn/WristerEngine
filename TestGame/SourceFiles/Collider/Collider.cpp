@@ -190,6 +190,9 @@ BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
 	case CollisionShapeType::Plane:
 		newCollider = std::make_unique<PlaneCollider>();
 		break;
+	case CollisionShapeType::Triangle:
+		newCollider = std::make_unique<TriangleCollider>();
+		break;
 	case CollisionShapeType::Ray:
 		newCollider = std::make_unique<RayCollider>();
 		break;

@@ -44,5 +44,7 @@ namespace WristerEngine::_3D
 		void LoadOBJ(const std::string& modelName, bool isSmooth, std::string directoryName = "");
 		// •`‰æ
 		void Draw();
+
+		const std::vector<VertexData>& GetVertices() const { return vertices; }
 	};
 }

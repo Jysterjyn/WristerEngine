@@ -113,6 +113,10 @@ bool WristerEngine::CollisionManager::Check2Collisions(BaseCollider* colliderA, 
 
 			return CheckCollisionSpherePlane(sphere, static_cast<PlaneCollider*>(colliderB));
 
+		case WristerEngine::CollisionShapeType::Triangle:
+
+			return CheckCollisionSphereTriangle(sphere, static_cast<TriangleCollider*>(colliderB));
+
 		case WristerEngine::CollisionShapeType::Ray:
 			break;
 		}
@@ -142,7 +146,7 @@ bool CollisionManager::CheckCollision2Spheres(const SphereCollider* colliderA, c
 	return vecAB.Length() <= radAB;
 }
 
-bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB)
+bool CollisionManager::CheckCollisionSpherePlane(const SphereCollider* colliderA, const PlaneCollider* colliderB)
 {
 	// 座標系の原点から球の中心座標への距離
 	float dist = Dot(colliderA->GetCenterPosition(), colliderB->GetNormal());
@@ -154,6 +158,84 @@ bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, Plan
 	// 平面上の最近接点を疑似交点とする
 	inter = -dist * colliderB->GetNormal() + colliderA->GetCenterPosition();
 
+	return true;
+}
+
+static void ClosestPtPoint2Triangle(const Vector3& point, const TriangleCollider* triangle, Vector3* closest)
+{
+	vector<Vector3> p0_p; p0_p.push_back({});
+	p0_p.push_back(triangle->GetVertices()[1] - triangle->GetVertices()[0]);
+	p0_p.push_back(triangle->GetVertices()[2] - triangle->GetVertices()[0]);
+	vector<float> d; d.push_back(0);
+	vector<float> v;
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		Vector3 pi_pt = point - triangle->GetVertices()[i];
+		d.push_back(Dot(p0_p[1], pi_pt));
+		d.push_back(Dot(p0_p[2], pi_pt));
+
+		switch (i)
+		{
+		case 0:
+			// pointがp0の外側の頂点領域の中にあるかどうかチェック
+			if (d[1] <= 0.0f && d[2] <= 0.0f)
+			{
+				// p0が最近傍
+				*closest = triangle->GetVertices()[0];
+				return;
+			}
+			break;
+		default:
+			bool roopNum = i == 2;
+			if (d[3 * i] >= 0.0f && d[4 + roopNum] <= d[3 * i])
+			{
+				// p[i]が最近傍
+				*closest = triangle->GetVertices()[i];
+				return;
+			}
+
+			// pointがp0_p[i]の辺領域の中にあるかどうかチェックし、あればpointのp0_p[i]上に対する射影を返す
+			v.push_back(d[NumberLoop(1 + 4 * roopNum, 1, 6)] * d[NumberLoop(4 + 4 * roopNum, 1, 6)] -
+				d[NumberLoop(3 + 4 * roopNum, 1, 6)] * d[NumberLoop(2 + 4 * roopNum, 1, 6)]);
+			if (v[0 + roopNum] <= 0.0f && d[1 + roopNum] >= 0.0f && d[3 * i] <= 0.0f)
+			{
+				float v_ = d[1 + roopNum] / (d[1 + roopNum] - d[3 * i]);
+				*closest = triangle->GetVertices()[0] + v_ * p0_p[i];
+				return;
+			}
+
+			if (!roopNum) { continue; }
+			// pointがp1_p2の辺領域の中にあるかどうかチェックし、あればpointのp1_p2上に対する射影を返す
+			float va = d[3] * d[6] - d[5] * d[4];
+			if (va <= 0.0f && (d[4] - d[3]) >= 0.0f && (d[5] - d[6]) >= 0.0f)
+			{
+				float w = (d[4] - d[3]) / ((d[4] - d[3]) + (d[5] - d[6]));
+				*closest = triangle->GetVertices()[1] + w * (triangle->GetVertices()[2] - triangle->GetVertices()[1]);
+				return;
+			}
+
+			float denom = 1.0f / (va + v[1] + v[0]);
+			float v1 = v[1] * denom;
+			float w = v[0] * denom;
+			*closest = triangle->GetVertices()[0] + p0_p[1] * v1 + p0_p[2] * w;
+			break;
+		}
+	}
+}
+
+bool CollisionManager::CheckCollisionSphereTriangle(const SphereCollider* colliderA, const TriangleCollider* colliderB)
+{
+	Vector3 p;
+	// 球の中心に対する最近接点である三角形上にある点pを見つける
+	ClosestPtPoint2Triangle(colliderA->GetCenterPosition(), colliderB, &p);
+	// 点pと球の中心の差分ベクトル
+	Vector3 v = p - colliderA->GetCenterPosition();
+	float vLenSq = Dot(v, v);
+	// 球と三角形の距離が半径以下なら当たっていない
+	if (vLenSq > colliderA->GetRadius() * colliderA->GetRadius()) { return false; } // 三角形上の最近接点pを疑似交点とする
+	// 疑似交点を計算
+	inter = p;
 	return true;
 }
 
@@ -276,83 +358,6 @@ bool CollisionManager::CheckCollisionSpherePlane(SphereCollider* colliderA, Plan
 //	if (!isUse[(size_t)IncludeCollider::Axis::Z]) { vecAB.z = 0; }
 //
 //	return vecAB.Length() <= IncludeCollider::GetIncludeRadius();
-//}
-//void ClosestPtPoint2Triangle(const Vector3& point, PolygonCollider* triangle, Vector3* closest)
-//{
-//	vector<Vector3> p0_p; p0_p.push_back({});
-//	p0_p.push_back(triangle->GetVertices()[1] - triangle->GetVertices()[0]);
-//	p0_p.push_back(triangle->GetVertices()[2] - triangle->GetVertices()[0]);
-//	vector<float> d; d.push_back(0);
-//	vector<float> v;
-//
-//	for (size_t i = 0; i < 3; i++)
-//	{
-//		Vector3 pi_pt = point - triangle->GetVertices()[i];
-//		d.push_back(Dot(p0_p[1], pi_pt));
-//		d.push_back(Dot(p0_p[2], pi_pt));
-//
-//		switch (i)
-//		{
-//		case 0:
-//			// pointがp0の外側の頂点領域の中にあるかどうかチェック
-//			if (d[1] <= 0.0f && d[2] <= 0.0f)
-//			{
-//				// p0が最近傍
-//				*closest = triangle->GetVertices()[0];
-//				return;
-//			}
-//			break;
-//		default:
-//			bool roopNum = i == 2;
-//			if (d[3 * i] >= 0.0f && d[4 + roopNum] <= d[3 * i])
-//			{
-//				// p[i]が最近傍
-//				*closest = triangle->GetVertices()[i];
-//				return;
-//			}
-//
-//			// pointがp0_p[i]の辺領域の中にあるかどうかチェックし、あればpointのp0_p[i]上に対する射影を返す
-//			v.push_back(d[NumberLoop(1 + 4 * roopNum, 1, 6)] * d[NumberLoop(4 + 4 * roopNum, 1, 6)] -
-//				d[NumberLoop(3 + 4 * roopNum, 1, 6)] * d[NumberLoop(2 + 4 * roopNum, 1, 6)]);
-//			if (v[0 + roopNum] <= 0.0f && d[1 + roopNum] >= 0.0f && d[3 * i] <= 0.0f)
-//			{
-//				float v_ = d[1 + roopNum] / (d[1 + roopNum] - d[3 * i]);
-//				*closest = triangle->GetVertices()[0] + v_ * p0_p[i];
-//				return;
-//			}
-//
-//			if (!roopNum) { continue; }
-//			// pointがp1_p2の辺領域の中にあるかどうかチェックし、あればpointのp1_p2上に対する射影を返す
-//			float va = d[3] * d[6] - d[5] * d[4];
-//			if (va <= 0.0f && (d[4] - d[3]) >= 0.0f && (d[5] - d[6]) >= 0.0f)
-//			{
-//				float w = (d[4] - d[3]) / ((d[4] - d[3]) + (d[5] - d[6]));
-//				*closest = triangle->GetVertices()[1] + w * (triangle->GetVertices()[2] - triangle->GetVertices()[1]);
-//				return;
-//			}
-//
-//			float denom = 1.0f / (va + v[1] + v[0]);
-//			float v1 = v[1] * denom;
-//			float w = v[0] * denom;
-//			*closest = triangle->GetVertices()[0] + p0_p[1] * v1 + p0_p[2] * w;
-//			break;
-//		}
-//	}
-//}
-//
-//bool CollisionManager::CheckCollisionSpherePolygon(SphereCollider* colliderA, PolygonCollider* colliderB, Vector3* inter)
-//{
-//	Vector3 p;
-//	// 球の中心に対する最近接点である三角形上にある点pを見つける
-//	ClosestPtPoint2Triangle(colliderA->GetWorldPosition(), colliderB, &p);
-//	// 点pと球の中心の差分ベクトル
-//	Vector3 v = p - colliderA->GetWorldPosition();
-//	float vLenSq = Dot(v, v);
-//	// 球と三角形の距離が半径以下なら当たっていない
-//	if (vLenSq > colliderA->GetRadius() * colliderA->GetRadius()) { return false; } // 三角形上の最近接点pを疑似交点とする
-//	// 疑似交点を計算
-//	if (inter) { *inter = p; }
-//	return true;
 //}
 //
 //bool CollisionManager::CheckCollisionRayPlane(RayCollider* colliderA, PlaneCollider* colliderB, float* distance)

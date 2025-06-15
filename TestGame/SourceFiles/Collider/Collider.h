@@ -102,6 +102,7 @@ namespace WristerEngine
 		Box,
 		IncludeBox,
 		Plane,
+		Triangle,
 		Ray,
 		Mesh
 	};
@@ -199,7 +200,6 @@ namespace WristerEngine
 
 		void Initialize(const std::string& groupName);
 
-	public:
 		/// <summary>
 		/// コライダーを登録
 		/// </summary>
@@ -207,6 +207,7 @@ namespace WristerEngine
 		/// <returns>登録されたコライダー</returns>
 		BaseCollider* AddCollider(CollisionShapeType shapeType);
 
+	public:
 		// getter
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
 		ColliderGroup* GetGroup() const { return group; }
@@ -302,38 +303,38 @@ namespace WristerEngine
 		float GetDistance() const { return distance; }
 	};
 
-	//// 多角形平面コライダー
-	//class PolygonCollider : public virtual BaseCollider
-	//{
-	//protected:
-	//	// 基準法線
-	//	Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
-	//	// 頂点は時計回り
-	//	std::vector<Vector3> vertices;
-	//	float distance = 0;
-	//	// メッシュコライダーで使う
-	//	Vector3 normal;
-	//
-	//public:
-	//	// コンストラクタ
-	//	PolygonCollider();
-	//	// 頂点更新
-	//	void UpdateVertices();
-	//	// 距離を計算
-	//	void ComputeDistance() { distance = Dot(GetNormal(), vertices[0]); }
-	//	// 法線を計算
-	//	void ComputeNormal();
-	//	// 平面に変換する
-	//	void ToPlaneCollider(PlaneCollider* planeCollider);
-	//	// 頂点を追加
-	//	void AddVertices(Vector3 pos) { vertices.push_back(pos); }
-	//	// setter
-	//	void SetBaseNormal(Vector3 baseNormal_) { baseNormal = baseNormal_; }
-	//	virtual void SetVertices();
-	//	// getter
-	//	virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
-	//	virtual std::vector<Vector3> GetVertices() { return vertices; }
-	//};
+	// 多角形平面コライダー
+	class TriangleCollider : public BaseCollider
+	{
+	protected:
+		// 基準法線
+		//Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
+		// 頂点座標3つ
+		std::array<Vector3, 3> vertices;
+		//float distance = 0;
+		// 法線ベクトル
+		Vector3 normal;
+
+	public:
+		// コンストラクタ
+		TriangleCollider() { shapeType = CollisionShapeType::Triangle; }
+		// 頂点更新
+		//void UpdateVertices();
+		//// 距離を計算
+		//void ComputeDistance() { distance = Dot(GetNormal(), vertices[0]); }
+		//// 法線を計算
+		//void ComputeNormal();
+		//// 平面に変換する
+		//void ToPlaneCollider(PlaneCollider* planeCollider);
+		//// 頂点を追加
+		//void AddVertices(Vector3 pos) { vertices.push_back(pos); }
+		// setter
+		//void SetBaseNormal(Vector3 baseNormal_) { baseNormal = baseNormal_; }
+		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = vertices_; }
+		// getter
+		Vector3 GetNormal() const { return normal; }
+		const std::array<Vector3, 3>& GetVertices() const { return vertices; }
+	};
 
 	// レイコライダー
 	class RayCollider : public BaseCollider

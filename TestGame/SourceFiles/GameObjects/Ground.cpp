@@ -16,8 +16,6 @@ void Ground::Initialize(const std::string& modelName, const Vector3& scale)
 	object->transform.scale = scale;
 	object->transform.translation.y = -1.0f;
 	object->material.textures[(size_t)WE::_3D::TexType::Main].tiling = { scale.x,scale.z };
-	object->material.ChangeTexture((size_t)WE::_3D::TexType::Main, "./dirt.jpg");
-	object->material.ambient = { 1,1,1 };
 
 	collider = static_cast<WE::PlaneCollider*>(AddCollider(WE::CollisionShapeType::Plane));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Plane));
@@ -75,4 +73,49 @@ void Sphere::Update()
 		WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
 	}
 	object->material.ambient = { 0.1f,0.1f,0.1f };
+}
+
+void Triangle::Initialize()
+{
+	WE::Collider::Initialize("Triangle");
+
+	object = mm->Create("TestTriangle");
+	object->transform.scale *= 5.0f;
+	object->transform.translation.y = -1.0f;
+	object->material.textures[(size_t)WE::_3D::TexType::Main].tiling = {
+		object->transform.scale.x,object->transform.scale.z };
+
+	const WE::_3D::Mesh* mesh = object->GetMesh();
+	auto& vertices = mesh->GetVertices();
+
+	for (size_t i = 0; i < p.size(); i++)
+	{
+		p[i] = vertices[i].pos;
+	}
+
+	collider = static_cast<WE::TriangleCollider*>(AddCollider(WE::CollisionShapeType::Triangle));
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
+	collider->SetTransform(&object->transform);
+	group->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
+}
+
+void Triangle::Update()
+{
+	BaseObject::Update();
+	if (inputIndex == 1)
+	{
+		object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
+		object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
+		WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
+
+		std::array<Vector3, 3> v;
+		for (size_t i = 0; i < p.size(); i++)
+		{
+			v[i] = p[i] * object->transform.matWorld;
+		}
+		collider->SetVertices(v);
+		WE::ImGuiManager::PrintVector("TriangleVertex0", v[0]);
+		WE::ImGuiManager::PrintVector("TriangleVertex1", v[1]);
+		WE::ImGuiManager::PrintVector("TriangleVertex2", v[2]);
+	}
 }

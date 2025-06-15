@@ -28,13 +28,13 @@ namespace WristerEngine
 
 		bool CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB);
 		bool CheckCollision2Spheres(const SphereCollider* colliderA, const SphereCollider* colliderB);
-		bool CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB);
+		bool CheckCollisionSpherePlane(const SphereCollider* colliderA, const PlaneCollider* colliderB);
+		bool CheckCollisionSphereTriangle(const SphereCollider* colliderA, const TriangleCollider* colliderB);
 		//bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
 		//bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
 		//bool CheckCollision2IncludeObjects(IncludeCollider* colliderA, IncludeCollider* colliderB);
 		//bool CheckCollisionRayPlane(RayCollider* colliderA, PlaneCollider* colliderB, float* distance = nullptr);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
-		//bool CheckCollisionSpherePolygon(SphereCollider* colliderA, PolygonCollider* colliderB, Vector3* inter = nullptr);
 		//bool CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance = nullptr);
 
 	public:

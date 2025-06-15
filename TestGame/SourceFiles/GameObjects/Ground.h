@@ -36,3 +36,14 @@ public:
 	void Update() override;
 	void OnCollision() override { object->material.ambient = { 1,0,0 }; }
 };
+
+class Triangle : public BaseObject
+{
+	WE::TriangleCollider* collider = nullptr;
+	std::array<Vector3, 3> p;
+
+public:
+	void Initialize();
+	void Update() override;
+	void OnCollision() override { object->material.ambient = { 1,0,0 }; }
+};
