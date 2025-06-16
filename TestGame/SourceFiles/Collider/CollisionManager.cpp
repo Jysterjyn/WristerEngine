@@ -122,21 +122,25 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 
 			return CheckSphereTriangle(sphere, static_cast<TriangleCollider*>(colliderB));
 		}
-
-		break;
 	}
+	break;
+
 	case CollisionShapeType::Box:
 		if (aST == bST)
 		{
 			return
 				Check2Boxes(static_cast<BoxCollider*>(colliderA), static_cast<BoxCollider*>(colliderB));
 		}
+		break;
+
 	case CollisionShapeType::IncludeBox:
 		if (aST == bST)
 		{
 			return
 				Check2IncludeBoxes(static_cast<IncludeCollider*>(colliderA), static_cast<IncludeCollider*>(colliderB));
 		}
+		break;
+
 	case CollisionShapeType::Ray:
 	{
 		RayCollider* ray = static_cast<RayCollider*>(colliderA);
@@ -152,8 +156,8 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 			return CheckRayPlane(ray, static_cast<PlaneCollider*>(colliderB));
 
 		case CollisionShapeType::Triangle:
-			break;
-			//return CheckSphereTriangle(ray, static_cast<TriangleCollider*>(colliderB));
+
+			return CheckRayTriangle(ray, static_cast<TriangleCollider*>(colliderB));
 		}
 	}
 	}
@@ -319,6 +323,39 @@ bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider
 	return true;
 }
 
+bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle)
+{
+	// 三角形が乗っている平面を算出
+	PlaneCollider plane;
+	plane.SetNormal(triangle->GetNormal());
+	plane.SetDistance(Dot(triangle->GetNormal(), triangle->GetVertices()[0]));
+
+	// レイと平面が当たっていなければ、当たっていない
+	if (!CheckRayPlane(ray, &plane)) { return false; }
+	// レイと平面が当たっていたので、距離と座標が書き込まれた
+	// レイと平面の交点が三角形の内側にあるか判定
+	const float epsilon = 1.0e-5f; // 誤差吸収用の微小な値
+
+	size_t vertexSize = triangle->GetVertices().size();
+	for (size_t i = 0; i < vertexSize; i++)
+	{
+		// 辺pi_p(i+1)について
+		Vector3 pt_px = triangle->GetVertices()[i] - inter.value();
+		Vector3 px_py = triangle->GetVertices()[(i + 1) % vertexSize] - triangle->GetVertices()[i];
+		Vector3 m = Cross(pt_px, px_py);
+		// 辺の外側であれば当たっていないので判定を打ち切る
+		if (Dot(m, triangle->GetNormal()) < -epsilon)
+		{
+			inter = std::nullopt;
+			distance = std::nullopt;
+			return false;
+		}
+	}
+
+	// 内側なので当たっている
+	return true;
+}
+
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
@@ -406,38 +443,6 @@ bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider
 //	float crossRT = Cross(vec, Normalize(toEyePlayerRT));
 //
 //	return crossRT < 0 && crossLB > 0;
-//}
-//
-//bool CollisionManager::CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance)
-//{
-//	if (!CheckFiltering(colliderA, colliderB)) { return false; }
-//	// 三角形が乗っている平面を算出
-//	colliderB->ComputeDistance();
-//	// レイと平面が当たっていなければ当っていない
-//	PlaneCollider tempColliderB;
-//	colliderB->ToPlaneCollider(&tempColliderB);
-//
-//	if (!CheckCollisionRayPlane(colliderA, &tempColliderB, distance)) { return false; }
-//	// レイと平面が当たっていたので、距離と座標が書き込まれた
-//	// レイと平面の交点が三角形の内側にあるか判定
-//	const float epsilon = 1.0e-5f; // 誤差吸収用の微小な値
-//
-//	size_t vertexSize = colliderB->GetVertices().size();
-//	// 頂点数が2つ以下なら判定を打ち切る
-//	if (vertexSize <= 2) { return false; }
-//
-//	for (size_t i = 0; i < vertexSize; i++)
-//	{
-//		// 辺pi_p(i+1)について
-//		Vector3 pt_px = colliderB->GetVertices()[i] - *tempColliderB.GetInter();
-//		Vector3 px_py = colliderB->GetVertices()[(i + 1) % vertexSize] - colliderB->GetVertices()[i];
-//		Vector3 m = Cross(pt_px, px_py);
-//		// 辺の外側であれば当たっていないので判定を打ち切る
-//		if (Dot(m, colliderB->GetNormal()) < -epsilon) { return false; }
-//	}
-//
-//	// 内側なので当たっている
-//	return true;
 //}
 //
 //bool CollisionManager::CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance, Vector3* inter)

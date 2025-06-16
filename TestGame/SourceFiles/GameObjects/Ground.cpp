@@ -27,36 +27,15 @@ void Ground::Initialize(const std::string& modelName, const Vector3& scale)
 void Ground::Update()
 {
 	BaseObject::Update();
-	if (inputIndex == 1)
-	{
-		object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
-		object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
-		ImGui::Text("distance = %f", collider->GetDistance());
-		WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
-	}
+	object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
+	object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
+	ImGui::Text("distance = %f", collider->GetDistance());
+	WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
 }
 
 void Ground::OnCollision()
 {
 	object->material.ambient = { 1,0,0 };
-	std::optional<float> distance = group->GetCollisionPairs()[0].distance;
-	if (distance)
-	{
-		ImGui::Text("Distance = %f", distance.value());
-	}
-	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
-	if (inter)
-	{
-		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-		WE::DiffuseParticle::AddProp dprop;
-		dprop.posOffset = inter.value();
-		dprop.posRange = { 0,0,0 };
-		dprop.velOffset = { 0,0,0 };
-		dprop.velRange = { 0.05f,0.05f,0.05f };
-		dprop.accOffset = { 0,0,0 };
-		dprop.accRange = { 0,0,0 };
-		pGroup->Add(dprop);
-	}
 }
 
 void Sphere::Initialize()
@@ -75,14 +54,11 @@ void Sphere::Initialize()
 
 void Sphere::Update()
 {
-	if (inputIndex == 0)
-	{
-		object->transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
-		object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
-		object->transform.translation.z += input->Move(WE::Key::Up, WE::Key::Down, 0.1f);
+	object->transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
+	object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
+	object->transform.translation.z += input->Move(WE::Key::Up, WE::Key::Down, 0.1f);
 
-		WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
-	}
+	WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
 	object->material.ambient = { 0.1f,0.1f,0.1f };
 }
 
@@ -109,29 +85,43 @@ void Ray::Initialize()
 	WE::Collider::Initialize("Ray");
 	collider = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Ray));
-	collider->SetTransform(&transform);
-	collider->SetBaseDir({ 0,1,0 });
 	group->SetAttribute(ChangeVal(CollisionAttribute::Ray));
 }
 
 void Ray::Update()
 {
-	if (inputIndex == 0)
+	WE::ImGuiManager::SliderVector("RayPos", pos, -10.0f, 10.0f);
+	WE::ImGuiManager::SliderVector("RayDir", dir, -1.0f, 1.0f);
+	dir.Normalize();
+
+	collider->SetDir(dir);
+	collider->SetStartPos(pos);
+
+	WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
+	pDrawer->ClearLines();
+	pDrawer->DrawLine3d(pos, pos + dir * 100.0f, WE::ColorRGB::Red());
+	pDrawer->TransferVertices();
+}
+
+void Ray::OnCollision()
+{
+	std::optional<float> distance = group->GetCollisionPairs()[0].distance;
+	if (distance)
 	{
-		transform.translation.x += input->Move(WE::Key::W, WE::Key::S, 0.1f);
-		transform.translation.z += input->Move(WE::Key::A, WE::Key::D, 0.1f);
-		transform.translation.y += input->Move(WE::Key::Left, WE::Key::Right, 0.1f);
-		transform.Update();
-
-		Vector3 pos = collider->GetStartPos();
-		Vector3 dir = collider->GetDir();
-
-		WE::ImGuiManager::PrintVector("GroundNormal", dir);
-
-		WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
-		pDrawer->ClearLines();
-		pDrawer->DrawLine3d(pos, pos + dir * 100.0f, WE::ColorRGB::Red());
-		pDrawer->TransferVertices();
+		ImGui::Text("Distance = %f", distance.value());
+	}
+	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
+	if (inter)
+	{
+		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+		WE::DiffuseParticle::AddProp dprop;
+		dprop.posOffset = inter.value();
+		dprop.posRange = { 0,0,0 };
+		dprop.velOffset = { 0,0,0 };
+		dprop.velRange = { 0.05f,0.05f,0.05f };
+		dprop.accOffset = { 0,0,0 };
+		dprop.accRange = { 0,0,0 };
+		pGroup->Add(dprop);
 	}
 }
 

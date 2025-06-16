@@ -34,9 +34,9 @@ namespace WristerEngine
 		bool Check2Boxes(const BoxCollider* boxA, const BoxCollider* boxB);
 		bool Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB);
 		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
+		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
 		//bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
-		//bool CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance = nullptr);
 
 	public:
 		static CollisionManager* GetInstance();

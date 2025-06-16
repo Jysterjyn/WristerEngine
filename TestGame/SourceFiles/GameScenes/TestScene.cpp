@@ -11,9 +11,9 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	ground.Initialize("cube", { 10,0.01f,10 });
+	//ground.Initialize("cube", { 10,0.01f,10 });
 	//sphere.Initialize();
-	//triangle.Initialize();
+	triangle.Initialize();
 	ray.Initialize();
 
 	WE::_3D::DebugCamera::Prop prop;
@@ -26,8 +26,8 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	if (input->IsTrigger(WE::Key::K)) { BaseObject::ChangeIndex(); }
-	ground.Update();
+	//ground.Update();
 	//sphere.Update();
-	//triangle.Update();
+	triangle.Update();
 	ray.Update();
 }

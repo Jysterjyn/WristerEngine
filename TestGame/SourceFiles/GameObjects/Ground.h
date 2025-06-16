@@ -50,10 +50,12 @@ public:
 
 class Ray : public BaseObject
 {
-	WE::_3D::Transform transform;
 	WE::RayCollider* collider = nullptr;
+	Vector3 pos;
+	Vector3 dir = { 0,-1,0 };
 
 public:
 	void Initialize();
 	void Update() override;
+	void OnCollision() override;
 };
