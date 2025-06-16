@@ -20,6 +20,8 @@ void MyGame::Initialize()
 	modelManager->Initialize();
 	WE::ParticleManager::Initialize();
 	WE::ParticleManager::AddParticleGroup("particle1.png");
+
+	pDrawer->Initialize();
 }
 
 void MyGame::Update()
@@ -29,6 +31,7 @@ void MyGame::Update()
 	collisionManager->CheckCollisions();
 	modelManager->Update();
 	WristerEngine::ParticleManager::Update();
+	pDrawer->Update();
 }
 
 void MyGame::Draw()
@@ -37,6 +40,7 @@ void MyGame::Draw()
 	dxCommon->PreDraw();
 	sceneManager->Draw();
 	modelManager->Draw();
+	pDrawer->Draw();
 	WristerEngine::ParticleManager::Draw();
 	WE::ImGuiManager::Draw();
 	dxCommon->PostDraw();

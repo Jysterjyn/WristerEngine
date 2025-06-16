@@ -54,5 +54,6 @@ namespace WristerEngine::_3D
 		void Initialize();
 		void Update();
 		void Draw();
+		void ClearLines() { vertices.clear(); }
 	};
 }

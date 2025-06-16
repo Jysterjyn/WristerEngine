@@ -3,44 +3,12 @@
 #include <cassert>
 using namespace WE;
 
-//float IncludeCollider::includeRadius = 0.1f;
-//
+float IncludeCollider::includeRadius = 0.1f;
+
 //_2D::Collider::~Collider()
 //{
 //	colliders.clear();
 //	collisionManager->PopCollider(this);
-//}
-//
-//void PolygonCollider::SetVertices()
-//{
-//	Vector3 objPos = pTransform->translation;
-//	Vector3 objRad = pTransform->scale;
-//	vertices.clear();
-//	vertices.push_back(objPos + Vector3(-objRad.x, objRad.y, -objRad.z));
-//	vertices.push_back(objPos + Vector3(objRad.x, objRad.y, -objRad.z));
-//	vertices.push_back(objPos + Vector3(objRad.x, -objRad.y, -objRad.z));
-//	vertices.push_back(objPos - objRad);
-//}
-//
-//void PolygonCollider::ComputeNormal()
-//{
-//	assert(vertices.size() >= 3);
-//	// –@ü‚ÌŒvŽZ
-//	Vector3 vec1 = vertices[2] - vertices[0];
-//	Vector3 vec2 = vertices[1] - vertices[0];
-//	normal = Normalize(Cross(vec1, vec2));
-//}
-//
-//void PolygonCollider::ToPlaneCollider(PlaneCollider* planeCollider)
-//{
-//	planeCollider->SetDistance(distance);
-//	planeCollider->SetRotation(pTransform->rotation);
-//	planeCollider->SetBaseNormal(baseNormal);
-//}
-//
-//void PolygonCollider::UpdateVertices()
-//{
-//	for (Vector3& vertex : vertices) { vertex *= pTransform->matWorld; }
 //}
 //
 //void MeshCollider::ConstructTriangles(ModelManager* model)
@@ -205,9 +173,10 @@ BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
 	return group->AddCollider(std::move(newCollider));
 }
 
-CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const std::optional<Vector3>& inter_)
+CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, 
+	const std::optional<Vector3>& inter_, std::optional<float> distance_)
 {
-	my = my_; other = other_; inter = inter_;
+	my = my_; other = other_; inter = inter_; distance = distance_;
 }
 
 void PlaneCollider::Update()

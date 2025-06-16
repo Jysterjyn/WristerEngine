@@ -2,11 +2,13 @@
 #include "Framework.h"
 #include "PostEffect.h"
 #include "ModelManager.h"
+#include <PrimitiveDrawer.h>
 
 // このゲーム固有の処理クラス
-class MyGame : public WristerEngine::Framework
+class MyGame : public WE::Framework
 {
-	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
+	WE::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
+	WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
 
 	// 初期化(オーバーライド)
 	void Initialize();

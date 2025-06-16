@@ -61,13 +61,13 @@
     <ClInclude Include="SourceFiles\GameObjects\Ground.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
-      <Filter>ソース ファイル\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Collider\Collider.h">
       <Filter>ソース ファイル\Collider</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Collider\CollisionManager.h">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
       <Filter>ソース ファイル\Collider</Filter>
     </ClInclude>
   </ItemGroup>

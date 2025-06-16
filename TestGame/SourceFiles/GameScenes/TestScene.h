@@ -14,6 +14,7 @@ class TestScene : public WristerEngine::BaseScene
 	Ground ground;
 	Sphere sphere;
 	Triangle triangle;
+	Ray ray;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

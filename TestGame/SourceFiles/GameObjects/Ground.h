@@ -42,10 +42,19 @@ class Triangle : public BaseObject
 	WE::TriangleCollider* collider = nullptr;
 	std::array<Vector3, 3> p;
 
-	void CalculationVertices();
-
 public:
 	void Initialize();
 	void Update() override;
 	void OnCollision() override { object->material.ambient = { 1,0,0 }; }
+};
+
+class Ray : public BaseObject
+{
+	WE::RayCollider* collider = nullptr;
+	Vector3 pos;
+	Vector3 dir = { 0,-1,0 };
+
+public:
+	void Initialize();
+	void Update() override;
 };

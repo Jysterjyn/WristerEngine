@@ -158,8 +158,10 @@ namespace WristerEngine
 	{
 		BaseCollider* my = nullptr, * other = nullptr;
 		std::optional<Vector3> inter;
+		std::optional<float> distance = std::nullopt;
 
-		CollisionPair(BaseCollider* my, BaseCollider* other, const std::optional<Vector3>& inter);
+		CollisionPair(BaseCollider* my, BaseCollider* other, 
+			const std::optional<Vector3>& inter, std::optional<float> distance);
 	};
 
 	class ColliderGroup : public CollisionInfo
@@ -208,6 +210,14 @@ namespace WristerEngine
 		BaseCollider* AddCollider(CollisionShapeType shapeType);
 
 	public:
+		virtual ~Collider()
+		{
+			for (auto& collider : *group->GetColliders())
+			{
+				if (collider->GetOwner() == this) { collider->Destroy(); }
+			}
+		}
+
 		// getter
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
 		ColliderGroup* GetGroup() const { return group; }
@@ -263,6 +273,7 @@ namespace WristerEngine
 		enum class Axis { X, Y, Z };
 
 	private:
+		Vector3 center;		// 中心座標
 		// 完全包含半径
 		static float includeRadius;
 		// 当たり判定を取るペアのtrueが少ないほうが計算に反映される
@@ -271,12 +282,16 @@ namespace WristerEngine
 	public:
 		// コンストラクタ
 		IncludeCollider() { shapeType = CollisionShapeType::IncludeBox; }
+		// 中心座標を取得
+		const Vector3& GetCenterPosition() const { return center; }
 		// 完全包含半径の取得
 		static float GetIncludeRadius() { return includeRadius; }
-		// 使う軸の設定
-		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
 		// 使う軸の取得
 		std::array<bool, 3> GetUseAxis() const { return isUseAxis; }
+		// 中心座標を設定
+		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		// 使う軸の設定
+		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
 	};
 
 	// 平面コライダー
@@ -335,11 +350,21 @@ namespace WristerEngine
 	// レイコライダー
 	class RayCollider : public BaseCollider
 	{
-	public:
+	private:
+		// 始点座標
+		Vector3 start;
+		// 方向
+		Vector3 dir = Vector3::MakeAxis(Axis::X);
 		// 基準レイ
-		Vector3 baseRayDirection = Vector3::MakeAxis(Axis::Z);
+		Vector3 baseRayDirection = Vector3::MakeAxis(Axis::X);
+
+	public:
 		// コンストラクタ
 		RayCollider() { shapeType = CollisionShapeType::Ray; }
+		const Vector3& GetStartPos() const { return start; }
+		const Vector3& GetDir() const { return dir; }
+		void SetStartPos(const Vector3& start_) { start = start_; }
+		void SetDir(const Vector3& dir_) { dir = Normalize(dir_); }
 		// レイ方向を取得
 		//virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
 	};

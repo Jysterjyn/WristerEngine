@@ -5,6 +5,7 @@
 #include <DiffuseParticle.h>
 #include <ImGuiManager.h>
 #include <imgui.h>
+#include <PrimitiveDrawer.h>
 
 uint32_t BaseObject::inputIndex = 0;
 
@@ -38,6 +39,24 @@ void Ground::Update()
 void Ground::OnCollision()
 {
 	object->material.ambient = { 1,0,0 };
+	std::optional<float> distance = group->GetCollisionPairs()[0].distance;
+	if (distance)
+	{
+		ImGui::Text("Distance = %f", distance.value());
+	}
+	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
+	if (inter)
+	{
+		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+		WE::DiffuseParticle::AddProp dprop;
+		dprop.posOffset = inter.value();
+		dprop.posRange = { 0,0,0 };
+		dprop.velOffset = { 0,0,0 };
+		dprop.velRange = { 0.05f,0.05f,0.05f };
+		dprop.accOffset = { 0,0,0 };
+		dprop.accRange = { 0,0,0 };
+		pGroup->Add(dprop);
+	}
 }
 
 void Sphere::Initialize()
@@ -85,14 +104,26 @@ void Sphere::OnCollision()
 	}
 }
 
-void Triangle::CalculationVertices()
+void Ray::Initialize()
 {
-	std::array<Vector3, 3> v;
-	for (size_t i = 0; i < p.size(); i++)
-	{
-		v[i] = p[i] * object->transform.matWorld;
-	}
-	collider->SetVertices(v);
+	WE::Collider::Initialize("Ray");
+	collider = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Ray));
+	group->SetAttribute(ChangeVal(CollisionAttribute::Ray));
+}
+
+void Ray::Update()
+{
+	WE::ImGuiManager::SliderVector("RayPos", pos, -10.0f, 10.0f);
+	WE::ImGuiManager::SliderVector("RayDir", dir, -1.0f, 1.0f);
+	dir.Normalize();
+
+	WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
+	pDrawer->ClearLines();
+	pDrawer->DrawLine3d(pos, pos + dir * 100.0f, WE::ColorRGB::Red());
+	pDrawer->TransferVertices();
+	collider->SetDir(dir);
+	collider->SetStartPos(pos);
 }
 
 void Triangle::Initialize()
