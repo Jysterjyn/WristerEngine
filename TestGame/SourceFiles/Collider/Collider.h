@@ -353,19 +353,19 @@ namespace WristerEngine
 		// 始点座標
 		Vector3 start;
 		// 方向
-		Vector3 dir = Vector3::MakeAxis(Axis::X);
+		Vector3 dir = Vector3::MakeAxis(Axis::Z);
 		// 基準レイ
-		Vector3 baseRayDirection = Vector3::MakeAxis(Axis::X);
+		Vector3 baseDir = Vector3::MakeAxis(Axis::Z);
 
 	public:
 		// コンストラクタ
 		RayCollider() { shapeType = CollisionShapeType::Ray; }
+		void Update() override;
 		const Vector3& GetStartPos() const { return start; }
 		const Vector3& GetDir() const { return dir; }
 		void SetStartPos(const Vector3& start_) { start = start_; }
 		void SetDir(const Vector3& dir_) { dir = Normalize(dir_); }
-		// レイ方向を取得
-		//virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
+		void SetBaseDir(const Vector3& dir_) { baseDir = Normalize(dir_); }
 	};
 
 	// メッシュコライダー

@@ -109,21 +109,30 @@ void Ray::Initialize()
 	WE::Collider::Initialize("Ray");
 	collider = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Ray));
+	collider->SetTransform(&transform);
+	collider->SetBaseDir({ 0,1,0 });
 	group->SetAttribute(ChangeVal(CollisionAttribute::Ray));
 }
 
 void Ray::Update()
 {
-	WE::ImGuiManager::SliderVector("RayPos", pos, -10.0f, 10.0f);
-	WE::ImGuiManager::SliderVector("RayDir", dir, -1.0f, 1.0f);
-	dir.Normalize();
+	if (inputIndex == 0)
+	{
+		transform.translation.x += input->Move(WE::Key::W, WE::Key::S, 0.1f);
+		transform.translation.z += input->Move(WE::Key::A, WE::Key::D, 0.1f);
+		transform.translation.y += input->Move(WE::Key::Left, WE::Key::Right, 0.1f);
+		transform.Update();
 
-	WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
-	pDrawer->ClearLines();
-	pDrawer->DrawLine3d(pos, pos + dir * 100.0f, WE::ColorRGB::Red());
-	pDrawer->TransferVertices();
-	collider->SetDir(dir);
-	collider->SetStartPos(pos);
+		Vector3 pos = collider->GetStartPos();
+		Vector3 dir = collider->GetDir();
+
+		WE::ImGuiManager::PrintVector("GroundNormal", dir);
+
+		WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
+		pDrawer->ClearLines();
+		pDrawer->DrawLine3d(pos, pos + dir * 100.0f, WE::ColorRGB::Red());
+		pDrawer->TransferVertices();
+	}
 }
 
 void Triangle::Initialize()

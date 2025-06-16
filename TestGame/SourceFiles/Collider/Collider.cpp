@@ -212,3 +212,10 @@ void TriangleCollider::Update()
 
 	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
 }
+
+void RayCollider::Update()
+{
+	if (!pTransform) { return; }
+	start = pTransform->GetWorldPosition();
+	dir = baseDir * Matrix4::Rotate(pTransform->rotation);
+}
