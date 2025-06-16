@@ -135,9 +135,16 @@ void ColliderGroup::AddCollisionPair(const CollisionPair& pair)
 	collisionPairs.push_back(pair);
 }
 
+ColliderGroup::~ColliderGroup()
+{
+	colliders.clear();
+	for (auto* owner : owners) { owner->DeleteGroup(); }
+}
+
 void Collider::Initialize(const std::string& groupName)
 {
 	group = CollisionManager::GetInstance()->AddGroup(groupName);
+	group->AddOwner(this);
 }
 
 BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
@@ -173,7 +180,16 @@ BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
 	return group->AddCollider(std::move(newCollider));
 }
 
-CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, 
+Collider::~Collider()
+{
+	if (!group) { return; }
+	for (auto& collider : *group->GetColliders())
+	{
+		if (collider->GetOwner() == this) { collider->Destroy(); }
+	}
+}
+
+CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_,
 	const std::optional<Vector3>& inter_, std::optional<float> distance_)
 {
 	my = my_; other = other_; inter = inter_; distance = distance_;
@@ -193,6 +209,6 @@ void TriangleCollider::Update()
 	{
 		vertices[i] = initV[i] * pTransform->matWorld;
 	}
-	
+
 	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
 }

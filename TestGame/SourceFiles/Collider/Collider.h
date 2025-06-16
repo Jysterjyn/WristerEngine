@@ -160,7 +160,7 @@ namespace WristerEngine
 		std::optional<Vector3> inter;
 		std::optional<float> distance = std::nullopt;
 
-		CollisionPair(BaseCollider* my, BaseCollider* other, 
+		CollisionPair(BaseCollider* my, BaseCollider* other,
 			const std::optional<Vector3>& inter, std::optional<float> distance);
 	};
 
@@ -168,6 +168,7 @@ namespace WristerEngine
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
+		std::list<Collider*> owners;
 
 		/// <summary>
 		/// “–‚½‚Á‚½ƒyƒA‚Ì‹L˜^
@@ -177,7 +178,7 @@ namespace WristerEngine
 		std::vector<CollisionPair> collisionPairs;
 
 	public:
-		~ColliderGroup() { colliders.clear(); }
+		~ColliderGroup();
 
 		void Update();
 
@@ -189,6 +190,8 @@ namespace WristerEngine
 		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
 
 		void AddCollisionPair(const CollisionPair& pair);
+
+		void AddOwner(Collider* owner) { owners.push_back(owner); }
 
 		// getter
 		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
@@ -210,13 +213,9 @@ namespace WristerEngine
 		BaseCollider* AddCollider(CollisionShapeType shapeType);
 
 	public:
-		virtual ~Collider()
-		{
-			for (auto& collider : *group->GetColliders())
-			{
-				if (collider->GetOwner() == this) { collider->Destroy(); }
-			}
-		}
+		virtual ~Collider();
+			
+		void DeleteGroup() { group = nullptr; }
 
 		// getter
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
