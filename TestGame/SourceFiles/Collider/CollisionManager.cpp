@@ -149,7 +149,7 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 		{
 		case CollisionShapeType::Sphere:
 
-			//return Check2Spheres(ray, static_cast<SphereCollider*>(colliderB));
+			return CheckRaySphere(ray, static_cast<SphereCollider*>(colliderB));
 
 		case CollisionShapeType::Plane:
 
@@ -356,6 +356,28 @@ bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCo
 	return true;
 }
 
+bool CollisionManager::CheckRaySphere(RayCollider* ray, SphereCollider* sphere)
+{
+	Vector3 m = ray->GetStartPos() - sphere->GetCenterPosition();
+	float b = Dot(m, ray->GetDir());
+	float c = Dot(m, m) - sphere->GetRadius() * sphere->GetRadius();
+	// レイの始点がsphereの外側にあり(c > 0)、レイが離れていく方向を差している場合(b > 0)、当たらない
+	if (c > 0.0f && b > 0.0f) { return false; }
+
+	float discr = b * b - c; // 判別式
+	// 負の判別式はレイが球から外れている
+	if (discr < 0.0f) { return false; }
+
+	// レイは球と交差している
+	float t = -b - sqrtf(discr); // 交差する最小の値tを計算
+	// tが負である場合、レイは球の内側から開始しているのでtを0にクランプ
+	t = max(t, 0.0f);
+
+	distance = t;
+	inter = ray->GetStartPos() + t * ray->GetDir();
+	return true;
+}
+
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
@@ -443,28 +465,6 @@ bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCo
 //	float crossRT = Cross(vec, Normalize(toEyePlayerRT));
 //
 //	return crossRT < 0 && crossLB > 0;
-//}
-//
-//bool CollisionManager::CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance, Vector3* inter)
-//{
-//	Vector3 m = colliderA->GetCenterPosition() - colliderB->GetCenterPosition();
-//	float b = Dot(m, colliderA->GetRayDirection());
-//	float c = Dot(m, m) - colliderB->GetRadius() * colliderB->GetRadius();
-//	// レイの始点がsphereの外側にあり(c > 0)、レイが離れていく方向を差している場合(b > 0)、当たらない
-//	if (c > 0.0f && b > 0.0f) { return false; }
-//
-//	float discr = b * b - c; // 判別式
-//	// 負の判別式はレイが球から外れている
-//	if (discr < 0.0f) { return false; }
-//
-//	// レイは球と交差している
-//	float t = -b - sqrtf(discr); // 交差する最小の値tを計算
-//	// tが負である場合、レイは球の内側から開始しているのでtを0にクランプ
-//	if (t < 0) { t = 0.0f; }
-//
-//	if (distance) { *distance = t; }
-//	if (inter) { *inter = colliderA->GetCenterPosition() + t * colliderA->GetRayDirection(); }
-//	return true;
 //}
 //
 //bool CollisionManager::CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB)
