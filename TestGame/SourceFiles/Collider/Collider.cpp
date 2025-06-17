@@ -4,6 +4,7 @@
 using namespace WE;
 
 float IncludeCollider::includeRadius = 0.1f;
+uint32_t Collider::nextSerialNumber = 0;
 
 //_2D::Collider::~Collider()
 //{

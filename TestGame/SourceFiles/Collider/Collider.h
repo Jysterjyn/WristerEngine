@@ -200,6 +200,10 @@ namespace WristerEngine
 
 	class Collider
 	{
+	private:
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
+
 	protected:
 		ColliderGroup* group = nullptr;
 
@@ -213,13 +217,15 @@ namespace WristerEngine
 		BaseCollider* AddCollider(CollisionShapeType shapeType);
 
 	public:
+		Collider() { serialNumber = nextSerialNumber++; }
 		virtual ~Collider();
-			
+
 		void DeleteGroup() { group = nullptr; }
 
 		// getter
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
 		ColliderGroup* GetGroup() const { return group; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
 
 		// 衝突コールバック関数
 		virtual void OnCollision() {}

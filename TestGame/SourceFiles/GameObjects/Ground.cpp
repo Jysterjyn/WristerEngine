@@ -48,6 +48,7 @@ void Sphere::Initialize()
 	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 	collider->SetTransform(&object->transform);
+	object->transform.translation.y = 1.0f;
 
 	group->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 }
@@ -65,19 +66,6 @@ void Sphere::Update()
 void Sphere::OnCollision()
 {
 	object->material.ambient = { 1,0,0 };
-	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
-	if (inter)
-	{
-		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-		WE::DiffuseParticle::AddProp dprop;
-		dprop.posOffset = inter.value();
-		dprop.posRange = { 0,0,0 };
-		dprop.velOffset = { 0,0,0 };
-		dprop.velRange = { 0.05f,0.05f,0.05f };
-		dprop.accOffset = { 0,0,0 };
-		dprop.accRange = { 0,0,0 };
-		pGroup->Add(dprop);
-	}
 }
 
 void Ray::Initialize()
@@ -86,6 +74,7 @@ void Ray::Initialize()
 	collider = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Ray));
 	group->SetAttribute(ChangeVal(CollisionAttribute::Ray));
+	pos.y = 4.0f;
 }
 
 void Ray::Update()
@@ -105,17 +94,17 @@ void Ray::Update()
 
 void Ray::OnCollision()
 {
-	std::optional<float> distance = group->GetCollisionPairs()[0].distance;
-	if (distance)
-	{
-		ImGui::Text("Distance = %f", distance.value());
-	}
-	std::optional<Vector3> inter = GetCollisionPairs()[0].inter;
-	if (inter)
+	auto pairs = group->GetCollisionPairs();
+	std::sort(pairs.begin(), pairs.end(), [](const WE::CollisionPair& p1, const WE::CollisionPair& p2)
+		{
+			return p1.distance.value() < p2.distance.value();
+		});
+
+	if (pairs[0].inter)
 	{
 		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
 		WE::DiffuseParticle::AddProp dprop;
-		dprop.posOffset = inter.value();
+		dprop.posOffset = pairs[0].inter.value();
 		dprop.posRange = { 0,0,0 };
 		dprop.velOffset = { 0,0,0 };
 		dprop.velRange = { 0.05f,0.05f,0.05f };
@@ -123,6 +112,28 @@ void Ray::OnCollision()
 		dprop.accRange = { 0,0,0 };
 		pGroup->Add(dprop);
 	}
+
+	//for(auto& pairs: group->GetCollisionPairs())
+	//{
+	//	std::optional<float> distance = pairs.distance;
+	//	if (distance)
+	//	{
+	//		ImGui::Text("Distance = %f", distance.value());
+	//	}
+	//	std::optional<Vector3> inter = pairs.inter;
+	//	if (inter)
+	//	{
+	//		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+	//		WE::DiffuseParticle::AddProp dprop;
+	//		dprop.posOffset = inter.value();
+	//		dprop.posRange = { 0,0,0 };
+	//		dprop.velOffset = { 0,0,0 };
+	//		dprop.velRange = { 0.05f,0.05f,0.05f };
+	//		dprop.accOffset = { 0,0,0 };
+	//		dprop.accRange = { 0,0,0 };
+	//		pGroup->Add(dprop);
+	//	}
+	//}
 }
 
 void Triangle::Initialize()

@@ -11,7 +11,7 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	//ground.Initialize("cube", { 10,0.01f,10 });
+	ground.Initialize("cube", { 10,0.01f,10 });
 	sphere.Initialize();
 	//triangle.Initialize();
 	ray.Initialize();

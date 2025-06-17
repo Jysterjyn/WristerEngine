@@ -30,6 +30,7 @@ void CollisionManager::CheckCollisions()
 
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
 
+	std::map<uint32_t, Collider*> collisionList;
 	auto itrA = colliderGroups.begin();
 	for (; itrA != colliderGroups.end(); itrA++)
 	{
@@ -44,10 +45,18 @@ void CollisionManager::CheckCollisions()
 
 			for (auto& pair : groupA->GetCollisionPairs())
 			{
-				pair.my->GetOwner()->OnCollision();
-				pair.other->GetOwner()->OnCollision();
+				Collider* o1 = pair.my->GetOwner();
+				Collider* o2 = pair.other->GetOwner();
+				uint32_t s1 = o1->GetSerialNumber();
+				uint32_t s2 = o2->GetSerialNumber();
+				if (!collisionList.contains(s1)) { collisionList[s1] = o1; }
+				if (!collisionList.contains(s2)) { collisionList[s2] = o2; }
 			}
 		}
+	}
+	for (auto& collider : collisionList)
+	{
+		collider.second->OnCollision();
 	}
 }
 
