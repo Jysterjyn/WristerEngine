@@ -70,5 +70,11 @@
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
       <Filter>ソース ファイル\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\WristerEngineLib\include\Mesh.h">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WristerEngineLib\include\Object3d.h">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

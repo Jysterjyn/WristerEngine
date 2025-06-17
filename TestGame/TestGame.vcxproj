@@ -20,6 +20,8 @@
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\WristerEngineLib\include\Mesh.h" />
+    <ClInclude Include="..\WristerEngineLib\include\Object3d.h" />
     <ClInclude Include="SourceFiles\Collider\Collider.h" />
     <ClInclude Include="SourceFiles\Collider\CollisionManager.h" />
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h" />

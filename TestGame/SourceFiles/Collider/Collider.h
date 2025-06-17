@@ -253,9 +253,10 @@ namespace WristerEngine
 		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
 
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
+	
 	public:
 		SphereCollider() { shapeType = CollisionShapeType::Sphere; }
-		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 半径を取得
@@ -328,12 +329,12 @@ namespace WristerEngine
 		Vector3 normal = Vector3::MakeAxis(Axis::Y);
 		// 基準法線(トランスフォームから計算する場合)
 		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
+		// 頂点更新
+		void Update() override;
 
 	public:
 		// コンストラクタ
 		TriangleCollider() { shapeType = CollisionShapeType::Triangle; }
-		// 頂点更新
-		void Update() override;
 		// setter
 		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = initV = vertices_; }
 		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
@@ -354,11 +355,12 @@ namespace WristerEngine
 		// 基準法線(トランスフォームから計算する場合)
 		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
 
+		void Update() override;
+
 	public:
 		// コンストラクタ
 		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
 		PlaneCollider(const TriangleCollider& triangle);
-		void Update() override;
 		// setter
 		void SetDistance(float distance_) { distance = distance_; }
 		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
@@ -379,10 +381,11 @@ namespace WristerEngine
 		// 基準レイ
 		Vector3 baseDir = Vector3::MakeAxis(Axis::Z);
 
+		void Update() override;
+
 	public:
 		// コンストラクタ
 		RayCollider() { shapeType = CollisionShapeType::Ray; }
-		void Update() override;
 		const Vector3& GetStartPos() const { return start; }
 		const Vector3& GetDir() const { return dir; }
 		void SetStartPos(const Vector3& start_) { start = start_; }
@@ -391,14 +394,13 @@ namespace WristerEngine
 	};
 
 	// メッシュコライダー
-	//class MeshCollider : public BaseCollider
-	//{
-	//private:
-	//	// ワールド行列の逆行列
-	//	Matrix4 invMatWorld;
-	//
-	//public:
-	//	std::vector<PolygonCollider> triangles;
-	//	void ConstructTriangles(ModelManager* model);
-	//};
+	class MeshCollider : public BaseCollider
+	{
+	private:
+		// ワールド行列の逆行列
+		//Matrix4 invMatWorld;
+	
+	public:
+		MeshCollider() { shapeType = CollisionShapeType::Mesh; }
+	};
 }

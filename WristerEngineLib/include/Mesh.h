@@ -46,5 +46,6 @@ namespace WristerEngine::_3D
 		void Draw();
 
 		const std::vector<VertexData>& GetVertices() const { return vertices; }
+		const std::vector<uint16_t>& GetIndices() const { return indices; }
 	};
 }
