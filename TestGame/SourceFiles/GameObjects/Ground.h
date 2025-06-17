@@ -30,11 +30,15 @@ public:
 class Sphere : public BaseObject
 {
 	WE::SphereCollider* collider = nullptr;
+	WE::_3D::Object3d* object2 = nullptr;
+	std::map<uint32_t, WE::_3D::Object3d*> t;
 
 public:
 	void Initialize();
 	void Update() override;
 	void OnCollision() override;
+	void OnCollisionEnter() override;
+	void OnCollisionExit() override;
 };
 
 class Triangle : public BaseObject

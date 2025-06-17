@@ -131,12 +131,16 @@ namespace WristerEngine
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
 		Collider* owner = nullptr;
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
 
 	protected:
 		CollisionShapeType shapeType = CollisionShapeType::Unknown;
 		const _3D::Transform* pTransform = nullptr;
 
 	public:
+		BaseCollider(bool isDec = false) { serialNumber = nextSerialNumber++; if (isDec) { nextSerialNumber--; } }
+
 		virtual ~BaseCollider() = default;
 
 		virtual void Update() {}
@@ -152,6 +156,7 @@ namespace WristerEngine
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
 		Collider* GetOwner() { return owner; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
 	struct CollisionPair
@@ -162,6 +167,8 @@ namespace WristerEngine
 
 		CollisionPair(BaseCollider* my, BaseCollider* other,
 			const std::optional<Vector3>& inter, std::optional<float> distance);
+
+		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
 
 	class ColliderGroup : public CollisionInfo
@@ -170,12 +177,11 @@ namespace WristerEngine
 		std::list<std::unique_ptr<BaseCollider>> colliders;
 		std::list<Collider*> owners;
 
-		/// <summary>
-		/// 当たったペアの記録
-		/// </summary>
-		/// <param name="first">自分のコライダー</param>
-		/// <param name="second">相手のコライダー</param>
+		// 当たったペアの記録
 		std::vector<CollisionPair> collisionPairs;
+		std::vector<CollisionPair> enterPairs;
+		std::vector<CollisionPair> exitPairs;
+		std::vector<CollisionPair> collisionPairsPre;
 
 	public:
 		~ColliderGroup();
@@ -193,9 +199,13 @@ namespace WristerEngine
 
 		void AddOwner(Collider* owner) { owners.push_back(owner); }
 
+		void CallCollision();
+
 		// getter
 		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return collisionPairs; }
+		const std::vector<CollisionPair>& GetEnterPairs() const { return enterPairs; }
+		const std::vector<CollisionPair>& GetExitPairs() const { return exitPairs; }
 	};
 
 	class Collider
@@ -228,7 +238,12 @@ namespace WristerEngine
 		uint32_t GetSerialNumber() const { return serialNumber; }
 
 		// 衝突コールバック関数
+		// 当たっている間
 		virtual void OnCollision() {}
+		// 当たった瞬間
+		virtual void OnCollisionEnter() {}
+		// 離れた瞬間
+		virtual void OnCollisionExit() {}
 	};
 
 	// 球コライダー
@@ -312,7 +327,7 @@ namespace WristerEngine
 
 	public:
 		// コンストラクタ
-		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
+		PlaneCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Plane; }
 		void Update() override;
 		// setter
 		void SetDistance(float distance_) { distance = distance_; }

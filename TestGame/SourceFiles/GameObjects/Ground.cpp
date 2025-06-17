@@ -44,11 +44,22 @@ void Sphere::Initialize()
 
 	object = mm->Create("TestSphere", true);
 	object->material.ambient = { 0.1f,0.1f,0.1f };
+	object2 = mm->Create("TestSphere", true);
+	object2->material.ambient = { 0.1f,0.1f,0.1f };
+
+	object->transform.translation.x = -3.0f;
+	object->transform.translation.y = 1.0f;
+	object2->transform.parent = &object->transform;
+	object2->transform.translation.x = -1.0f;
 
 	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 	collider->SetTransform(&object->transform);
-	object->transform.translation.y = 1.0f;
+	t[collider->GetSerialNumber()] = object;
+	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
+	collider->SetTransform(&object2->transform);
+	t[collider->GetSerialNumber()] = object2;
 
 	group->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 }
@@ -61,11 +72,29 @@ void Sphere::Update()
 
 	WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
 	object->material.ambient = { 0.1f,0.1f,0.1f };
+	object2->material.ambient = { 0.1f,0.1f,0.1f };
 }
 
 void Sphere::OnCollision()
 {
-	object->material.ambient = { 1,0,0 };
+}
+
+void Sphere::OnCollisionEnter()
+{
+	for (auto& pair : group->GetEnterPairs())
+	{
+		uint32_t s = pair.my->GetSerialNumber();
+		t[s]->material.ambient = { 1,0,0 };
+	}
+}
+
+void Sphere::OnCollisionExit()
+{
+	for (auto& pair : group->GetExitPairs())
+	{
+		uint32_t s = pair.my->GetSerialNumber();
+		t[s]->material.ambient = { 0,0,1 };
+	}
 }
 
 void Ray::Initialize()

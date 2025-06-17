@@ -1,9 +1,11 @@
 #include "Collider.h"
 #include "CollisionManager.h"
 #include <cassert>
+#include <imgui.h>
 using namespace WE;
 
 float IncludeCollider::includeRadius = 0.1f;
+uint32_t BaseCollider::nextSerialNumber = 0;
 uint32_t Collider::nextSerialNumber = 0;
 
 //_2D::Collider::~Collider()
@@ -115,6 +117,28 @@ uint32_t Collider::nextSerialNumber = 0;
 //	return itr->get()->GetColliderName();
 //}
 
+CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_,
+	const std::optional<Vector3>& inter_, std::optional<float> distance_)
+{
+	my = my_; other = other_; inter = inter_; distance = distance_;
+}
+
+bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
+{
+	if (p1.my->GetSerialNumber() == p2.my->GetSerialNumber() &&
+		p1.other->GetSerialNumber() == p2.other->GetSerialNumber())
+	{
+		return true;
+	}
+
+	if (p1.my->GetSerialNumber() == p2.other->GetSerialNumber() &&
+		p1.other->GetSerialNumber() == p2.my->GetSerialNumber())
+	{
+		return true;
+	}
+	return false;
+}
+
 BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollider)
 {
 	colliders.push_back(std::move(newCollider));
@@ -129,11 +153,65 @@ void ColliderGroup::Update()
 
 	for (auto& collider : colliders) { collider->Update(); }
 	collisionPairs.clear();
+	enterPairs.clear();
+	exitPairs.clear();
 }
 
 void ColliderGroup::AddCollisionPair(const CollisionPair& pair)
 {
 	collisionPairs.push_back(pair);
+}
+
+void ColliderGroup::CallCollision()
+{
+	std::map<uint32_t, uint8_t> calledCollision;
+	for (auto& pair : collisionPairs)
+	{
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollision();
+		calledCollision[owner->GetSerialNumber()];
+	}
+
+	for (auto& pair : collisionPairs)
+	{
+		bool isNotEnter = false;
+		for (auto& pairPre : collisionPairsPre)
+		{
+			if (CollisionPair::Check(pair, pairPre)) { isNotEnter = true; break; }
+		}
+		if (isNotEnter) { continue; }
+		enterPairs.push_back(pair);
+	}
+	calledCollision.clear();
+	for (auto& pair : enterPairs)
+	{
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollisionEnter();
+		calledCollision[owner->GetSerialNumber()];
+	}
+
+	for (auto& pair : collisionPairsPre)
+	{
+		bool isNotEnter = false;
+		for (auto& pairPre : collisionPairs)
+		{
+			if (CollisionPair::Check(pair, pairPre)) { isNotEnter = true; break; }
+		}
+		if (isNotEnter) { continue; }
+		exitPairs.push_back(pair);
+	}
+	calledCollision.clear();
+	for (auto& pair : exitPairs)
+	{
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollisionExit();
+		calledCollision[owner->GetSerialNumber()];
+	}
+
+	collisionPairsPre = collisionPairs;
 }
 
 ColliderGroup::~ColliderGroup()
@@ -188,12 +266,6 @@ Collider::~Collider()
 	{
 		if (collider->GetOwner() == this) { collider->Destroy(); }
 	}
-}
-
-CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_,
-	const std::optional<Vector3>& inter_, std::optional<float> distance_)
-{
-	my = my_; other = other_; inter = inter_; distance = distance_;
 }
 
 void PlaneCollider::Update()

@@ -42,21 +42,12 @@ void CollisionManager::CheckCollisions()
 			ColliderGroup* groupB = itrB->second.get();
 			if (!CheckFiltering(groupA, groupB)) { continue; }
 			if (!Check2Groups(groupA, groupB)) { continue; }
-
-			for (auto& pair : groupA->GetCollisionPairs())
-			{
-				Collider* o1 = pair.my->GetOwner();
-				Collider* o2 = pair.other->GetOwner();
-				uint32_t s1 = o1->GetSerialNumber();
-				uint32_t s2 = o2->GetSerialNumber();
-				if (!collisionList.contains(s1)) { collisionList[s1] = o1; }
-				if (!collisionList.contains(s2)) { collisionList[s2] = o2; }
-			}
 		}
 	}
-	for (auto& collider : collisionList)
+
+	for (auto& group : colliderGroups)
 	{
-		collider.second->OnCollision();
+		group.second->CallCollision();
 	}
 }
 
@@ -335,7 +326,7 @@ bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider
 bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle)
 {
 	// ŽOŠpŒ`‚ªæ‚Á‚Ä‚¢‚é•½–Ê‚ðŽZo
-	PlaneCollider plane;
+	PlaneCollider plane(true);
 	plane.SetNormal(triangle->GetNormal());
 	plane.SetDistance(Dot(triangle->GetNormal(), triangle->GetVertices()[0]));
 
