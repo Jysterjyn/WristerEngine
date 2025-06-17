@@ -314,30 +314,6 @@ namespace WristerEngine
 		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
 	};
 
-	// 平面コライダー
-	class PlaneCollider : public BaseCollider
-	{
-	protected:
-		// 法線ベクトル
-		Vector3 normal = Vector3::MakeAxis(Axis::Y);
-		// 原点(0,0,0)からの距離
-		float distance = 0;
-		// 基準法線(トランスフォームから計算する場合)
-		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
-
-	public:
-		// コンストラクタ
-		PlaneCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Plane; }
-		void Update() override;
-		// setter
-		void SetDistance(float distance_) { distance = distance_; }
-		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
-		void SetBaseNormal(const Vector3& normal_) { baseNormal = Normalize(normal_); }
-		// getter
-		const Vector3& GetNormal() const { return normal; }
-		float GetDistance() const { return distance; }
-	};
-
 	// 三角形コライダー
 	class TriangleCollider : public BaseCollider
 	{
@@ -365,6 +341,31 @@ namespace WristerEngine
 		// getter
 		Vector3 GetNormal() const { return normal; }
 		const std::array<Vector3, 3>& GetVertices() const { return vertices; }
+	};
+
+	// 平面コライダー
+	class PlaneCollider : public BaseCollider
+	{
+	protected:
+		// 法線ベクトル
+		Vector3 normal = Vector3::MakeAxis(Axis::Y);
+		// 原点(0,0,0)からの距離
+		float distance = 0;
+		// 基準法線(トランスフォームから計算する場合)
+		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
+
+	public:
+		// コンストラクタ
+		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
+		PlaneCollider(const TriangleCollider& triangle);
+		void Update() override;
+		// setter
+		void SetDistance(float distance_) { distance = distance_; }
+		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
+		void SetBaseNormal(const Vector3& normal_) { baseNormal = Normalize(normal_); }
+		// getter
+		const Vector3& GetNormal() const { return normal; }
+		float GetDistance() const { return distance; }
 	};
 
 	// レイコライダー

@@ -326,9 +326,7 @@ bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider
 bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle)
 {
 	// 三角形が乗っている平面を算出
-	PlaneCollider plane(true);
-	plane.SetNormal(triangle->GetNormal());
-	plane.SetDistance(Dot(triangle->GetNormal(), triangle->GetVertices()[0]));
+	PlaneCollider plane(*triangle);
 
 	// レイと平面が当たっていなければ、当たっていない
 	if (!CheckRayPlane(ray, &plane)) { return false; }

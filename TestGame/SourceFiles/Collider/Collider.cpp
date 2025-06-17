@@ -268,6 +268,13 @@ Collider::~Collider()
 	}
 }
 
+PlaneCollider::PlaneCollider(const TriangleCollider& triangle) : BaseCollider(true)
+{
+	shapeType = CollisionShapeType::Plane;
+	normal = triangle.GetNormal();
+	distance = Dot(triangle.GetNormal(), triangle.GetVertices()[0]);
+}
+
 void PlaneCollider::Update()
 {
 	if (!pTransform) { return; }
