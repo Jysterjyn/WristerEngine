@@ -276,7 +276,7 @@ namespace WristerEngine
 
 	public:
 		// コンストラクタ
-		BoxCollider() { shapeType = CollisionShapeType::Box; }
+		BoxCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Box; }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 3軸方向の半径を取得
@@ -386,7 +386,7 @@ namespace WristerEngine
 
 	public:
 		// コンストラクタ
-		RayCollider() { shapeType = CollisionShapeType::Ray; }
+		RayCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Ray; }
 		const Vector3& GetStartPos() const { return start; }
 		const Vector3& GetDir() const { return dir; }
 		void SetStartPos(const Vector3& start_) { start = start_; }

@@ -138,16 +138,15 @@ void Triangle::Initialize()
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 	collider->SetTransform(&object->transform);
 	collider->ConstructTriangles(object->GetMesh());
+	object->transform.rotation = { 0,0,Angle(90) };
 	group->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 }
 
 void Triangle::Update()
 {
 	object->material.ambient = { 0.1f,0.1f,0.1f };
-	if (inputIndex == 1)
-	{
-		object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
-		object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
-		object->transform.rotation.y += input->Move(WE::Key::Left, WE::Key::Right, Angle(1));
-	}
+	object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
+	object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
+	object->transform.rotation.y += input->Move(WE::Key::Left, WE::Key::Right, Angle(1));
+	WE::ImGuiManager::PrintVector("Mesh Rot", object->transform.rotation);
 }

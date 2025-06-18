@@ -30,12 +30,12 @@ namespace WristerEngine
 		bool Check2Spheres(const SphereCollider* sphereA, const SphereCollider* sphereB);
 		bool CheckSpherePlane(const SphereCollider* sphere, const PlaneCollider* plane);
 		bool CheckSphereTriangle(const SphereCollider* sphere, const TriangleCollider* triangle);
+		bool CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh);
 		bool Check2Boxes(const BoxCollider* boxA, const BoxCollider* boxB);
 		bool Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB);
 		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
 		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
 		bool CheckRaySphere(RayCollider* ray, SphereCollider* sphere);
-		bool CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh);
 		bool CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
 

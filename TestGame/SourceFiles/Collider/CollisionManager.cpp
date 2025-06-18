@@ -157,6 +157,10 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 		case CollisionShapeType::Triangle:
 
 			return CheckRayTriangle(ray, static_cast<TriangleCollider*>(colliderB));
+
+		case CollisionShapeType::Mesh:
+
+			return CheckRayMesh(ray, static_cast<MeshCollider*>(colliderB));
 		}
 	}
 	}
@@ -375,7 +379,7 @@ bool CollisionManager::CheckRaySphere(RayCollider* ray, SphereCollider* sphere)
 	return true;
 }
 
-bool WristerEngine::CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh)
+bool CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh)
 {
 	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
 	SphereCollider localSphere(true);
@@ -392,9 +396,24 @@ bool WristerEngine::CollisionManager::CheckSphereMesh(const SphereCollider* sphe
 	return false;
 }
 
-bool WristerEngine::CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh)
+bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh)
 {
-	ray; mesh;
+	// オブジェクトのローカル座標系でのレイを得る
+	RayCollider localRay(true);
+	localRay.SetStartPos(ray->GetStartPos() * mesh->GetInvMatWorld());
+	Matrix4 invTransformMat = mesh->GetInvMatWorld();
+	invTransformMat.SetVector({}, 3);
+	localRay.SetDir(ray->GetDir() * invTransformMat);
+
+	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it)
+	{
+		if (!CheckRayTriangle(&localRay, it->get())) { continue; }
+		inter = inter.value() * mesh->GetMatWorld();
+		Vector3 sub = inter.value() - ray->GetStartPos();
+		distance = Dot(sub, ray->GetDir());
+		return true;
+	}
+
 	return false;
 }
 

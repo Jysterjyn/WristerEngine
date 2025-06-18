@@ -293,7 +293,7 @@ void TriangleCollider::Update()
 	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
 }
 
-void WristerEngine::TriangleCollider::ComputeNormal()
+void TriangleCollider::ComputeNormal()
 {
 	Vector3 p0_p1 = vertices[1] - vertices[0];
 	Vector3 p0_p2 = vertices[2] - vertices[0];
@@ -307,13 +307,13 @@ void RayCollider::Update()
 	dir = baseDir * Matrix4::Rotate(pTransform->rotation);
 }
 
-void WristerEngine::MeshCollider::Update()
+void MeshCollider::Update()
 {
 	assert(pTransform);
 	invMatWorld = Inverse(pTransform->matWorld);
 }
 
-void WristerEngine::MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
+void MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
 {
 	triangles.clear();
 
