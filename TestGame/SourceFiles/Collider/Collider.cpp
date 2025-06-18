@@ -324,7 +324,7 @@ void WristerEngine::MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
 
 	for (size_t i = 0; i < triangleNum; i++)
 	{
-		TriangleCollider* tri = new TriangleCollider(true);
+		std::unique_ptr<TriangleCollider> tri = std::make_unique<TriangleCollider>(true);
 		int idx0 = indices[i * 3 + 0];
 		int idx1 = indices[i * 3 + 1];
 		int idx2 = indices[i * 3 + 2];
@@ -336,6 +336,6 @@ void WristerEngine::MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
 
 		tri->SetVertices(v);
 		tri->ComputeNormal();
-		triangles.push_back(tri);
+		triangles.push_back(std::move(tri));
 	}
 }

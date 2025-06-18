@@ -378,21 +378,15 @@ bool CollisionManager::CheckRaySphere(RayCollider* ray, SphereCollider* sphere)
 bool WristerEngine::CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh)
 {
 	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
-	SphereCollider localSphere;
+	SphereCollider localSphere(true);
 	localSphere.SetCenterPosition(sphere->GetCenterPosition() * mesh->GetInvMatWorld());
 	localSphere.SetRadius(sphere->GetRadius() * mesh->GetInvMatWorld().GetVector(0).Length());
 
-	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it) 
+	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it)
 	{
-		const TriangleCollider* triangle = *it;
-
-		if (CheckSphereTriangle(&localSphere, triangle))
-		{
-			const Matrix4& matWorld = mesh->GetMatWorld();
-
-			inter = inter.value() * matWorld;
-			return true;
-		}
+		if (!CheckSphereTriangle(&localSphere, it->get())) { continue; }
+		inter = inter.value() * mesh->GetMatWorld();
+		return true;
 	}
 
 	return false;
