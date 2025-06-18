@@ -1,7 +1,6 @@
 #include "CollisionManager.h"
 #include <algorithm>
 #include "ImGuiManager.h"
-#include <GlobalVariables.h>
 #include <imgui.h>
 using namespace std;
 using namespace WE;
@@ -24,10 +23,6 @@ ColliderGroup* CollisionManager::AddGroup(const std::string& groupName)
 
 void CollisionManager::CheckCollisions()
 {
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	gv->AddItem<bool>("Collision", "visible", isPrint);
-	isPrint = gv->GetValue<bool>("Collision", "visible");
-
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
 
 	std::map<uint32_t, Collider*> collisionList;
@@ -121,6 +116,10 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 		case CollisionShapeType::Triangle:
 
 			return CheckSphereTriangle(sphere, static_cast<TriangleCollider*>(colliderB));
+
+		case CollisionShapeType::Mesh:
+
+			return CheckSphereMesh(sphere, static_cast<MeshCollider*>(colliderB));
 		}
 	}
 	break;
@@ -374,6 +373,35 @@ bool CollisionManager::CheckRaySphere(RayCollider* ray, SphereCollider* sphere)
 	distance = t;
 	inter = ray->GetStartPos() + t * ray->GetDir();
 	return true;
+}
+
+bool WristerEngine::CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh)
+{
+	// オブジェクトのローカル座標系での球を得る（半径はXスケールを参照)
+	SphereCollider localSphere;
+	localSphere.SetCenterPosition(sphere->GetCenterPosition() * mesh->GetInvMatWorld());
+	localSphere.SetRadius(sphere->GetRadius() * mesh->GetInvMatWorld().GetVector(0).Length());
+
+	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it) 
+	{
+		const TriangleCollider* triangle = *it;
+
+		if (CheckSphereTriangle(&localSphere, triangle))
+		{
+			const Matrix4& matWorld = mesh->GetMatWorld();
+
+			inter = inter.value() * matWorld;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool WristerEngine::CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh)
+{
+	ray; mesh;
+	return false;
 }
 
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)

@@ -10,7 +10,6 @@ namespace WristerEngine
 	{
 	private:
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		bool isPrint = false;
 		std::optional<Vector3> inter = std::nullopt;
 		std::optional<float> distance = std::nullopt;
 
@@ -36,6 +35,8 @@ namespace WristerEngine
 		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
 		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
 		bool CheckRaySphere(RayCollider* ray, SphereCollider* sphere);
+		bool CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh);
+		bool CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
 
 	public:
@@ -45,7 +46,5 @@ namespace WristerEngine
 
 		// ‘S“–‚½‚è”»’è
 		void CheckCollisions();
-
-		bool IsPrint() const { return isPrint; }
 	};
 }

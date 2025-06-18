@@ -250,9 +250,9 @@ BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
 	case CollisionShapeType::Ray:
 		newCollider = std::make_unique<RayCollider>();
 		break;
-		//case CollisionShapeType::Mesh:
-		//	newCollider = std::make_unique<SphereCollider>();
-		//	break;
+	case CollisionShapeType::Mesh:
+		newCollider = std::make_unique<MeshCollider>();
+		break;
 	}
 
 	newCollider->SetOwner(this);
@@ -293,9 +293,49 @@ void TriangleCollider::Update()
 	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
 }
 
+void WristerEngine::TriangleCollider::ComputeNormal()
+{
+	Vector3 p0_p1 = vertices[1] - vertices[0];
+	Vector3 p0_p2 = vertices[2] - vertices[0];
+	SetNormal(Cross(p0_p1, p0_p2));
+}
+
 void RayCollider::Update()
 {
 	if (!pTransform) { return; }
 	start = pTransform->GetWorldPosition();
 	dir = baseDir * Matrix4::Rotate(pTransform->rotation);
+}
+
+void WristerEngine::MeshCollider::Update()
+{
+	assert(pTransform);
+	invMatWorld = Inverse(pTransform->matWorld);
+}
+
+void WristerEngine::MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
+{
+	triangles.clear();
+
+	const std::vector<_3D::Mesh::VertexData>& vertices = mesh->GetVertices();
+	const std::vector<unsigned short>& indices = mesh->GetIndices();
+
+	size_t triangleNum = indices.size() / 3;
+
+	for (size_t i = 0; i < triangleNum; i++)
+	{
+		TriangleCollider* tri = new TriangleCollider(true);
+		int idx0 = indices[i * 3 + 0];
+		int idx1 = indices[i * 3 + 1];
+		int idx2 = indices[i * 3 + 2];
+
+		std::array<Vector3, 3> v;
+		v[0] = { vertices[idx0].pos.x,vertices[idx0].pos.y,vertices[idx0].pos.z, };
+		v[1] = { vertices[idx1].pos.x,vertices[idx1].pos.y,vertices[idx1].pos.z, };
+		v[2] = { vertices[idx2].pos.x,vertices[idx2].pos.y,vertices[idx2].pos.z, };
+
+		tri->SetVertices(v);
+		tri->ComputeNormal();
+		triangles.push_back(tri);
+	}
 }

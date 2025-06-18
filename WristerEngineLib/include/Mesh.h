@@ -7,7 +7,7 @@ namespace WristerEngine::_3D
 	// 形状データ
 	class Mesh
 	{
-	private:
+	public:
 		// 頂点データ構造体
 		struct VertexData
 		{
@@ -16,6 +16,7 @@ namespace WristerEngine::_3D
 			Vector2 uv;  // uv座標
 		};
 
+	private:
 		friend Material;
 		// Microsoft::WRL::を省略
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;

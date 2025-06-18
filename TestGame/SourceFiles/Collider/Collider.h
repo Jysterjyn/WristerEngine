@@ -254,7 +254,7 @@ namespace WristerEngine
 		float radius = 1.0f;	// 半径
 
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
-	
+
 	public:
 		SphereCollider() { shapeType = CollisionShapeType::Sphere; }
 		// 中心座標を取得
@@ -334,7 +334,8 @@ namespace WristerEngine
 
 	public:
 		// コンストラクタ
-		TriangleCollider() { shapeType = CollisionShapeType::Triangle; }
+		TriangleCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Triangle; }
+		void ComputeNormal();
 		// setter
 		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = initV = vertices_; }
 		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
@@ -397,10 +398,18 @@ namespace WristerEngine
 	class MeshCollider : public BaseCollider
 	{
 	private:
+		std::list<TriangleCollider*> triangles;
 		// ワールド行列の逆行列
-		//Matrix4 invMatWorld;
-	
+		Matrix4 invMatWorld;
+
+		void Update() override;
+
 	public:
 		MeshCollider() { shapeType = CollisionShapeType::Mesh; }
+		~MeshCollider() { for (auto* tri : triangles) { delete tri; } }
+		void ConstructTriangles(const _3D::Mesh* mesh);
+		const Matrix4& GetInvMatWorld() const { return invMatWorld; }
+		const std::list<TriangleCollider*>& GetTriangles() const { return triangles; }
+		const Matrix4& GetMatWorld() const { return pTransform->matWorld; }
 	};
 }

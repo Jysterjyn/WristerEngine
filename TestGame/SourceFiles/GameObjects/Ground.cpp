@@ -44,57 +44,32 @@ void Sphere::Initialize()
 
 	object = mm->Create("TestSphere", true);
 	object->material.ambient = { 0.1f,0.1f,0.1f };
-	object2 = mm->Create("TestSphere", true);
-	object2->material.ambient = { 0.1f,0.1f,0.1f };
 
-	object->transform.translation.x = -3.0f;
 	object->transform.translation.y = 1.0f;
-	object2->transform.parent = &object->transform;
-	object2->transform.translation.x = -1.0f;
 
 	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 	collider->SetTransform(&object->transform);
-	t[collider->GetSerialNumber()] = object;
-	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
-	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
-	collider->SetTransform(&object2->transform);
-	t[collider->GetSerialNumber()] = object2;
 
 	group->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 }
 
 void Sphere::Update()
 {
-	object->transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
-	object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
-	object->transform.translation.z += input->Move(WE::Key::Up, WE::Key::Down, 0.1f);
+	if (inputIndex == 0)
+	{
+		object->transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
+		object->transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
+		object->transform.translation.z += input->Move(WE::Key::Up, WE::Key::Down, 0.1f);
+	}
 
 	WE::ImGuiManager::PrintVector("SpherePosition", collider->GetCenterPosition());
 	object->material.ambient = { 0.1f,0.1f,0.1f };
-	object2->material.ambient = { 0.1f,0.1f,0.1f };
 }
 
 void Sphere::OnCollision()
 {
-}
-
-void Sphere::OnCollisionEnter()
-{
-	for (auto& pair : group->GetEnterPairs())
-	{
-		uint32_t s = pair.my->GetSerialNumber();
-		t[s]->material.ambient = { 1,0,0 };
-	}
-}
-
-void Sphere::OnCollisionExit()
-{
-	for (auto& pair : group->GetExitPairs())
-	{
-		uint32_t s = pair.my->GetSerialNumber();
-		t[s]->material.ambient = { 0,0,1 };
-	}
+	object->material.ambient = { 1,0,0 };
 }
 
 void Ray::Initialize()
@@ -129,47 +104,23 @@ void Ray::OnCollision()
 			return p1.distance.value() < p2.distance.value();
 		});
 
-	if (pairs[0].inter)
-	{
-		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-		WE::DiffuseParticle::AddProp dprop;
-		dprop.posOffset = pairs[0].inter.value();
-		dprop.posRange = { 0,0,0 };
-		dprop.velOffset = { 0,0,0 };
-		dprop.velRange = { 0.05f,0.05f,0.05f };
-		dprop.accOffset = { 0,0,0 };
-		dprop.accRange = { 0,0,0 };
-		pGroup->Add(dprop);
-	}
-
-	//for(auto& pairs: group->GetCollisionPairs())
-	//{
-	//	std::optional<float> distance = pairs.distance;
-	//	if (distance)
-	//	{
-	//		ImGui::Text("Distance = %f", distance.value());
-	//	}
-	//	std::optional<Vector3> inter = pairs.inter;
-	//	if (inter)
-	//	{
-	//		WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
-	//		WE::DiffuseParticle::AddProp dprop;
-	//		dprop.posOffset = inter.value();
-	//		dprop.posRange = { 0,0,0 };
-	//		dprop.velOffset = { 0,0,0 };
-	//		dprop.velRange = { 0.05f,0.05f,0.05f };
-	//		dprop.accOffset = { 0,0,0 };
-	//		dprop.accRange = { 0,0,0 };
-	//		pGroup->Add(dprop);
-	//	}
-	//}
+	if (!pairs[0].inter) { return; }
+	WE::ParticleGroup* pGroup = WE::ParticleManager::GetParticleGroup(0);
+	WE::DiffuseParticle::AddProp dprop;
+	dprop.posOffset = pairs[0].inter.value();
+	dprop.posRange = { 0,0,0 };
+	dprop.velOffset = { 0,0,0 };
+	dprop.velRange = { 0.05f,0.05f,0.05f };
+	dprop.accOffset = { 0,0,0 };
+	dprop.accRange = { 0,0,0 };
+	pGroup->Add(dprop);
 }
 
 void Triangle::Initialize()
 {
 	WE::Collider::Initialize("Triangle");
 
-	object = mm->Create("TestTriangle");
+	object = mm->Create("sword", true);
 	object->transform.scale *= 5.0f;
 	object->transform.translation.y = -1.0f;
 	object->material.textures[(size_t)WE::_3D::TexType::Main].tiling = {
@@ -183,22 +134,20 @@ void Triangle::Initialize()
 		p[i] = vertices[i].pos;
 	}
 
-	collider = static_cast<WE::TriangleCollider*>(AddCollider(WE::CollisionShapeType::Triangle));
+	collider = static_cast<WE::MeshCollider*>(AddCollider(WE::CollisionShapeType::Mesh));
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 	collider->SetTransform(&object->transform);
-	collider->SetVertices(p);
+	collider->ConstructTriangles(object->GetMesh());
 	group->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 }
 
 void Triangle::Update()
 {
-	BaseObject::Update();
+	object->material.ambient = { 0.1f,0.1f,0.1f };
 	if (inputIndex == 1)
 	{
 		object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
 		object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
 		object->transform.rotation.y += input->Move(WE::Key::Left, WE::Key::Right, Angle(1));
-
-		WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
 	}
 }
