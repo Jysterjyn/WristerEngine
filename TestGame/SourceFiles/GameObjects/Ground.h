@@ -19,10 +19,10 @@ public:
 
 class Ground : public BaseObject
 {
-	WE::PlaneCollider* collider = nullptr;
+	WE::MeshCollider* collider = nullptr;
 
 public:
-	void Initialize(const std::string& modelName, const Vector3& scale);
+	void Initialize();
 	void Update() override;
 	void OnCollision() override;
 };

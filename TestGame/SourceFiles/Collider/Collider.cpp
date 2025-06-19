@@ -324,16 +324,15 @@ void MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
 
 	for (size_t i = 0; i < triangleNum; i++)
 	{
-		std::unique_ptr<TriangleCollider> tri = std::make_unique<TriangleCollider>(true);
-		int idx0 = indices[i * 3 + 0];
-		int idx1 = indices[i * 3 + 1];
-		int idx2 = indices[i * 3 + 2];
-
+		std::array<int, 3> idx{};
 		std::array<Vector3, 3> v;
-		v[0] = { vertices[idx0].pos.x,vertices[idx0].pos.y,vertices[idx0].pos.z, };
-		v[1] = { vertices[idx1].pos.x,vertices[idx1].pos.y,vertices[idx1].pos.z, };
-		v[2] = { vertices[idx2].pos.x,vertices[idx2].pos.y,vertices[idx2].pos.z, };
+		for (size_t j = 0; j < idx.size(); j++)
+		{
+			idx[j] = indices[i * 3 + j];
+			v[j] = { vertices[idx[j]].pos.x,vertices[idx[j]].pos.y,vertices[idx[j]].pos.z, };
+		}
 
+		std::unique_ptr<TriangleCollider> tri = std::make_unique<TriangleCollider>(true);
 		tri->SetVertices(v);
 		tri->ComputeNormal();
 		triangles.push_back(std::move(tri));

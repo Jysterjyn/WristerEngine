@@ -9,33 +9,28 @@
 
 uint32_t BaseObject::inputIndex = 0;
 
-void Ground::Initialize(const std::string& modelName, const Vector3& scale)
+void Ground::Initialize()
 {
 	WE::Collider::Initialize("Ground");
 
-	object = mm->Create(modelName);
-	object->transform.scale = scale;
-	object->transform.translation.y = -1.0f;
-	object->material.textures[(size_t)WE::_3D::TexType::Main].tiling = { scale.x,scale.z };
-
-	collider = static_cast<WE::PlaneCollider*>(AddCollider(WE::CollisionShapeType::Plane));
-	collider->SetAttribute(ChangeVal(CollisionAttribute::Plane));
+	object = mm->Create("Ground");
+	const float SCALE = 5.0f;
+	object->transform.scale = { SCALE,1,SCALE };
+	object->material.textures[0].tiling = { SCALE,SCALE };
+	collider = static_cast<WE::MeshCollider*>(AddCollider(WE::CollisionShapeType::Mesh));
 	collider->SetTransform(&object->transform);
-	group->SetAttribute(ChangeVal(CollisionAttribute::Plane));
+	object->transform.rotation.z = Angle(10);
+	collider->ConstructTriangles(object->GetMesh());
+	collider->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
+	group->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
 }
 
 void Ground::Update()
 {
-	BaseObject::Update();
-	object->transform.rotation.x += input->Move(WE::Key::W, WE::Key::S, Angle(1));
-	object->transform.rotation.z += input->Move(WE::Key::A, WE::Key::D, Angle(1));
-	ImGui::Text("distance = %f", collider->GetDistance());
-	WE::ImGuiManager::PrintVector("GroundNormal", collider->GetNormal());
 }
 
 void Ground::OnCollision()
 {
-	object->material.ambient = { 1,0,0 };
 }
 
 void Sphere::Initialize()

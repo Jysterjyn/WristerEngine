@@ -149,7 +149,7 @@ namespace WristerEngine
 
 		void SetOwner(Collider* owner_) { owner = owner_; }
 		// トランスフォームを設定
-		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; }
+		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; Update(); }
 
 		// getter
 		Physics* GetPhysics() { return physics.get(); }
@@ -252,8 +252,9 @@ namespace WristerEngine
 	private:
 		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
+		Vector3 offset;
 
-		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 
 	public:
 		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
@@ -262,7 +263,9 @@ namespace WristerEngine
 		// 半径を取得
 		float GetRadius() const { return radius; }
 		// 中心座標を設定
-		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		void SetCenterPosition(const Vector3& center_) { center = center_ + offset; }
+		// オフセットを設定
+		void SetOffset(const Vector3& offset_) { offset = offset_; }
 		// 半径を設定
 		void SetRadius(float radius_) { radius = radius_; }
 	};
@@ -273,6 +276,7 @@ namespace WristerEngine
 	private:
 		Vector3 center;				// 中心座標
 		Vector3 radius = { 1,1,1 };	// 各軸方向の半径
+		Vector3 offset;
 
 	public:
 		// コンストラクタ
@@ -283,6 +287,8 @@ namespace WristerEngine
 		const Vector3& GetRadius() const { return radius; }
 		// 中心座標を設定
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		// オフセットを設定
+		void SetOffset(const Vector3& offset_) { offset = offset_; }
 		// 3軸方向の半径を設定
 		void SetRadius(const Vector3& radius_) { radius = radius_; }
 	};

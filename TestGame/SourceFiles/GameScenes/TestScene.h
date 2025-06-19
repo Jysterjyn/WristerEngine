@@ -1,6 +1,7 @@
 #pragma once
 #include <BaseScene.h>
 #include <Ground.h>
+#include <Player.h>
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -15,6 +16,7 @@ class TestScene : public WristerEngine::BaseScene
 	Sphere sphere;
 	Triangle triangle;
 	Ray ray;
+	Player player;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

@@ -14,6 +14,7 @@
     <ClCompile Include="SourceFiles\Collider\Collider.cpp" />
     <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\TestScene.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />
@@ -26,6 +27,7 @@
     <ClInclude Include="SourceFiles\Collider\CollisionManager.h" />
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h" />
     <ClInclude Include="SourceFiles\GameObjects\Ground.h" />
+    <ClInclude Include="SourceFiles\GameObjects\Player.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\TestScene.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />

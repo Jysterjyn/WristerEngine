@@ -47,6 +47,9 @@
     <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp">
       <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
+      <Filter>ソース ファイル\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\MyGame\MyGame.h">
@@ -75,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="..\WristerEngineLib\include\Object3d.h">
       <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Player.h">
+      <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
