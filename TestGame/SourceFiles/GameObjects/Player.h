@@ -21,14 +21,6 @@ public:
 	/// </summary>
 	void OnCollision() override;
 
-	void OnCollisionExit() override
-	{
-		if (!onGround) { return; }
-		// 地面がないので落下
-		onGround = false;
-		fallV = {};
-	}
-
 private:
 	WE::SphereCollider* sphere = nullptr;
 	WE::RayCollider* ray = nullptr;

@@ -5,6 +5,16 @@
 
 namespace WristerEngine
 {
+	struct RaycastHit
+	{
+		//衝突相手のコライダー
+		BaseCollider* collider = nullptr;
+		//衝突点
+		Vector3 inter;
+		//衝突点までの距離
+		float distance = 0.0f;
+	};
+
 	// コライダー管理
 	class CollisionManager final
 	{
@@ -35,7 +45,7 @@ namespace WristerEngine
 		bool Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB);
 		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
 		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
-		bool CheckRaySphere(RayCollider* ray, SphereCollider* sphere);
+		bool CheckRaySphere(const RayCollider * ray, const SphereCollider * sphere);
 		bool CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
 
@@ -44,6 +54,8 @@ namespace WristerEngine
 
 		ColliderGroup* AddGroup(const std::string& groupName);
 
+		bool Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo = nullptr,
+			const float maxDistance = D3D12_FLOAT32_MAX);
 		// 全当たり判定
 		void CheckCollisions();
 	};

@@ -17,11 +17,24 @@ void Ground::Initialize()
 	const float SCALE = 5.0f;
 	object->transform.scale = { SCALE,1,SCALE };
 	object->material.textures[0].tiling = { SCALE,SCALE };
+	object->transform.rotation.z = Angle(10);
+	object->transform.Update();
+
+	objectSphere = mm->Create("TestSphere", true);
+	objectSphere->material.ambient = { 0.1f,0.1f,0.1f };
+	objectSphere->transform.translation.x = -3.0f;
+	objectSphere->transform.translation.y = 0.5f;
+	objectSphere->transform.Update();
+
 	collider = static_cast<WE::MeshCollider*>(AddCollider(WE::CollisionShapeType::Mesh));
 	collider->SetTransform(&object->transform);
-	object->transform.rotation.z = Angle(10);
 	collider->ConstructTriangles(object->GetMesh());
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
+
+	sphere = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
+	sphere->SetTransform(&objectSphere->transform);
+	sphere->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
+
 	group->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
 }
 

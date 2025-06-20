@@ -20,6 +20,8 @@ public:
 class Ground : public BaseObject
 {
 	WE::MeshCollider* collider = nullptr;
+	WE::SphereCollider* sphere = nullptr;
+	WE::_3D::Object3d* objectSphere = nullptr;
 
 public:
 	void Initialize();

@@ -357,7 +357,7 @@ bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCo
 	return true;
 }
 
-bool CollisionManager::CheckRaySphere(RayCollider* ray, SphereCollider* sphere)
+bool CollisionManager::CheckRaySphere(const RayCollider* ray, const SphereCollider* sphere)
 {
 	Vector3 m = ray->GetStartPos() - sphere->GetCenterPosition();
 	float b = Dot(m, ray->GetDir());
@@ -415,6 +415,73 @@ bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* 
 	}
 
 	return false;
+}
+
+bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo, const float maxDistance)
+{
+	bool result = false;
+	//走査用イテレータ
+	std::list<std::unique_ptr<BaseCollider>>::const_iterator it;
+	//今までで最も近いコライダーを記録するためのイテレータ
+	std::list<std::unique_ptr<BaseCollider>>::const_iterator it_hit;
+	//今までで最も近いコライダーの距離を記録する変数
+	float tempDistance = maxDistance;
+	Vector3 tempInter;
+
+	//全コライダーと総当たりチェック
+	for (auto& group : colliderGroups)
+	{
+		if (!(group.second->GetAttribute() & attribute))continue;
+
+		it = group.second->GetColliders()->begin();
+		for (; it != group.second->GetColliders()->end(); ++it)
+		{
+			BaseCollider* colA = it->get();
+			//属性が合わない場合スキップ
+			if (!(colA->GetAttribute() & attribute))continue;
+
+			//球の場合
+			if (colA->GetShapeType() == CollisionShapeType::Sphere)
+			{
+				SphereCollider* sphere = dynamic_cast<SphereCollider*>(colA);
+				//当たらなければ除外
+				if (!CheckRaySphere(ray, sphere))continue;
+				//距離が最小でなければ除外
+				if (distance >= tempDistance)continue;
+				//今までで最も近いので記録を取る
+				result = true;
+				tempDistance = distance.value();
+				tempInter = inter.value();
+				it_hit = it;
+			}
+			//メッシュの場合
+			else if (colA->GetShapeType() == CollisionShapeType::Mesh)
+			{
+				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
+				//当たらなければ除外
+				if (!CheckRayMesh(ray, meshCollider))continue;
+				//距離が最小でなければ除外
+				if (distance >= tempDistance)continue;
+				//今までで最も近いので記録を取る
+				result = true;
+				tempDistance = distance.value();
+				tempInter = inter.value();
+				it_hit = it;
+			}
+		}
+	}
+	//最終的に何かに当たっていれば結果を書き込む
+	if (result && hitInfo)
+	{
+		hitInfo->distance = distance.value();
+		hitInfo->inter = inter.value();
+		hitInfo->collider = it_hit->get();
+	}
+
+	distance = std::nullopt;
+	inter = std::nullopt;
+
+	return result;
 }
 
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)

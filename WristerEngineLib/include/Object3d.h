@@ -17,6 +17,8 @@ namespace WristerEngine::_3D
 		const Mesh* GetMesh() { return mesh; }
 
 	private:
+		// 更新
+		void Update();
 		friend class ModelManager;
 		Mesh* mesh = nullptr;
 		bool isDestroy = false;
@@ -26,8 +28,6 @@ namespace WristerEngine::_3D
 		/// </summary>
 		/// <param name="mesh">メッシュデータ</param>
 		void Initialize(Mesh* mesh);
-		// 更新
-		void Update();
 		// 描画
 		void Draw();
 	};
