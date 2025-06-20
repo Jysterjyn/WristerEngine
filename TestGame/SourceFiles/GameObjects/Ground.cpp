@@ -11,7 +11,7 @@ uint32_t BaseObject::inputIndex = 0;
 
 void Ground::Initialize()
 {
-	WE::Collider::Initialize("Ground");
+	WE::Collider::Initialize("Ground", WE::CollisionInfo(ChangeVal(CollisionAttribute::Landshape)));
 
 	object = mm->Create("Ground");
 	const float SCALE = 5.0f;
@@ -26,16 +26,12 @@ void Ground::Initialize()
 	objectSphere->transform.translation.y = 0.5f;
 	objectSphere->transform.Update();
 
-	collider = static_cast<WE::MeshCollider*>(AddCollider(WE::CollisionShapeType::Mesh));
+	collider = AddCollider<WE::MeshCollider>();
 	collider->SetTransform(&object->transform);
 	collider->ConstructTriangles(object->GetMesh());
-	collider->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
 
-	sphere = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
+	sphere = AddCollider<WE::SphereCollider>();
 	sphere->SetTransform(&objectSphere->transform);
-	sphere->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
-
-	group->SetAttribute(ChangeVal(CollisionAttribute::Landshape));
 }
 
 void Ground::Update()
@@ -55,7 +51,7 @@ void Sphere::Initialize()
 
 	object->transform.translation.y = 1.0f;
 
-	collider = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
+	collider = AddCollider<WE::SphereCollider>();
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Sphere));
 	collider->SetTransform(&object->transform);
 
@@ -83,7 +79,7 @@ void Sphere::OnCollision()
 void Ray::Initialize()
 {
 	WE::Collider::Initialize("Ray");
-	collider = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
+	collider = AddCollider<WE::RayCollider>();
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Ray));
 	group->SetAttribute(ChangeVal(CollisionAttribute::Ray));
 	pos.y = 4.0f;
@@ -142,7 +138,7 @@ void Triangle::Initialize()
 		p[i] = vertices[i].pos;
 	}
 
-	collider = static_cast<WE::MeshCollider*>(AddCollider(WE::CollisionShapeType::Mesh));
+	collider = AddCollider<WE::MeshCollider>();
 	collider->SetAttribute(ChangeVal(CollisionAttribute::Triangle));
 	collider->SetTransform(&object->transform);
 	collider->ConstructTriangles(object->GetMesh());

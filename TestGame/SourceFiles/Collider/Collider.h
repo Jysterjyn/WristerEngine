@@ -111,9 +111,13 @@ namespace WristerEngine
 	{
 	protected:
 		uint32_t attribute = 0;
-		uint32_t mask = static_cast<uint32_t>(-1);
+		uint32_t mask = UINT32_MAX;
 
 	public:
+		CollisionInfo(const uint32_t& attribute = 0, const uint32_t& mask = UINT32_MAX)
+			: attribute(attribute), mask(mask) {
+		}
+
 		// setter
 		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
 		void SetMask(uint32_t mask_) { mask = mask_; }
@@ -217,14 +221,42 @@ namespace WristerEngine
 	protected:
 		ColliderGroup* group = nullptr;
 
-		void Initialize(const std::string& groupName);
+		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
 
 		/// <summary>
 		/// コライダーを登録
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* AddCollider(CollisionShapeType shapeType);
+		template<class T>
+		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
+		{
+			std::unique_ptr<BaseCollider> newCollider;
+			const std::string TYPE_NAME = typeid(T).name();
+
+			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+
+			if (TypeCompare("Sphere")) { newCollider = std::make_unique<SphereCollider>(); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			else if (TypeCompare("Include")) { newCollider = std::make_unique<IncludeCollider>(); }
+			else if (TypeCompare("Plane")) { newCollider = std::make_unique<PlaneCollider>(); }
+			else if (TypeCompare("Triangle")) { newCollider = std::make_unique<TriangleCollider>(); }
+			else if (TypeCompare("Ray")) { newCollider = std::make_unique<RayCollider>(); }
+			else if (TypeCompare("Mesh")) { newCollider = std::make_unique<MeshCollider>(); }
+
+			newCollider->SetOwner(this);
+			if (info)
+			{
+				newCollider->SetAttribute(info->GetAttribute());
+				newCollider->SetMask(info->GetMask());
+			}
+			else
+			{
+				newCollider->SetAttribute(group->GetAttribute());
+				newCollider->SetMask(group->GetMask());
+			}
+			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		}
 
 	public:
 		Collider() { serialNumber = nextSerialNumber++; }

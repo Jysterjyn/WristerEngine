@@ -11,15 +11,12 @@ void Player::Initialize()
 
 	// コライダーの追加
 	float radius = 0.6f;
-	Collider::Initialize("Player");
-	group->SetAttribute(ChangeVal(CollisionAttribute::Allies));
-	sphere = static_cast<WE::SphereCollider*>(AddCollider(WE::CollisionShapeType::Sphere));
-	sphere->SetAttribute(ChangeVal(CollisionAttribute::Allies));
+	Collider::Initialize("Player",WE::CollisionInfo(ChangeVal(CollisionAttribute::Allies)));
+	sphere = AddCollider<WE::SphereCollider>();
 	sphere->SetOffset({ 0,radius,0 });
 	sphere->SetRadius(radius);
 	sphere->SetTransform(&object->transform);
-	ray = static_cast<WE::RayCollider*>(AddCollider(WE::CollisionShapeType::Ray));
-	ray->SetAttribute(ChangeVal(CollisionAttribute::Allies));
+	ray = AddCollider<WE::RayCollider>();
 }
 
 void Player::Update()
