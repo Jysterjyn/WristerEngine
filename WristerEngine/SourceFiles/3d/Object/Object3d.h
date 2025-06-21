@@ -13,6 +13,7 @@ namespace WristerEngine::_3D
 		bool isInvisible = false;
 
 		void Destroy() { isDestroy = true; }
+		const Mesh* GetMesh() const { return mesh; }
 
 	private:
 		friend class ModelManager;

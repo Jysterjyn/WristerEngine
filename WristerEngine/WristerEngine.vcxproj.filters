@@ -241,6 +241,12 @@
     <ClCompile Include="SourceFiles\3d\Camera\LockOn.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\Collider.cpp">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -437,6 +443,12 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\LockOn.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\Collider.h">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\CollisionManager.h">
+      <Filter>ソース ファイル\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

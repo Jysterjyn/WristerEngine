@@ -1,48 +1,93 @@
 #pragma once
 #include "Collider.h"
 #include <list>
+#include <optional>
 
 namespace WristerEngine
 {
+	struct RaycastHit
+	{
+		//衝突相手のコライダー
+		BaseCollider* collider = nullptr;
+		//衝突点
+		Vector3 inter;
+		//衝突点までの距離
+		float distance = 0.0f;
+	};
+
+	/// <summary>
+	/// クエリーによる情報を得る為の構造体
+	/// </summary>
+	struct QueryHit
+	{
+		// 衝突相手のコライダー
+		BaseCollider* collider = nullptr;
+		// 衝突点
+		Vector3 inter;
+		// 排斥ベクトル
+		Vector3 reject;
+	};
+
+	/// <summary>
+	/// クエリーで交差を検出した時の動作を規定するクラス
+	/// </summary>
+	class QueryCallback
+	{
+	public:
+		QueryCallback() = default;
+		virtual ~QueryCallback() = default;
+
+		/// <summary>
+		/// 交差時コールバック
+		/// </summary>
+		/// <param name="info">交差情報</param>
+		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
+		virtual bool OnQueryHit(const QueryHit& info) = 0;
+	};
+
 	// コライダー管理
-	class CollisionManager final
+	class CollisionManager final : private HitInfo
 	{
 	private:
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		bool isPrint = false;
 
 		CollisionManager() = default;
 		~CollisionManager() = default;
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-		bool CheckCollisionFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
+		bool CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 
 		bool Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB);
 
 		// 個別当たり判定
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
-		
-		bool CheckCollision2Groups(ColliderGroup* colliderGroupA, ColliderGroup* colliderGroupB);
-		bool CheckCollision2Spheres(const SphereCollider* colliderA, const SphereCollider* colliderB);
-		bool CheckCollisionSpherePlane(SphereCollider* colliderA, PlaneCollider* colliderB);
-		//bool CheckCollisionRaySphere(RayCollider* colliderA, SphereCollider* colliderB, float* distance = nullptr, Vector3* inter = nullptr);
-		//bool CheckCollision2Boxes(BoxCollider* colliderA, BoxCollider* colliderB);
-		//bool CheckCollision2IncludeObjects(IncludeCollider* colliderA, IncludeCollider* colliderB);
-		//bool CheckCollisionRayPlane(RayCollider* colliderA, PlaneCollider* colliderB, float* distance = nullptr);
+
+		bool Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB);
+		bool Check2Spheres(const SphereCollider* sphereA, const SphereCollider* sphereB);
+		bool CheckSpherePlane(const SphereCollider* sphere, const PlaneCollider* plane);
+		bool CheckSphereTriangle(const SphereCollider* sphere, const TriangleCollider* triangle);
+		bool CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh);
+		bool Check2Boxes(const BoxCollider* boxA, const BoxCollider* boxB);
+		bool Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB);
+		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
+		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
+		bool CheckRaySphere(const RayCollider * ray, const SphereCollider * sphere);
+		bool CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
-		//bool CheckCollisionSpherePolygon(SphereCollider* colliderA, PolygonCollider* colliderB, Vector3* inter = nullptr);
-		//bool CheckCollisionRayPolygon(RayCollider* colliderA, PolygonCollider* colliderB, float* distance = nullptr);
 
 	public:
 		static CollisionManager* GetInstance();
 
 		ColliderGroup* AddGroup(const std::string& groupName);
 
+		bool Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo = nullptr,
+			const float maxDistance = D3D12_FLOAT32_MAX);
+
+		void QuerySphere(const SphereCollider* sphere, QueryCallback* callback, uint32_t attribute = UINT32_MAX);
+
 		// 全当たり判定
 		void CheckCollisions();
-
-		bool IsPrint() const { return isPrint; }
 	};
 }

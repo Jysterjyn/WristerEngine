@@ -41,12 +41,6 @@
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Collider\Collider.cpp">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClCompile>
@@ -64,19 +58,7 @@
     <ClInclude Include="SourceFiles\GameObjects\Ground.h">
       <Filter>ソース ファイル\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Collider\Collider.h">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Collider\CollisionManager.h">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WristerEngineLib\include\Mesh.h">
-      <Filter>ソース ファイル\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WristerEngineLib\include\Object3d.h">
       <Filter>ソース ファイル\Collider</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\GameObjects\Player.h">
@@ -84,6 +66,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
+    <None Include="cpp.hint">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>
