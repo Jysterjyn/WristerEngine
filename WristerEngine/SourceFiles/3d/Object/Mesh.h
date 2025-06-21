@@ -7,7 +7,7 @@ namespace WristerEngine::_3D
 	// 形状データ
 	class Mesh
 	{
-	private:
+	public:
 		// 頂点データ構造体
 		struct VertexData
 		{
@@ -16,13 +16,15 @@ namespace WristerEngine::_3D
 			Vector2 uv;  // uv座標
 		};
 
+	private:
+
 		friend Material;
 		// Microsoft::WRL::を省略
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 		std::vector<VertexData> vertices;	// 頂点データ配列
-		std::vector<UINT16> indices;		// 頂点インデックス配列
-		std::unordered_map<UINT16, std::vector<UINT16>> smoothData;	// 頂点座標スムージング用データ
+		std::vector<uint16_t> indices;		// 頂点インデックス配列
+		std::unordered_map<uint16_t, std::vector<uint16_t>> smoothData;	// 頂点座標スムージング用データ
 		ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
 		D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
 		ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
@@ -44,5 +46,7 @@ namespace WristerEngine::_3D
 		void LoadOBJ(const std::string& modelName, bool isSmooth, std::string directoryName = "");
 		// 描画
 		void Draw();
+		const std::vector<VertexData>& GetVertices() const { return vertices; }
+		const std::vector<uint16_t>& GetIndices() const { return indices; }
 	};
 }

@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include <map>
 #include <ModelManager.h>
+#include <optional>
 
 namespace WristerEngine
 {
@@ -101,6 +102,7 @@ namespace WristerEngine
 		Box,
 		IncludeBox,
 		Plane,
+		Triangle,
 		Ray,
 		Mesh
 	};
@@ -109,9 +111,13 @@ namespace WristerEngine
 	{
 	protected:
 		uint32_t attribute = 0;
-		uint32_t mask = static_cast<uint32_t>(-1);
+		uint32_t mask = UINT32_MAX;
 
 	public:
+		CollisionInfo(const uint32_t& attribute = 0, const uint32_t& mask = UINT32_MAX)
+			: attribute(attribute), mask(mask) {
+		}
+
 		// setter
 		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
 		void SetMask(uint32_t mask_) { mask = mask_; }
@@ -129,12 +135,16 @@ namespace WristerEngine
 		std::unique_ptr<Physics> physics;
 		bool isDestroy = false;
 		Collider* owner = nullptr;
-		Vector3 inter;
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
 
 	protected:
 		CollisionShapeType shapeType = CollisionShapeType::Unknown;
+		const _3D::Transform* pTransform = nullptr;
 
 	public:
+		BaseCollider(bool isDec = false) { serialNumber = nextSerialNumber++; if (isDec) { nextSerialNumber--; } }
+
 		virtual ~BaseCollider() = default;
 
 		virtual void Update() {}
@@ -142,30 +152,55 @@ namespace WristerEngine
 		void Destroy() { isDestroy = true; }
 
 		void SetOwner(Collider* owner_) { owner = owner_; }
-		void SetInter(const Vector3& inter_) { inter = inter_; }
+		// トランスフォームを設定
+		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; Update(); }
 
 		// getter
 		Physics* GetPhysics() { return physics.get(); }
 		CollisionShapeType GetShapeType() const { return shapeType; }
 		bool IsDestroy() const { return isDestroy; }
 		Collider* GetOwner() { return owner; }
-		Vector3* GetInter() { return &inter; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
+	};
+
+	struct HitInfo
+	{
+		std::optional<Vector3> inter = std::nullopt;
+		std::optional<float> distance = std::nullopt;
+		std::optional<Vector3> reject = std::nullopt;
+
+		HitInfo(const std::optional<Vector3>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
+			const std::optional<Vector3>& reject = std::nullopt)
+			: inter(inter), distance(distance), reject(reject)
+		{
+		}
+
+		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
+	};
+
+	struct CollisionPair : public HitInfo
+	{
+		BaseCollider* my = nullptr, * other = nullptr;
+
+		CollisionPair(BaseCollider* my, BaseCollider* other, const HitInfo& hitInfo);
+
+		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
 
 	class ColliderGroup : public CollisionInfo
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
+		std::list<Collider*> owners;
 
-		/// <summary>
-		/// 当たったペアの記録
-		/// </summary>
-		/// <param name="first">自分のコライダー</param>
-		/// <param name="second">相手のコライダー</param>
-		std::vector<std::pair<BaseCollider*, BaseCollider*>> collisionPair;
+		// 当たったペアの記録
+		std::vector<CollisionPair> collisionPairs;
+		std::vector<CollisionPair> enterPairs;
+		std::vector<CollisionPair> exitPairs;
+		std::vector<CollisionPair> collisionPairsPre;
 
 	public:
-		~ColliderGroup() { colliders.clear(); }
+		~ColliderGroup();
 
 		void Update();
 
@@ -176,34 +211,83 @@ namespace WristerEngine
 		/// <returns>登録されたコライダー</returns>
 		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
 
-		void AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB);
+		void AddCollisionPair(const CollisionPair& pair);
+
+		void AddOwner(Collider* owner) { owners.push_back(owner); }
+
+		void CallCollision();
 
 		// getter
 		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
-		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return collisionPair; }
+		const std::vector<CollisionPair>& GetCollisionPairs() const { return collisionPairs; }
+		const std::vector<CollisionPair>& GetEnterPairs() const { return enterPairs; }
+		const std::vector<CollisionPair>& GetExitPairs() const { return exitPairs; }
 	};
 
 	class Collider
 	{
+	private:
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
+
 	protected:
 		ColliderGroup* group = nullptr;
 
-		void Initialize(const std::string& groupName);
+		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
 
-	public:
 		/// <summary>
 		/// コライダーを登録
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* AddCollider(CollisionShapeType shapeType);
+		template<class T>
+		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
+		{
+			std::unique_ptr<BaseCollider> newCollider;
+			const std::string TYPE_NAME = typeid(T).name();
+
+			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+
+			if (TypeCompare("Sphere")) { newCollider = std::make_unique<SphereCollider>(); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			else if (TypeCompare("Include")) { newCollider = std::make_unique<IncludeCollider>(); }
+			else if (TypeCompare("Plane")) { newCollider = std::make_unique<PlaneCollider>(); }
+			else if (TypeCompare("Triangle")) { newCollider = std::make_unique<TriangleCollider>(); }
+			else if (TypeCompare("Ray")) { newCollider = std::make_unique<RayCollider>(); }
+			else if (TypeCompare("Mesh")) { newCollider = std::make_unique<MeshCollider>(); }
+
+			newCollider->SetOwner(this);
+			if (info)
+			{
+				newCollider->SetAttribute(info->GetAttribute());
+				newCollider->SetMask(info->GetMask());
+			}
+			else
+			{
+				newCollider->SetAttribute(group->GetAttribute());
+				newCollider->SetMask(group->GetMask());
+			}
+			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		}
+
+	public:
+		Collider() { serialNumber = nextSerialNumber++; }
+		virtual ~Collider();
+
+		void DeleteGroup() { group = nullptr; }
 
 		// getter
-		const std::vector<std::pair<BaseCollider*, BaseCollider*>>& GetCollisionPair() const { return group->GetCollisionPair(); }
+		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
 		ColliderGroup* GetGroup() const { return group; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
 
 		// 衝突コールバック関数
+		// 当たっている間
 		virtual void OnCollision() {}
+		// 当たった瞬間
+		virtual void OnCollisionEnter() {}
+		// 離れた瞬間
+		virtual void OnCollisionExit() {}
 	};
 
 	// 球コライダー
@@ -212,19 +296,20 @@ namespace WristerEngine
 	private:
 		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
-		const _3D::Transform* pTransform = nullptr;
+		Vector3 offset;
+
 
 	public:
-		SphereCollider() { shapeType = CollisionShapeType::Sphere; }
-		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition(); } }
+		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 半径を取得
 		float GetRadius() const { return radius; }
-		// トランスフォームを設定
-		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; }
 		// 中心座標を設定
-		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		void SetCenterPosition(const Vector3& center_) { center = center_ + offset; }
+		// オフセットを設定
+		void SetOffset(const Vector3& offset_) { offset = offset_; }
 		// 半径を設定
 		void SetRadius(float radius_) { radius = radius_; }
 	};
@@ -235,16 +320,19 @@ namespace WristerEngine
 	private:
 		Vector3 center;				// 中心座標
 		Vector3 radius = { 1,1,1 };	// 各軸方向の半径
+		Vector3 offset;
 
 	public:
 		// コンストラクタ
-		BoxCollider() { shapeType = CollisionShapeType::Box; }
+		BoxCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Box; }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 3軸方向の半径を取得
 		const Vector3& GetRadius() const { return radius; }
 		// 中心座標を設定
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
+		// オフセットを設定
+		void SetOffset(const Vector3& offset_) { offset = offset_; }
 		// 3軸方向の半径を設定
 		void SetRadius(const Vector3& radius_) { radius = radius_; }
 	};
@@ -256,6 +344,7 @@ namespace WristerEngine
 		enum class Axis { X, Y, Z };
 
 	private:
+		Vector3 center;		// 中心座標
 		// 完全包含半径
 		static float includeRadius;
 		// 当たり判定を取るペアのtrueが少ないほうが計算に反映される
@@ -264,12 +353,46 @@ namespace WristerEngine
 	public:
 		// コンストラクタ
 		IncludeCollider() { shapeType = CollisionShapeType::IncludeBox; }
+		// 中心座標を取得
+		const Vector3& GetCenterPosition() const { return center; }
 		// 完全包含半径の取得
 		static float GetIncludeRadius() { return includeRadius; }
+		// 使う軸の取得
+		std::array<bool, 3> GetUseAxis() const { return isUseAxis; }
+		// 中心座標を設定
+		void SetCenterPosition(const Vector3& center_) { center = center_; }
 		// 使う軸の設定
 		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
-		// 使う軸の取得
-		std::array<bool, 3> GetUseAxis() { return isUseAxis; }
+	};
+
+	// 三角形コライダー
+	class TriangleCollider : public BaseCollider
+	{
+	private:
+		// トランスフォーム未適用時の頂点座標
+		std::array<Vector3, 3> initV;
+
+	protected:
+		// 頂点座標3つ
+		std::array<Vector3, 3> vertices;
+		// 法線ベクトル
+		Vector3 normal = Vector3::MakeAxis(Axis::Y);
+		// 基準法線(トランスフォームから計算する場合)
+		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
+		// 頂点更新
+		void Update() override;
+
+	public:
+		// コンストラクタ
+		TriangleCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Triangle; }
+		void ComputeNormal();
+		// setter
+		void SetVertices(const std::array<Vector3, 3>& vertices_) { vertices = initV = vertices_; }
+		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
+		void SetBaseNormal(const Vector3& normal_) { baseNormal = Normalize(normal_); }
+		// getter
+		Vector3 GetNormal() const { return normal; }
+		const std::array<Vector3, 3>& GetVertices() const { return vertices; }
 	};
 
 	// 平面コライダー
@@ -280,72 +403,62 @@ namespace WristerEngine
 		Vector3 normal = Vector3::MakeAxis(Axis::Y);
 		// 原点(0,0,0)からの距離
 		float distance = 0;
+		// 基準法線(トランスフォームから計算する場合)
+		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
+
+		void Update() override;
 
 	public:
 		// コンストラクタ
 		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
+		PlaneCollider(const TriangleCollider& triangle);
 		// setter
 		void SetDistance(float distance_) { distance = distance_; }
-		void SetBaseNormal(const Vector3& normal_) { normal = normal_; }
+		void SetNormal(const Vector3& normal_) { normal = Normalize(normal_); }
+		void SetBaseNormal(const Vector3& normal_) { baseNormal = Normalize(normal_); }
 		// getter
-		Vector3 GetNormal() const { return normal; }
+		const Vector3& GetNormal() const { return normal; }
 		float GetDistance() const { return distance; }
 	};
-
-	//// 多角形平面コライダー
-	//class PolygonCollider : public virtual BaseCollider
-	//{
-	//protected:
-	//	// 基準法線
-	//	Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
-	//	// 頂点は時計回り
-	//	std::vector<Vector3> vertices;
-	//	float distance = 0;
-	//	// メッシュコライダーで使う
-	//	Vector3 normal;
-	//
-	//public:
-	//	// コンストラクタ
-	//	PolygonCollider();
-	//	// 頂点更新
-	//	void UpdateVertices();
-	//	// 距離を計算
-	//	void ComputeDistance() { distance = Dot(GetNormal(), vertices[0]); }
-	//	// 法線を計算
-	//	void ComputeNormal();
-	//	// 平面に変換する
-	//	void ToPlaneCollider(PlaneCollider* planeCollider);
-	//	// 頂点を追加
-	//	void AddVertices(Vector3 pos) { vertices.push_back(pos); }
-	//	// setter
-	//	void SetBaseNormal(Vector3 baseNormal_) { baseNormal = baseNormal_; }
-	//	virtual void SetVertices();
-	//	// getter
-	//	virtual Vector3 GetNormal() { return baseNormal * Matrix4::Rotate(pTransform->rotation); }
-	//	virtual std::vector<Vector3> GetVertices() { return vertices; }
-	//};
 
 	// レイコライダー
 	class RayCollider : public BaseCollider
 	{
-	public:
+	private:
+		// 始点座標
+		Vector3 start;
+		// 方向
+		Vector3 dir = Vector3::MakeAxis(Axis::Z);
 		// 基準レイ
-		Vector3 baseRayDirection = Vector3::MakeAxis(Axis::Z);
+		Vector3 baseDir = Vector3::MakeAxis(Axis::Z);
+
+		void Update() override;
+
+	public:
 		// コンストラクタ
-		RayCollider() { shapeType = CollisionShapeType::Ray; }
-		// レイ方向を取得
-		//virtual const Vector3 GetRayDirection() { return baseRayDirection * Matrix4::Rotate(pTransform->rotation); }
+		RayCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Ray; }
+		const Vector3& GetStartPos() const { return start; }
+		const Vector3& GetDir() const { return dir; }
+		void SetStartPos(const Vector3& start_) { start = start_; }
+		void SetDir(const Vector3& dir_) { dir = Normalize(dir_); }
+		void SetBaseDir(const Vector3& dir_) { baseDir = Normalize(dir_); }
 	};
 
 	// メッシュコライダー
-	//class MeshCollider : public BaseCollider
-	//{
-	//private:
-	//	// ワールド行列の逆行列
-	//	Matrix4 invMatWorld;
-	//
-	//public:
-	//	std::vector<PolygonCollider> triangles;
-	//	void ConstructTriangles(ModelManager* model);
-	//};
+	class MeshCollider : public BaseCollider
+	{
+	private:
+		std::list<std::unique_ptr<TriangleCollider>> triangles;
+		// ワールド行列の逆行列
+		Matrix4 invMatWorld;
+
+
+	public:
+		MeshCollider() { shapeType = CollisionShapeType::Mesh; }
+		void Update() override;
+		void ConstructTriangles(const _3D::Mesh* mesh);
+		const Matrix4& GetInvMatWorld() const { return invMatWorld; }
+		const std::list<std::unique_ptr<TriangleCollider>>& GetTriangles() const { return triangles; }
+		const Matrix4& GetMatWorld() const { return pTransform->matWorld; }
+	};
 }

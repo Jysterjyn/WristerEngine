@@ -1,46 +1,17 @@
 #include "Collider.h"
 #include "CollisionManager.h"
 #include <cassert>
+#include <imgui.h>
 using namespace WE;
 
-//float IncludeCollider::includeRadius = 0.1f;
-//
+float IncludeCollider::includeRadius = 0.1f;
+uint32_t BaseCollider::nextSerialNumber = 0;
+uint32_t Collider::nextSerialNumber = 0;
+
 //_2D::Collider::~Collider()
 //{
 //	colliders.clear();
 //	collisionManager->PopCollider(this);
-//}
-//
-//void PolygonCollider::SetVertices()
-//{
-//	Vector3 objPos = pTransform->translation;
-//	Vector3 objRad = pTransform->scale;
-//	vertices.clear();
-//	vertices.push_back(objPos + Vector3(-objRad.x, objRad.y, -objRad.z));
-//	vertices.push_back(objPos + Vector3(objRad.x, objRad.y, -objRad.z));
-//	vertices.push_back(objPos + Vector3(objRad.x, -objRad.y, -objRad.z));
-//	vertices.push_back(objPos - objRad);
-//}
-//
-//void PolygonCollider::ComputeNormal()
-//{
-//	assert(vertices.size() >= 3);
-//	// –@ü‚ÌŒvŽZ
-//	Vector3 vec1 = vertices[2] - vertices[0];
-//	Vector3 vec2 = vertices[1] - vertices[0];
-//	normal = Normalize(Cross(vec1, vec2));
-//}
-//
-//void PolygonCollider::ToPlaneCollider(PlaneCollider* planeCollider)
-//{
-//	planeCollider->SetDistance(distance);
-//	planeCollider->SetRotation(pTransform->rotation);
-//	planeCollider->SetBaseNormal(baseNormal);
-//}
-//
-//void PolygonCollider::UpdateVertices()
-//{
-//	for (Vector3& vertex : vertices) { vertex *= pTransform->matWorld; }
 //}
 //
 //void MeshCollider::ConstructTriangles(ModelManager* model)
@@ -146,6 +117,27 @@ using namespace WE;
 //	return itr->get()->GetColliderName();
 //}
 
+CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const HitInfo& hitInfo)
+{
+	my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
+}
+
+bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
+{
+	if (p1.my->GetSerialNumber() == p2.my->GetSerialNumber() &&
+		p1.other->GetSerialNumber() == p2.other->GetSerialNumber())
+	{
+		return true;
+	}
+
+	if (p1.my->GetSerialNumber() == p2.other->GetSerialNumber() &&
+		p1.other->GetSerialNumber() == p2.my->GetSerialNumber())
+	{
+		return true;
+	}
+	return false;
+}
+
 BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollider)
 {
 	colliders.push_back(std::move(newCollider));
@@ -159,45 +151,159 @@ void ColliderGroup::Update()
 		{ return collider.get()->IsDestroy(); });
 
 	for (auto& collider : colliders) { collider->Update(); }
-	collisionPair.clear();
+	collisionPairs.clear();
+	enterPairs.clear();
+	exitPairs.clear();
 }
 
-void ColliderGroup::AddCollisionPair(BaseCollider* colliderA, BaseCollider* colliderB)
+void ColliderGroup::AddCollisionPair(const CollisionPair& pair)
 {
-	collisionPair.push_back({ colliderA,colliderB });
+	collisionPairs.push_back(pair);
 }
 
-void Collider::Initialize(const std::string& groupName)
+void ColliderGroup::CallCollision()
 {
-	group = CollisionManager::GetInstance()->AddGroup(groupName);
-}
-
-BaseCollider* Collider::AddCollider(CollisionShapeType shapeType)
-{
-	std::unique_ptr<BaseCollider> newCollider;
-
-	switch (shapeType)
+	std::map<uint32_t, uint8_t> calledCollision;
+	for (auto& pair : collisionPairs)
 	{
-	case CollisionShapeType::Sphere:
-		newCollider = std::make_unique<SphereCollider>();
-		break;
-	case CollisionShapeType::Box:
-		newCollider = std::make_unique<BoxCollider>();
-		break;
-	case CollisionShapeType::IncludeBox:
-		newCollider = std::make_unique<IncludeCollider>();
-		break;
-	case CollisionShapeType::Plane:
-		newCollider = std::make_unique<PlaneCollider>();
-		break;
-	case CollisionShapeType::Ray:
-		newCollider = std::make_unique<RayCollider>();
-		break;
-		//case CollisionShapeType::Mesh:
-		//	newCollider = std::make_unique<SphereCollider>();
-		//	break;
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollision();
+		calledCollision[owner->GetSerialNumber()];
 	}
 
-	newCollider->SetOwner(this);
-	return group->AddCollider(std::move(newCollider));
+	for (auto& pair : collisionPairs)
+	{
+		bool isNotEnter = false;
+		for (auto& pairPre : collisionPairsPre)
+		{
+			if (CollisionPair::Check(pair, pairPre)) { isNotEnter = true; break; }
+		}
+		if (isNotEnter) { continue; }
+		enterPairs.push_back(pair);
+	}
+	calledCollision.clear();
+	for (auto& pair : enterPairs)
+	{
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollisionEnter();
+		calledCollision[owner->GetSerialNumber()];
+	}
+
+	for (auto& pair : collisionPairsPre)
+	{
+		bool isNotEnter = false;
+		for (auto& pairPre : collisionPairs)
+		{
+			if (CollisionPair::Check(pair, pairPre)) { isNotEnter = true; break; }
+		}
+		if (isNotEnter) { continue; }
+		exitPairs.push_back(pair);
+	}
+	calledCollision.clear();
+	for (auto& pair : exitPairs)
+	{
+		Collider* owner = pair.my->GetOwner();
+		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
+		owner->OnCollisionExit();
+		calledCollision[owner->GetSerialNumber()];
+	}
+
+	collisionPairsPre = collisionPairs;
+}
+
+ColliderGroup::~ColliderGroup()
+{
+	colliders.clear();
+	for (auto* owner : owners) { owner->DeleteGroup(); }
+}
+
+void Collider::Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info)
+{
+	group = CollisionManager::GetInstance()->AddGroup(groupName);
+	group->AddOwner(this);
+	if (!info) { return; }
+	group->SetAttribute(info->GetAttribute());
+	group->SetMask(info->GetMask());
+}
+
+Collider::~Collider()
+{
+	if (!group) { return; }
+	for (auto& collider : *group->GetColliders())
+	{
+		if (collider->GetOwner() == this) { collider->Destroy(); }
+	}
+}
+
+PlaneCollider::PlaneCollider(const TriangleCollider& triangle) : BaseCollider(true)
+{
+	shapeType = CollisionShapeType::Plane;
+	normal = triangle.GetNormal();
+	distance = Dot(triangle.GetNormal(), triangle.GetVertices()[0]);
+}
+
+void PlaneCollider::Update()
+{
+	if (!pTransform) { return; }
+	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
+	distance = Dot(pTransform->GetWorldPosition(), normal);
+}
+
+void TriangleCollider::Update()
+{
+	if (!pTransform) { return; }
+	for (size_t i = 0; i < initV.size(); i++)
+	{
+		vertices[i] = initV[i] * pTransform->matWorld;
+	}
+
+	normal = baseNormal * Matrix4::Rotate(pTransform->rotation);
+}
+
+void TriangleCollider::ComputeNormal()
+{
+	Vector3 p0_p1 = vertices[1] - vertices[0];
+	Vector3 p0_p2 = vertices[2] - vertices[0];
+	SetNormal(Cross(p0_p1, p0_p2));
+}
+
+void RayCollider::Update()
+{
+	if (!pTransform) { return; }
+	start = pTransform->GetWorldPosition();
+	dir = baseDir * Matrix4::Rotate(pTransform->rotation);
+}
+
+void MeshCollider::Update()
+{
+	assert(pTransform);
+	invMatWorld = Inverse(pTransform->matWorld);
+}
+
+void MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
+{
+	triangles.clear();
+
+	const std::vector<_3D::Mesh::VertexData>& vertices = mesh->GetVertices();
+	const std::vector<unsigned short>& indices = mesh->GetIndices();
+
+	size_t triangleNum = indices.size() / 3;
+
+	for (size_t i = 0; i < triangleNum; i++)
+	{
+		std::array<int, 3> idx{};
+		std::array<Vector3, 3> v;
+		for (size_t j = 0; j < idx.size(); j++)
+		{
+			idx[j] = indices[i * 3 + j];
+			v[j] = { vertices[idx[j]].pos.x,vertices[idx[j]].pos.y,vertices[idx[j]].pos.z, };
+		}
+
+		std::unique_ptr<TriangleCollider> tri = std::make_unique<TriangleCollider>(true);
+		tri->SetVertices(v);
+		tri->ComputeNormal();
+		triangles.push_back(std::move(tri));
+	}
 }
