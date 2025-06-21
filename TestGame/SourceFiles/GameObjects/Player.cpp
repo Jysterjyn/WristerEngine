@@ -11,7 +11,7 @@ void Player::Initialize()
 
 	// コライダーの追加
 	float radius = 0.6f;
-	Collider::Initialize("Player",WE::CollisionInfo(ChangeVal(CollisionAttribute::Allies)));
+	Collider::Initialize("Player", WE::CollisionInfo(ChangeVal(CollisionAttribute::Allies)));
 	sphere = AddCollider<WE::SphereCollider>();
 	sphere->SetOffset({ 0,radius,0 });
 	sphere->SetRadius(radius);
@@ -62,6 +62,47 @@ void Player::Update()
 		fallV = { 0, jumpVYFist, 0 };
 	}
 
+	object->transform.Update();
+	sphere->Update();
+
+	// クエリーコールバッククラス
+	class PlayerQueryCallback : public WE::QueryCallback
+	{
+	public:
+		PlayerQueryCallback(WE::SphereCollider* sphere) : sphere(sphere) {};
+
+		// 衝突時コールバック関数
+		bool OnQueryHit(const WE::QueryHit& info) {
+
+			const Vector3 up = { 0,1,0 };
+
+			Vector3 rejectDir = Normalize(info.reject);
+			float cos = Dot(rejectDir, up);
+
+			// 地面判定しきい値
+			const float threshold = cosf(Angle(30));
+
+			if (-threshold < cos && cos < threshold) {
+				sphere->SetCenterPosition(sphere->GetCenterPosition() + info.reject);
+				move += info.reject;
+			}
+
+			return true;
+		}
+
+		WE::SphereCollider* sphere = nullptr;
+		Vector3 move = {};
+	};
+
+	PlayerQueryCallback callback(sphere);
+
+	// 球と地形の交差を全検索
+	WE::CollisionManager::GetInstance()->QuerySphere(sphere, &callback, ChangeVal(CollisionAttribute::Landshape));
+	// 交差による排斥分動かす
+	object->transform.translation += callback.move;
+	object->transform.Update();
+	sphere->Update();
+
 	// 球の上端から球の下端までのレイキャスト
 	Vector3 rayPos = sphere->GetCenterPosition();
 	rayPos.y += sphere->GetRadius();
@@ -98,6 +139,9 @@ void Player::Update()
 			object->transform.translation.y -= raycastHit.distance - sphere->GetRadius() * 2.0f;
 		}
 	}
+
+	object->transform.Update();
+	sphere->Update();
 }
 
 void Player::OnCollision()

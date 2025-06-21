@@ -25,7 +25,6 @@ void CollisionManager::CheckCollisions()
 {
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
 
-	std::map<uint32_t, Collider*> collisionList;
 	auto itrA = colliderGroups.begin();
 	for (; itrA != colliderGroups.end(); itrA++)
 	{
@@ -55,11 +54,8 @@ bool CollisionManager::CheckFiltering(const CollisionInfo* infoA, const Collisio
 
 bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB)
 {
-	const std::list<std::unique_ptr<BaseCollider>>* collidersA = groupA->GetColliders();
-	const std::list<std::unique_ptr<BaseCollider>>* collidersB = groupB->GetColliders();
-
-	for (auto& colliderA : *collidersA) {
-		for (auto& colliderB : *collidersB)
+	for (const auto& colliderA : *groupA->GetColliders()) {
+		for (const auto& colliderB : *groupB->GetColliders())
 		{
 			if (!CheckFiltering(colliderA.get(), colliderB.get())) { continue; }
 
@@ -76,12 +72,11 @@ bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB
 
 			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
 			{
-				CollisionPair pairA(colliderA.get(), colliderB.get(), inter, distance);
-				CollisionPair pairB(colliderB.get(), colliderA.get(), inter, distance);
+				CollisionPair pairA(colliderA.get(), colliderB.get(), *this);
+				CollisionPair pairB(colliderB.get(), colliderA.get(), *this);
 				groupA->AddCollisionPair(pairA);
 				groupB->AddCollisionPair(pairB);
-				inter = std::nullopt;
-				distance = std::nullopt;
+				Reset();
 			}
 		}
 	}
@@ -170,10 +165,27 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 
 bool CollisionManager::Check2Spheres(const SphereCollider* sphereA, const SphereCollider* sphereB)
 {
-	Vector3 vecAB = sphereA->GetCenterPosition() - sphereB->GetCenterPosition();
-	float radAB = sphereA->GetRadius() + sphereB->GetRadius();
+	// 値の取得
+	Vector3 centerA = sphereA->GetCenterPosition();
+	Vector3 centerB = sphereB->GetCenterPosition();
+	float radA = sphereA->GetRadius();
+	float radB = sphereB->GetRadius();
 
-	return vecAB <= radAB * radAB;
+	//判定対象の座標
+	Vector3 vecAB = centerA - centerB;
+	float dist = Dot(vecAB, vecAB);
+	//判定対象の半径
+	float radAB = radA + radB;
+
+	if (dist > radAB * radAB) { return false; }
+
+	// Aの半径が0の時座標はBの中心　Bの半径が0の時座標はAの中心　となるよう補完
+	float t = radB / radAB;
+	inter = Lerp(centerA, centerB, t);
+	// 押し出すベクトルを計算
+	float rejectLen = radAB - sqrtf(dist);
+	reject = Normalize(vecAB) * rejectLen;
+	return true;
 }
 
 bool CollisionManager::CheckSpherePlane(const SphereCollider* sphere, const PlaneCollider* plane)
@@ -262,16 +274,27 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 
 bool CollisionManager::CheckSphereTriangle(const SphereCollider* sphere, const TriangleCollider* triangle)
 {
+	// 値の取得
+	Vector3 spherePos = sphere->GetCenterPosition();
+	float sphereRad = sphere->GetRadius();
+	Vector3 triNormal = triangle->GetNormal();
+
 	// 球の中心に対する最近接点である三角形上にある点pを見つける
-	Vector3 p = ClosestPtPoint2Triangle(sphere->GetCenterPosition(), triangle);
+	Vector3 p = ClosestPtPoint2Triangle(spherePos, triangle);
 	// 点pと球の中心の差分ベクトル
-	Vector3 v = p - sphere->GetCenterPosition();
+	Vector3 v = p - spherePos;
 	// 距離の二乗を求める
 	float vLenSq = Dot(v, v);
 	// 球と三角形の距離が半径以下なら当たっていない
-	if (vLenSq > sphere->GetRadius() * sphere->GetRadius()) { return false; } // 三角形上の最近接点pを疑似交点とする
+	if (vLenSq > sphereRad * sphereRad) { return false; }
 	// 疑似交点を計算
+	// 三角形上の最近接点pを疑似交点とする
 	inter = p;
+	// 押し出すベクトルを計算
+	float ds = Dot(spherePos, triNormal);
+	float dt = Dot(triangle->GetVertices()[0], triNormal);
+	float rejectLen = dt - ds + sphereRad;
+	reject = triNormal * rejectLen;
 	return true;
 }
 
@@ -313,10 +336,8 @@ bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider
 	// 始点と原点の距離(平面の法線方向)
 	// 面法線とレイの始点座標(位置ベクトル)の内積
 	float d2 = Dot(plane->GetNormal(), ray->GetStartPos());
-	// 始点と平面の距離(平面の法線方向)
-	float dist = d2 - plane->GetDistance();
 	// 始点と平面の距離(レイ方向)
-	float t = dist / -d1;
+	float t = (plane->GetDistance() - d2) / d1;
 	// 交点が始点より後ろにあるので当たらない
 	if (t < 0) { return false; }
 	// 距離を書き込む
@@ -341,14 +362,13 @@ bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCo
 	for (size_t i = 0; i < vertexSize; i++)
 	{
 		// 辺pi_p(i+1)について
-		Vector3 pt_px = triangle->GetVertices()[i] - inter.value();
+		Vector3 pt_px = triangle->GetVertices()[i] - *inter;
 		Vector3 px_py = triangle->GetVertices()[(i + 1) % vertexSize] - triangle->GetVertices()[i];
 		Vector3 m = Cross(pt_px, px_py);
 		// 辺の外側であれば当たっていないので判定を打ち切る
 		if (Dot(m, triangle->GetNormal()) < -epsilon)
 		{
-			inter = std::nullopt;
-			distance = std::nullopt;
+			Reset();
 			return false;
 		}
 	}
@@ -386,10 +406,13 @@ bool CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshC
 	localSphere.SetCenterPosition(sphere->GetCenterPosition() * mesh->GetInvMatWorld());
 	localSphere.SetRadius(sphere->GetRadius() * mesh->GetInvMatWorld().GetVector(0).Length());
 
-	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it)
+	for (const auto& tri : mesh->GetTriangles())
 	{
-		if (!CheckSphereTriangle(&localSphere, it->get())) { continue; }
-		inter = inter.value() * mesh->GetMatWorld();
+		if (!CheckSphereTriangle(&localSphere, tri.get())) { continue; }
+		Matrix4 matWorld = mesh->GetMatWorld();
+		inter = *inter * matWorld;
+		matWorld.SetVector({}, 3);
+		reject = *reject * matWorld;
 		return true;
 	}
 
@@ -405,11 +428,11 @@ bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* 
 	invTransformMat.SetVector({}, 3);
 	localRay.SetDir(ray->GetDir() * invTransformMat);
 
-	for (auto it = mesh->GetTriangles().cbegin(); it != mesh->GetTriangles().cend(); ++it)
+	for (const auto& tri : mesh->GetTriangles())
 	{
-		if (!CheckRayTriangle(&localRay, it->get())) { continue; }
-		inter = inter.value() * mesh->GetMatWorld();
-		Vector3 sub = inter.value() - ray->GetStartPos();
+		if (!CheckRayTriangle(&localRay, tri.get())) { continue; }
+		inter = *inter * mesh->GetMatWorld();
+		Vector3 sub = *inter - ray->GetStartPos();
 		distance = Dot(sub, ray->GetDir());
 		return true;
 	}
@@ -420,23 +443,19 @@ bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* 
 bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo, const float maxDistance)
 {
 	bool result = false;
-	//走査用イテレータ
-	std::list<std::unique_ptr<BaseCollider>>::const_iterator it;
 	//今までで最も近いコライダーを記録するためのイテレータ
-	std::list<std::unique_ptr<BaseCollider>>::const_iterator it_hit;
+	BaseCollider* it_hit = nullptr;
 	//今までで最も近いコライダーの距離を記録する変数
 	float tempDistance = maxDistance;
-	Vector3 tempInter;
 
 	//全コライダーと総当たりチェック
 	for (auto& group : colliderGroups)
 	{
 		if (!(group.second->GetAttribute() & attribute))continue;
 
-		it = group.second->GetColliders()->begin();
-		for (; it != group.second->GetColliders()->end(); ++it)
+		for (auto& it : *group.second->GetColliders())
 		{
-			BaseCollider* colA = it->get();
+			BaseCollider* colA = it.get();
 			//属性が合わない場合スキップ
 			if (!(colA->GetAttribute() & attribute))continue;
 
@@ -450,9 +469,8 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 				if (distance >= tempDistance)continue;
 				//今までで最も近いので記録を取る
 				result = true;
-				tempDistance = distance.value();
-				tempInter = inter.value();
-				it_hit = it;
+				tempDistance = *distance;
+				it_hit = it.get();
 			}
 			//メッシュの場合
 			else if (colA->GetShapeType() == CollisionShapeType::Mesh)
@@ -464,24 +482,79 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 				if (distance >= tempDistance)continue;
 				//今までで最も近いので記録を取る
 				result = true;
-				tempDistance = distance.value();
-				tempInter = inter.value();
-				it_hit = it;
+				tempDistance = *distance;
+				it_hit = it.get();
 			}
 		}
 	}
 	//最終的に何かに当たっていれば結果を書き込む
 	if (result && hitInfo)
 	{
-		hitInfo->distance = distance.value();
-		hitInfo->inter = inter.value();
-		hitInfo->collider = it_hit->get();
+		hitInfo->distance = *distance;
+		hitInfo->inter = *inter;
+		hitInfo->collider = it_hit;
 	}
 
-	distance = std::nullopt;
-	inter = std::nullopt;
+	Reset();
 
 	return result;
+}
+
+void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, QueryCallback* callback, uint32_t attribute)
+{
+	assert(callback);
+
+	// 全てのコライダーと総当りチェック
+	for (auto& group : colliderGroups) 
+	{
+		// 属性が合わなければスキップ
+		if (!(group.second->GetAttribute() & attribute)) { continue; }
+
+		for (auto& it : *group.second->GetColliders())
+		{
+			BaseCollider* col = it.get();
+			// 属性が合わなければスキップ
+			if (!(col->GetAttribute() & attribute)) { continue; }
+
+			// 球
+			if (col->GetShapeType() == CollisionShapeType::Sphere) {
+				SphereCollider* sphereB = dynamic_cast<SphereCollider*>(col);
+
+				if (!Check2Spheres(sphere, sphereB)) continue;
+
+				// 交差情報をセット
+				QueryHit info;
+				info.collider = col;
+				info.inter = *inter;
+				info.reject = *reject;
+
+				// クエリーコールバック呼び出し
+				if (!callback->OnQueryHit(info)) {
+					// 戻り値がfalseの場合、継続せず終了
+					return;
+				}
+			}
+			// メッシュ
+			else if (col->GetShapeType() == CollisionShapeType::Mesh) {
+				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(col);
+
+				if (!CheckSphereMesh(sphere, meshCollider)) continue;
+
+				// 交差情報をセット
+				QueryHit info;
+				info.collider = col;
+				info.inter = *inter;
+				info.reject = *reject;
+
+				// クエリーコールバック呼び出し
+				if (!callback->OnQueryHit(info)) {
+					// 戻り値がfalseの場合、継続せず終了
+					return;
+				}
+			}
+		}
+	}
+	Reset();
 }
 
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)

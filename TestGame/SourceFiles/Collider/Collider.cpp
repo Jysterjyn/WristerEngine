@@ -117,10 +117,9 @@ uint32_t Collider::nextSerialNumber = 0;
 //	return itr->get()->GetColliderName();
 //}
 
-CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_,
-	const std::optional<Vector3>& inter_, std::optional<float> distance_)
+CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const HitInfo& hitInfo)
 {
-	my = my_; other = other_; inter = inter_; distance = distance_;
+	my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
 }
 
 bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)

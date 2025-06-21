@@ -163,14 +163,26 @@ namespace WristerEngine
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
-	struct CollisionPair
+	struct HitInfo
+	{
+		std::optional<Vector3> inter = std::nullopt;
+		std::optional<float> distance = std::nullopt;
+		std::optional<Vector3> reject = std::nullopt;
+
+		HitInfo(const std::optional<Vector3>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
+			const std::optional<Vector3>& reject = std::nullopt)
+			: inter(inter), distance(distance), reject(reject)
+		{
+		}
+
+		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
+	};
+
+	struct CollisionPair : public HitInfo
 	{
 		BaseCollider* my = nullptr, * other = nullptr;
-		std::optional<Vector3> inter;
-		std::optional<float> distance = std::nullopt;
 
-		CollisionPair(BaseCollider* my, BaseCollider* other,
-			const std::optional<Vector3>& inter, std::optional<float> distance);
+		CollisionPair(BaseCollider* my, BaseCollider* other, const HitInfo& hitInfo);
 
 		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
@@ -286,10 +298,10 @@ namespace WristerEngine
 		float radius = 1.0f;	// ”¼Œa
 		Vector3 offset;
 
-		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 
 	public:
 		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// ’†SÀ•W‚ğæ“¾
 		const Vector3& GetCenterPosition() const { return center; }
 		// ”¼Œa‚ğæ“¾

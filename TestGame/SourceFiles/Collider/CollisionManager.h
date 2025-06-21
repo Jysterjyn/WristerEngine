@@ -15,13 +15,41 @@ namespace WristerEngine
 		float distance = 0.0f;
 	};
 
+	/// <summary>
+	/// クエリーによる情報を得る為の構造体
+	/// </summary>
+	struct QueryHit
+	{
+		// 衝突相手のコライダー
+		BaseCollider* collider = nullptr;
+		// 衝突点
+		Vector3 inter;
+		// 排斥ベクトル
+		Vector3 reject;
+	};
+
+	/// <summary>
+	/// クエリーで交差を検出した時の動作を規定するクラス
+	/// </summary>
+	class QueryCallback
+	{
+	public:
+		QueryCallback() = default;
+		virtual ~QueryCallback() = default;
+
+		/// <summary>
+		/// 交差時コールバック
+		/// </summary>
+		/// <param name="info">交差情報</param>
+		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
+		virtual bool OnQueryHit(const QueryHit& info) = 0;
+	};
+
 	// コライダー管理
-	class CollisionManager final
+	class CollisionManager final : private HitInfo
 	{
 	private:
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
-		std::optional<Vector3> inter = std::nullopt;
-		std::optional<float> distance = std::nullopt;
 
 		CollisionManager() = default;
 		~CollisionManager() = default;
@@ -56,6 +84,9 @@ namespace WristerEngine
 
 		bool Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo = nullptr,
 			const float maxDistance = D3D12_FLOAT32_MAX);
+
+		void QuerySphere(const SphereCollider* sphere, QueryCallback* callback, uint32_t attribute = UINT32_MAX);
+
 		// 全当たり判定
 		void CheckCollisions();
 	};
