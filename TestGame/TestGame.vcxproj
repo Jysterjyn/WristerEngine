@@ -12,7 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\Collider\Collider.cpp" />
-    <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp" />
+    <ClCompile Include="SourceFiles\Collider\CollisionManager.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
+    </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\Ground.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />

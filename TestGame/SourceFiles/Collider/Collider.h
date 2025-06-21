@@ -452,10 +452,10 @@ namespace WristerEngine
 		// ワールド行列の逆行列
 		Matrix4 invMatWorld;
 
-		void Update() override;
 
 	public:
 		MeshCollider() { shapeType = CollisionShapeType::Mesh; }
+		void Update() override;
 		void ConstructTriangles(const _3D::Mesh* mesh);
 		const Matrix4& GetInvMatWorld() const { return invMatWorld; }
 		const std::list<std::unique_ptr<TriangleCollider>>& GetTriangles() const { return triangles; }

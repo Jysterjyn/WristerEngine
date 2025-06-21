@@ -11,10 +11,19 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	ground.Initialize();
-	//sphere.Initialize();
-	//triangle.Initialize();
-	//ray.Initialize();
+	const int32_t DIV_NUM = 10;
+	const float LAND_SCALE = 3.0f;
+
+	for (int32_t i = 0; i < DIV_NUM; i++)
+	{
+		for (int32_t j = 0; j < DIV_NUM; j++)
+		{
+			std::unique_ptr<Ground> ground=std::make_unique<Ground>();
+			ground->Initialize({ (j - DIV_NUM / 2) * LAND_SCALE * 2,0,
+				(i - DIV_NUM / 2) * LAND_SCALE * 2 }, LAND_SCALE);
+			grounds.push_back(std::move(ground));
+		}
+	}
 	player.Initialize();
 
 	WE::_3D::DebugCamera::Prop prop;
@@ -26,10 +35,5 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	if (input->IsTrigger(WE::Key::K)) { BaseObject::ChangeIndex(); }
-	//ground.Update();
-	//sphere.Update();
-	//triangle.Update();
-	//ray.Update();
 	player.Update();
 }

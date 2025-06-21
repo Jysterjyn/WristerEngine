@@ -12,10 +12,7 @@ class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 
 class TestScene : public WristerEngine::BaseScene
 {
-	Ground ground;
-	Sphere sphere;
-	Triangle triangle;
-	Ray ray;
+	std::vector<std::unique_ptr<Ground>> grounds;
 	Player player;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½

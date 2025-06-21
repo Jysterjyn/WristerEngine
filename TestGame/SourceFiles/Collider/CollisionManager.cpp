@@ -447,6 +447,7 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 	BaseCollider* it_hit = nullptr;
 	//今までで最も近いコライダーの距離を記録する変数
 	float tempDistance = maxDistance;
+	Vector3 tempInter;
 
 	//全コライダーと総当たりチェック
 	for (auto& group : colliderGroups)
@@ -470,6 +471,7 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 				//今までで最も近いので記録を取る
 				result = true;
 				tempDistance = *distance;
+				tempInter = *inter;
 				it_hit = it.get();
 			}
 			//メッシュの場合
@@ -483,6 +485,7 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 				//今までで最も近いので記録を取る
 				result = true;
 				tempDistance = *distance;
+				tempInter = *inter;
 				it_hit = it.get();
 			}
 		}
@@ -490,8 +493,8 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 	//最終的に何かに当たっていれば結果を書き込む
 	if (result && hitInfo)
 	{
-		hitInfo->distance = *distance;
-		hitInfo->inter = *inter;
+		hitInfo->distance = tempDistance;
+		hitInfo->inter = tempInter;
 		hitInfo->collider = it_hit;
 	}
 

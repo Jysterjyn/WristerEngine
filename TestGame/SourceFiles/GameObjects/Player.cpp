@@ -16,6 +16,9 @@ void Player::Initialize()
 	sphere->SetOffset({ 0,radius,0 });
 	sphere->SetRadius(radius);
 	sphere->SetTransform(&object->transform);
+	object->transform.translation.y = 10.0f;
+	object->transform.Update();
+	sphere->Update();
 	ray = AddCollider<WE::RayCollider>();
 }
 

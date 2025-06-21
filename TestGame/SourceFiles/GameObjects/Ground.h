@@ -1,63 +1,15 @@
 #pragma once
 #include "Object3d.h"
 #include <Collider.h>
-#include <Input.h>
+#include <ModelManager.h>
 
-class BaseObject : public WE::Collider
+class Ground : public WE::Collider
 {
-protected:
 	WE::_3D::ModelManager* mm = WE::_3D::ModelManager::GetInstance();
 	WE::_3D::Object3d* object = nullptr;
-	WE::Input* input = WE::Input::GetInstance();
-	static uint32_t inputIndex;
-
-public:
-	virtual ~BaseObject() = default;
-	virtual void Update() { object->material.ambient = { 1,1,1 }; }
-	static void ChangeIndex() { inputIndex = (inputIndex + 1) % 2; }
-};
-
-class Ground : public BaseObject
-{
 	WE::MeshCollider* collider = nullptr;
-	WE::SphereCollider* sphere = nullptr;
-	WE::_3D::Object3d* objectSphere = nullptr;
 
 public:
-	void Initialize();
-	void Update() override;
-	void OnCollision() override;
-};
-
-class Sphere : public BaseObject
-{
-	WE::SphereCollider* collider = nullptr;
-
-public:
-	void Initialize();
-	void Update() override;
-	void OnCollision() override;
-};
-
-class Triangle : public BaseObject
-{
-	WE::MeshCollider* collider = nullptr;
-	std::array<Vector3, 3> p;
-
-public:
-	void Initialize();
-	void Update() override;
-	void OnCollision() override { object->material.ambient = { 1,0,0 }; }
-};
-
-class Ray : public BaseObject
-{
-	WE::RayCollider* collider = nullptr;
-	Vector3 pos;
-	Vector3 dir = { 0,-1,0 };
-
-public:
-	void Initialize();
-	void Update() override;
-	void OnCollision() override;
+	void Initialize(const Vector3& pos, float scale);
+	WE::_3D::Transform& GetTransform() { return object->transform; }
 };
