@@ -35,7 +35,7 @@ namespace WristerEngine::_3D
 		// 描画処理
 		void Draw();
 		// モデル作成
-		Object3d* Create(const std::string& modelName, bool smoothing = true, const std::string& directoryName = "");
+		Object3d* Create(const std::string& modelName, bool smoothing = false, const std::string& directoryName = "");
 		// モデルグループ作成
 		std::unordered_map<std::string, Object3d*> CreateGroup(const std::string& directoryName, bool smoothing = false);
 		// オブジェクトの解放

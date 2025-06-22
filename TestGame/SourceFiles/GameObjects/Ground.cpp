@@ -15,7 +15,7 @@ void Ground::Initialize(const Vector3& pos, float scale)
 	nametable[9] = "pyramid";
 
 	WE::Random_Int rand(0, 9);
-	object = mm->Create(nametable[rand()], true);
+	object = mm->Create(nametable[rand()]);
 	object->transform.scale *= scale;
 	object->transform.translation = pos;
 	collider = AddCollider<WE::MeshCollider>();
