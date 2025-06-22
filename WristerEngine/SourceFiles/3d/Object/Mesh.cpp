@@ -26,7 +26,7 @@ void Mesh::CalculateSmoothedVertexNormals()
 		for (UINT16 index : v) { normal += Normalize(vertices[index].normal); }
 		normal = Normalize(normal / (float)v.size());
 		// 共通法線を使用する全ての頂点データに書き込む
-		for (UINT16 index : v) { vertices[index].normal = normal; }
+		for (UINT16 index : v) { vertices[index].smoothNormal = normal; }
 	}
 }
 
@@ -106,7 +106,7 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 				vertex.normal = normals[(size_t)indexNormal - 1];
 				vertex.uv = texcoords[(size_t)indexTexcoord - 1];
 				vertices.emplace_back<Mesh::VertexData&>(vertex);
-				if (isSmooth) { smoothData[indexPosition].emplace_back<UINT16>((UINT16)vertices.size() - 1); }
+				 smoothData[indexPosition].emplace_back<UINT16>((UINT16)vertices.size() - 1); 
 
 				// インデックスデータの追加
 				if (faceIndexCount >= 3)
@@ -126,23 +126,42 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 	}
 	file.close();
 
-	if (isSmooth) { CalculateSmoothedVertexNormals(); }
+	CalculateSmoothedVertexNormals(); 
 
 	CreateBuffers();
 }
 
 void Mesh::CreateBuffers()
 {
-	UINT sizeVB = static_cast<UINT>(sizeof(Mesh::VertexData) * vertices.size());
-	VertexData* vertMap = nullptr;	// 頂点バッファのマップ
+	struct TransferVertexData
+	{
+		Vector3 pos; // xyz座標
+		Vector3 normal; // 法線ベクトル
+		Vector2 uv;  // uv座標
+
+		void Set(VertexData v, bool smooth)
+		{
+			pos = v.pos;
+			uv = v.uv;
+			if (smooth) { normal = v.smoothNormal; }
+			else { normal = v.normal; }
+		}
+	};
+
+	UINT sizeVB = static_cast<UINT>(sizeof(TransferVertexData) * vertices.size());
+	TransferVertexData* vertMap = nullptr;	// 頂点バッファのマップ
 	// 頂点バッファ生成
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
 	// 全頂点に対して
-	copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
+	for (size_t i = 0; i < vertices.size(); i++)
+	{
+		(vertMap + i)->Set(vertices[i], isSmooth);
+	}
+	//copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
 	// 頂点バッファビューの作成
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = sizeVB;
-	vbView.StrideInBytes = sizeof(Mesh::VertexData);
+	vbView.StrideInBytes = sizeof(TransferVertexData);
 
 	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
 	UINT16* indexMap = nullptr;

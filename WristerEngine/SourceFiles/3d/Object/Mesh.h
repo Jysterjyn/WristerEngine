@@ -13,6 +13,7 @@ namespace WristerEngine::_3D
 		{
 			Vector3 pos; // xyz座標
 			Vector3 normal; // 法線ベクトル
+			Vector3 smoothNormal; // 法線ベクトル
 			Vector2 uv;  // uv座標
 		};
 
