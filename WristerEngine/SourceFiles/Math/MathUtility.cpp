@@ -8,6 +8,26 @@ int NumberLoop(int num, int max, int min)
 	return num;
 }
 
+Angle operator+(Angle angle, float rad)
+{
+	return angle += rad;
+}
+
+Angle operator+(float rad, Angle angle)
+{
+	return angle += rad;
+}
+
+Angle operator-(Angle angle, float rad)
+{
+	return angle -= rad;
+}
+
+Angle operator-(float rad, Angle angle)
+{
+	return angle -= rad;
+}
+
 float LerpShortAngle(float a, float b, float t)
 {
 	// Šp“x·•ª‚ğ‹‚ß‚é

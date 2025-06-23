@@ -12,19 +12,27 @@ namespace WristerEngine
 	struct BaseParticleProp
 	{
 		ParticleKind kind = ParticleKind::Diffuse;
+		int lifeTime = 60;
 	};
 
 	class Particle
 	{
-	public:
+	private:
+		bool isDestroy = false;
+
+	protected:
 		Vector3 position; // ç¿ïW
 		float scale = 0;
 		ColorRGBA color;
-		bool isDestroy = false;
 
 	public:
 		virtual ~Particle() = default;
 		virtual void Initialize(const BaseParticleProp& prop) = 0;
 		virtual void Update() = 0;
+		void Destroy() { isDestroy = true; }
+		virtual const Vector3 GetPosition() const { return position; }
+		float GetScale() const { return scale; }
+		const ColorRGBA& GetColor() const { return color; }
+		bool IsDestroy() const { return isDestroy; }
 	};
 }

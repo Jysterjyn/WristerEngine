@@ -5,6 +5,14 @@
 
 namespace WristerEngine
 {
+	// 位置・速度・加速度のセット
+	struct PosVelAcc
+	{
+		Vector3 position, velocity, acceleration;
+
+		void Update();
+	};
+
 	// 物理計算
 	class Physics
 	{

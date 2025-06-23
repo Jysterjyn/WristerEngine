@@ -3,6 +3,7 @@
 #include <list>
 #include "Transform.h"
 #include <Particle.h>
+#include <Physics.h>
 
 namespace WristerEngine
 {
@@ -13,30 +14,30 @@ namespace WristerEngine
 		struct Prop : public BaseParticleProp
 		{
 			_3D::Transform* parent = nullptr;
-			Vector3 posOffset;
-			Vector3 velOffset;
-			Vector3 accOffset;
-			Vector3 posRange = { 1,1,1 };
-			Vector3 velRange = { 0.1f,0.1f,0.1f };
-			Vector3 accRange = { 0.001f,0.001f,0.001f };
-			int lifeTime = 60;
-			float startScale = 1.0f;
-			float endScale = 0.0f;
+			PosVelAcc offset;
+			PosVelAcc range;
 
-			Prop() { kind = ParticleKind::Diffuse; }
+			/// <summary>
+			/// スケール
+			/// </summary>
+			/// <param name="x">最初のスケール</param>
+			/// <param name="y">最後のスケール</param>
+			Vector2 scales = { 1.0f,0.0f };
+
+			Prop();
 		};
 
 	private:
 		Vector3 velocity; // 速度
 		Vector3 accel; // 加速度
 		FrameTimer frame = 0;
-		float s_scale = 0; // 初期値
-		float e_scale = 0; // 最終値
+		Vector2 scales;
 		_3D::Transform* parent = nullptr;
 
 		// Particle を介して継承されました
 		void Initialize(const BaseParticleProp& prop) override;
 		void Update() override;
+		const Vector3 GetPosition() const override;
 	};
 
 }

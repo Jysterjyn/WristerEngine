@@ -14,6 +14,7 @@ class TestScene : public WristerEngine::BaseScene
 {
 	std::vector<std::unique_ptr<Ground>> grounds;
 	Player player;
+	WE::_3D::Transform transform;
 
 	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
 	void Initialize() override;

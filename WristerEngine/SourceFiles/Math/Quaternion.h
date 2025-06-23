@@ -40,7 +40,7 @@ float Length(const Quaternion& q);
 Quaternion Normalize(const Quaternion& q);
 // ‹tQuaternion‚É‚·‚é
 Quaternion Inverse(const Quaternion& q);
-// ”CˆÓ²‰ñ“]‚ÌQuaternion¶¬(axis‚Í³‹K‰»‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚é)
+// ”CˆÓ²‰ñ“]‚ÌQuaternion¶¬
 Quaternion MakeAxisAngle(const Vector3& axis, float angle);
 // ƒxƒNƒgƒ‹‚ğQuaternion‚Å‰ñ“]‚³‚¹‚é
 Vector3 RotateVector(const Vector3& v, const Quaternion& q);

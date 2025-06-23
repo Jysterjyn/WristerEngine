@@ -21,10 +21,8 @@ void DirectionalParticle::Initialize(const BaseParticleProp& prop)
 
 void DirectionalParticle::ComputeControlPoints()
 {
-	// 回転軸を求める
-	Vector3 axis = Normalize(end - start);
 	// Quaternion生成
-	Quaternion rotQ = MakeAxisAngle(axis, angle);
+	Quaternion rotQ = MakeAxisAngle(end - start, angle);
 	// 制御点の追加
 	controlPoints.push_back(start);
 	// 制御点を線形補間で計算
@@ -48,5 +46,5 @@ void DirectionalParticle::ComputeControlPoints()
 void DirectionalParticle::Update()
 {
 	position = BezierCurve(controlPoints, frame.GetRemainTimeRate());
-	if (frame.Update()) { isDestroy = true; }
+	if (frame.Update()) { Destroy(); }
 }

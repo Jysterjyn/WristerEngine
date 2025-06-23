@@ -47,19 +47,19 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	//player.Update();
+	transform.translation.x += input->Move(WE::Key::D, WE::Key::A, 0.1f);
+	transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
+	transform.Update();
 
 	WE::ParticleManager* pm = WE::ParticleManager::GetInstance();
-	WE::DirectionalParticle::Prop prop;
+	WE::DiffuseParticle::Prop prop;
+	prop.parent = &transform;
 	//WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
-	//prop.radius = 2;
+	//prop.radius = 5;
 	//prop.start.x = -5;
 	//prop.end.x = 5;
-	//prop.angle = rand();
+	//prop.angleRange = { Angle(180),Angle(180) };
 	//pgd->Add(prop);
 	WE::ParticleGroup* pgl = pm->GetParticleGroup(0);
-	prop.radius = 15;
-	prop.end.x = -5;
-	prop.start.x = 5;
-	prop.angleRange = { Angle(180),Angle(180) };
 	pgl->Add(prop);
 }

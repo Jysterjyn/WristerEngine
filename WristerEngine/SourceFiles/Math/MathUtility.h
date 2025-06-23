@@ -19,15 +19,20 @@ public:
 	float operator-() const { return -angle; }
 	float operator++(int) { float rAngle = angle; angle += ONE_DEG_RAD; return rAngle; }
 	float operator--(int) { float rAngle = angle; angle -= ONE_DEG_RAD; return rAngle; }
-	void operator+=(float rad) { angle += rad; ModAngle(); }
-	void operator+=(int deg) { angle += ToRadian(deg); ModAngle(); }
-	void operator-=(float rad) { angle -= rad;  ModAngle(); }
-	void operator-=(int deg) { angle -= ToRadian(deg);  ModAngle(); }
+	float operator+=(float rad) { angle += rad; ModAngle(); return angle; }
+	float operator+=(int deg) { angle += ToRadian(deg); ModAngle(); return angle; }
+	float operator-=(float rad) { angle -= rad;  ModAngle(); return angle; }
+	float operator-=(int deg) { angle -= ToRadian(deg);  ModAngle(); return angle; }
 	operator float() { return angle; }
 	Angle() = default;
 	Angle(float rad) { angle = rad; ModAngle(); } // ÉâÉWÉAÉìë„ì¸
 	Angle(int deg) { angle = ToRadian(deg);  ModAngle(); } // ìxêîë„ì¸
 };
+
+Angle operator+(Angle angle, float rad);
+Angle operator+(float rad, Angle angle);
+Angle operator-(Angle angle, float rad);
+Angle operator-(float rad, Angle angle);
 
 // XYZé≤ÇÃenum class
 enum class Axis { X, Y, Z };

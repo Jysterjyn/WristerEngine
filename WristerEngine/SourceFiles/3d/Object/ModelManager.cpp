@@ -60,6 +60,7 @@ std::unordered_map<std::string, Object3d*> ModelManager::CreateGroup(const std::
 
 void ModelManager::Draw()
 {
+	if (objects.empty()) { return; }
 	// コマンドリストをセット
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 

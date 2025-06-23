@@ -59,7 +59,8 @@ Quaternion Inverse(const Quaternion& q)
 
 Quaternion MakeAxisAngle(const Vector3& axis, float angle)
 {
-	return Quaternion(cosf(angle / 2.0f), axis * sinf(angle / 2.0f));
+	Vector3 nAxis = Normalize(axis);
+	return Quaternion(cosf(angle / 2.0f), nAxis * sinf(angle / 2.0f));
 }
 
 Vector3 RotateVector(const Vector3& v, const Quaternion& q)
