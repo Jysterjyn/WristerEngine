@@ -1,10 +1,23 @@
 #include "DirectionalParticle.h"
 #include "Quaternion.h"
-using namespace WristerEngine;
+#include <cassert>
+using namespace WE;
 
-void DirectionalParticle::Particle::Update() { position = BezierCurve(controlPoints, frame.GetRemainTimeRate()); }
+void DirectionalParticle::Initialize(const BaseParticleProp& prop)
+{
+	const Prop* addProp = static_cast<const Prop*>(&prop);
+	assert(addProp);
+	start = addProp->start;
+	end = addProp->end;
+	scale = addProp->scale;
+	splitNum = addProp->splitNum;
+	angle = addProp->angle;
+	radius = addProp->radius;
+	frame = addProp->lifeTime;
+	ComputeControlPoints();
+}
 
-void DirectionalParticle::Particle::ComputeControlPoints()
+void DirectionalParticle::ComputeControlPoints()
 {
 	// âÒì]é≤ÇãÅÇﬂÇÈ
 	Vector3 axis = Normalize(end - start);
@@ -30,22 +43,8 @@ void DirectionalParticle::Particle::ComputeControlPoints()
 	controlPoints.push_back(end);
 }
 
-void DirectionalParticle::Add(const DirectionalParticle::AddProp& particleProp)
-{
-	particles.emplace_front();
-	Particle& p = particles.front();
-	p.start = particleProp.start;
-	p.end = particleProp.end;
-	p.scale = particleProp.scale;
-	p.splitNum = particleProp.splitNum;
-	p.angle = particleProp.angle;
-	p.radius = particleProp.radius;
-	p.frame = particleProp.lifeTime;
-	p.ComputeControlPoints();
-}
-
 void DirectionalParticle::Update()
 {
-	particles.remove_if([](Particle& particle) { return particle.frame.Update(); });
-	for (auto& particle : particles) { particle.Update(); }
+	position = BezierCurve(controlPoints, frame.GetRemainTimeRate());
+	if (frame.Update()) { isDestroy = true; }
 }

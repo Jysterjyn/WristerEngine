@@ -11,7 +11,7 @@ namespace WristerEngine
 
 	struct BaseParticleProp
 	{
-		ParticleKind type = ParticleKind::Diffuse;
+		ParticleKind kind = ParticleKind::Diffuse;
 	};
 
 	class Particle

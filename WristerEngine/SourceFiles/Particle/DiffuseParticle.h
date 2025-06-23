@@ -10,7 +10,6 @@ namespace WristerEngine
 	class DiffuseParticle : public Particle
 	{
 	public:
-		// パーティクル1粒
 		Vector3 velocity; // 速度
 		Vector3 accel; // 加速度
 		FrameTimer frame = 0;
@@ -30,6 +29,8 @@ namespace WristerEngine
 			int lifeTime = 60;
 			float startScale = 1.0f;
 			float endScale = 0.0f;
+
+			Prop() { kind = ParticleKind::Diffuse; }
 		};
 
 	public:

@@ -68,7 +68,7 @@ void ParticleManager::Clear()
 
 void ParticleManager::AddParticleGroup(const std::string& textureName, ParticleType particleType)
 {
-	std::unique_ptr<ParticleGroup> pGroup=std::make_unique<ParticleGroup>();
+	std::unique_ptr<ParticleGroup> pGroup = std::make_unique<ParticleGroup>();
 	pGroup->Initialize(textureName);
 	particleGroups[particleType].push_back(std::move(pGroup));
 }
