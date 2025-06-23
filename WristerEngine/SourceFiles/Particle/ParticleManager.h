@@ -29,7 +29,7 @@ namespace WristerEngine
 		ComPtr<ID3D12Resource> constBuff;
 		ConstBufferData* constMap = nullptr;
 		// パーティクルグループの配列
-		std::unordered_map<ParticleType, std::vector<ParticleGroup>> particleGroups;
+		std::unordered_map<ParticleType, std::vector<std::unique_ptr<ParticleGroup>>> particleGroups;
 		_3D::ModelManager* modelManager = nullptr;
 
 		ParticleManager() = default;
@@ -51,6 +51,6 @@ namespace WristerEngine
 		// パーティクルグループ追加
 		void AddParticleGroup(const std::string& textureName, ParticleType particleType = ParticleType::Light);
 		// パーティクルグループ取得
-		ParticleGroup* GetParticleGroup(size_t index, ParticleType particleType = ParticleType::Light) { return &particleGroups[particleType][index]; }
+		ParticleGroup* GetParticleGroup(size_t index, ParticleType particleType = ParticleType::Light) { return particleGroups[particleType][index].get(); }
 	};
 }

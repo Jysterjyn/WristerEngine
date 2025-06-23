@@ -447,5 +447,8 @@
     <ClInclude Include="SourceFiles\Physics\CollisionManager.h">
       <Filter>ソース ファイル\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\Particle\Particle.h">
+      <Filter>ソース ファイル\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -28,17 +28,17 @@ ColorRGBA& ColorRGBA::operator*=(float rate)
 	return *this;
 }
 
-const Color operator*(Color color, float rate)
+const Color WE::operator*(Color color, float rate)
 {
 	return Color(color *= rate);
 }
 
-const ColorRGB operator*(ColorRGB color, float rate)
+const ColorRGB WE::operator*(ColorRGB color, float rate)
 {
 	return ColorRGB(color *= rate);
 }
 
-const ColorRGBA operator*(ColorRGBA color, float rate)
+const ColorRGBA WE::operator*(ColorRGBA color, float rate)
 {
 	return ColorRGBA(color *= rate);
 }

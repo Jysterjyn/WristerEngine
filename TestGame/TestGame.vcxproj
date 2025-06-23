@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="Resources\Shaders\Particle.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WristerEngine\WristerEngine.vcxproj">

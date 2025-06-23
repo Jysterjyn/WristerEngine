@@ -49,7 +49,8 @@ void TestScene::Update()
 
 	WE::ParticleManager* pm = WE::ParticleManager::GetInstance();
 	WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
-	pgd->Add(WE::DiffuseParticle::AddProp());
+	WE::DiffuseParticle::Prop prop;
+	pgd->Add(prop);
 	WE::ParticleGroup* pgl = pm->GetParticleGroup(0);
-	pgl->Add(WE::DiffuseParticle::AddProp());
+	pgl->Add(prop);
 }

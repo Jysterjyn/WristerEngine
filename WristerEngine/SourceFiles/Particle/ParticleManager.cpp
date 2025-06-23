@@ -22,7 +22,7 @@ void ParticleManager::Update()
 {
 	for (auto& particleGroup : particleGroups)
 	{
-		for (auto& particles : particleGroup.second) { particles.Update(); }
+		for (auto& particles : particleGroup.second) { particles->Update(); }
 	}
 	// 定数バッファへデータ転送
 	const BaseCamera* camera = CameraManager::GetInstance()->Get();
@@ -54,7 +54,7 @@ void ParticleManager::Draw()
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 		// 定数バッファビューをセット
 		cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
-		for (auto& particles : particleGroup.second) { particles.Draw(); }
+		for (auto& particles : particleGroup.second) { particles->Draw(); }
 	}
 }
 
@@ -62,13 +62,13 @@ void ParticleManager::Clear()
 {
 	for (auto& particleGroup : particleGroups)
 	{
-		for (auto& particles : particleGroup.second) { particles.Clear(); }
+		for (auto& particles : particleGroup.second) { particles->Clear(); }
 	}
 }
 
 void ParticleManager::AddParticleGroup(const std::string& textureName, ParticleType particleType)
 {
-	ParticleGroup pGroup;
-	pGroup.Initialize(textureName);
-	particleGroups[particleType].push_back(pGroup);
+	std::unique_ptr<ParticleGroup> pGroup=std::make_unique<ParticleGroup>();
+	pGroup->Initialize(textureName);
+	particleGroups[particleType].push_back(std::move(pGroup));
 }

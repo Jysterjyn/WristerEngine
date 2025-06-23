@@ -185,6 +185,7 @@
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
     <ClInclude Include="SourceFiles\Json\GlobalVariables.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
+    <ClInclude Include="SourceFiles\Particle\Particle.h" />
     <ClInclude Include="SourceFiles\Physics\Collider.h" />
     <ClInclude Include="SourceFiles\Physics\CollisionManager.h" />
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />

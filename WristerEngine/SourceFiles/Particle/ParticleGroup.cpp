@@ -20,32 +20,46 @@ void ParticleGroup::Initialize(const std::string& textureName)
 	CreateVertexBuffer();
 }
 
+//void ParticleGroup::Update()
+//{
+//	diffuseParticle.Update();
+//	directionalParticle.Update();
+//
+//	// 定数バッファへデータ転送
+//	std::list<DiffuseParticle::Particle> diffuse = diffuseParticle.GetParticles();
+//	std::list<DirectionalParticle::Particle> directional = directionalParticle.GetParticles();
+//	int i = 0;
+//
+//	for (auto& dif : diffuse)
+//	{
+//		vertMap[i].pos = dif.position;
+//		if (dif.parent) { vertMap[i].pos += dif.parent->GetWorldPosition(); }
+//		vertMap[i].vel = dif.velocity;
+//		vertMap[i].acc = dif.accel;
+//		vertMap[i].scales = { dif.s_scale,dif.e_scale };
+//		vertMap[i].passTime.x = (float)dif.frame.GetInterval();
+//		vertMap[i].passTime.y = (float)dif.frame.GetTime();
+//		vertMap[i++].type = 0;
+//	}
+//	for (auto& dir : directional)
+//	{
+//		vertMap[i].pos = dir.position;
+//		vertMap[i].scales.x = dir.scale;
+//		vertMap[i++].type = 1;
+//	}
+//}
+
 void ParticleGroup::Update()
 {
-	diffuseParticle.Update();
-	directionalParticle.Update();
-
 	// 定数バッファへデータ転送
-	std::list<DiffuseParticle::Particle> diffuse = diffuseParticle.GetParticles();
-	std::list<DirectionalParticle::Particle> directional = directionalParticle.GetParticles();
-	int i = 0;
-
-	for (auto& dif : diffuse)
+	size_t i = 0;
+	for (auto& p : particles)
 	{
-		vertMap[i].pos = dif.position;
-		if (dif.parent) { vertMap[i].pos += dif.parent->GetWorldPosition(); }
-		vertMap[i].vel = dif.velocity;
-		vertMap[i].acc = dif.accel;
-		vertMap[i].scales = { dif.s_scale,dif.e_scale };
-		vertMap[i].passTime.x = (float)dif.frame.GetInterval();
-		vertMap[i].passTime.y = (float)dif.frame.GetTime();
-		vertMap[i++].type = 0;
-	}
-	for (auto& dir : directional)
-	{
-		vertMap[i].pos = dir.position;
-		vertMap[i].scales.x = dir.scale;
-		vertMap[i++].type = 1;
+		p->Update();
+		vertMap[i].pos = p->position;
+		vertMap[i].scale = p->scale;
+		vertMap[i].color = p->color;
+		i++;
 	}
 }
 
@@ -61,31 +75,53 @@ void ParticleGroup::Draw()
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }
 
-void ParticleGroup::Add(const DiffuseParticle::AddProp& particleProp)
+//void ParticleGroup::Add(const DiffuseParticle::AddProp& particleProp)
+//{
+//	if (IsParticleMax()) { return; }
+//
+//	// 最大パーティクル量を超えるのを阻止
+//	UINT32 nextParticleNum = (UINT32)diffuseParticle.GetParticles().size() + particleProp.addNum;
+//	if (nextParticleNum > PARTICLE_MAX)
+//	{
+//		DiffuseParticle::AddProp p = particleProp;
+//		p.addNum -= nextParticleNum - PARTICLE_MAX;
+//		diffuseParticle.Add(p);
+//		return;
+//	}
+//
+//	diffuseParticle.Add(particleProp);
+//}
+//
+//void ParticleGroup::Add(const DirectionalParticle::AddProp& particleProp)
+//{
+//	if (IsParticleMax()) { return; }
+//	directionalParticle.Add(particleProp);
+//}
+//
+//void ParticleGroup::Clear()
+//{
+//	diffuseParticle.Clear();
+//	directionalParticle.Clear();
+//}
+
+void ParticleGroup::Add(const BaseParticleProp& particleProp)
 {
 	if (IsParticleMax()) { return; }
-
-	// 最大パーティクル量を超えるのを阻止
-	UINT32 nextParticleNum = (UINT32)diffuseParticle.GetParticles().size() + particleProp.addNum;
-	if (nextParticleNum > PARTICLE_MAX)
+	std::unique_ptr<Particle> newParticle;
+	switch (particleProp.type)
 	{
-		DiffuseParticle::AddProp p = particleProp;
-		p.addNum -= nextParticleNum - PARTICLE_MAX;
-		diffuseParticle.Add(p);
-		return;
+	case ParticleKind::Diffuse:
+		newParticle = std::make_unique<DiffuseParticle>();
+		break;
+	case ParticleKind::Directional:
+		//newParticle = std::make_unique<DirectionalParticle>();
+		break;
 	}
-
-	diffuseParticle.Add(particleProp);
-}
-
-void ParticleGroup::Add(const DirectionalParticle::AddProp& particleProp)
-{
-	if (IsParticleMax()) { return; }
-	directionalParticle.Add(particleProp);
+	newParticle->Initialize(particleProp);
+	particles.push_back(std::move(newParticle));
 }
 
 void ParticleGroup::Clear()
 {
-	diffuseParticle.Clear();
-	directionalParticle.Clear();
+	particles.clear();
 }

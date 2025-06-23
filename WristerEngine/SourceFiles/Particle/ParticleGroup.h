@@ -8,7 +8,60 @@
 
 namespace WristerEngine
 {
-	// パーティクルグループ
+	//// パーティクルグループ
+	//// このインスタンス1つにつき1枚のテクスチャが使える
+	//class ParticleGroup
+	//{
+	//private:
+	//	// 頂点データ構造体
+	//	struct VertexPos
+	//	{
+	//		Vector3 pos; // xyz座標
+	//		Vector3 vel;
+	//		Vector3 acc;
+	//		Vector2 scales;
+	//		Vector2 passTime;
+	//		unsigned char type;
+	//	};
+
+	//	// Microsoft::WRL::を省略
+	//	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+	//	static const int PARTICLE_MAX = 30000; // パーティクル最大数
+	//	// 頂点バッファ
+	//	ComPtr<ID3D12Resource> vertBuff;
+	//	VertexPos* vertMap = nullptr;
+	//	// 頂点バッファビュー
+	//	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	//	// テクスチャインデックス
+	//	_2D::TextureData* texture = nullptr;
+	//	// 拡散するパーティクル
+	//	DiffuseParticle diffuseParticle;
+	//	// 始点から終点へ向かうパーティクル
+	//	DirectionalParticle directionalParticle;
+
+	//	// 頂点バッファ生成
+	//	void CreateVertexBuffer();
+	//	// 全てのパーティクルの合計数
+	//	size_t AllParticleNum() { return diffuseParticle.GetParticles().size() + directionalParticle.GetParticles().size(); }
+	//	// パーティクルが最大値に達してるか
+	//	bool IsParticleMax() { return AllParticleNum() >= PARTICLE_MAX; }
+
+	//public:
+	//	// 初期化
+	//	void Initialize(const std::string& textureName);
+	//	// 更新
+	//	void Update();
+	//	// 描画
+	//	void Draw();
+	//	// パーティクルの追加
+	//	void Add(const DiffuseParticle::AddProp& particleProp);
+	//	void Add(const DirectionalParticle::AddProp& particleProp);
+	//	// パーティクルの削除
+	//	void Clear();
+	//};
+
+		// パーティクルグループ
 	// このインスタンス1つにつき1枚のテクスチャが使える
 	class ParticleGroup
 	{
@@ -17,11 +70,8 @@ namespace WristerEngine
 		struct VertexPos
 		{
 			Vector3 pos; // xyz座標
-			Vector3 vel;
-			Vector3 acc;
-			Vector2 scales;
-			Vector2 passTime;
-			unsigned char type;
+			float scale;
+			ColorRGBA color;
 		};
 
 		// Microsoft::WRL::を省略
@@ -36,14 +86,12 @@ namespace WristerEngine
 		// テクスチャインデックス
 		_2D::TextureData* texture = nullptr;
 		// 拡散するパーティクル
-		DiffuseParticle diffuseParticle;
-		// 始点から終点へ向かうパーティクル
-		DirectionalParticle directionalParticle;
+		std::list<std::unique_ptr<Particle>> particles;
 
 		// 頂点バッファ生成
 		void CreateVertexBuffer();
 		// 全てのパーティクルの合計数
-		size_t AllParticleNum() { return diffuseParticle.GetParticles().size() + directionalParticle.GetParticles().size(); }
+		size_t AllParticleNum() { return particles.size(); }
 		// パーティクルが最大値に達してるか
 		bool IsParticleMax() { return AllParticleNum() >= PARTICLE_MAX; }
 
@@ -55,9 +103,9 @@ namespace WristerEngine
 		// 描画
 		void Draw();
 		// パーティクルの追加
-		void Add(const DiffuseParticle::AddProp& particleProp);
-		void Add(const DirectionalParticle::AddProp& particleProp);
+		void Add(const BaseParticleProp& particleProp);
 		// パーティクルの削除
 		void Clear();
 	};
+
 }
