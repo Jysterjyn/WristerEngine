@@ -10,13 +10,6 @@ namespace WristerEngine
 	class DiffuseParticle : public Particle
 	{
 	public:
-		Vector3 velocity; // 速度
-		Vector3 accel; // 加速度
-		FrameTimer frame = 0;
-		float s_scale = 0; // 初期値
-		float e_scale = 0; // 最終値
-		_3D::Transform* parent = nullptr;
-
 		struct Prop : public BaseParticleProp
 		{
 			_3D::Transform* parent = nullptr;
@@ -33,7 +26,14 @@ namespace WristerEngine
 			Prop() { kind = ParticleKind::Diffuse; }
 		};
 
-	public:
+	private:
+		Vector3 velocity; // 速度
+		Vector3 accel; // 加速度
+		FrameTimer frame = 0;
+		float s_scale = 0; // 初期値
+		float e_scale = 0; // 最終値
+		_3D::Transform* parent = nullptr;
+
 		// Particle を介して継承されました
 		void Initialize(const BaseParticleProp& prop) override;
 		void Update() override;
