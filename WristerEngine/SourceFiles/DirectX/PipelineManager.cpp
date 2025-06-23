@@ -69,7 +69,10 @@ void PipelineManager::Initialize()
 	pipelineProp.depthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 	pipelineProp.primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
 	pipelineProp.cullMode = D3D12_CULL_MODE_BACK;
-	pipelines[PipelineType::Particle].CreatePipeline(pipelineProp);
+	pipelines[PipelineType::LightParticle].CreatePipeline(pipelineProp);
+	
+	pipelineProp.blendProp.blendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	pipelines[PipelineType::DarkParticle].CreatePipeline(pipelineProp);
 }
 
 void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)

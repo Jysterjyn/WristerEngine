@@ -70,4 +70,15 @@
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

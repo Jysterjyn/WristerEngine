@@ -50,7 +50,8 @@ namespace WristerEngine
 		Primitive,
 		Object,
 		Dissolve,
-		Particle,
+		LightParticle,
+		DarkParticle,
 		Fbx
 	};
 

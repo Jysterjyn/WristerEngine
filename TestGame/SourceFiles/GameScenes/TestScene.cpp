@@ -1,5 +1,6 @@
 #include "TestScene.h"
 #include <DebugCamera.h>
+#include <ParticleManager.h>
 
 void TestSceneUIDrawer::Initialize()
 {
@@ -11,20 +12,29 @@ void TestSceneUIDrawer::Update()
 
 void TestScene::Initialize()
 {
-	const int32_t DIV_NUM = 10;
-	const float LAND_SCALE = 3.0f;
+	//const int32_t DIV_NUM = 10;
+	//const float LAND_SCALE = 3.0f;
 
-	for (int32_t i = 0; i < DIV_NUM; i++)
-	{
-		for (int32_t j = 0; j < DIV_NUM; j++)
-		{
-			std::unique_ptr<Ground> ground=std::make_unique<Ground>();
-			ground->Initialize({ (j - DIV_NUM / 2) * LAND_SCALE * 2,0,
-				(i - DIV_NUM / 2) * LAND_SCALE * 2 }, LAND_SCALE);
-			grounds.push_back(std::move(ground));
-		}
-	}
-	player.Initialize();
+	//for (int32_t i = 0; i < DIV_NUM; i++)
+	//{
+	//	for (int32_t j = 0; j < DIV_NUM; j++)
+	//	{
+	//		std::unique_ptr<Ground> ground = std::make_unique<Ground>();
+	//		ground->Initialize({ (j - DIV_NUM / 2) * LAND_SCALE * 2,0,
+	//			(i - DIV_NUM / 2) * LAND_SCALE * 2 }, LAND_SCALE);
+	//		grounds.push_back(std::move(ground));
+	//	}
+	//}
+	//player.Initialize();
+
+	//WE::ParticleGroup* pg = WE::ParticleManager::GetParticleGroup(0);
+	//WE::DiffuseParticle::AddProp pProp;
+	//pProp.velRange = {};
+	//pProp.velOffset = {};
+	//pProp.accRange = {};
+	//pProp.accOffset = {};
+	//pProp.lifeTime = 100000;
+	//pg->Add(pProp);
 
 	WE::_3D::DebugCamera::Prop prop;
 	prop.distance = 15.0f;
@@ -35,5 +45,11 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	player.Update();
+	//player.Update();
+
+	WE::ParticleManager* pm = WE::ParticleManager::GetInstance();
+	WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
+	pgd->Add(WE::DiffuseParticle::AddProp());
+	WE::ParticleGroup* pgl = pm->GetParticleGroup(0);
+	pgl->Add(WE::DiffuseParticle::AddProp());
 }

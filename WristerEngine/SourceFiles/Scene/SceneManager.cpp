@@ -46,7 +46,7 @@ void SceneManager::Update()
 		}
 		if (isParticleClear)
 		{
-			ParticleManager::Clear();
+			ParticleManager::GetInstance()->Clear();
 			isParticleClear = false;
 		}
 

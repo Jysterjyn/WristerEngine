@@ -7,11 +7,11 @@ using namespace Microsoft::WRL;
 using namespace WE;
 using namespace _3D;
 
-// 静的メンバ変数の実体
-ComPtr<ID3D12Resource> ParticleManager::constBuff;
-ParticleManager::ConstBufferData* ParticleManager::constMap = nullptr;
-std::vector<ParticleGroup> ParticleManager::particleGroups;
-ModelManager* ParticleManager::modelManager = ModelManager::GetInstance();
+ParticleManager* ParticleManager::GetInstance()
+{
+	static ParticleManager instance;
+	return &instance;
+}
 
 void ParticleManager::Initialize()
 {
@@ -20,33 +20,55 @@ void ParticleManager::Initialize()
 
 void ParticleManager::Update()
 {
-	for (auto& particleGroup : particleGroups) { particleGroup.Update(); }
+	for (auto& particleGroup : particleGroups)
+	{
+		for (auto& particles : particleGroup.second) { particles.Update(); }
+	}
 	// 定数バッファへデータ転送
 	const BaseCamera* camera = CameraManager::GetInstance()->Get();
 	constMap->mat = camera->GetViewProjectionMatrix();
 	constMap->matBillboard = camera->GetBillboard();
 }
 
+static const PipelineType ConvertType(ParticleType particleType)
+{
+	switch (particleType)
+	{
+	case WristerEngine::ParticleType::Light:
+	default:
+		return PipelineType::LightParticle;
+	case WristerEngine::ParticleType::Dark:
+		return PipelineType::DarkParticle;
+	}
+}
+
 void ParticleManager::Draw()
 {
-	// コマンドリストをセット
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	PipelineManager::SetPipeline(PipelineType::Particle);
-	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
-	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
-	for (auto& particleGroup : particleGroups) { particleGroup.Draw(); }
+	for (auto& particleGroup : particleGroups)
+	{
+		if (particleGroup.second.empty()) { continue; }
+		// コマンドリストをセット
+		ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
+		// プリミティブ形状を設定
+		PipelineManager::SetPipeline(ConvertType(particleGroup.first));
+		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+		// 定数バッファビューをセット
+		cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
+		for (auto& particles : particleGroup.second) { particles.Draw(); }
+	}
 }
 
 void ParticleManager::Clear()
 {
-	for (auto& particleGroup : particleGroups) { particleGroup.Clear(); }
+	for (auto& particleGroup : particleGroups)
+	{
+		for (auto& particles : particleGroup.second) { particles.Clear(); }
+	}
 }
 
-void ParticleManager::AddParticleGroup(const std::string& textureName)
+void ParticleManager::AddParticleGroup(const std::string& textureName, ParticleType particleType)
 {
 	ParticleGroup pGroup;
 	pGroup.Initialize(textureName);
-	particleGroups.push_back(pGroup);
+	particleGroups[particleType].push_back(pGroup);
 }

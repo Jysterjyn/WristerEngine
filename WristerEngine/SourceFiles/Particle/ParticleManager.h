@@ -5,6 +5,12 @@
 
 namespace WristerEngine
 {
+	enum class ParticleType
+	{
+		Light,	// 光パーティクル
+		Dark	// 闇パーティクル
+	};
+
 	// パーティクルグループの管理
 	class ParticleManager final
 	{
@@ -20,29 +26,31 @@ namespace WristerEngine
 		};
 
 		// 定数バッファ
-		static ComPtr<ID3D12Resource> constBuff;
-		static ConstBufferData* constMap;
+		ComPtr<ID3D12Resource> constBuff;
+		ConstBufferData* constMap = nullptr;
 		// パーティクルグループの配列
-		static std::vector<ParticleGroup> particleGroups;
-		static _3D::ModelManager* modelManager;
+		std::unordered_map<ParticleType, std::vector<ParticleGroup>> particleGroups;
+		_3D::ModelManager* modelManager = nullptr;
 
-		ParticleManager() = delete;
-		~ParticleManager() = delete;
+		ParticleManager() = default;
+		~ParticleManager() = default;
 		ParticleManager(const ParticleManager&) = delete;
 		ParticleManager& operator=(const ParticleManager&) = delete;
 
 	public:
+		// インスタンス取得
+		static ParticleManager* GetInstance();
 		// 静的初期化
-		static void Initialize();
+		void Initialize();
 		// 更新
-		static void Update();
+		void Update();
 		// 描画
-		static void Draw();
+		void Draw();
 		// パーティクルの削除
-		static void Clear();
+		void Clear();
 		// パーティクルグループ追加
-		static void AddParticleGroup(const std::string& textureName); // パーティクルグループの追加
+		void AddParticleGroup(const std::string& textureName, ParticleType particleType = ParticleType::Light);
 		// パーティクルグループ取得
-		static ParticleGroup* GetParticleGroup(size_t index) { return &particleGroups[index]; }
+		ParticleGroup* GetParticleGroup(size_t index, ParticleType particleType = ParticleType::Light) { return &particleGroups[particleType][index]; }
 	};
 }

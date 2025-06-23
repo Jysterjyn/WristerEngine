@@ -1,25 +1,25 @@
 ﻿#include "AudioManager.h"
 #include "CollisionManager.h"
 #include "MyGame.h"
-#include "ParticleManager.h"
 #include "NonEffectDrawer.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
-using namespace WristerEngine::_2D;
-using namespace WristerEngine::_3D;
+using namespace WE::_2D;
+using namespace WE::_3D;
 
 void MyGame::Initialize()
 {
 	windowName = L"自作エンジン";
 	Framework::Initialize();
 
-	std::unique_ptr<WristerEngine::AbstractSceneFactory> sceneFactory;
+	std::unique_ptr<WE::AbstractSceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "TestScene");
 
 	modelManager->Initialize();
-	WE::ParticleManager::Initialize();
-	WE::ParticleManager::AddParticleGroup("particle1.png");
+	particleManager->Initialize();
+	particleManager->AddParticleGroup("particle1.png");
+	particleManager->AddParticleGroup("particle1.png", WE::ParticleType::Dark);
 
 	pDrawer->Initialize();
 }
@@ -30,7 +30,7 @@ void MyGame::Update()
 	modelManager->Update();
 	collisionManager->CheckCollisions();
 	modelManager->Update();
-	WristerEngine::ParticleManager::Update();
+	particleManager->Update();
 	pDrawer->Update();
 }
 
@@ -41,7 +41,7 @@ void MyGame::Draw()
 	sceneManager->Draw();
 	modelManager->Draw();
 	pDrawer->Draw();
-	WristerEngine::ParticleManager::Draw();
+	particleManager->Draw();
 	WE::ImGuiManager::Draw();
 	dxCommon->PostDraw();
 }
