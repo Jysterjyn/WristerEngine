@@ -1,30 +1,9 @@
 #include "DiffuseParticle.h"
 #include "Random.h"
 #include <cassert>
-using namespace WristerEngine;
+using namespace WE;
 
-//void DiffuseParticle::Add(const AddProp& particleProp)
-//{
-//	for (unsigned short i = 0; i < particleProp.addNum; i++)
-//	{
-//		particles.emplace_front();
-//		Particle& p = particles.front();
-//		p.position = RandomVector(particleProp.posRange) + particleProp.posOffset;
-//		p.velocity = RandomVector(particleProp.velRange) + particleProp.velOffset;
-//		p.accel = RandomVector(particleProp.accRange) + particleProp.accOffset;
-//		p.frame = particleProp.lifeTime;
-//		p.s_scale = particleProp.startScale;
-//		p.e_scale = particleProp.endScale;
-//		p.parent = particleProp.parent;
-//	}
-//}
-//
-//void DiffuseParticle::Update()
-//{
-//	particles.remove_if([](Particle& particle) { return particle.frame.Update(); });
-//}
-
-void WristerEngine::DiffuseParticle::Initialize(const BaseParticleProp& prop)
+void DiffuseParticle::Initialize(const BaseParticleProp& prop)
 {
 	const Prop* addProp = static_cast<const Prop*>(&prop);
 	assert(addProp);
@@ -37,10 +16,11 @@ void WristerEngine::DiffuseParticle::Initialize(const BaseParticleProp& prop)
 	parent = addProp->parent;
 }
 
-void WristerEngine::DiffuseParticle::Update()
+void DiffuseParticle::Update()
 {
 	position += velocity;
 	velocity += accel;
 	scale = Lerp(s_scale, e_scale, frame.GetTimeRate());
+	if (frame.Update()) { isDestroy = true; }
 	color = ColorRGBA::White();
 }

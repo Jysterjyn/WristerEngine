@@ -20,6 +20,7 @@ namespace WristerEngine
 		Vector3 position; // ç¿ïW
 		float scale = 0;
 		ColorRGBA color;
+		bool isDestroy = false;
 
 	public:
 		virtual ~Particle() = default;

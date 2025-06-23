@@ -77,7 +77,7 @@ namespace WristerEngine
 		// Microsoft::WRL::を省略
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		static const int PARTICLE_MAX = 30000; // パーティクル最大数
+		static const int PARTICLE_MAX = 6000; // パーティクル最大数
 		// 頂点バッファ
 		ComPtr<ID3D12Resource> vertBuff;
 		VertexPos* vertMap = nullptr;

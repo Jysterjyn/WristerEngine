@@ -51,16 +51,19 @@ void ParticleGroup::Initialize(const std::string& textureName)
 
 void ParticleGroup::Update()
 {
+	for (auto& p : particles) { p->Update(); }
+	particles.remove_if([](std::unique_ptr<Particle>& p) { return p->isDestroy; });
+
 	// 定数バッファへデータ転送
 	size_t i = 0;
 	for (auto& p : particles)
 	{
-		p->Update();
 		vertMap[i].pos = p->position;
 		vertMap[i].scale = p->scale;
 		vertMap[i].color = p->color;
 		i++;
 	}
+	for (; i < PARTICLE_MAX; i++) { vertMap[i].scale = 0; }
 }
 
 void ParticleGroup::Draw()
