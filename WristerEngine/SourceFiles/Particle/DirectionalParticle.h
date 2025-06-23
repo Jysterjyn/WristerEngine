@@ -27,6 +27,7 @@ namespace WristerEngine
 			float scale = 1;
 			unsigned short splitNum = 1; // §Œä“_‚Ì”
 			float angle = 0; // {0,1,0}‚ª0ƒ‰ƒWƒAƒ“
+			Vector2 angleRange;
 			float radius = 0;
 			int lifeTime = 60;
 		

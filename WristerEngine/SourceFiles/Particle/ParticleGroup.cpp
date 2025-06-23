@@ -49,21 +49,24 @@ void ParticleGroup::Draw()
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }
 
-void ParticleGroup::Add(const BaseParticleProp& particleProp)
+void ParticleGroup::Add(const BaseParticleProp& particleProp, size_t addNum)
 {
-	if (IsParticleMax()) { return; }
-	std::unique_ptr<Particle> newParticle;
-	switch (particleProp.kind)
+	for (size_t i = 0; i < addNum; i++)
 	{
-	case ParticleKind::Diffuse:
-		newParticle = std::make_unique<DiffuseParticle>();
-		break;
-	case ParticleKind::Directional:
-		newParticle = std::make_unique<DirectionalParticle>();
-		break;
+		if (IsParticleMax()) { return; }
+		std::unique_ptr<Particle> newParticle;
+		switch (particleProp.kind)
+		{
+		case ParticleKind::Diffuse:
+			newParticle = std::make_unique<DiffuseParticle>();
+			break;
+		case ParticleKind::Directional:
+			newParticle = std::make_unique<DirectionalParticle>();
+			break;
+		}
+		newParticle->Initialize(particleProp);
+		particles.push_back(std::move(newParticle));
 	}
-	newParticle->Initialize(particleProp);
-	particles.push_back(std::move(newParticle));
 }
 
 void ParticleGroup::Clear()

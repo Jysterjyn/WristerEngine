@@ -49,17 +49,17 @@ void TestScene::Update()
 	//player.Update();
 
 	WE::ParticleManager* pm = WE::ParticleManager::GetInstance();
-	WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
 	WE::DirectionalParticle::Prop prop;
-	WE::Random_Float rand(-Angle(180), Angle(180));
-	prop.radius = 2;
-	prop.start.x = -5;
-	prop.end.x = 5;
-	prop.angle = rand();
-	pgd->Add(prop);
+	//WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
+	//prop.radius = 2;
+	//prop.start.x = -5;
+	//prop.end.x = 5;
+	//prop.angle = rand();
+	//pgd->Add(prop);
 	WE::ParticleGroup* pgl = pm->GetParticleGroup(0);
+	prop.radius = 15;
 	prop.end.x = -5;
 	prop.start.x = 5;
-	prop.angle = rand();
+	prop.angleRange = { Angle(180),Angle(180) };
 	pgl->Add(prop);
 }

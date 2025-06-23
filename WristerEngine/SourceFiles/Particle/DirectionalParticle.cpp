@@ -1,17 +1,19 @@
 #include "DirectionalParticle.h"
 #include "Quaternion.h"
 #include <cassert>
+#include <Random.h>
 using namespace WE;
 
 void DirectionalParticle::Initialize(const BaseParticleProp& prop)
 {
 	const Prop* addProp = static_cast<const Prop*>(&prop);
 	assert(addProp);
+	WE::Random_Float rand(-addProp->angleRange.x, addProp->angleRange.y);
 	start = addProp->start;
 	end = addProp->end;
 	scale = addProp->scale;
 	splitNum = addProp->splitNum;
-	angle = addProp->angle;
+	angle = addProp->angle + rand();
 	radius = addProp->radius;
 	frame = addProp->lifeTime;
 	ComputeControlPoints();

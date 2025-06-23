@@ -50,7 +50,7 @@ namespace WristerEngine
 		// 描画
 		void Draw();
 		// パーティクルの追加
-		void Add(const BaseParticleProp& particleProp);
+		void Add(const BaseParticleProp& particleProp, size_t addNum = 1);
 		// パーティクルの削除
 		void Clear();
 	};
