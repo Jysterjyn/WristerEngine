@@ -4,7 +4,7 @@
 
 namespace WristerEngine::_3D
 {
-	// ƒIƒuƒWƒFƒNƒgƒNƒ‰ƒX
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¯ãƒ©ã‚¹
 	class Object3d
 	{
 	public:
@@ -21,13 +21,13 @@ namespace WristerEngine::_3D
 		bool isDestroy = false;
 
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="mesh">ƒƒbƒVƒ…ƒf[ƒ^</param>
+		/// <param name="mesh">ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿</param>
 		void Initialize(Mesh* mesh);
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
 	};
 }

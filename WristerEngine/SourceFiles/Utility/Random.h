@@ -4,7 +4,7 @@
 
 namespace WristerEngine
 {
-	// ƒ‰ƒ“ƒ_ƒ€Šî’êƒNƒ‰ƒX
+	// ãƒ©ãƒ³ãƒ€ãƒ åŸºåº•ã‚¯ãƒ©ã‚¹
 	class RandomDevice
 	{
 	protected:
@@ -12,31 +12,31 @@ namespace WristerEngine
 		static std::mt19937 rnddev;
 	};
 
-	// intŒ^ƒ‰ƒ“ƒ_ƒ€
+	// intå‹ãƒ©ãƒ³ãƒ€ãƒ 
 	class Random_Int : private RandomDevice
 	{
 	private:
 		std::unique_ptr<std::uniform_int_distribution<int>> random;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Random_Int(int min, int max);
 		int operator()() { return (*random)(rnddev); }
 	};
 
-	// floatŒ^ƒ‰ƒ“ƒ_ƒ€
+	// floatå‹ãƒ©ãƒ³ãƒ€ãƒ 
 	class Random_Float : private RandomDevice
 	{
 	private:
 		std::unique_ptr<std::uniform_real_distribution<float>> random;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Random_Float(float min = 0, float max = 0);
 		float operator()() { return (*random)(rnddev); }
 	};
 
-	// Šm—¦w’èƒ‰ƒ“ƒ_ƒ€ƒ‹[ƒŒƒbƒg
+	// ç¢ºç‡æŒ‡å®šãƒ©ãƒ³ãƒ€ãƒ ãƒ«ãƒ¼ãƒ¬ãƒƒãƒˆ
 	class Roulette
 	{
 	private:
@@ -45,12 +45,12 @@ namespace WristerEngine
 
 	public:
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="rateTable">Šm—¦ƒŠƒXƒg</param>
+		/// <param name="rateTable">ç¢ºç‡ãƒªã‚¹ãƒˆ</param>
 		void Initialize(const std::vector<uint32_t>& rateTable);
 
-		// –Û‚Ìo—Í
+		// äº‹è±¡ã®å‡ºåŠ›
 		size_t operator()() const;
 	};
 }

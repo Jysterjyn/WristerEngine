@@ -4,7 +4,7 @@
 
 namespace WristerEngine
 {
-	// ƒtƒŒ[ƒ€’PˆÊ‚Å‚Ìƒ^ƒCƒ}[
+	// ãƒ•ãƒ¬ãƒ¼ãƒ å˜ä½ã§ã®ã‚¿ã‚¤ãƒãƒ¼
 	class FrameTimer
 	{
 	private:
@@ -12,34 +12,34 @@ namespace WristerEngine
 		int timeMem;
 
 		/// <summary>
-		/// ƒtƒŒ[ƒ€”‚ğ•b‚É•ÏŠ·
+		/// ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’ç§’ã«å¤‰æ›
 		/// </summary>
-		/// <param name="fps">¡‚ÌFPS</param>
-		/// <returns>[0]‚É•bA[1]‚É999ˆÈ‰º‚Ìƒ~ƒŠ•b‚ª“ü‚é</returns>
+		/// <param name="fps">ä»Šã®FPS</param>
+		/// <returns>[0]ã«ç§’ã€[1]ã«999ä»¥ä¸‹ã®ãƒŸãƒªç§’ãŒå…¥ã‚‹</returns>
 		std::array<int, 2> ConvertToSecond(int time, int fps) const;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		FrameTimer(int interval = 0) { timer = 0; timeMem = interval; }
-		// XV
+		// æ›´æ–°
 		bool Update();
-		// Œo‰ßƒtƒŒ[ƒ€‚ğæ“¾
+		// çµŒéãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å–å¾—
 		int GetTime() const { return timer; }
-		// Œo‰ßƒtƒŒ[ƒ€‚ğ•b‚É•ÏŠ·‚µ‚Äæ“¾
+		// çµŒéãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ç§’ã«å¤‰æ›ã—ã¦å–å¾—
 		std::array<int, 2> GetTime(int fps) const { return ConvertToSecond(timer, fps); }
-		// Œo‰ßƒtƒŒ[ƒ€‚ğ³‹K‰»‚µ‚Äæ“¾
+		// çµŒéãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ­£è¦åŒ–ã—ã¦å–å¾—
 		float GetTimeRate() const { return (float)timer / (float)timeMem; }
-		// c‚èƒtƒŒ[ƒ€‚ğæ“¾
+		// æ®‹ã‚Šãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å–å¾—
 		int GetRemainTime() const { return timeMem - timer; }
-		// c‚èƒtƒŒ[ƒ€‚ğ•b‚É•ÏŠ·‚µ‚Äæ“¾
+		// æ®‹ã‚Šãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ç§’ã«å¤‰æ›ã—ã¦å–å¾—
 		std::array<int, 2> GetRemainTime(int fps) const { return ConvertToSecond(GetRemainTime(), fps); }
-		// c‚èƒtƒŒ[ƒ€‚ğ³‹K‰»‚µ‚Äæ“¾
+		// æ®‹ã‚Šãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ­£è¦åŒ–ã—ã¦å–å¾—
 		float GetRemainTimeRate() const { return (float)GetRemainTime() / (float)timeMem; }
-		// ƒ‰ƒbƒvƒtƒŒ[ƒ€‚ğæ“¾
+		// ãƒ©ãƒƒãƒ—ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å–å¾—
 		int GetInterval() const { return timeMem; }
 	};
 
-	// Œ»ÀŠÔ‚Å‚Ìƒ^ƒCƒ}[
+	// ç¾å®Ÿæ™‚é–“ã§ã®ã‚¿ã‚¤ãƒãƒ¼
 	class RealTimer
 	{
 	private:
@@ -48,21 +48,21 @@ namespace WristerEngine
 		float timeMem;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		RealTimer(float limitTime = 0) { timeMem = limitTime; startTime = std::chrono::steady_clock::now(); }
-		// XV
+		// æ›´æ–°
 		bool Update();
-		// Œv‘ªŠJn
+		// è¨ˆæ¸¬é–‹å§‹
 		void Start() { startTime = std::chrono::steady_clock::now(); }
-		// Œo‰ßŠÔ‚ğæ“¾
+		// çµŒéæ™‚é–“ã‚’å–å¾—
 		float GetTime() const;
-		// Œo‰ßŠÔ‚ğ³‹K‰»‚µ‚Äæ“¾
+		// çµŒéæ™‚é–“ã‚’æ­£è¦åŒ–ã—ã¦å–å¾—
 		float GetTimeRate() const { return GetTime() / timeMem; }
-		// c‚èŠÔ‚ğæ“¾
+		// æ®‹ã‚Šæ™‚é–“ã‚’å–å¾—
 		float GetRemainTime() const { return timeMem - GetTime(); }
-		// c‚èŠÔ‚ğ³‹K‰»‚µ‚Äæ“¾
+		// æ®‹ã‚Šæ™‚é–“ã‚’æ­£è¦åŒ–ã—ã¦å–å¾—
 		float GetRemainTimeRate() const { return GetRemainTime() / timeMem; }
-		// ƒ‰ƒbƒvŠÔ‚ğæ“¾
+		// ãƒ©ãƒƒãƒ—æ™‚é–“ã‚’å–å¾—
 		float GetInterval() const { return timeMem; }
 	};
 }

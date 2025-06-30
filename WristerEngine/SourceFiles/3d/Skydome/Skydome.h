@@ -3,14 +3,14 @@
 
 namespace WristerEngine
 {
-	// “V‹…ƒIƒuƒWƒFƒNƒg
+	// å¤©çƒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	class Skydome
 	{
 	private:
 		_3D::Object3d* object = nullptr;
 
 	public:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(const std::string& modelName, float scale);
 	};
 }

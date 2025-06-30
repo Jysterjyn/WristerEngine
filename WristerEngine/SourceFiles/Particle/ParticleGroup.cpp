@@ -7,7 +7,7 @@ void ParticleGroup::CreateVertexBuffer()
 {
 	CreateBuffer(&vertBuff, &vertMap, PARTICLE_MAX * sizeof(VertexPos));
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = PARTICLE_MAX * sizeof(VertexPos);
 	vbView.StrideInBytes = sizeof(VertexPos);
@@ -15,7 +15,7 @@ void ParticleGroup::CreateVertexBuffer()
 
 void ParticleGroup::Initialize(const std::string& textureName)
 {
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚Ýž‚Ý
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	texture = TextureData::Load("Particles/" + textureName);
 	CreateVertexBuffer();
 }
@@ -25,7 +25,7 @@ void ParticleGroup::Update()
 	for (auto& p : particles) { p->Update(); }
 	particles.remove_if([](std::unique_ptr<Particle>& p) { return p->IsDestroy(); });
 
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	size_t i = 0;
 	for (auto& p : particles)
 	{
@@ -40,13 +40,13 @@ void ParticleGroup::Update()
 void ParticleGroup::Draw()
 {
 	if (AllParticleNum() == 0) { return; }
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ðƒZƒbƒg
+	// ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	// ’¸“_ƒoƒbƒtƒ@‚ÌÝ’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ðƒZƒbƒg
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootDescriptorTable(0, texture->srvHandle.gpu);
-	// •`‰æƒRƒ}ƒ“ƒh
+	// æç”»ã‚³ãƒžãƒ³ãƒ‰
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }
 

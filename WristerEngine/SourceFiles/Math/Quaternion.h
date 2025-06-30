@@ -1,62 +1,62 @@
 #pragma once
 #include "Matrix4.h"
 
-// lŒ³”(ƒNƒH[ƒ^ƒjƒIƒ“)
+// å››å…ƒæ•°(ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³)
 class Quaternion
 {
 public:
-	float x = 0, y = 0, z = 0, // ‹••”
-		w = 0; // À•”
+	float x = 0, y = 0, z = 0, // è™šéƒ¨
+		w = 0; // å®Ÿéƒ¨
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Quaternion(float w_, Vector3 iv) { x = iv.x, y = iv.y, z = iv.z, w = w_; }
 	Quaternion(float w_ = 0, float x_ = 0, float y_ = 0, float z_ = 0) { x = x_, y = y_, z = z_; w = w_; }
-	// ‹••”‚ğ’Šo
+	// è™šéƒ¨ã‚’æŠ½å‡º
 	Vector3 GetImaginary() const { return { x,y,z }; }
 	Quaternion operator-() const { return { -w,x,y,z }; }
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	void operator*=(const Quaternion& q);
 	void operator/=(float norm) { x /= norm, y /= norm, z /= norm, w /= norm; }
-	// ‹¤–ğ‚É‚·‚é
+	// å…±å½¹ã«ã™ã‚‹
 	void Conjugate() { x = -x, y = -y, z = -z; }
-	// ƒmƒ‹ƒ€(’·‚³)
+	// ãƒãƒ«ãƒ (é•·ã•)
 	float Length() const;
-	// ³‹K‰»‚·‚é
+	// æ­£è¦åŒ–ã™ã‚‹
 	void Normalize() { *this /= Length(); }
-	// ‹tQuaternion‚É‚·‚é
+	// é€†Quaternionã«ã™ã‚‹
 	void Inverse();
-	// ‰ñ“]s—ñ‚ğ‹‚ß‚é
+	// å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	Matrix4 MakeRotateMatrix() const;
 
-	// ’PˆÊQuaternion
+	// å˜ä½Quaternion
 	static Quaternion Identity() { return Quaternion(1, 0, 0, 0); }
 };
 
-// ‹¤–ğ‚É‚·‚é
+// å…±å½¹ã«ã™ã‚‹
 Quaternion Conjugate(const Quaternion& q);
-// ‚±‚ÌQuaternion‚ÌNorm‚ğ•Ô‚·
+// ã“ã®Quaternionã®Normã‚’è¿”ã™
 float Length(const Quaternion& q);
-// ³‹K‰»‚·‚é
+// æ­£è¦åŒ–ã™ã‚‹
 Quaternion Normalize(const Quaternion& q);
-// ‹tQuaternion‚É‚·‚é
+// é€†Quaternionã«ã™ã‚‹
 Quaternion Inverse(const Quaternion& q);
-// ”CˆÓ²‰ñ“]‚ÌQuaternion¶¬
+// ä»»æ„è»¸å›è»¢ã®Quaternionç”Ÿæˆ
 Quaternion MakeAxisAngle(const Vector3& axis, float angle);
-// ƒxƒNƒgƒ‹‚ğQuaternion‚Å‰ñ“]‚³‚¹‚é
+// ãƒ™ã‚¯ãƒˆãƒ«ã‚’Quaternionã§å›è»¢ã•ã›ã‚‹
 Vector3 RotateVector(const Vector3& v, const Quaternion& q);
-// Quaternion‚©‚ç‰ñ“]s—ñ‚ğ‹‚ß‚é
+// Quaternionã‹ã‚‰å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 Matrix4 MakeRotateMatrix(const Quaternion& q);
-// “àÏ‚ğ‹‚ß‚é
+// å†…ç©ã‚’æ±‚ã‚ã‚‹
 float Dot(const Quaternion& q1, const Quaternion& q2);
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Quaternion operator+(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator-(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator*(const Quaternion& q1, const Quaternion& q2);
 Quaternion operator/(const Quaternion& q, float norm);
 
-// ‹…–ÊüŒ`•âŠÔ
+// çƒé¢ç·šå½¢è£œé–“
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t);
 
-// u‚©‚çv‚Ö‚Ì‰ñ“]‚ğ¶¬(u,v‚Í³‹K‰»‚³‚ê‚Ä‚¢‚é‘O’ñ)
+// uã‹ã‚‰vã¸ã®å›è»¢ã‚’ç”Ÿæˆ(u,vã¯æ­£è¦åŒ–ã•ã‚Œã¦ã„ã‚‹å‰æ)
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v);

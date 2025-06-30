@@ -28,7 +28,7 @@ void SceneManager::Update()
 	isChangeScene &= nextScene.has_value();
 	if (isChangeScene)
 	{
-		// ƒV[ƒ“‰ð•ú
+		// ã‚·ãƒ¼ãƒ³è§£æ”¾
 		if (scene)
 		{
 			scene->Finalize();
@@ -57,7 +57,7 @@ void SceneManager::Update()
 	}
 
 	if (fadeManager.IsFade()) { return; }
-	// ƒ|[ƒY’†‚È‚çƒV[ƒ“‚ÌXV‚ð‚¹‚¸ƒ|[ƒYƒƒjƒ…[‚Ì‚ÝXV‚·‚é
+	// ãƒãƒ¼ã‚ºä¸­ãªã‚‰ã‚·ãƒ¼ãƒ³ã®æ›´æ–°ã‚’ã›ãšãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ã¿æ›´æ–°ã™ã‚‹
 	if (pauseMenu) { if (pauseMenu->IsPause()) { pauseMenu->Update(); return; } }
 	scene->Update();
 }
@@ -70,7 +70,7 @@ void SceneManager::Draw()
 		_2D::Sprite::PreDraw();
 		fadeManager.Draw();
 	}
-	// ƒ|[ƒY’†‚È‚çƒ|[ƒYƒƒjƒ…[‚ð•`‰æ
+	// ãƒãƒ¼ã‚ºä¸­ãªã‚‰ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’æç”»
 	if (pauseMenu) { if (pauseMenu->IsPause()) { pauseMenu->Draw(); } }
 }
 

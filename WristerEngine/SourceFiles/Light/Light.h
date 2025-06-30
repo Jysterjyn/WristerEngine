@@ -5,12 +5,12 @@
 
 namespace WristerEngine
 {
-	// ƒ‰ƒCƒgŠî’êƒNƒ‰ƒX
+	// ãƒ©ã‚¤ãƒˆåŸºåº•ã‚¯ãƒ©ã‚¹
 	class BaseLight
 	{
 	private:
-		ColorRGB color; // ƒ‰ƒCƒgF
-		bool active = false; // —LŒøƒtƒ‰ƒO
+		ColorRGB color; // ãƒ©ã‚¤ãƒˆè‰²
+		bool active = false; // æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 
 	public:
 		// setter
@@ -21,28 +21,28 @@ namespace WristerEngine
 		bool IsActive() const { return active; }
 	};
 
-	// •½sŒõŒ¹
+	// å¹³è¡Œå…‰æº
 	class DirectionalLight : public BaseLight
 	{
 	private:
-		Vector3 dir = { 1,0,0 }; // ƒ‰ƒCƒgŒõü•ûŒü
+		Vector3 dir = { 1,0,0 }; // ãƒ©ã‚¤ãƒˆå…‰ç·šæ–¹å‘
 
 	public:
 		struct ConstBufferData
 		{
-			Vector3 lightv; // ƒ‰ƒCƒg‚Ö‚Ì•ûŒü‚ğ•\‚·ƒxƒNƒgƒ‹
+			Vector3 lightv; // ãƒ©ã‚¤ãƒˆã¸ã®æ–¹å‘ã‚’è¡¨ã™ãƒ™ã‚¯ãƒˆãƒ«
 			float pad;
-			ColorRGB lightcolor; // ƒ‰ƒCƒg‚ÌF
+			ColorRGB lightcolor; // ãƒ©ã‚¤ãƒˆã®è‰²
 			unsigned int active;
 		};
 
-		// ƒ‰ƒCƒgŒõü•ûŒü‚ğ•ÏX
+		// ãƒ©ã‚¤ãƒˆå…‰ç·šæ–¹å‘ã‚’å¤‰æ›´
 		void SetDir(const Vector3& lightdir_) { dir = Normalize(lightdir_); }
-		// ƒ‰ƒCƒgŒõü•ûŒü‚ğæ“¾
+		// ãƒ©ã‚¤ãƒˆå…‰ç·šæ–¹å‘ã‚’å–å¾—
 		const Vector3& GetDir() const { return dir; }
 	};
 
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
 	class SpotLight : public BaseLight
 	{
 	private:
@@ -83,12 +83,12 @@ namespace WristerEngine
 		const Vector2& GetFactorAngleCos() const { return factorAngleCos; }
 	};
 
-	// “_ŒõŒ¹
+	// ç‚¹å…‰æº
 	class PointLight : public BaseLight
 	{
 	private:
 		Vector3 pos;
-		Vector3 atten = { 1,1,1 }; // ƒ‰ƒCƒg‹——£Œ¸ŠŒW”
+		Vector3 atten = { 1,1,1 }; // ãƒ©ã‚¤ãƒˆè·é›¢æ¸›è¡°ä¿‚æ•°
 
 	public:
 		struct ConstBufferData

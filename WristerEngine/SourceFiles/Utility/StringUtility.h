@@ -4,12 +4,12 @@
 namespace WristerEngine
 {
 	/// <summary>
-	/// ƒ}ƒ‹ƒ`ƒoƒCƒg•¶Žš—ñ‚ðƒƒCƒh•¶Žš—ñ‚É•ÏŠ·
+	/// ãƒžãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—åˆ—ã‚’ãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—ã«å¤‰æ›
 	/// </summary>
-	/// <param name="mString">ƒ}ƒ‹ƒ`ƒoƒCƒg•¶Žš—ñ</param>
-	/// <returns>ƒƒCƒh•¶Žš—ñ</returns>
+	/// <param name="mString">ãƒžãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—åˆ—</param>
+	/// <returns>ãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—</returns>
 	std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
 
-	// ƒfƒBƒŒƒNƒgƒŠ‚ðŠÜ‚ñ‚¾ƒtƒ@ƒCƒ‹ƒpƒX‚©‚çƒtƒ@ƒCƒ‹–¼‚ð’Šo‚·‚é
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å«ã‚“ã ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŠ½å‡ºã™ã‚‹
 	std::string ExtractFileName(const std::string& path);
 }

@@ -4,15 +4,15 @@
 
 namespace WristerEngine
 {
-	// ƒC[ƒWƒ“ƒO
-	// Ql : https://easings.net/ja#
+	// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°
+	// å‚è€ƒ : https://easings.net/ja#
 	class Easing
 	{
 	public:
 		enum class Type
 		{
 			Linear,
-			Sqrt, // ãx
+			Sqrt, // âˆšx
 			OutElastic,
 			OutBounce,
 			EaseInOutBack,
@@ -20,24 +20,24 @@ namespace WristerEngine
 			EaseInOutQuint,
 		};
 
-		// ƒC[ƒWƒ“ƒO‚ÌÅ‘å’l
+		// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®æœ€å¤§å€¤
 		static const float MAX;
 
 	private:
-		FrameTimer timer = 0; // ƒ^ƒCƒ}[
-		float x = 0; // ƒC[ƒWƒ“ƒO‚ÌŠ„‡
+		FrameTimer timer = 0; // ã‚¿ã‚¤ãƒãƒ¼
+		float x = 0; // ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®å‰²åˆ
 		Type type = Type::Sqrt;
 		bool isFinish = false;
 		bool isLoop = false;
 		bool isPostLoop = false;
 		FrameTimer loopInterval;
 
-		// ƒC[ƒWƒ“ƒO‚ÌŠÖ”ƒe[ƒuƒ‹
+		// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®é–¢æ•°ãƒ†ãƒ¼ãƒ–ãƒ«
 		static float (Easing::* Ease[])();
 
-		// üŒ`
+		// ç·šå½¢
 		float Linear() { return x; }
-		// ãx
+		// âˆšx
 		float Sqrt() { return std::sqrtf(x); }
 		// https://easings.net/ja#easeOutElastic
 		float OutElastic();
@@ -52,31 +52,31 @@ namespace WristerEngine
 
 	public:
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="easeTime">ƒC[ƒWƒ“ƒO‚ÌŠÔ</param>
+		/// <param name="easeTime">ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®æ™‚é–“</param>
 		void Initialize(int easeTime, Type type_);
 
 		/// <summary>
-		/// XV
+		/// æ›´æ–°
 		/// </summary>
-		/// <returns>ƒC[ƒWƒ“ƒO‚Ì’l(0~1)</returns>
+		/// <returns>ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®å€¤(0~1)</returns>
 		float Update();
 
-		// ƒŠƒXƒ^[ƒg
+		// ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
 		void Restart() { timer = timer.GetInterval(); isFinish = false; }
 
-		// I—¹‚µ‚½‚©
+		// çµ‚äº†ã—ãŸã‹
 		bool IsFinish() const { return isFinish; }
 
 		/// <summary>
-		/// ƒ‹[ƒv‚ğİ’è
+		/// ãƒ«ãƒ¼ãƒ—ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="loopInterval">ƒ‹[ƒvŠJn‚Ü‚Å‚ÌŠÔŠu</param>
+		/// <param name="loopInterval">ãƒ«ãƒ¼ãƒ—é–‹å§‹ã¾ã§ã®é–“éš”</param>
 		void SetLoop(int loopInterval);
 	};
 
-	// ƒ‹[ƒv‚·‚éƒC[ƒWƒ“ƒO
+	// ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°
 	class LoopEasing
 	{
 	public:
@@ -84,41 +84,41 @@ namespace WristerEngine
 		{
 			Sin,		// sin(x)
 			Cos,		// cos(x)
-			Triangle,	// OŠp”g
-			Sawtooth	// ƒmƒRƒMƒŠ”g
+			Triangle,	// ä¸‰è§’æ³¢
+			Sawtooth	// ãƒã‚³ã‚®ãƒªæ³¢
 		};
 
 	private:
-		FrameTimer timer = 0; // ƒ^ƒCƒ}[
-		float x = 0; // ƒC[ƒWƒ“ƒO‚ÌŠ„‡
+		FrameTimer timer = 0; // ã‚¿ã‚¤ãƒãƒ¼
+		float x = 0; // ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®å‰²åˆ
 		Type type;
 
-		// ƒC[ƒWƒ“ƒO‚ÌŠÖ”ƒe[ƒuƒ‹
+		// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®é–¢æ•°ãƒ†ãƒ¼ãƒ–ãƒ«
 		static float (LoopEasing::* Ease[])() const;
 
 		// sine
 		float Sin() const { return std::sin(2.0f * PI * x); }
 		// cosine
 		float Cos() const { return std::cos(2.0f * PI * x); }
-		// OŠp”g
+		// ä¸‰è§’æ³¢
 		float Triangle() const { return std::asin(sin(2.0f * PI * x)) * 2.0f / PI; }
-		// ƒmƒRƒMƒŠ”g
+		// ãƒã‚³ã‚®ãƒªæ³¢
 		float Sawtooth() const { return x; }
 
 	public:
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="easeTime">ƒC[ƒWƒ“ƒO‚ÌŠÔ</param>
+		/// <param name="easeTime">ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®æ™‚é–“</param>
 		void Initialize(int easeTime, Type type_);
 
 		/// <summary>
-		/// XV
+		/// æ›´æ–°
 		/// </summary>
-		/// <returns>ƒC[ƒWƒ“ƒO‚Ì’l(-1~1 or 0~1)</returns>
+		/// <returns>ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã®å€¤(-1~1 or 0~1)</returns>
 		float Update();
 
-		// ƒŠƒXƒ^[ƒg
+		// ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
 		void Restart() { timer = timer.GetInterval(); }
 	};
 }

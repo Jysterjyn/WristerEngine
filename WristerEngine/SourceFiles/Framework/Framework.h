@@ -6,7 +6,7 @@
 
 namespace WristerEngine
 {
-	// ƒQ[ƒ€ˆ—‚Ì˜g‘g‚İƒNƒ‰ƒX
+	// ã‚²ãƒ¼ãƒ å‡¦ç†ã®æ çµ„ã¿ã‚¯ãƒ©ã‚¹
 	class Framework
 	{
 	protected:
@@ -18,20 +18,20 @@ namespace WristerEngine
 		Constant* constant = Constant::GetInstance();
 		CollisionManager* collisionManager = CollisionManager::GetInstance();
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		virtual void Initialize();
-		// XV
+		// æ›´æ–°
 		virtual void Update();
-		// •`‰æ
+		// æç”»
 		virtual void Draw() = 0;
-		// I—¹ƒ`ƒFƒbƒN
+		// çµ‚äº†ãƒã‚§ãƒƒã‚¯
 		virtual bool IsEndRequest() { return false; }
-		// I—¹
+		// çµ‚äº†
 		virtual void Finalize();
 
 	public:
 		virtual ~Framework() = default;
-		// Às
+		// å®Ÿè¡Œ
 		void Run();
 	};
 }

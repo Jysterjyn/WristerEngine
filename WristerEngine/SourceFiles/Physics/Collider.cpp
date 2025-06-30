@@ -55,7 +55,7 @@ uint32_t Collider::nextSerialNumber = 0;
 //{
 //	std::map<std::string, Vector2> ans;
 //	ans["LT"] = ans["RB"] = ans["LB"] = ans["RT"] = transform->position;
-//	// 差分
+//	// 蟾ｮ蛻�
 //	Vector2 ltSub = Vector2(transform->size.x * transform->anchorPoint.x, transform->size.y * transform->anchorPoint.y);
 //	Vector2 rbSub = Vector2(transform->size.x * (1.0f - transform->anchorPoint.x), transform->size.y * (1.0f - transform->anchorPoint.y));
 //	if (transform->isFlipX) { ltSub.x = -ltSub.x; rbSub.x = -rbSub.x; }
@@ -146,7 +146,7 @@ BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollid
 
 void ColliderGroup::Update()
 {
-	// コライダーの削除
+	// 繧ｳ繝ｩ繧､繝繝ｼ縺ｮ蜑企勁
 	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
 		{ return collider.get()->IsDestroy(); });
 

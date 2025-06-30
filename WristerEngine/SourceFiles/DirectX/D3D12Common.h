@@ -6,14 +6,14 @@
 
 namespace WristerEngine
 {
-	// result’l‚ªƒGƒ‰[‚È‚ç‘ã“ü‚ÉŒx‚ªo‚é
+	// resultå€¤ãŒã‚¨ãƒ©ãƒ¼ãªã‚‰ä»£å…¥æ™‚ã«è­¦å‘ŠãŒå‡ºã‚‹
 	struct Result
 	{
 	private:
 		HRESULT result = S_OK;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Result() {}
 		Result(const HRESULT& result) { operator=(result); }
 
@@ -24,27 +24,27 @@ namespace WristerEngine
 		}
 	};
 
-	// ƒoƒbƒtƒ@¶¬
+	// ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	template<class T> void CreateBuffer(ID3D12Resource** buff, T** map, UINT64 width)
 	{
 		D3D12_HEAP_PROPERTIES heapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 		D3D12_RESOURCE_DESC resDesc = CD3DX12_RESOURCE_DESC::Buffer(width);
-		// ƒoƒbƒtƒ@‚Ì¶¬
+		// ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 		Result result = DirectXCommon::GetInstance()->GetDevice()->CreateCommittedResource(
 			&heapProp, D3D12_HEAP_FLAG_NONE,
 			&resDesc, D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr, IID_PPV_ARGS(buff));
 
-		// GPUã‚Ìƒoƒbƒtƒ@‚É‘Î‰‚µ‚½‰¼‘zƒƒ‚ƒŠ(ƒƒCƒ“ƒƒ‚ƒŠã)‚ğæ“¾
+		// GPUä¸Šã®ãƒãƒƒãƒ•ã‚¡ã«å¯¾å¿œã—ãŸä»®æƒ³ãƒ¡ãƒ¢ãƒª(ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ¢ãƒªä¸Š)ã‚’å–å¾—
 		result = (*buff)->Map(0, nullptr, (void**)map);
-		// Œq‚ª‚è‚ğ‰ğœ
+		// ç¹‹ãŒã‚Šã‚’è§£é™¤
 		(*buff)->Unmap(0, nullptr);
 	}
 
-	// ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ì’Ç‰Á
+	// ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¿½åŠ 
 	D3D12_INPUT_ELEMENT_DESC SetInputLayout(LPCSTR semanticName, DXGI_FORMAT format);
-	// ƒVƒF[ƒ_[“Ç‚İ‚İ
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	void LoadShader(ID3DBlob** shaderBlob, std::wstring shaderName, LPCSTR target);
-	// [“xƒoƒbƒtƒ@‚Ì¶¬
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	void CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap);
 }

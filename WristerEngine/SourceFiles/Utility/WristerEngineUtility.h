@@ -3,15 +3,15 @@
 
 namespace WristerEngine
 {
-	// ƒfƒtƒHƒ‹ƒgƒŠƒ\[ƒXƒpƒX
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒªã‚½ãƒ¼ã‚¹ãƒ‘ã‚¹
 	const std::string DEFAULT_RESOURCE_PATH = "Resources/";
 
-	// ŒÂ•Ê‚ÌƒŠƒ\[ƒXƒpƒX‚ğ¶¬
+	// å€‹åˆ¥ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‘ã‚¹ã‚’ç”Ÿæˆ
 	inline const std::string CreateResourcePath(const std::string& directoryPath)
 	{
 		return DEFAULT_RESOURCE_PATH + directoryPath;
 	}
 }
 
-// WristerEngine‚Ì—ªÌ‚ÌƒGƒCƒŠƒAƒX
+// WristerEngineã®ç•¥ç§°ã®ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 namespace WE = WristerEngine;

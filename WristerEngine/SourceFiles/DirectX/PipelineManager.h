@@ -6,7 +6,7 @@ namespace WristerEngine
 {
 	enum class RootParamType { CBV, DescriptorTable };
 
-	// ƒpƒCƒvƒ‰ƒCƒ“¶¬‚Ìİ’è
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆã®è¨­å®š
 	struct PipelineProp
 	{
 	private:
@@ -35,7 +35,7 @@ namespace WristerEngine
 		std::vector<InputLayoutProp> inputLayoutProps;
 		BlendProp blendProp;
 		D3D12_PRIMITIVE_TOPOLOGY_TYPE primitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-		bool isDepthTest = false; // [“xƒeƒXƒg‚ğs‚¤ = 3D—p ‚©
+		bool isDepthTest = false; // æ·±åº¦ãƒ†ã‚¹ãƒˆã‚’è¡Œã† = 3Dç”¨ ã‹
 		D3D12_DEPTH_WRITE_MASK depthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
 		RootParameterProp rootParamProp{};
 		D3D12_TEXTURE_ADDRESS_MODE textureAddressMode = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
@@ -55,7 +55,7 @@ namespace WristerEngine
 		Fbx
 	};
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ŠÇ—ƒNƒ‰ƒX
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç®¡ç†ã‚¯ãƒ©ã‚¹
 	class PipelineManager : public DXCommonGetter
 	{
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -65,13 +65,13 @@ namespace WristerEngine
 
 	public:
 		/// <summary>
-		/// ƒpƒCƒvƒ‰ƒCƒ“¶¬
+		/// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
 		/// </summary>
-		/// <param name="pipelineProp">ƒpƒCƒvƒ‰ƒCƒ“¶¬ƒvƒƒpƒeƒB</param>
+		/// <param name="pipelineProp">ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆãƒ—ãƒ­ãƒ‘ãƒ†ã‚£</param>
 		void CreatePipeline(const PipelineProp& pipelineProp);
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		static void Initialize();
-		// ƒpƒCƒvƒ‰ƒCƒ“‚ÌƒZƒbƒg
+		// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®ã‚»ãƒƒãƒˆ
 		static void SetPipeline(PipelineType pipelineType);
 	};
 }

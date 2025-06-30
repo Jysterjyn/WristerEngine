@@ -8,7 +8,7 @@
 
 namespace WristerEngine
 {
-	// ƒ‰ƒCƒg
+	// ãƒ©ã‚¤ãƒˆ
 	class LightGroup
 	{
 	public:
@@ -39,32 +39,32 @@ namespace WristerEngine
 		std::array<CircleShadow, CIRCLE_SHADOW_NUM> circleShadows;
 		ConstBufferData* constMap = nullptr;
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// •W€‚Ìƒ‰ƒCƒgİ’è
+		// æ¨™æº–ã®ãƒ©ã‚¤ãƒˆè¨­å®š
 		void DefaultLightSetting();
 
 	public:
 		/// <summary>
-		/// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+		/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 		/// </summary>
-		/// <returns>ƒCƒ“ƒXƒ^ƒ“ƒX</returns>
+		/// <returns>ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</returns>
 		static std::unique_ptr<LightGroup> Create();
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw(UINT rootParameterIndex) const;
-		// ŠÂ‹«Œõ‚ğ•ÏX
+		// ç’°å¢ƒå…‰ã‚’å¤‰æ›´
 		void SetAmbientColor(const ColorRGB& color) { ambientColor = color; }
-		// Œõ‘ò“x‚ğ•ÏX
+		// å…‰æ²¢åº¦ã‚’å¤‰æ›´
 		void SetShininess(float shininess_) { shininess = shininess_; }
-		// •½sŒõŒ¹‚ğæ“¾
+		// å¹³è¡Œå…‰æºã‚’å–å¾—
 		DirectionalLight* GetDirectionalLight(uint32_t index);
-		// “_ŒõŒ¹‚ğæ“¾
+		// ç‚¹å…‰æºã‚’å–å¾—
 		PointLight* GetPointLight(uint32_t index);
-		// ƒXƒ|ƒbƒgƒ‰ƒCƒg‚ğæ“¾
+		// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã‚’å–å¾—
 		SpotLight* GetSpotLight(uint32_t index);
-		// ŠÛ‰e‚ğæ“¾
+		// ä¸¸å½±ã‚’å–å¾—
 		CircleShadow* GetCircleShadow(uint32_t index);
 	};
 }

@@ -12,11 +12,11 @@ using namespace _2D;
 list<unique_ptr<TextureData>> TextureData::textures;
 list<unique_ptr<Sprite>> Sprite::sprites;
 
-// •½s“Š‰es—ñ
+// å¹³è¡ŒæŠ•å½±è¡Œåˆ—
 static Matrix4 OrthoGraphic()
 {
 	Matrix4 matProj;
-	// •½s“Š‰es—ñ‚Ì¶¬
+	// å¹³è¡ŒæŠ•å½±è¡Œåˆ—ã®ç”Ÿæˆ
 	matProj.m[0][0] = 2.0f / WIN_SIZE.x;
 	matProj.m[1][1] = -2.0f / WIN_SIZE.y;
 	matProj.m[3][0] = -1.0f;
@@ -28,7 +28,7 @@ const Matrix4 Sprite::matProj = OrthoGraphic();
 
 void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
 {
-	// Šg‘å”ä—¦‚ğ•Û‚Á‚½‚Ü‚ÜØ‚èæ‚è—Ìˆæ‚ğ•ÏX‚·‚é
+	// æ‹¡å¤§æ¯”ç‡ã‚’ä¿ã£ãŸã¾ã¾åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã‚’å¤‰æ›´ã™ã‚‹
 	Vector2 sizeRate = { size.x / textureSize.x ,size.y / textureSize.y };
 	size = textureSize = textureSize_;
 	size.x *= sizeRate.x;
@@ -46,14 +46,14 @@ void Sprite::Split(const Vector2& spritNum)
 
 void Sprite::SetTextureIndex(UINT16 texIndex_)
 {
-	// ƒeƒNƒXƒ`ƒƒ”‚ğ’´‚¦‚Ä‚½‚ç’â~
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°ã‚’è¶…ãˆã¦ãŸã‚‰åœæ­¢
 	assert(texIndex_ < textures.size());
 	texIndex = texIndex_;
 }
 
 TextureData* TextureData::Load(const std::string& fileName)
 {
-	// ƒeƒNƒXƒ`ƒƒ‚Ìd•¡“Ç‚İ‚İ‚ğŒŸo
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é‡è¤‡èª­ã¿è¾¼ã¿ã‚’æ¤œå‡º
 	for (auto& tex : textures)
 	{
 		if (tex->fileName.find(fileName) == string::npos) { continue; }
@@ -65,7 +65,7 @@ TextureData* TextureData::Load(const std::string& fileName)
 
 	string fullPath = CreateResourcePath(fileName);
 
-	// ƒƒCƒh•¶š—ñ‚É•ÏŠ·
+	// ãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—ã«å¤‰æ›
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
 	Result result = S_OK;
@@ -134,30 +134,30 @@ Sprite* Sprite::Create(std::initializer_list<const std::string> fileNames,
 
 void Sprite::PreDraw()
 {
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Æƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’èƒRƒ}ƒ“ƒh
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã¨ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 	PipelineManager::SetPipeline(PipelineType::Sprite);
-	// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚Ìİ’èƒRƒ}ƒ“ƒh
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // OŠpŒ`ƒŠƒXƒg
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // ä¸‰è§’å½¢ãƒªã‚¹ãƒˆ
 }
 
 void Sprite::Initialize()
 {
-	// ’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY = ’¸“_ƒf[ƒ^ˆê‚Â•ª‚ÌƒTƒCƒY * ’¸“_ƒf[ƒ^‚Ì—v‘f”
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º = é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ä¸€ã¤åˆ†ã®ã‚µã‚¤ã‚º * é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¦ç´ æ•°
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
 	ID3D12Resource* vertBuff = nullptr;
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
 
-	// ‘S’¸“_‚É‘Î‚µ‚ÄÀ•W‚ğƒRƒs[
+	// å…¨é ‚ç‚¹ã«å¯¾ã—ã¦åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
 	copy(vertices.begin(), vertices.end(), vertMap);
 
-	// GPU‰¼‘zƒAƒhƒŒƒX
+	// GPUä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	// ’¸“_ƒoƒbƒtƒ@‚ÌƒTƒCƒY
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 	vbView.SizeInBytes = sizeVB;
-	// ’¸“_1‚Â•ª‚Ìƒf[ƒ^ƒTƒCƒY
+	// é ‚ç‚¹1ã¤åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
 	vbView.StrideInBytes = sizeof(Vertex);
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	CreateBuffer(constBuff.GetAddressOf(), &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
 	AdjustTextureSize();
@@ -222,7 +222,7 @@ void Sprite::Update()
 
 	matWorld = matRot * matTrans;
 
-	// GPU“]‘—
+	// GPUè»¢é€
 	constMap->mat = matWorld * matProj;
 	constMap->color = color;
 	std::copy(std::begin(vertices), std::end(vertices), vertMap);
@@ -234,11 +234,11 @@ void Sprite::Draw()
 
 	cmdList->SetGraphicsRootDescriptorTable(0, GetGPUHandle());
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
-	// •`‰æƒRƒ}ƒ“ƒh
-	cmdList->DrawInstanced((UINT)vertices.size(), 1, 0, 0); // ‘S‚Ä‚Ì’¸“_‚ğg‚Á‚Ä•`‰æ
+	// æç”»ã‚³ãƒãƒ³ãƒ‰
+	cmdList->DrawInstanced((UINT)vertices.size(), 1, 0, 0); // å…¨ã¦ã®é ‚ç‚¹ã‚’ä½¿ã£ã¦æç”»
 }
 
 void Sprite::Animation::Initialize(Sprite* sprite_, size_t spriteNum, int animationIntervel)

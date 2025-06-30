@@ -23,21 +23,21 @@ static BOOL UnadjustWindowRectEx(LPRECT prc, DWORD dwStyle, BOOL fMenu, DWORD dw
 	return fRc;
 }
 
-// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) { return true; }
 
 	WindowsAPI* app = reinterpret_cast<WindowsAPI*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-	// ƒƒbƒZ[ƒW‚É‰‚¶‚ÄƒQ[ƒ€ŒÅ—L‚Ìˆ—‚ğs‚¤
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«å¿œã˜ã¦ã‚²ãƒ¼ãƒ å›ºæœ‰ã®å‡¦ç†ã‚’è¡Œã†
 	switch (msg)
 	{
-	case WM_DESTROY:        // ƒEƒBƒ“ƒhƒE‚ª”jŠü‚³‚ê‚½
-		PostQuitMessage(0); // OS‚É‘Î‚µ‚ÄAƒAƒvƒŠ‚ÌI—¹‚ğ“`‚¦‚é
+	case WM_DESTROY:        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒç ´æ£„ã•ã‚ŒãŸ
+		PostQuitMessage(0); // OSã«å¯¾ã—ã¦ã€ã‚¢ãƒ—ãƒªã®çµ‚äº†ã‚’ä¼ãˆã‚‹
 		return 0;
 
 	case WM_SIZING:
-		// ƒAƒXƒyƒNƒg”ä‚ğ•Ï‚¦‚éƒTƒCƒY•ÏX‚ğ‹–‰Â‚µ‚È‚¢
+		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã‚’å¤‰ãˆã‚‹ã‚µã‚¤ã‚ºå¤‰æ›´ã‚’è¨±å¯ã—ãªã„
 		if (app && app->sizeChangeMode == WindowsAPI::SizeChangeMode::FixedAspect)
 		{
 			float aspectRatio = app->aspectRatio;
@@ -72,7 +72,7 @@ LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam
 		}
 		break;
 	}
-	// •W€‚ÌƒƒbƒZ[ƒWˆ—‚ğs‚¤
+	// æ¨™æº–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†ã‚’è¡Œã†
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
@@ -84,42 +84,42 @@ WindowsAPI* WindowsAPI::GetInstance()
 
 void WindowsAPI::Initialize(const std::wstring& windowName)
 {
-	// COM‰Šú‰»
+	// COMåˆæœŸåŒ–
 	HRESULT result;
 	result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	assert(SUCCEEDED(result));
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowProc; // ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ğİ’è
-	w.lpszClassName = L"DirectXGame"; // ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX–¼
-	w.hInstance = GetModuleHandle(nullptr); // ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	w.hCursor = LoadCursor(NULL, IDC_ARROW); // ƒJ[ƒ\ƒ‹w’è
+	w.lpfnWndProc = (WNDPROC)WindowProc; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’è¨­å®š
+	w.lpszClassName = L"DirectXGame"; // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å
+	w.hInstance = GetModuleHandle(nullptr); // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	w.hCursor = LoadCursor(NULL, IDC_ARROW); // ã‚«ãƒ¼ã‚½ãƒ«æŒ‡å®š
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ğOS‚É“o˜^‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’OSã«ç™»éŒ²ã™ã‚‹
 	RegisterClassEx(&w);
 
 	RECT wrc = { 0, 0, (int)WIN_SIZE.x, (int)WIN_SIZE.y };
-	// ©“®‚ÅƒTƒCƒY‚ğ•â³‚·‚é
+	// è‡ªå‹•ã§ã‚µã‚¤ã‚ºã‚’è£œæ­£ã™ã‚‹
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
-	hwnd = CreateWindow(w.lpszClassName, // ƒNƒ‰ƒX–¼
-		windowName.c_str(), // ƒ^ƒCƒgƒ‹ƒo[‚Ì•¶š
-		WS_OVERLAPPEDWINDOW, // •W€“I‚ÈƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹
-		CW_USEDEFAULT, // •\¦XÀ•W(OS‚É”C‚¹‚é)
-		CW_USEDEFAULT, // •\¦XÀ•W(OS‚É”C‚¹‚é)
-		wrc.right - wrc.left, // ƒEƒBƒ“ƒhƒE‰¡•
-		wrc.bottom - wrc.top, // ƒEƒBƒ“ƒhƒEc•
-		nullptr, // eƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
-		nullptr, // ƒƒjƒ…[ƒnƒ“ƒhƒ‹
-		w.hInstance, // ŒÄ‚Ño‚µƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹
-		nullptr); // ƒIƒvƒVƒ‡ƒ“
+	hwnd = CreateWindow(w.lpszClassName, // ã‚¯ãƒ©ã‚¹å
+		windowName.c_str(), // ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã®æ–‡å­—
+		WS_OVERLAPPEDWINDOW, // æ¨™æº–çš„ãªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¹ã‚¿ã‚¤ãƒ«
+		CW_USEDEFAULT, // è¡¨ç¤ºXåº§æ¨™(OSã«ä»»ã›ã‚‹)
+		CW_USEDEFAULT, // è¡¨ç¤ºXåº§æ¨™(OSã«ä»»ã›ã‚‹)
+		wrc.right - wrc.left, // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
+		wrc.bottom - wrc.top, // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
+		nullptr, // è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+		nullptr, // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«
+		w.hInstance, // å‘¼ã³å‡ºã—ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«
+		nullptr); // ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 
 	SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-	// ƒEƒBƒ“ƒhƒE‚ğ•\¦ó‘Ô‚É‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºçŠ¶æ…‹ã«ã™ã‚‹
 	ShowWindow(hwnd, SW_SHOW);
 
-	// ƒVƒXƒeƒ€ƒ^ƒCƒ}[‚Ì•ª‰ğ”\‚ğã‚°‚é
+	// ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒãƒ¼ã®åˆ†è§£èƒ½ã‚’ä¸Šã’ã‚‹
 	timeBeginPeriod(1);
 }
 
@@ -127,13 +127,13 @@ bool WindowsAPI::ProcessMessage()
 {
 	if (isInWindowCursor) { InWindowCursor(); }
 
-	MSG msg{}; // ƒƒbƒZ[ƒW
+	MSG msg{}; // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 
-	// ƒƒbƒZ[ƒW‚ª‚ ‚é?
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚ã‚‹?
 	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
-		TranslateMessage(&msg); // ƒL[“ü—ÍƒƒbƒZ[ƒW‚Ìˆ—
-		DispatchMessage(&msg); // ƒvƒƒV[ƒWƒƒ‚ÉƒƒbƒZ[ƒW‚ğ‘—‚é
+		TranslateMessage(&msg); // ã‚­ãƒ¼å…¥åŠ›ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
+		DispatchMessage(&msg); // ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹
 	}
 
 	return msg.message == WM_QUIT;
@@ -141,36 +141,36 @@ bool WindowsAPI::ProcessMessage()
 
 void WindowsAPI::Finalize() const
 {
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚ğ“o˜^‰ğœ
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’ç™»éŒ²è§£é™¤
 	UnregisterClass(w.lpszClassName, w.hInstance);
 
-	// COMI—¹
+	// COMçµ‚äº†
 	CoUninitialize();
 }
 
 Vector2 WindowsAPI::GetScreenCursorPos() const
 {
 	POINT mousePosition{};
-	// ƒ}ƒEƒXÀ•W(ƒXƒNƒŠ[ƒ“À•W)‚ğæ“¾‚·‚é
+	// ãƒã‚¦ã‚¹åº§æ¨™(ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™)ã‚’å–å¾—ã™ã‚‹
 	GetCursorPos(&mousePosition);
-	// ƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒAÀ•W‚É•ÏŠ·‚·‚é
+	// ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢åº§æ¨™ã«å¤‰æ›ã™ã‚‹
 	ScreenToClient(hwnd, &mousePosition);
 	return Vector2((float)mousePosition.x, (float)mousePosition.y);
 }
 
 void WindowsAPI::InWindowCursor() const
 {
-	// ƒEƒBƒ“ƒhƒEl‹÷‚ÌÀ•W‚ğæ“¾
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å››éš…ã®åº§æ¨™ã‚’å–å¾—
 	RECT lect{};
 	GetWindowRect(hwnd, &lect);
 
-	// ƒIƒtƒZƒbƒg‚ğ‰ÁZ
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’åŠ ç®—
 	lect.left += inWindowCursorOffset.left;
 	lect.right += inWindowCursorOffset.right;
 	lect.top += inWindowCursorOffset.top;
 	lect.bottom += inWindowCursorOffset.bottom;
 
-	// ƒJ[ƒ\ƒ‹‚ª‰æ–ÊŠO‚Éo‚½‚ç‰æ–Ê“à‚É–ß‚·
+	// ã‚«ãƒ¼ã‚½ãƒ«ãŒç”»é¢å¤–ã«å‡ºãŸã‚‰ç”»é¢å†…ã«æˆ»ã™
 	POINT point{};
 	GetCursorPos(&point);
 	point.x = std::clamp(point.x, lect.left, lect.right);
@@ -184,10 +184,10 @@ void WindowsAPI::SetFullscreen(bool fullscreen)
 	{
 		if (fullscreen)
 		{
-			// Œ³‚Ìó‘Ô‚ğŠo‚¦‚Ä‚¨‚­
+			// å…ƒã®çŠ¶æ…‹ã‚’è¦šãˆã¦ãŠã
 			GetWindowRect(hwnd, &windowRect);
 
-			// ‰¼‘zƒtƒ‹ƒXƒNƒŠ[ƒ“‰»
+			// ä»®æƒ³ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åŒ–
 			SetWindowLong(hwnd, GWL_STYLE,
 				windowStyle &
 				~(WS_CAPTION | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_SYSMENU | WS_THICKFRAME));
@@ -207,7 +207,7 @@ void WindowsAPI::SetFullscreen(bool fullscreen)
 		}
 		else
 		{
-			// ’ÊíƒEƒBƒ“ƒhƒE‚É–ß‚·
+			// é€šå¸¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æˆ»ã™
 			SetWindowLong(hwnd, GWL_STYLE, windowStyle);
 
 			SetWindowPos(
@@ -231,7 +231,7 @@ void WindowsAPI::SetSizeChangeMode(SizeChangeMode sizeChangeMode_)
 	}
 	else
 	{
-		// ƒAƒXƒyƒNƒg”ä•ÏX•s‰Â‚È‚Ì‚ÅŒ»İ‚ÌƒAƒXƒyƒNƒg”ä‚ğ‚Á‚Ä‚¨‚­
+		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”å¤‰æ›´ä¸å¯ãªã®ã§ç¾åœ¨ã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ã‚’æŒã£ã¦ãŠã
 		if (sizeChangeMode_ == SizeChangeMode::FixedAspect)
 		{
 			RECT clientRect{};

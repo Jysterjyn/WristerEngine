@@ -13,12 +13,12 @@ namespace WristerEngine::_3D
 	public:
 		static const int MAX_BONES = 32;
 
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌiÀ•W•ÏŠ·s—ñ—pj
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ï¼ˆåº§æ¨™å¤‰æ›è¡Œåˆ—ç”¨ï¼‰
 		struct ConstBufferData
 		{
-			Matrix4 viewproj;    // ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
-			Matrix4 world; // ƒ[ƒ‹ƒhs—ñ
-			Vector3 cameraPos; // ƒJƒƒ‰À•Wiƒ[ƒ‹ƒhÀ•Wj
+			Matrix4 viewproj;    // ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
+			Matrix4 world; // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
+			Vector3 cameraPos; // ã‚«ãƒ¡ãƒ©åº§æ¨™ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼‰
 		};
 
 		struct ConstBufferDataSkin
@@ -26,16 +26,16 @@ namespace WristerEngine::_3D
 			Matrix4 bones[MAX_BONES];
 		};
 
-	private: // Ã“Iƒƒ“ƒo•Ï”
+	private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 		static LightGroup* lightGroup;
 
-	protected: // ƒƒ“ƒo•Ï”
-		// ’è”ƒoƒbƒtƒ@
+	protected: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> constBuff, constBuffSkin;
 		ConstBufferData* constMap = nullptr;
 		ConstBufferDataSkin* constMapSkin = nullptr;
 		Transform* transform;
-		// ƒ‚ƒfƒ‹
+		// ãƒ¢ãƒ‡ãƒ«
 		FbxModel* model = nullptr;
 		FbxTime frameTime, startTime, endTime, currentTime;
 		bool isPlay = false;
@@ -44,17 +44,17 @@ namespace WristerEngine::_3D
 		static void SetLightGroup(LightGroup* lightGroup_) { lightGroup = lightGroup_; }
 
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
 		void Initialize(Transform* transform, FbxModel* model);
 
 		/// <summary>
-		/// –ˆƒtƒŒ[ƒ€ˆ—
+		/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 		/// </summary>
 		void Update();
 
 		/// <summary>
-		/// •`‰æ
+		/// æç”»
 		/// </summary>
 		void Draw();
 

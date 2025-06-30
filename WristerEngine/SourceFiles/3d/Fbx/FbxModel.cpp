@@ -158,66 +158,66 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 
 		if (material)
 		{
-			// ƒx[ƒXƒJƒ‰[
+			// ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼
 			const FbxProperty PROP_BASE_COLOR = FbxSurfaceMaterialUtils::GetProperty("baseColor", material);
 			if (PROP_BASE_COLOR.IsValid())
 			{
-				// ƒvƒƒpƒeƒB‚Ì’l“Ç‚İæ‚è
+				// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®å€¤èª­ã¿å–ã‚Š
 				Vector3 baseColor_ = FbxDouble3ToVector3(PROP_BASE_COLOR.Get<FbxDouble3>());
 				ColorRGB baseColorRGB = { baseColor_.x,baseColor_.y,baseColor_.z };
-				this->baseColor = baseColorRGB; // “Ç‚İæ‚Á‚½’l‚ğ‘‚«‚Ş
-				// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+				this->baseColor = baseColorRGB; // èª­ã¿å–ã£ãŸå€¤ã‚’æ›¸ãè¾¼ã‚€
+				// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 				const FbxFileTexture* texture = PROP_BASE_COLOR.GetSrcObject<FbxFileTexture>();
 				if (texture)
 				{
 					const char* filepath = texture->GetFileName();
-					// ƒtƒ@ƒCƒ‹ƒpƒX‚©‚çƒtƒ@ƒCƒ‹–¼’Šo
+					// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«åæŠ½å‡º
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
-					// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 					baseTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
 					baseColor = {};
 					textureLoaded = true;
 				}
 			}
 
-			// ‹à‘®“x
+			// é‡‘å±åº¦
 			const FbxProperty PROP_METALNESS = FbxSurfaceMaterialUtils::GetProperty("metalness", material);
 			if (PROP_METALNESS.IsValid())
 			{
 				metalness = PROP_METALNESS.Get<float>();
-				// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+				// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 				const FbxFileTexture* texture = PROP_METALNESS.GetSrcObject<FbxFileTexture>();
 				if (texture)
 				{
 					const char* filepath = texture->GetFileName();
-					// ƒtƒ@ƒCƒ‹ƒpƒX‚©‚çƒtƒ@ƒCƒ‹–¼’Šo
+					// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«åæŠ½å‡º
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
-					// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 					metalnessTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
 					metalness = 0.0f;
 				}
 			}
 
-			// Œ„ŠÔ
+			// éš™é–“
 			const FbxProperty PROP_SPECULAR = FbxSurfaceMaterialUtils::GetProperty("specular", material);
 			if (PROP_SPECULAR.IsValid()) { specular = PROP_SPECULAR.Get<float>(); }
 
-			// ‘e‚³
+			// ç²—ã•
 			const FbxProperty PROP_SPECULAR_ROUGHNESS = FbxSurfaceMaterialUtils::GetProperty("specularRoughness", material);
 			if (PROP_SPECULAR_ROUGHNESS.IsValid())
 			{
 				roughness = PROP_SPECULAR_ROUGHNESS.Get<float>();
-				// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+				// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 				const FbxFileTexture* texture = PROP_SPECULAR_ROUGHNESS.GetSrcObject<FbxFileTexture>();
 				if (texture)
 				{
 					const char* filepath = texture->GetFileName();
-					// ƒtƒ@ƒCƒ‹ƒpƒX‚©‚çƒtƒ@ƒCƒ‹–¼’Šo
+					// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«åæŠ½å‡º
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
-					// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+					// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 					roughnessTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
 					roughness = 0.0f;
 				}
@@ -231,13 +231,13 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 void FbxModel::ParseSkin(FbxMesh* fbxMesh)
 {
 	FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(0, FbxDeformer::eSkin));
-	// ƒXƒLƒjƒ“ƒOî•ñ‚ª‚È‚¯‚ê‚ÎI—¹
+	// ã‚¹ã‚­ãƒ‹ãƒ³ã‚°æƒ…å ±ãŒãªã‘ã‚Œã°çµ‚äº†
 	if (fbxSkin == nullptr)
 	{
-		// Še’¸“_‚É‚Â‚¢‚Ä‚Ìˆ—
+		// å„é ‚ç‚¹ã«ã¤ã„ã¦ã®å‡¦ç†
 		for (int i = 0; i < vertices.size(); i++)
 		{
-			// Å‰‚Ìƒ{[ƒ“(’PˆÊs—ñ)‚Ì‰e‹¿100%‚É‚·‚é
+			// æœ€åˆã®ãƒœãƒ¼ãƒ³(å˜ä½è¡Œåˆ—)ã®å½±éŸ¿100%ã«ã™ã‚‹
 			vertices[i].boneIndex[0] = 0;
 			vertices[i].boneWeight[0] = 1.0f;
 		}
@@ -319,7 +319,7 @@ void FbxModel::ParseSkin(FbxMesh* fbxMesh)
 
 void FbxModel::CreateBuffers()
 {
-#pragma region ’¸“_ƒoƒbƒtƒ@İ’è
+#pragma region é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUvSkin) * vertices.size());
 	VertexPosNormalUvSkin* vertMap = nullptr;
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
@@ -329,7 +329,7 @@ void FbxModel::CreateBuffers()
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(vertices[0]);
 #pragma endregion
-#pragma region ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@İ’è
+#pragma region ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indices.size());
 	uint16_t* indexMap = nullptr;
 	CreateBuffer(&indexBuff, &indexMap, sizeIB);
@@ -340,7 +340,7 @@ void FbxModel::CreateBuffers()
 	ibView.SizeInBytes = sizeIB;
 #pragma endregion
 
-	// ’è”ƒoƒbƒtƒ@¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateBuffer(&constBuffMaterial, &constMapMaterial, (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff);
 	TransferMaterial();
 }
@@ -361,7 +361,7 @@ void FbxModel::Draw()
 
 void FbxModel::TransferMaterial()
 {
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	constMapMaterial->baseColor = baseColor;
 	constMapMaterial->metalness = metalness;
 	constMapMaterial->specular = specular;

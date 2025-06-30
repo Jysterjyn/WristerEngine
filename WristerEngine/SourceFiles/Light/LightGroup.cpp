@@ -19,20 +19,20 @@ void LightGroup::Update()
 {
 	constMap->ambientColor = ambientColor;
 	constMap->shininess = shininess;
-	// •½sŒõŒ¹
+	// å¹³è¡Œå…‰æº
 	for (int i = 0; i < DIR_LIGHT_NUM; i++)
 	{
-		// ƒ‰ƒCƒg‚ª—LŒø‚È‚çİ’è‚ğ“]‘—	
+		// ãƒ©ã‚¤ãƒˆãŒæœ‰åŠ¹ãªã‚‰è¨­å®šã‚’è»¢é€	
 		if (dirLights[i].IsActive())
 		{
 			constMap->dirLights[i].active = true;
 			constMap->dirLights[i].lightv = -dirLights[i].GetDir();
 			constMap->dirLights[i].lightcolor = dirLights[i].GetColor();
 		}
-		// ƒ‰ƒCƒg‚ª–³Œø‚È‚ç“]‘—‚µ‚È‚¢
+		// ãƒ©ã‚¤ãƒˆãŒç„¡åŠ¹ãªã‚‰è»¢é€ã—ãªã„
 		else { constMap->dirLights[i].active = false; }
 	}
-	// “_ŒõŒ¹
+	// ç‚¹å…‰æº
 	for (int i = 0; i < POINT_LIGHT_NUM; i++)
 	{
 		if (pointLights[i].IsActive())
@@ -44,7 +44,7 @@ void LightGroup::Update()
 		}
 		else { constMap->pointLights[i].active = false; }
 	}
-	// ƒXƒ|ƒbƒgƒ‰ƒCƒg
+	// ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆ
 	for (int i = 0; i < SPOT_LIGHT_NUM; i++)
 	{
 		if (spotLights[i].IsActive())
@@ -58,7 +58,7 @@ void LightGroup::Update()
 		}
 		else { constMap->spotLights[i].active = false; }
 	}
-	// ŠÛ‰e
+	// ä¸¸å½±
 	for (int i = 0; i < CIRCLE_SHADOW_NUM; i++)
 	{
 		if (circleShadows[i].IsActive())

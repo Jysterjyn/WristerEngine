@@ -33,7 +33,7 @@ namespace WristerEngine
 		public:
 			virtual ~Base2DCollider() = default;
 
-			// ‰Šú‰»
+			// åˆæœŸåŒ–
 			void Initialize(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName);
 
 			// getter
@@ -42,18 +42,18 @@ namespace WristerEngine
 			const std::string GetColliderName() const { return colliderName; }
 		};
 
-		// lŠpŒ`ƒRƒ‰ƒCƒ_[
+		// å››è§’å½¢ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 		class BoxCollider : public Base2DCollider
 		{
 		public:
-			// ¶ã’[‚Æ‰E‰º’[‚ÌÀ•W‚ğ‹‚ß‚é
+			// å·¦ä¸Šç«¯ã¨å³ä¸‹ç«¯ã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹
 			std::map<std::string, Vector2> GetVertex() const;
 		};
 
-		// 1“_‚©‚ç2•ûŒü‚É‰„‚Ñ‚éü•ª‚Æ‚Ì“–‚½‚è”»’èi‚Ü‚¾•sŠ®‘Sj
+		// 1ç‚¹ã‹ã‚‰2æ–¹å‘ã«å»¶ã³ã‚‹ç·šåˆ†ã¨ã®å½“ãŸã‚Šåˆ¤å®šï¼ˆã¾ã ä¸å®Œå…¨ï¼‰
 		class TwoRayCollider : public Base2DCollider
 		{
-			Angle fov; // ‹–ìŠp
+			Angle fov; // è¦–é‡è§’
 
 		public:
 			TwoRayCollider(Angle fov_) { fov = fov_; }
@@ -69,18 +69,18 @@ namespace WristerEngine
 		//	std::map<size_t, std::vector<size_t>> collisionPair;
 
 		//public:
-		//	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		//	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		//	Collider();
-		//	// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+		//	// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		//	virtual ~Collider();
 
-		//	// ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+		//	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 		//	void AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option = nullptr);
-		//	// ƒRƒ‰ƒCƒ_[‚Ìíœ
+		//	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å‰Šé™¤
 		//	void DeleteCollider(const std::string& colliderName);
-		//	// ƒRƒŠƒWƒ‡ƒ“ƒyƒA‚Ì’Ç‰Á
+		//	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒšã‚¢ã®è¿½åŠ 
 		//	void AddCollisionPair(size_t myIndex, size_t youIndex);
-		//	// ƒRƒŠƒWƒ‡ƒ“ƒyƒA‚Ì’Ç‰Á
+		//	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒšã‚¢ã®è¿½åŠ 
 		//	void DeletePair();
 
 		//	// getter
@@ -89,7 +89,7 @@ namespace WristerEngine
 		//	const std::string GetColliderName(size_t index) const;
 		//	const std::list<std::unique_ptr<Base2DCollider>>& GetColliders() const { return colliders; }
 
-		//	// Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
+		//	// è¡çªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 		//	virtual void OnCollision([[maybe_unused]] Collider* colliderGroup) {}
 
 		//};
@@ -128,7 +128,7 @@ namespace WristerEngine
 
 	class Collider;
 
-	// ƒRƒ‰ƒCƒ_[Šî’êƒNƒ‰ƒX
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼åŸºåº•ã‚¯ãƒ©ã‚¹
 	class BaseCollider : public CollisionInfo
 	{
 	private:
@@ -152,7 +152,7 @@ namespace WristerEngine
 		void Destroy() { isDestroy = true; }
 
 		void SetOwner(Collider* owner_) { owner = owner_; }
-		// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚ğİ’è
+		// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¨­å®š
 		void SetTransform(const _3D::Transform* pTransform_) { pTransform = pTransform_; Update(); }
 
 		// getter
@@ -193,7 +193,7 @@ namespace WristerEngine
 		std::list<std::unique_ptr<BaseCollider>> colliders;
 		std::list<Collider*> owners;
 
-		// “–‚½‚Á‚½ƒyƒA‚Ì‹L˜^
+		// å½“ãŸã£ãŸãƒšã‚¢ã®è¨˜éŒ²
 		std::vector<CollisionPair> collisionPairs;
 		std::vector<CollisionPair> enterPairs;
 		std::vector<CollisionPair> exitPairs;
@@ -205,10 +205,10 @@ namespace WristerEngine
 		void Update();
 
 		/// <summary>
-		/// ƒRƒ‰ƒCƒ_[‚ğ“o˜^
+		/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 		/// </summary>
-		/// <param name="shapeType">ƒRƒ‰ƒCƒ_[‚ÌŒ`ó</param>
-		/// <returns>“o˜^‚³‚ê‚½ƒRƒ‰ƒCƒ_[</returns>
+		/// <param name="shapeType">ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶</param>
+		/// <returns>ç™»éŒ²ã•ã‚ŒãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼</returns>
 		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
 
 		void AddCollisionPair(const CollisionPair& pair);
@@ -236,10 +236,10 @@ namespace WristerEngine
 		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
 
 		/// <summary>
-		/// ƒRƒ‰ƒCƒ_[‚ğ“o˜^
+		/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’ç™»éŒ²
 		/// </summary>
-		/// <param name="shapeType">ƒRƒ‰ƒCƒ_[‚ÌŒ`ó</param>
-		/// <returns>“o˜^‚³‚ê‚½ƒRƒ‰ƒCƒ_[</returns>
+		/// <param name="shapeType">ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶</param>
+		/// <returns>ç™»éŒ²ã•ã‚ŒãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼</returns>
 		template<class T>
 		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
 		{
@@ -281,109 +281,109 @@ namespace WristerEngine
 		ColliderGroup* GetGroup() const { return group; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
 
-		// Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
-		// “–‚½‚Á‚Ä‚¢‚éŠÔ
+		// è¡çªã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
+		// å½“ãŸã£ã¦ã„ã‚‹é–“
 		virtual void OnCollision() {}
-		// “–‚½‚Á‚½uŠÔ
+		// å½“ãŸã£ãŸç¬é–“
 		virtual void OnCollisionEnter() {}
-		// —£‚ê‚½uŠÔ
+		// é›¢ã‚ŒãŸç¬é–“
 		virtual void OnCollisionExit() {}
 	};
 
-	// ‹…ƒRƒ‰ƒCƒ_[
+	// çƒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	class SphereCollider : public BaseCollider
 	{
 	private:
-		Vector3 center;			// ’†SÀ•W
-		float radius = 1.0f;	// ”¼Œa
+		Vector3 center;			// ä¸­å¿ƒåº§æ¨™
+		float radius = 1.0f;	// åŠå¾„
 		Vector3 offset;
 
 
 	public:
 		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
-		// ’†SÀ•W‚ğæ“¾
+		// ä¸­å¿ƒåº§æ¨™ã‚’å–å¾—
 		const Vector3& GetCenterPosition() const { return center; }
-		// ”¼Œa‚ğæ“¾
+		// åŠå¾„ã‚’å–å¾—
 		float GetRadius() const { return radius; }
-		// ’†SÀ•W‚ğİ’è
+		// ä¸­å¿ƒåº§æ¨™ã‚’è¨­å®š
 		void SetCenterPosition(const Vector3& center_) { center = center_ + offset; }
-		// ƒIƒtƒZƒbƒg‚ğİ’è
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		void SetOffset(const Vector3& offset_) { offset = offset_; }
-		// ”¼Œa‚ğİ’è
+		// åŠå¾„ã‚’è¨­å®š
 		void SetRadius(float radius_) { radius = radius_; }
 	};
 
-	// ƒ{ƒbƒNƒXƒRƒ‰ƒCƒ_[(AABB•û®)
+	// ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼(AABBæ–¹å¼)
 	class BoxCollider : public BaseCollider
 	{
 	private:
-		Vector3 center;				// ’†SÀ•W
-		Vector3 radius = { 1,1,1 };	// Še²•ûŒü‚Ì”¼Œa
+		Vector3 center;				// ä¸­å¿ƒåº§æ¨™
+		Vector3 radius = { 1,1,1 };	// å„è»¸æ–¹å‘ã®åŠå¾„
 		Vector3 offset;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		BoxCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Box; }
-		// ’†SÀ•W‚ğæ“¾
+		// ä¸­å¿ƒåº§æ¨™ã‚’å–å¾—
 		const Vector3& GetCenterPosition() const { return center; }
-		// 3²•ûŒü‚Ì”¼Œa‚ğæ“¾
+		// 3è»¸æ–¹å‘ã®åŠå¾„ã‚’å–å¾—
 		const Vector3& GetRadius() const { return radius; }
-		// ’†SÀ•W‚ğİ’è
+		// ä¸­å¿ƒåº§æ¨™ã‚’è¨­å®š
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
-		// ƒIƒtƒZƒbƒg‚ğİ’è
+		// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’è¨­å®š
 		void SetOffset(const Vector3& offset_) { offset = offset_; }
-		// 3²•ûŒü‚Ì”¼Œa‚ğİ’è
+		// 3è»¸æ–¹å‘ã®åŠå¾„ã‚’è¨­å®š
 		void SetRadius(const Vector3& radius_) { radius = radius_; }
 	};
 
-	// Š®‘S•ïŠÜ‚Ìƒ{ƒbƒNƒXƒRƒ‰ƒCƒ_[(AABB•û®)
+	// å®Œå…¨åŒ…å«ã®ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼(AABBæ–¹å¼)
 	class IncludeCollider : public BaseCollider
 	{
 	public:
 		enum class Axis { X, Y, Z };
 
 	private:
-		Vector3 center;		// ’†SÀ•W
-		// Š®‘S•ïŠÜ”¼Œa
+		Vector3 center;		// ä¸­å¿ƒåº§æ¨™
+		// å®Œå…¨åŒ…å«åŠå¾„
 		static float includeRadius;
-		// “–‚½‚è”»’è‚ğæ‚éƒyƒA‚Ìtrue‚ª­‚È‚¢‚Ù‚¤‚ªŒvZ‚É”½‰f‚³‚ê‚é
+		// å½“ãŸã‚Šåˆ¤å®šã‚’å–ã‚‹ãƒšã‚¢ã®trueãŒå°‘ãªã„ã»ã†ãŒè¨ˆç®—ã«åæ˜ ã•ã‚Œã‚‹
 		std::array<bool, 3> isUseAxis = { true,true,true };
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		IncludeCollider() { shapeType = CollisionShapeType::IncludeBox; }
-		// ’†SÀ•W‚ğæ“¾
+		// ä¸­å¿ƒåº§æ¨™ã‚’å–å¾—
 		const Vector3& GetCenterPosition() const { return center; }
-		// Š®‘S•ïŠÜ”¼Œa‚Ìæ“¾
+		// å®Œå…¨åŒ…å«åŠå¾„ã®å–å¾—
 		static float GetIncludeRadius() { return includeRadius; }
-		// g‚¤²‚Ìæ“¾
+		// ä½¿ã†è»¸ã®å–å¾—
 		std::array<bool, 3> GetUseAxis() const { return isUseAxis; }
-		// ’†SÀ•W‚ğİ’è
+		// ä¸­å¿ƒåº§æ¨™ã‚’è¨­å®š
 		void SetCenterPosition(const Vector3& center_) { center = center_; }
-		// g‚¤²‚Ìİ’è
+		// ä½¿ã†è»¸ã®è¨­å®š
 		void SetUseAxis(Axis axis, bool isUse) { isUseAxis[(size_t)axis] = isUse; }
 	};
 
-	// OŠpŒ`ƒRƒ‰ƒCƒ_[
+	// ä¸‰è§’å½¢ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	class TriangleCollider : public BaseCollider
 	{
 	private:
-		// ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€–¢“K—p‚Ì’¸“_À•W
+		// ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ æœªé©ç”¨æ™‚ã®é ‚ç‚¹åº§æ¨™
 		std::array<Vector3, 3> initV;
 
 	protected:
-		// ’¸“_À•W3‚Â
+		// é ‚ç‚¹åº§æ¨™3ã¤
 		std::array<Vector3, 3> vertices;
-		// –@üƒxƒNƒgƒ‹
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 		Vector3 normal = Vector3::MakeAxis(Axis::Y);
-		// Šî€–@ü(ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚çŒvZ‚·‚éê‡)
+		// åŸºæº–æ³•ç·š(ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰è¨ˆç®—ã™ã‚‹å ´åˆ)
 		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
-		// ’¸“_XV
+		// é ‚ç‚¹æ›´æ–°
 		void Update() override;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		TriangleCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Triangle; }
 		void ComputeNormal();
 		// setter
@@ -395,21 +395,21 @@ namespace WristerEngine
 		const std::array<Vector3, 3>& GetVertices() const { return vertices; }
 	};
 
-	// •½–ÊƒRƒ‰ƒCƒ_[
+	// å¹³é¢ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	class PlaneCollider : public BaseCollider
 	{
 	protected:
-		// –@üƒxƒNƒgƒ‹
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 		Vector3 normal = Vector3::MakeAxis(Axis::Y);
-		// Œ´“_(0,0,0)‚©‚ç‚Ì‹——£
+		// åŸç‚¹(0,0,0)ã‹ã‚‰ã®è·é›¢
 		float distance = 0;
-		// Šî€–@ü(ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚çŒvZ‚·‚éê‡)
+		// åŸºæº–æ³•ç·š(ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰è¨ˆç®—ã™ã‚‹å ´åˆ)
 		Vector3 baseNormal = Vector3::MakeAxis(Axis::Y);
 
 		void Update() override;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		PlaneCollider() { shapeType = CollisionShapeType::Plane; }
 		PlaneCollider(const TriangleCollider& triangle);
 		// setter
@@ -421,21 +421,21 @@ namespace WristerEngine
 		float GetDistance() const { return distance; }
 	};
 
-	// ƒŒƒCƒRƒ‰ƒCƒ_[
+	// ãƒ¬ã‚¤ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	class RayCollider : public BaseCollider
 	{
 	private:
-		// n“_À•W
+		// å§‹ç‚¹åº§æ¨™
 		Vector3 start;
-		// •ûŒü
+		// æ–¹å‘
 		Vector3 dir = Vector3::MakeAxis(Axis::Z);
-		// Šî€ƒŒƒC
+		// åŸºæº–ãƒ¬ã‚¤
 		Vector3 baseDir = Vector3::MakeAxis(Axis::Z);
 
 		void Update() override;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		RayCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Ray; }
 		const Vector3& GetStartPos() const { return start; }
 		const Vector3& GetDir() const { return dir; }
@@ -444,12 +444,12 @@ namespace WristerEngine
 		void SetBaseDir(const Vector3& dir_) { baseDir = Normalize(dir_); }
 	};
 
-	// ƒƒbƒVƒ…ƒRƒ‰ƒCƒ_[
+	// ãƒ¡ãƒƒã‚·ãƒ¥ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	class MeshCollider : public BaseCollider
 	{
 	private:
 		std::list<std::unique_ptr<TriangleCollider>> triangles;
-		// ƒ[ƒ‹ƒhs—ñ‚Ì‹ts—ñ
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®é€†è¡Œåˆ—
 		Matrix4 invMatWorld;
 
 

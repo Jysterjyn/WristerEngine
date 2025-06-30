@@ -4,7 +4,7 @@
 
 namespace WristerEngine::_3D
 {
-	// ƒƒbƒNƒIƒ“‘ÎÛ‚ÌŠî’êƒNƒ‰ƒX
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 	class LockOnObject
 	{
 	public:
@@ -13,21 +13,21 @@ namespace WristerEngine::_3D
 		virtual Vector3 GetCenterPos() const = 0;
 	};
 
-	// ƒƒbƒNƒIƒ“
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³
 	class LockOn
 	{
-		// ƒƒbƒNƒIƒ“ƒ}[ƒN—pƒXƒvƒ‰ƒCƒg
+		// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒãƒ¼ã‚¯ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 		WE::_2D::Sprite* lockOnMark = nullptr;
-		// ƒƒbƒNƒIƒ“‘ÎÛ
+		// ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡
 		const LockOnObject* target = nullptr;
 		const WE::_3D::BaseCamera* camera = nullptr;
 		const std::list<std::unique_ptr<LockOnObject>>* objects = nullptr;
 
-		// Å¬‹——£
+		// æœ€å°è·é›¢
 		float minDistance = 10.0f;
-		// Å‘å‹——£
+		// æœ€å¤§è·é›¢
 		float maxDistance = 30.0f;
-		// Šp“x”ÍˆÍ
+		// è§’åº¦ç¯„å›²
 		float angleRange = Angle(20);
 
 		void Search();

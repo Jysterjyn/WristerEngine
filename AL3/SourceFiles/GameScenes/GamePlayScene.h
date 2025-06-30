@@ -9,7 +9,7 @@
 
 class GamePlaySceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
-	// AbstractUIDrawer ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// AbstractUIDrawer ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 };
@@ -24,7 +24,7 @@ class GamePlayScene : public WristerEngine::BaseScene
 	std::unique_ptr<WristerEngine::Skydome> skydome;
 	WristerEngine::_3D::PrimitiveDrawer* primitiveDrawer = WristerEngine::_3D::PrimitiveDrawer::GetInstance();
 
-	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseScene ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 	void Draw() override { WristerEngine::BaseScene::Draw(); player->Draw(); }

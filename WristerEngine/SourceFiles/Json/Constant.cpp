@@ -15,14 +15,14 @@ void WristerEngine::Constant::LoadInt()
 {
 	if (deserialized.contains("int"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(int)
+		// 定数リスト取得とインスタンス生成(int)
 		const auto& list = deserialized["int"].get<std::map<std::string, int>>();
 		for (const auto& val : list) { constants[val.first] = new int(val.second); }
 	}
 
 	if (deserialized.contains("int[]"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(int�z��)
+		// 定数リスト取得とインスタンス生成(int配列)
 		const auto& list = deserialized["int[]"].get<std::map<std::string, std::vector<int>>>();
 		for (const auto& val : list) 
 		{
@@ -34,7 +34,7 @@ void WristerEngine::Constant::LoadInt()
 void WristerEngine::Constant::LoadFloat()
 {
 	if (!deserialized.contains("float")) { return; }
-	// �萔���X�g�擾�ƃC���X�^���X����(float)
+	// 定数リスト取得とインスタンス生成(float)
 	const auto& list = deserialized["float"].get<std::map<std::string, float>>();
 	for (const auto& val : list) { constants[val.first] = new float(val.second); }
 }
@@ -42,7 +42,7 @@ void WristerEngine::Constant::LoadFloat()
 void WristerEngine::Constant::LoadDouble()
 {
 	if (!deserialized.contains("double")) { return; }
-	// �萔���X�g�擾�ƃC���X�^���X����(float)
+	// 定数リスト取得とインスタンス生成(float)
 	const auto& list = deserialized["double"].get<std::map<std::string, double>>();
 	for (const auto& val : list) { constants[val.first] = new double(val.second); }
 }
@@ -51,14 +51,14 @@ void WristerEngine::Constant::LoadVector()
 {
 	if (deserialized.contains("Vector2"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(Vector2)
+		// 定数リスト取得とインスタンス生成(Vector2)
 		const auto& list = deserialized["Vector2"].get<std::map<std::string, std::vector<float>>>();
 		for (const auto& val : list) { constants[val.first] = new Vector2(val.second[0], val.second[1]); }
 	}
 
 	if (deserialized.contains("Vector3"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(Vector3)
+		// 定数リスト取得とインスタンス生成(Vector3)
 		const auto& list = deserialized["Vector3"].get<std::map<std::string, std::vector<float>>>();
 		for (const auto& val : list) { constants[val.first] = new Vector3(val.second[0], val.second[1], val.second[2]); }
 	}
@@ -68,14 +68,14 @@ void WristerEngine::Constant::LoadColor()
 {
 	if (deserialized.contains("ColorRGB"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(ColorRGB)
+		// 定数リスト取得とインスタンス生成(ColorRGB)
 		const auto& list = deserialized["ColorRGB"].get<std::map<std::string, std::vector<float>>>();
 		for (const auto& val : list) { constants[val.first] = new ColorRGB(val.second[0], val.second[1], val.second[2]); }
 	}
 
 	if (deserialized.contains("ColorRGBA"))
 	{
-		// �萔���X�g�擾�ƃC���X�^���X����(ColorRGBA)
+		// 定数リスト取得とインスタンス生成(ColorRGBA)
 		const auto& list = deserialized["ColorRGBA"].get<std::map<std::string, std::vector<float>>>();
 		for (const auto& val : list) { constants[val.first] = new ColorRGBA(val.second[0], val.second[1], val.second[2], val.second[3]); }
 	}
@@ -114,7 +114,7 @@ void WristerEngine::Constant::Finalize()
 {
 	for (auto& p : constants)
 	{
-		// ���������
+		// メモリ解放
 		delete p.second;
 		p.second = nullptr;
 	}

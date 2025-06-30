@@ -9,39 +9,39 @@ namespace WristerEngine::_3D
 	class Shake
 	{
 	private:
-		Easing easing; // ƒC[ƒWƒ“ƒO‚É‚æ‚éƒVƒFƒCƒN”ÍˆÍ‚ÌŒ¸Š
-		bool isWhile = false; // ƒVƒFƒCƒN’†‚©
-		std::unordered_map<Axis, Random_Float> rand{}; // —”
+		Easing easing; // ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã«ã‚ˆã‚‹ã‚·ã‚§ã‚¤ã‚¯ç¯„å›²ã®æ¸›è¡°
+		bool isWhile = false; // ã‚·ã‚§ã‚¤ã‚¯ä¸­ã‹
+		std::unordered_map<Axis, Random_Float> rand{}; // ä¹±æ•°
 
 	public:
-		// ƒVƒFƒCƒNî•ñ
+		// ã‚·ã‚§ã‚¤ã‚¯æƒ…å ±
 		struct Prop
 		{
-			Vector3 range; // ƒVƒFƒCƒN‚Ì”ÍˆÍ
-			int time; // ƒVƒFƒCƒNŠÔ
-			Easing::Type easingType; // ƒVƒFƒCƒNŒ¸ŠƒC[ƒWƒ“ƒO
+			Vector3 range; // ã‚·ã‚§ã‚¤ã‚¯ã®ç¯„å›²
+			int time; // ã‚·ã‚§ã‚¤ã‚¯æ™‚é–“
+			Easing::Type easingType; // ã‚·ã‚§ã‚¤ã‚¯æ¸›è¡°ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°
 		};
 
 		/// <summary>
-		/// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+		/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 		/// </summary>
-		/// <param name="shakeProp">ƒVƒFƒCƒNî•ñ</param>
-		/// <returns>CameraShake‚ÌƒCƒ“ƒXƒ^ƒ“ƒX</returns>
+		/// <param name="shakeProp">ã‚·ã‚§ã‚¤ã‚¯æƒ…å ±</param>
+		/// <returns>CameraShakeã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</returns>
 		static std::unique_ptr<Shake> Create(const Prop& shakeProp);
 
 		/// <summary>
-		/// ƒVƒFƒCƒN‚Ì”ÍˆÍ‚ğÄİ’è
+		/// ã‚·ã‚§ã‚¤ã‚¯ã®ç¯„å›²ã‚’å†è¨­å®š
 		/// </summary>
-		/// <param name="shakeRange_">ƒVƒFƒCƒN‚Ì”ÍˆÍ</param>
+		/// <param name="shakeRange_">ã‚·ã‚§ã‚¤ã‚¯ã®ç¯„å›²</param>
 		void SetShakeRange(const Vector3& shakeRange_);
 
-		// ƒVƒFƒCƒNŠJn
+		// ã‚·ã‚§ã‚¤ã‚¯é–‹å§‹
 		void Start();
 
 		/// <summary>
-		/// XVˆ—
+		/// æ›´æ–°å‡¦ç†
 		/// </summary>
-		/// <returns>ƒVƒFƒCƒN‚Ì’l</returns>
+		/// <returns>ã‚·ã‚§ã‚¤ã‚¯ã®å€¤</returns>
 		Vector3 Update();
 	};
 }

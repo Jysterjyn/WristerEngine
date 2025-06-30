@@ -30,10 +30,10 @@ void Material::LoadTexture(istringstream& line_stream, TexType spriteIndex)
 
 void Material::ChangeTexture(size_t texIndex, const std::string& texName)
 {
-	// ƒtƒ‹ƒpƒXŽw’è‚Ìê‡
+	// ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šã®å ´åˆ
 	if (texName.find("./") == std::string::npos) { textures[texIndex].data = TextureData::Load(texName); return; }
 
-	// ƒ}ƒeƒŠƒAƒ‹‚ª‘¶Ý‚·‚éƒfƒBƒŒƒNƒgƒŠ‚©‚ç‚Ì‘Š‘ÎƒpƒXŽw’è‚Ìê‡
+	// ãƒžãƒ†ãƒªã‚¢ãƒ«ãŒå­˜åœ¨ã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ã®ç›¸å¯¾ãƒ‘ã‚¹æŒ‡å®šã®å ´åˆ
 	std::string fileName = ExtractFileName(texName);
 	textures[texIndex].data = TextureData::Load(directoryPath + fileName);
 }
@@ -57,27 +57,27 @@ void Material::Load(Mesh* mesh)
 		if (key == "Ka") { LoadColorRGBStream(line_stream, ambient); }
 		if (key == "Kd") { LoadColorRGBStream(line_stream, diffuse); }
 		if (key == "Ks") { LoadColorRGBStream(line_stream, specular); }
-		if (key == "map_Kd") { LoadTexture(line_stream, TexType::Main); }		// ƒƒCƒ“ƒeƒNƒXƒ`ƒƒ
-		if (key == "map_Kds") { LoadTexture(line_stream, TexType::Sub); }		// ƒTƒuƒeƒNƒXƒ`ƒƒ
-		if (key == "map_Kbm") { LoadTexture(line_stream, TexType::Blend); }		// ƒuƒŒƒ“ƒhƒ}ƒXƒN
-		if (key == "map_Ksm") { LoadTexture(line_stream, TexType::Specular); }	// ƒXƒyƒLƒ…ƒ‰ƒ}ƒXƒN
-		if (key == "map_Kdm") { LoadTexture(line_stream, TexType::Dissolve); }	// ƒfƒBƒ]ƒ‹ƒuƒ}ƒXƒN
+		if (key == "map_Kd") { LoadTexture(line_stream, TexType::Main); }		// ãƒ¡ã‚¤ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		if (key == "map_Kds") { LoadTexture(line_stream, TexType::Sub); }		// ã‚µãƒ–ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		if (key == "map_Kbm") { LoadTexture(line_stream, TexType::Blend); }		// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒžã‚¹ã‚¯
+		if (key == "map_Ksm") { LoadTexture(line_stream, TexType::Specular); }	// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒžã‚¹ã‚¯
+		if (key == "map_Kdm") { LoadTexture(line_stream, TexType::Dissolve); }	// ãƒ‡ã‚£ã‚¾ãƒ«ãƒ–ãƒžã‚¹ã‚¯
 	}
 	file.close();
 
-	// ƒfƒtƒHƒ‹ƒgƒeƒNƒXƒ`ƒƒ‚ÌƒZƒbƒg
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚»ãƒƒãƒˆ
 	for (auto& tex : textures) { if (!tex.data) { tex.data = TextureData::Load("white1x1.png"); } }
 
-	// ƒuƒŒƒ“ƒhƒeƒNƒXƒ`ƒƒ‚ªƒfƒtƒHƒ‹ƒg‚Ìê‡Aƒ}ƒXƒN’l‚ÍŽg‚í‚È‚¢
+	// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å ´åˆã€ãƒžã‚¹ã‚¯å€¤ã¯ä½¿ã‚ãªã„
 	if (textures[(size_t)TexType::Blend].data->fileName.find("white1x1.png") != string::npos)
 	{
 		textures[(size_t)TexType::Blend].color.r = 0;
 	}
 
-	// ƒfƒBƒ]ƒ‹ƒu’l‚Ì‰Šú’l‚Í0
+	// ãƒ‡ã‚£ã‚¾ãƒ«ãƒ–å€¤ã®åˆæœŸå€¤ã¯0
 	textures[(size_t)TexType::Dissolve].color.r = 0;
 
-	// ’è”ƒoƒbƒtƒ@¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 }
 
@@ -101,7 +101,7 @@ void Material::Draw()
 	else { PipelineManager::SetPipeline(PipelineType::Dissolve); }
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView((UINT)RootParamNum::Material, constBuffer->GetGPUVirtualAddress());
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ðƒZƒbƒg
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootDescriptorTable(0, DirectXCommon::GetInstance()->GetSRV()->GetGPUDescriptorHandleForHeapStart());
 	for (UINT i = 0; i < (UINT)TexType::Num; i++)
 	{

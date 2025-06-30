@@ -27,20 +27,20 @@ void BaseBehavior::Move()
 	if (!input->IsConnectGamePad()) { return; }
 	bool isMoving = false;
 
-	// ˆÚ“®—Ê
+	// ç§»å‹•é‡
 	Vector2 padMove = input->ConLStick(0, moveSpeed);
 	isMoving = padMove.Length() != 0;
 
 	velocity = { padMove.x,0.0f,padMove.y };
-	// ˆÚ“®ƒxƒNƒgƒ‹‚ðƒJƒƒ‰‚ÌŠp“x‚¾‚¯‰ñ“]‚·‚é
+	// ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’ã‚«ãƒ¡ãƒ©ã®è§’åº¦ã ã‘å›žè»¢ã™ã‚‹
 	Matrix4 rotMat = Matrix4::RotateY(camera->GetTransform()->rotation.y);
 	velocity *= rotMat;
 
 	if (isMoving)
 	{
-		// ˆÚ“®
+		// ç§»å‹•
 		rootPos->translation += velocity;
-		// –Ú•WŠp“x‚ÌŽZo
+		// ç›®æ¨™è§’åº¦ã®ç®—å‡º
 		destinationAngleY = std::atan2(velocity.x, velocity.z);
 
 		rootPos->rotation.y = LerpShortAngle(rootPos->rotation.y, destinationAngleY, 0.4f);
@@ -159,7 +159,7 @@ void AttackBehavior::Update()
 	Matrix4 rotMat = Matrix4::RotateY(rootPos->rotation.y);
 	velocity *= rotMat;
 
-	// ˆÚ“®
+	// ç§»å‹•
 	rootPos->translation += velocity;
 }
 

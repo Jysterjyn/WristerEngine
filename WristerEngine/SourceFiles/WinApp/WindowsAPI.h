@@ -6,20 +6,20 @@
 
 namespace WristerEngine
 {
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
 	const Vector2 WIN_SIZE = { 1280,720 };
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ì”¼•ª(UI•`‰æ‚È‚Ç‚Ég‚¤)
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®åŠåˆ†(UIæç”»ãªã©ã«ä½¿ã†)
 	const Vector2 HALF_WIN_SIZE = WIN_SIZE / 2.0f;
 
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒXˆ—
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹å‡¦ç†
 	class WindowsAPI final
 	{
 	public:
 		enum class SizeChangeMode 
 		{
-			None,        // ƒTƒCƒY•ÏX•s‰Â
-			Normal,      // ©—R•ÏX
-			FixedAspect, // ƒAƒXƒyƒNƒg”äˆê’è
+			None,        // ã‚µã‚¤ã‚ºå¤‰æ›´ä¸å¯
+			Normal,      // è‡ªç”±å¤‰æ›´
+			FixedAspect, // ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”ä¸€å®š
 		};
 
 	private:
@@ -38,38 +38,38 @@ namespace WristerEngine
 		WindowsAPI(const WindowsAPI&) = delete;
 		WindowsAPI& operator=(const WindowsAPI&) = delete;
 
-		// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 		static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	public:
-		// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static WindowsAPI* GetInstance();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(const std::wstring& windowName = L"");
-		// ƒƒbƒZ[ƒW‚Ìˆ—
+		// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
 		bool ProcessMessage();
-		// I—¹
+		// çµ‚äº†
 		void Finalize() const;
 
-		// ƒJ[ƒ\ƒ‹‚ª‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É‚·‚é
+		// ã‚«ãƒ¼ã‚½ãƒ«ãŒç”»é¢å¤–ã«å‡ºãªã„ã‚ˆã†ã«ã™ã‚‹
 		void InWindowCursor() const;
 
-		// ƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğİ’è
+		// ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’è¨­å®š
 		void SetCursorPosition(const Vector2& pos) const { SetCursorPos((int32_t)pos.x, (int32_t)pos.y); }
-		// ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì•\¦ / ”ñ•\¦
+		// ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤º / éè¡¨ç¤º
 		void SetShowCursor(bool isShow) const { ShowCursor(isShow); }
-		// ƒJ[ƒ\ƒ‹‚ª‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É‚·‚éƒtƒ‰ƒO
+		// ã‚«ãƒ¼ã‚½ãƒ«ãŒç”»é¢å¤–ã«å‡ºãªã„ã‚ˆã†ã«ã™ã‚‹ãƒ•ãƒ©ã‚°
 		void SetIsInWindowCursor(bool isInWindowCursor_) { isInWindowCursor = isInWindowCursor_; }
 		void SetInWindowCursorOffset(const RECT& inWindowCursorOffset_) { inWindowCursorOffset = inWindowCursorOffset_; }
 
 		/// <summary>
-		/// ƒtƒ‹ƒXƒNƒŠ[ƒ“İ’è
+		/// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³è¨­å®š
 		/// </summary>
-		/// <param name="fullscreen">ƒtƒ‹ƒXƒNƒŠ[ƒ“‚É‚·‚é‚©‚Ç‚¤‚©</param>
+		/// <param name="fullscreen">ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã«ã™ã‚‹ã‹ã©ã†ã‹</param>
 		void SetFullscreen(bool fullscreen);
 
 		/// <summary>
-		/// ƒTƒCƒY•ÏXƒ‚[ƒh‚Ìİ’è
+		/// ã‚µã‚¤ã‚ºå¤‰æ›´ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
 		/// </summary>
 		/// <returns></returns>
 		void SetSizeChangeMode(SizeChangeMode sizeChangeMode);
@@ -77,7 +77,7 @@ namespace WristerEngine
 		// getter
 		HWND GetHwnd() const { return hwnd; }
 		HINSTANCE GetHInstance() const { return w.hInstance; }
-		// ƒ}ƒEƒXÀ•W‚ğæ“¾‚·‚é(ƒEƒBƒ“ƒhƒEŠî€)
+		// ãƒã‚¦ã‚¹åº§æ¨™ã‚’å–å¾—ã™ã‚‹(ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦åŸºæº–)
 		Vector2 GetScreenCursorPos() const;
 	};
 }

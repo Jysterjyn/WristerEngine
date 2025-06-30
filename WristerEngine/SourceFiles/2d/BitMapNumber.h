@@ -4,71 +4,71 @@
 
 namespace WristerEngine::_2D
 {
-	// �r�b�g�}�b�v�̓ǂݎ��ϐ��̎󂯓n���\����
+	// ビットマップの読み取り変数の受け渡し構造体
 	struct BitMapProp
 	{
-		// �r�b�g�}�b�v������摜�̃t�@�C����
+		// ビットマップがある画像のファイル名
 		std::string fileName;
-		// 1�������̃T�C�Y
+		// 1文字分のサイズ
 		Vector2 rectSize;
-		// �`��T�C�Y
+		// 描画サイズ
 		Vector2 size;
-		// �`��ʒu(�s�N�Z�����W)
+		// 描画位置(ピクセル座標)
 		Vector2 pos;
-		// �\������
+		// 表示桁数
 		int digit = 0;
-		// �F����
+		// 色合い
 		ColorRGBA color;
-		// �؂���̈�̍�����W�̃I�t�Z�b�g
+		// 切り取り領域の左上座標のオフセット
 		Vector2 texLTOffset;
-		// �A���J�[�|�C���g
+		// アンカーポイント
 		Vector2 anchorPoint;
 
 		/// <summary>
-		/// BitMapNumber�������ɕK�v�Ȓl�̃Z�b�g
+		/// BitMapNumber初期化に必要な値のセット
 		/// </summary>
-		/// <param name="fileName">�r�b�g�}�b�v������摜�̃t�@�C����</param>
-		/// <param name="rectSize">1�������̃T�C�Y</param>
-		/// <param name="size">�`��T�C�Y</param>
-		/// <param name="pos">�`��ʒu(�s�N�Z�����W)</param>
-		/// <param name="digit">�\������</param>
+		/// <param name="fileName">ビットマップがある画像のファイル名</param>
+		/// <param name="rectSize">1文字分のサイズ</param>
+		/// <param name="size">描画サイズ</param>
+		/// <param name="pos">描画位置(ピクセル座標)</param>
+		/// <param name="digit">表示桁数</param>
 		void SetVal(const std::string& fileName, Vector2 rectSize, Vector2 size, Vector2 pos, int digit);
 	};
 
 	/// <summary>
-	/// �r�b�g�}�b�v�̐����̕`��
-	/// �����ɂ̂ݑΉ�
+	/// ビットマップの数字の描画
+	/// 整数にのみ対応
 	/// </summary>
 	class BitMapNumber
 	{
 	private:
 		std::vector<Sprite*> sprites;
 		BitMapProp bitMapProp;
-		Vector2 allSpriteSize; // �X�v���C�g�S�̂̑傫��
+		Vector2 allSpriteSize; // スプライト全体の大きさ
 
 		/// <summary>
-		/// �X�v���C�g�̍X�V(Initialize,Update�֐��̋��ʕ���)
+		/// スプライトの更新(Initialize,Update関数の共通部分)
 		/// </summary>
-		/// <param name="index">sprites�̃C���f�b�N�X</param>
+		/// <param name="index">spritesのインデックス</param>
 		void UpdateSprite(size_t index);
 
 	public:
-		// ������
+		// 初期化
 		void Initialize();
 
 		/// <summary>
-		/// �X�V
+		/// 更新
 		/// </summary>
-		/// <param name="number">�`�悷�鐔��</param>
+		/// <param name="number">描画する数字</param>
 		void Update(int number);
-		// �`��
+		// 描画
 		void Draw();
 		/// <summary>
-		/// bitMapProp���擾
+		/// bitMapPropを取得
 		/// </summary>
-		/// <returns>bitMapProp�̃|�C���^</returns>
+		/// <returns>bitMapPropのポインタ</returns>
 		BitMapProp* GetBitMapProp() { return &bitMapProp; }
-		// �X�v���C�g�S�̂̑傫�����擾
+		// スプライト全体の大きさを取得
 		Vector2 GetAllSpriteSize() const { return allSpriteSize; }
 	};
 }

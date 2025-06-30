@@ -7,7 +7,7 @@
 
 namespace WristerEngine
 {
-	// ŠgŽU‚·‚éƒp[ƒeƒBƒNƒ‹
+	// æ‹¡æ•£ã™ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	class DiffuseParticle : public Particle
 	{
 	public:
@@ -18,23 +18,23 @@ namespace WristerEngine
 			PosVelAcc range;
 
 			/// <summary>
-			/// ƒXƒP[ƒ‹
+			/// ã‚¹ã‚±ãƒ¼ãƒ«
 			/// </summary>
-			/// <param name="x">Å‰‚ÌƒXƒP[ƒ‹</param>
-			/// <param name="y">ÅŒã‚ÌƒXƒP[ƒ‹</param>
+			/// <param name="x">æœ€åˆã®ã‚¹ã‚±ãƒ¼ãƒ«</param>
+			/// <param name="y">æœ€å¾Œã®ã‚¹ã‚±ãƒ¼ãƒ«</param>
 			Vector2 scales = { 1.0f,0.0f };
 
 			Prop();
 		};
 
 	private:
-		Vector3 velocity; // ‘¬“x
-		Vector3 accel; // ‰Á‘¬“x
+		Vector3 velocity; // é€Ÿåº¦
+		Vector3 accel; // åŠ é€Ÿåº¦
 		FrameTimer frame = 0;
 		Vector2 scales;
 		_3D::Transform* parent = nullptr;
 
-		// Particle ‚ð‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+		// Particle ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 		void Initialize(const BaseParticleProp& prop) override;
 		void Update() override;
 		const Vector3 GetPosition() const override;

@@ -1,6 +1,6 @@
 #pragma once
 
-// コライダーの属性
+// 繧ｳ繝ｩ繧､繝繝ｼ縺ｮ螻樊ｧ
 enum class CollisionAttribute : uint32_t
 {
 	None = 0,
@@ -9,7 +9,7 @@ enum class CollisionAttribute : uint32_t
 	Enemy = 0b1 << 2,
 };
 
-// コライダーのマスク
+// 繧ｳ繝ｩ繧､繝繝ｼ縺ｮ繝槭せ繧ｯ
 enum class CollisionMask : uint32_t
 {
 	None = 0,

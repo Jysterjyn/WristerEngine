@@ -9,15 +9,15 @@ namespace WristerEngine::_2D
 	public:
 		enum class Type
 		{
-			None, // ‚È‚µ
-			ColorFlip, // F”½“]
-			GrayScale, // ƒOƒŒ[ƒXƒP[ƒ‹
-			GetHighLumi, // ‚‹P“x’Šo
-			Blur, // •½‹Ï‚Ú‚©‚µ
-			GaussianBlur, // ƒKƒEƒVƒAƒ“ƒuƒ‰[
-			GaussianBlurLinear, // ’P•ûŒü‚ÌƒKƒEƒVƒAƒ“ƒuƒ‰[
-			CreateDotFilter, // ƒNƒƒXƒtƒBƒ‹ƒ^
-			Bloom, // ƒuƒ‹[ƒ€
+			None, // ãªã—
+			ColorFlip, // è‰²åè»¢
+			GrayScale, // ã‚°ãƒ¬ãƒ¼ã‚¹ã‚±ãƒ¼ãƒ«
+			GetHighLumi, // é«˜è¼åº¦æŠ½å‡º
+			Blur, // å¹³å‡ã¼ã‹ã—
+			GaussianBlur, // ã‚¬ã‚¦ã‚·ã‚¢ãƒ³ãƒ–ãƒ©ãƒ¼
+			GaussianBlurLinear, // å˜æ–¹å‘ã®ã‚¬ã‚¦ã‚·ã‚¢ãƒ³ãƒ–ãƒ©ãƒ¼
+			CreateDotFilter, // ã‚¯ãƒ­ã‚¹ãƒ•ã‚£ãƒ«ã‚¿
+			Bloom, // ãƒ–ãƒ«ãƒ¼ãƒ 
 			Dark
 		};
 

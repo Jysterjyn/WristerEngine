@@ -15,7 +15,7 @@ void BitMapNumber::UpdateSprite(size_t index)
 {
 	sprites[index]->size = bitMapProp.size;
 
-	// ”z’u
+	// é…ç½®
 	Vector2 sprpos = bitMapProp.pos;
 	sprpos.x += bitMapProp.size.x * index;
 	sprites[index]->position = sprpos;
@@ -25,7 +25,7 @@ void BitMapNumber::Initialize()
 {
 	for (size_t i = 0; i < bitMapProp.digit; i++)
 	{
-		// ”Žš‚ÌƒXƒvƒ‰ƒCƒg
+		// æ•°å­—ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 		sprites.push_back(Sprite::Create({ bitMapProp.fileName }));
 		if (allSpriteSize.x == 0) { allSpriteSize = sprites[i]->textureSize; }
 		sprites[i]->textureSize = bitMapProp.rectSize;
@@ -38,7 +38,7 @@ void BitMapNumber::Update(int number)
 	std::vector<int> numchar(sprites.size());
 	bool isCountStop = log10(number) >= (double)sprites.size();
 
-	// Œ…‚Ì’Šo
+	// æ¡ã®æŠ½å‡º
 	for (int i = (int)sprites.size() - 1; i >= 0; i--)
 	{
 		if (!isCountStop)

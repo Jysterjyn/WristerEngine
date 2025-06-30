@@ -7,29 +7,29 @@ namespace WristerEngine
 {
 	struct RaycastHit
 	{
-		//Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
+		//è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 		BaseCollider* collider = nullptr;
-		//Õ“Ë“_
+		//è¡çªç‚¹
 		Vector3 inter;
-		//Õ“Ë“_‚Ü‚Å‚Ì‹——£
+		//è¡çªç‚¹ã¾ã§ã®è·é›¢
 		float distance = 0.0f;
 	};
 
 	/// <summary>
-	/// ƒNƒGƒŠ[‚É‚æ‚éî•ñ‚ğ“¾‚éˆ×‚Ì\‘¢‘Ì
+	/// ã‚¯ã‚¨ãƒªãƒ¼ã«ã‚ˆã‚‹æƒ…å ±ã‚’å¾—ã‚‹ç‚ºã®æ§‹é€ ä½“
 	/// </summary>
 	struct QueryHit
 	{
-		// Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
+		// è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 		BaseCollider* collider = nullptr;
-		// Õ“Ë“_
+		// è¡çªç‚¹
 		Vector3 inter;
-		// ”rËƒxƒNƒgƒ‹
+		// æ’æ–¥ãƒ™ã‚¯ãƒˆãƒ«
 		Vector3 reject;
 	};
 
 	/// <summary>
-	/// ƒNƒGƒŠ[‚ÅŒğ·‚ğŒŸo‚µ‚½‚Ì“®ì‚ğ‹K’è‚·‚éƒNƒ‰ƒX
+	/// ã‚¯ã‚¨ãƒªãƒ¼ã§äº¤å·®ã‚’æ¤œå‡ºã—ãŸæ™‚ã®å‹•ä½œã‚’è¦å®šã™ã‚‹ã‚¯ãƒ©ã‚¹
 	/// </summary>
 	class QueryCallback
 	{
@@ -38,14 +38,14 @@ namespace WristerEngine
 		virtual ~QueryCallback() = default;
 
 		/// <summary>
-		/// Œğ·ƒR[ƒ‹ƒoƒbƒN
+		/// äº¤å·®æ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 		/// </summary>
-		/// <param name="info">Œğ·î•ñ</param>
-		/// <returns>ƒNƒGƒŠ[‚ğ‘±‚¯‚é‚È‚çtrueA‘Å‚¿Ø‚é‚È‚çfalse‚ğ•Ô‚·</returns>
+		/// <param name="info">äº¤å·®æƒ…å ±</param>
+		/// <returns>ã‚¯ã‚¨ãƒªãƒ¼ã‚’ç¶šã‘ã‚‹ãªã‚‰trueã€æ‰“ã¡åˆ‡ã‚‹ãªã‚‰falseã‚’è¿”ã™</returns>
 		virtual bool OnQueryHit(const QueryHit& info) = 0;
 	};
 
-	// ƒRƒ‰ƒCƒ_[ŠÇ—
+	// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ç®¡ç†
 	class CollisionManager final : private HitInfo
 	{
 	private:
@@ -60,7 +60,7 @@ namespace WristerEngine
 
 		bool Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB);
 
-		// ŒÂ•Ê“–‚½‚è”»’è
+		// å€‹åˆ¥å½“ãŸã‚Šåˆ¤å®š
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
 
@@ -87,7 +87,7 @@ namespace WristerEngine
 
 		void QuerySphere(const SphereCollider* sphere, QueryCallback* callback, uint32_t attribute = UINT32_MAX);
 
-		// ‘S“–‚½‚è”»’è
+		// å…¨å½“ãŸã‚Šåˆ¤å®š
 		void CheckCollisions();
 	};
 }

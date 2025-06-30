@@ -17,7 +17,7 @@ public:
 
 class EnemyStateApproach : public BaseEnemyState
 {
-	// BaseEnemyState ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseEnemyState ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 
@@ -27,6 +27,6 @@ public:
 
 class EnemyStateLeave : public BaseEnemyState
 {
-	// BaseEnemyState ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseEnemyState ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Update() override;
 };

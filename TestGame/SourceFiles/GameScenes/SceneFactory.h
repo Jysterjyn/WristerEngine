@@ -3,6 +3,6 @@
 
 class SceneFactory : public WristerEngine::AbstractSceneFactory
 {
-	// AbstractSceneFactory ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// AbstractSceneFactory ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	std::unique_ptr<WristerEngine::BaseScene> CreateScene(const std::string& sceneName) override;
 };

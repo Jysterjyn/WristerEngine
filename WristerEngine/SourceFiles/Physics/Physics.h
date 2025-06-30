@@ -5,7 +5,7 @@
 
 namespace WristerEngine
 {
-	// ˆÊ’uE‘¬“xE‰Á‘¬“x‚ÌƒZƒbƒg
+	// ä½ç½®ãƒ»é€Ÿåº¦ãƒ»åŠ é€Ÿåº¦ã®ã‚»ãƒƒãƒˆ
 	struct PosVelAcc
 	{
 		Vector3 position, velocity, acceleration;
@@ -13,45 +13,45 @@ namespace WristerEngine
 		void Update();
 	};
 
-	// •¨—ŒvZ
+	// ç‰©ç†è¨ˆç®—
 	class Physics
 	{
 	private:
 		static std::vector<std::array<Physics*, 2>> collideList;
-		static float gravity; // d—Í‰Á‘¬“x
-		static Vector3 gravityDir; // d—Í‚ÌŒü‚«
-		static float k_air; // ‹ó‹C’ïR‚Ì”ä—á’è”
+		static float gravity; // é‡åŠ›åŠ é€Ÿåº¦
+		static Vector3 gravityDir; // é‡åŠ›ã®å‘ã
+		static float k_air; // ç©ºæ°—æŠµæŠ—ã®æ¯”ä¾‹å®šæ•°
 		_3D::Transform* transform = nullptr;
-		Vector3 vel; // ‘¬“x
-		float accel = 0; // ‰Á‘¬“x
-		float force = 0; // —Í‚Ì‘å‚«‚³
-		Vector3 forceDir; // —Í‚ÌŒü‚«
-		float mass = 1;  // ¿—Ê
-		float mu = 0.1f; // –€CŒW”
-		bool isFreeFall = false; // ©—R—‰ºƒtƒ‰ƒO
-		float fallSpd = 0; // —‰º‘¬“x
+		Vector3 vel; // é€Ÿåº¦
+		float accel = 0; // åŠ é€Ÿåº¦
+		float force = 0; // åŠ›ã®å¤§ãã•
+		Vector3 forceDir; // åŠ›ã®å‘ã
+		float mass = 1;  // è³ªé‡
+		float mu = 0.1f; // æ‘©æ“¦ä¿‚æ•°
+		bool isFreeFall = false; // è‡ªç”±è½ä¸‹ãƒ•ãƒ©ã‚°
+		float fallSpd = 0; // è½ä¸‹é€Ÿåº¦
 
 	public:
 		/// <summary>
-		/// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+		/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 		/// </summary>
-		/// <param name="w">ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€</param>
-		/// <returns>ƒCƒ“ƒXƒ^ƒ“ƒX</returns>
+		/// <param name="w">ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ </param>
+		/// <returns>ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</returns>
 		static std::unique_ptr<Physics> Create(_3D::Transform* w);
-		// “®‚­•¨‘Ì‚Æ“®‚©‚È‚¢•¨‘Ì‚Ì”½”­Œã‚Ì‘¬“x‚ğŒvZ
+		// å‹•ãç‰©ä½“ã¨å‹•ã‹ãªã„ç‰©ä½“ã®åç™ºå¾Œã®é€Ÿåº¦ã‚’è¨ˆç®—
 		void Backlash(const Vector3& wallNormal, float e);
-		// “®‚­2•¨‘Ì‚Ì”½”­Œã‚Ì‘¬“x‚ğŒvZ
+		// å‹•ã2ç‰©ä½“ã®åç™ºå¾Œã®é€Ÿåº¦ã‚’è¨ˆç®—
 		static void Backlash(Physics* p1, Physics* p2, float e);
-		// d—Í‰Á‘¬“x‚ğİ’è
+		// é‡åŠ›åŠ é€Ÿåº¦ã‚’è¨­å®š
 		static void SetGravity(float g) { gravity = g; }
-		// Õ“Ëˆ—Às”»’è‚ğƒŠƒZƒbƒg
+		// è¡çªå‡¦ç†å®Ÿè¡Œåˆ¤å®šã‚’ãƒªã‚»ãƒƒãƒˆ
 		static void ResetCollideList() { collideList.clear(); }
-		// XV
+		// æ›´æ–°
 		void Update();
 		// setter
 		Vector3 SetVelocity(Vector3 velocity) { return vel = velocity; }
 		void SetForce(float f) { force = f; }
-		void SetForceDir(Vector3 dir) { forceDir = Normalize(dir); } // dir‚Í©“®“I‚É³‹K‰»‚³‚ê‚é
+		void SetForceDir(Vector3 dir) { forceDir = Normalize(dir); } // dirã¯è‡ªå‹•çš„ã«æ­£è¦åŒ–ã•ã‚Œã‚‹
 		void SetMass(float m);
 		void SetMu(float mu_) { mu = mu_; }
 		void SetIsFreeFall(bool isFreeFall_) { isFreeFall = isFreeFall_; }
@@ -61,6 +61,6 @@ namespace WristerEngine
 		float GetMass() const { return mass; }
 		_3D::Transform* GetWorldTransform() { return transform; }
 		bool IsFreeFall() const { return isFreeFall; }
-		float GetMomentum() const { return mass * vel.Length(); } // ‰^“®—Ê‚ğæ“¾
+		float GetMomentum() const { return mass * vel.Length(); } // é‹å‹•é‡ã‚’å–å¾—
 	};
 }

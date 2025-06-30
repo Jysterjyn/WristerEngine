@@ -22,7 +22,7 @@ namespace WristerEngine::_2D
 		void CreateBuffers();
 	public:
 		void Initialize();
-		// 2‚Â‚ÌƒeƒNƒXƒ`ƒƒ‚ğ‡¬‚·‚é
+		// 2ã¤ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’åˆæˆã™ã‚‹
 		void Draw(std::array<PostEffect, 2>& postEffects);
 		void SetEffectType(UINT32 effectType) { constMap->effectType = effectType; }
 	};

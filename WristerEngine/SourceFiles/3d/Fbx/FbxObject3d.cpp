@@ -13,7 +13,7 @@ LightGroup* FbxObject3d::lightGroup = nullptr;
 
 void FbxObject3d::Initialize(Transform* transform_, FbxModel* model_)
 {
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	CreateBuffer(&constBuff, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 	CreateBuffer(&constBuffSkin, &constMapSkin, (sizeof(ConstBufferDataSkin) + 0xff) & ~0xff);
 
@@ -23,22 +23,22 @@ void FbxObject3d::Initialize(Transform* transform_, FbxModel* model_)
 
 	for (int i = 0; i < MAX_BONES; i++) { constMapSkin->bones[i] = Matrix4::Identity(); }
 
-	// 1ƒtƒŒ[ƒ€•ª‚ÌŠÔ‚ğ60FPS‚Åİ’è
+	// 1ãƒ•ãƒ¬ãƒ¼ãƒ åˆ†ã®æ™‚é–“ã‚’60FPSã§è¨­å®š
 	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
 	PlayAnimation();
 }
 
 void FbxObject3d::Update()
 {
-	// ƒXƒP[ƒ‹A‰ñ“]A•½sˆÚ“®s—ñ‚ÌŒvZ
+	// ã‚¹ã‚±ãƒ¼ãƒ«ã€å›è»¢ã€å¹³è¡Œç§»å‹•è¡Œåˆ—ã®è¨ˆç®—
 	transform->Update();
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	if (isPlay)
 	{
-		// 1ƒtƒŒ[ƒ€i‚ß‚é
+		// 1ãƒ•ãƒ¬ãƒ¼ãƒ é€²ã‚ã‚‹
 		currentTime += frameTime;
-		// ÅŒã‚Ü‚ÅÄ¶‚µ‚½‚çæ“ª‚É–ß‚·
+		// æœ€å¾Œã¾ã§å†ç”Ÿã—ãŸã‚‰å…ˆé ­ã«æˆ»ã™
 		if (currentTime > endTime) { currentTime = startTime; }
 	}
 
@@ -51,7 +51,7 @@ void FbxObject3d::Update()
 		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
 	}
 
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	const BaseCamera* camera = CameraManager::GetInstance()->Get();
 	constMap->viewproj = camera->GetViewProjectionMatrix();
 	constMap->world = model->GetModelTransform() * transform->matWorld;
@@ -60,36 +60,36 @@ void FbxObject3d::Update()
 
 void FbxObject3d::Draw()
 {
-	// ƒ‚ƒfƒ‹‚ÌŠ„‚è“–‚Ä‚ª‚È‚¯‚ê‚Î•`‰æ‚µ‚È‚¢
+	// ãƒ¢ãƒ‡ãƒ«ã®å‰²ã‚Šå½“ã¦ãŒãªã‘ã‚Œã°æç”»ã—ãªã„
 	if (model == nullptr) { return; }
 
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	PipelineManager::SetPipeline(PipelineType::Fbx);
-	// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ğİ’è
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã‚’è¨­å®š
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚ğƒZƒbƒg
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootConstantBufferView(3, constBuff->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(4, constBuffSkin->GetGPUVirtualAddress());
 	lightGroup->Draw(6);
-	// ƒ‚ƒfƒ‹•`‰æ
+	// ãƒ¢ãƒ‡ãƒ«æç”»
 	model->Draw();
 }
 
 void FbxObject3d::PlayAnimation()
 {
 	FbxScene* fbxScene = model->GetFbxScene();
-	// 0”Ô‚ÌƒAƒjƒ[ƒVƒ‡ƒ“æ“¾
+	// 0ç•ªã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å–å¾—
 	FbxAnimStack* animstack = fbxScene->GetSrcObject<FbxAnimStack>(0);
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì–¼‘Oæ“¾
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®åå‰å–å¾—
 	const char* animstackname = animstack->GetName();
-	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠÔæ“¾
+	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ™‚é–“å–å¾—
 	FbxTakeInfo* takeinfo = fbxScene->GetTakeInfo(animstackname);
-	// ŠJnŠÔæ“¾
+	// é–‹å§‹æ™‚é–“å–å¾—
 	startTime = takeinfo->mLocalTimeSpan.GetStart();
-	// I—¹ŠÔæ“¾
+	// çµ‚äº†æ™‚é–“å–å¾—
 	endTime = takeinfo->mLocalTimeSpan.GetStop();
-	// ŠJnŠÔ‚É‡‚í‚¹‚é
+	// é–‹å§‹æ™‚é–“ã«åˆã‚ã›ã‚‹
 	currentTime = startTime;
-	// Ä¶’†ó‘Ô‚É‚·‚é
+	// å†ç”Ÿä¸­çŠ¶æ…‹ã«ã™ã‚‹
 	isPlay = true;
 }

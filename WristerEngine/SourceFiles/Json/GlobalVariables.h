@@ -11,22 +11,22 @@
 
 namespace WristerEngine
 {
-	// ƒOƒ[ƒoƒ‹•Ï”
+	// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 	class GlobalVariables final
 	{
 	public:
-		// €–Ú
+		// é …ç›®
 		using Item = std::variant<int32_t, float, Vector3, bool>;
 
-		// ƒOƒ‹[ƒv
+		// ã‚°ãƒ«ãƒ¼ãƒ—
 		using Group = std::map<std::string, Item>;
 
 	private:
 		using json = nlohmann::json;
-		// ƒOƒ[ƒoƒ‹•Ï”‚Ì•Û‘¶æƒtƒ@ƒCƒ‹ƒpƒX
+		// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®ä¿å­˜å…ˆãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
 		const std::string DIRECTORY_PATH = "GlobalVariables/";
 
-		// ‘Sƒf[ƒ^
+		// å…¨ãƒ‡ãƒ¼ã‚¿
 		std::map<std::string, Group> datas;
 
 		GlobalVariables() = default;
@@ -35,53 +35,53 @@ namespace WristerEngine
 		GlobalVariables& operator=(const GlobalVariables&) = delete;
 
 		/// <summary>
-		/// ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚Ş
+		/// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚€
 		/// </summary>
-		/// <param name="groupName">ƒOƒ‹[ƒv</param>
+		/// <param name="groupName">ã‚°ãƒ«ãƒ¼ãƒ—</param>
 		void LoadFile(const std::string& groupName);
 
 	public:
 		static GlobalVariables* GetInstance();
 
-		// –ˆƒtƒŒ[ƒ€ˆ—
+		// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 		void Update();
 
 		/// <summary>
-		/// ƒtƒ@ƒCƒ‹‚É‘‚«o‚µ
+		/// ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãå‡ºã—
 		/// </summary>
-		/// <param name="groupName">ƒOƒ‹[ƒv</param>
+		/// <param name="groupName">ã‚°ãƒ«ãƒ¼ãƒ—</param>
 		void SaveFile(const std::string& groupName);
 
-		// ƒfƒBƒŒƒNƒgƒŠ‚Ì‘Sƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+		// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å…¨ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 		void LoadFiles();
 
-		// ’l‚ğƒZƒbƒg
+		// å€¤ã‚’ã‚»ãƒƒãƒˆ
 		template<class T>
 		void SetValue(const std::string& groupName, const std::string& key, const T& value)
 		{
-			// ƒOƒ‹[ƒv‚ÌQÆ‚ğæ“¾
+			// ã‚°ãƒ«ãƒ¼ãƒ—ã®å‚ç…§ã‚’å–å¾—
 			Group& group = datas[groupName];
-			// V‚µ‚¢€–Ú‚Ìƒf[ƒ^‚ğİ’è
+			// æ–°ã—ã„é …ç›®ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
 			Item newItem{};
 			newItem = value;
-			// İ’è‚µ‚½€–Ú‚ğstd::map‚É’Ç‰Á
+			// è¨­å®šã—ãŸé …ç›®ã‚’std::mapã«è¿½åŠ 
 			group[key] = newItem;
 		}
 
-		// €–Ú‚Ì’Ç‰Á
+		// é …ç›®ã®è¿½åŠ 
 		template<class T>
 		void AddItem(const std::string& groupName, const std::string& key, const T& value)
 		{
-			// €–Ú‚ª–¢“o˜^‚È‚ç
+			// é …ç›®ãŒæœªç™»éŒ²ãªã‚‰
 			if (!datas[groupName].contains(key)) { SetValue(groupName, key, value); }
 		}
 
-		// ’l‚Ìæ“¾
+		// å€¤ã®å–å¾—
 		template<class T>
 		T GetValue(const std::string& groupName, const std::string& key) const
 		{
 			assert(datas.contains(groupName));
-			// ƒOƒ‹[ƒv‚ÌQÆ‚ğæ“¾
+			// ã‚°ãƒ«ãƒ¼ãƒ—ã®å‚ç…§ã‚’å–å¾—
 			const Group& group = datas.at(groupName);
 			assert(group.contains(key));
 			return std::get<T>(group.at(key));

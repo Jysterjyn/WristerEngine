@@ -11,7 +11,7 @@
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
-	// AbstractUIDrawer ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// AbstractUIDrawer ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override {}
 	void Update() override {}
 };
@@ -25,7 +25,7 @@ class GameScene : public WristerEngine::BaseScene
 	WE::_3D::CameraManager* cMan = WE::_3D::CameraManager::GetInstance();
 	std::unique_ptr<WE::_3D::LockOn> lockOn;
 
-	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseScene ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 	void Draw() { lockOn->Draw(); }

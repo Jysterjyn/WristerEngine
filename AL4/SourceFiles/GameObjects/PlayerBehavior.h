@@ -28,7 +28,7 @@ protected:
 	static WE::GlobalVariables* globalVariables;
 	static WE::Input* input;
 	static const WE::_3D::LockOn* lockOn;
-	// Ÿ‚ÌU‚é•‘‚¢ƒŠƒNƒGƒXƒg
+	// æ¬¡ã®æŒ¯ã‚‹èˆã„ãƒªã‚¯ã‚¨ã‚¹ãƒˆ
 	static std::optional<Behavior> behaviorRequest;
 
 	float moveSpeed = 0.3f;
@@ -56,7 +56,7 @@ class RootBehavior : public BaseBehavior
 	float amplitude = 0.0f;
 	float idleArmAngleMax = 0;
 
-	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseBehavior ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 	void ApplyGlobalVariables() override;
@@ -127,7 +127,7 @@ private:
 	bool comboNext = false;
 	Sword sword;
 
-	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseBehavior ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 	void ApplyGlobalVariables() override;
@@ -141,7 +141,7 @@ class DashBehavior : public BaseBehavior
 {
 	uint32_t parameter = 0;
 
-	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseBehavior ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 };
@@ -150,7 +150,7 @@ class JumpBehavior : public BaseBehavior
 {
 	uint32_t parameter = 0;
 
-	// BaseBehavior ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseBehavior ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 };

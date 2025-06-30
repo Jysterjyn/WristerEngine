@@ -7,28 +7,28 @@ namespace WristerEngine
 {
 	enum class ParticleType
 	{
-		Light,	// Œõƒp[ƒeƒBƒNƒ‹
-		Dark	// ˆÅƒp[ƒeƒBƒNƒ‹
+		Light,	// å…‰ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
+		Dark	// é—‡ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	};
 
-	// ƒp[ƒeƒBƒNƒ‹ƒOƒ‹[ƒv‚ÌŠÇ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—ã®ç®¡ç†
 	class ParticleManager final
 	{
 	private:
-		// Microsoft::WRL::‚ğÈ—ª
+		// Microsoft::WRL::ã‚’çœç•¥
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct ConstBufferData
 		{
-			Matrix4 mat;	// 3D•ÏŠ·s—ñ
-			Matrix4 matBillboard; // ƒrƒ‹ƒ{[ƒhs—ñ
+			Matrix4 mat;	// 3Då¤‰æ›è¡Œåˆ—
+			Matrix4 matBillboard; // ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 		};
 
-		// ’è”ƒoƒbƒtƒ@
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> constBuff;
 		ConstBufferData* constMap = nullptr;
-		// ƒp[ƒeƒBƒNƒ‹ƒOƒ‹[ƒv‚Ì”z—ñ
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—ã®é…åˆ—
 		std::unordered_map<ParticleType, std::vector<std::unique_ptr<ParticleGroup>>> particleGroups;
 		_3D::ModelManager* modelManager = nullptr;
 
@@ -38,19 +38,19 @@ namespace WristerEngine
 		ParticleManager& operator=(const ParticleManager&) = delete;
 
 	public:
-		// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static ParticleManager* GetInstance();
-		// Ã“I‰Šú‰»
+		// é™çš„åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
-		// ƒp[ƒeƒBƒNƒ‹‚Ìíœ
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å‰Šé™¤
 		void Clear();
-		// ƒp[ƒeƒBƒNƒ‹ƒOƒ‹[ƒv’Ç‰Á
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—è¿½åŠ 
 		void AddParticleGroup(const std::string& textureName, ParticleType particleType = ParticleType::Light);
-		// ƒp[ƒeƒBƒNƒ‹ƒOƒ‹[ƒvæ“¾
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—å–å¾—
 		ParticleGroup* GetParticleGroup(size_t index, ParticleType particleType = ParticleType::Light) { return particleGroups[particleType][index].get(); }
 	};
 }

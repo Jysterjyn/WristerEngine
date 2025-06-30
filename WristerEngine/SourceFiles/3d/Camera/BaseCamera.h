@@ -8,58 +8,58 @@
 
 namespace WristerEngine::_3D
 {
-	// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
+	// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
 	class Projection
 	{
 	private:
 		Matrix4 matProjection;
 
 	protected:
-		// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğXV
+		// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’æ›´æ–°
 		void UpdateMatrix();
 
-		// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğæ“¾
+		// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’å–å¾—
 		const Matrix4& GetProjectionMatrix() const { return matProjection; }
 
 	public:
-		// ‰æŠp(“x)
+		// ç”»è§’(åº¦)
 		Angle fovAngleY = 45;
-		// ƒAƒXƒyƒNƒg”ä(Šî–{‚ÍWIN_SIZE‚É€‹’)
+		// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”(åŸºæœ¬ã¯WIN_SIZEã«æº–æ‹ )
 		float aspectRatio = WIN_SIZE.x / WIN_SIZE.y;
-		// ‰f‚é”ÍˆÍ
+		// æ˜ ã‚‹ç¯„å›²
 		float nearZ = 0.1f, farZ = 1000.0f;
 	};
 
-	// ƒJƒƒ‰Šî’êƒNƒ‰ƒX
+	// ã‚«ãƒ¡ãƒ©åŸºåº•ã‚¯ãƒ©ã‚¹
 	class BaseCamera : Projection
 	{
 	private:
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct ConstBufferData
 		{
-			Matrix4 viewproj; // ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
-			Vector3 cameraPos; // ƒJƒƒ‰À•W(ƒ[ƒ‹ƒhÀ•W)
+			Matrix4 viewproj; // ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
+			Vector3 cameraPos; // ã‚«ãƒ¡ãƒ©åº§æ¨™(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™)
 		};
 
-		// ƒ[ƒ‹ƒhs—ñ‚ğg‚Á‚½ŒvZ‚ğs‚¤‚½‚ß‚ÌTransformƒ|ƒCƒ“ƒ^
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ä½¿ã£ãŸè¨ˆç®—ã‚’è¡Œã†ãŸã‚ã®Transformãƒã‚¤ãƒ³ã‚¿
 		const Transform* pTransform = nullptr;
 		Matrix4 matView, matViewProjection;
 
-		// ƒVƒFƒCƒN’l‚İ‚ÌƒJƒƒ‰À•W
+		// ã‚·ã‚§ã‚¤ã‚¯å€¤è¾¼ã¿ã®ã‚«ãƒ¡ãƒ©åº§æ¨™
 		Vector3 cameraPos;
 
 		/// <summary>
-		/// ƒrƒ…[s—ñ‚ğXV
+		/// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
 		/// </summary>
-		/// <returns>ƒVƒFƒCƒN’l‚ğŠÜ‚ñ‚¾ƒJƒƒ‰‚ÌÀ•W</returns>
+		/// <returns>ã‚·ã‚§ã‚¤ã‚¯å€¤ã‚’å«ã‚“ã ã‚«ãƒ¡ãƒ©ã®åº§æ¨™</returns>
 		void UpdateViewMatrix();
 
 	protected:
-		// ƒJƒƒ‰ŒvZƒ‚[ƒh
+		// ã‚«ãƒ¡ãƒ©è¨ˆç®—ãƒ¢ãƒ¼ãƒ‰
 		enum class CalMode
 		{
-			ETU, // eye, target, up‚ÅŒvZ
-			Transform // ƒ[ƒ‹ƒhs—ñ‚©‚çŒvZ
+			ETU, // eye, target, upã§è¨ˆç®—
+			Transform // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‹ã‚‰è¨ˆç®—
 		};
 
 		CalMode calMode = CalMode::ETU;
@@ -68,30 +68,30 @@ namespace WristerEngine::_3D
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
 		Vector3 eye = { 0, 0, -50.0f }, target, up = Vector3::MakeAxis(Axis::Y);
-		// ƒVƒFƒCƒN‹@”\
+		// ã‚·ã‚§ã‚¤ã‚¯æ©Ÿèƒ½
 		std::unique_ptr<Shake> shake;
 
-		// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+		// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		virtual ~BaseCamera() = default;
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		virtual void Update();
-		// ŒÅ—L‚ÌXVˆ—
+		// å›ºæœ‰ã®æ›´æ–°å‡¦ç†
 		virtual void VirtualUpdate() {}
-		// ƒVƒFƒCƒN‚ğ¶¬‚·‚é
+		// ã‚·ã‚§ã‚¤ã‚¯ã‚’ç”Ÿæˆã™ã‚‹
 		void CreateShake(const Shake::Prop& shakeProp);
-		// ƒJƒƒ‰ˆÚ“®
+		// ã‚«ãƒ¡ãƒ©ç§»å‹•
 		void CameraMove(const Vector3& move);
-		// ƒ[ƒ‹ƒhs—ñ‚ğƒZƒbƒg
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ
 		void SetTransform(const Transform* transform) { pTransform = transform; }
-		// ƒJƒƒ‰‚É‘Î‚µ‚Ä‚Ìƒrƒ‹ƒ{[ƒhs—ñ‚ğ•Ô‚·
+		// ã‚«ãƒ¡ãƒ©ã«å¯¾ã—ã¦ã®ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—ã‚’è¿”ã™
 		Matrix4 GetBillboard() const;
-		// ƒ[ƒ‹ƒhs—ñ‚ğƒZƒbƒg
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ
 		const Transform* GetTransform() const { return pTransform; }
-		// ƒrƒ…[s—ñ
+		// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 		const Matrix4& GetViewMatrix() const { return matView; }
-		// ƒrƒ…[s—ñ‚ÆƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ğŠ|‚¯‡‚í‚¹‚½s—ñ
+		// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã¨ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã‚’æ›ã‘åˆã‚ã›ãŸè¡Œåˆ—
 		const Matrix4& GetViewProjectionMatrix() const { return matViewProjection; }
 	};
 

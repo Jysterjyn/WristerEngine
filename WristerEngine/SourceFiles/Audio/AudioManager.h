@@ -7,7 +7,7 @@
 
 namespace WristerEngine
 {
-	// ƒI[ƒfƒBƒIŠÇ—
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªç®¡ç†
 	class AudioManager
 	{
 	private:
@@ -15,28 +15,28 @@ namespace WristerEngine
 
 	public:
 		/// <summary>
-		/// ƒI[ƒfƒBƒI¶¬
+		/// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªç”Ÿæˆ
 		/// </summary>
-		/// <param name="fileName">ƒtƒ@ƒCƒ‹–¼</param>
-		/// <param name="isLoop">ƒ‹[ƒvÄ¶ƒtƒ‰ƒO</param>
-		/// <returns>ƒI[ƒfƒBƒIƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒ|ƒCƒ“ƒ^</returns>
+		/// <param name="fileName">ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+		/// <param name="isLoop">ãƒ«ãƒ¼ãƒ—å†ç”Ÿãƒ•ãƒ©ã‚°</param>
+		/// <returns>ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿</returns>
 		static Audio* Create(const std::string& fileName, bool isLoop = false);
 
 		/// <summary>
-		/// “_‰¹Œ¹¶¬
+		/// ç‚¹éŸ³æºç”Ÿæˆ
 		/// </summary>
-		/// <param name="fileName">ƒtƒ@ƒCƒ‹–¼</param>
-		/// <param name="isLoop">ƒ‹[ƒvÄ¶ƒtƒ‰ƒO</param>
-		/// <param name="audioPos">‰¹Œ¹‚Ìƒ[ƒ‹ƒhÀ•W</param>
-		/// <param name="useCamera">true‚É‚·‚é‚ÆƒJƒƒ‰‚ÌˆÊ’u‚ªƒ}ƒCƒNÀ•W‚É‚È‚é</param>
-		/// <param name="usePan">true‚É‚·‚é‚Æ‰¹Œ¹‚ª¶‰EˆÚ“®‚·‚é</param>
-		/// <returns>“_‰¹Œ¹ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒ|ƒCƒ“ƒ^</returns>
+		/// <param name="fileName">ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+		/// <param name="isLoop">ãƒ«ãƒ¼ãƒ—å†ç”Ÿãƒ•ãƒ©ã‚°</param>
+		/// <param name="audioPos">éŸ³æºã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™</param>
+		/// <param name="useCamera">trueã«ã™ã‚‹ã¨ã‚«ãƒ¡ãƒ©ã®ä½ç½®ãŒãƒã‚¤ã‚¯åº§æ¨™ã«ãªã‚‹</param>
+		/// <param name="usePan">trueã«ã™ã‚‹ã¨éŸ³æºãŒå·¦å³ç§»å‹•ã™ã‚‹</param>
+		/// <returns>ç‚¹éŸ³æºã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿</returns>
 		static PointAudio* CreatePointAudio(const std::string& fileName,
 			bool isLoop = false, const Vector3& audioPos = {}, bool useCamera = true, bool usePan = true);
 
 		static void PlaySE(const std::string& fileName);
 
-		// ‘SƒI[ƒfƒBƒIƒCƒ“ƒXƒ^ƒ“ƒX‚ÌXV
+		// å…¨ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®æ›´æ–°
 		static void Update();
 	};
 }

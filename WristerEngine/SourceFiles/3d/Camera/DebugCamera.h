@@ -4,14 +4,14 @@
 
 namespace WristerEngine::_3D
 {
-	// ƒfƒoƒbƒOƒJƒƒ‰
+	// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©
 	class DebugCamera : public BaseCamera
 	{
 	private:
 		float distance = 50;
 		Quaternion rotQ = 1.0f;
-		float mouseMoveDec = 75; // •½sˆÚ“®‚Ì‘¬“x•â³
-		float wheelSpdDec = 50; // ƒY[ƒ€‚Ì‘¬“x•â³
+		float mouseMoveDec = 75; // å¹³è¡Œç§»å‹•ã®é€Ÿåº¦è£œæ­£
+		float wheelSpdDec = 50; // ã‚ºãƒ¼ãƒ ã®é€Ÿåº¦è£œæ­£
 
 	public:
 		struct Prop : public BaseCameraProp
@@ -23,14 +23,14 @@ namespace WristerEngine::_3D
 		};
 
 		/// <summary>
-		/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		/// </summary>
-		/// <param name="targetPos">’‹“_À•W</param>
-		/// <param name="distance">’‹“_À•W‚Ü‚Å‚Ì‹——£</param>
-		/// <param name="mouseMoveDec">•½sˆÚ“®‚Ì‘¬“x•â³</param>
-		/// <param name="wheelSpdDec">ƒY[ƒ€‚Ì‘¬“x•â³</param>
+		/// <param name="targetPos">æ³¨è¦–ç‚¹åº§æ¨™</param>
+		/// <param name="distance">æ³¨è¦–ç‚¹åº§æ¨™ã¾ã§ã®è·é›¢</param>
+		/// <param name="mouseMoveDec">å¹³è¡Œç§»å‹•ã®é€Ÿåº¦è£œæ­£</param>
+		/// <param name="wheelSpdDec">ã‚ºãƒ¼ãƒ ã®é€Ÿåº¦è£œæ­£</param>
 		DebugCamera(const Prop* prop = nullptr);
-		// XV
+		// æ›´æ–°
 		void VirtualUpdate() override;
 	};
 }

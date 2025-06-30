@@ -19,7 +19,7 @@ namespace WristerEngine::_3D
 		RailCamera(const Prop* prop = nullptr);
 		Transform* GetTransform() { return &transform; }
 
-		// BaseCamera ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+		// BaseCamera ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 		void VirtualUpdate() override;
 	};
 }

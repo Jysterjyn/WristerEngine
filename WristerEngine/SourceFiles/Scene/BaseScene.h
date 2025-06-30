@@ -8,7 +8,7 @@ namespace WristerEngine
 {
 	class SceneManager;
 
-	// ƒV[ƒ“Šî’êƒNƒ‰ƒX
+	// ã‚·ãƒ¼ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹
 	class BaseScene
 	{
 	protected:
@@ -19,16 +19,16 @@ namespace WristerEngine
 		std::unique_ptr<_2D::AbstractUIDrawer> uiDrawer;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		BaseScene();
 		virtual ~BaseScene() = default;
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		virtual void Initialize() = 0;
-		// XV
+		// æ›´æ–°
 		virtual void Update() = 0;
-		// •`‰æ
+		// æç”»
 		virtual void Draw() { if (uiDrawer) { uiDrawer->Draw(); } }
-		// I—¹
+		// çµ‚äº†
 		virtual void Finalize() {}
 	};
 }

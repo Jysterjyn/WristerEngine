@@ -6,19 +6,19 @@
 
 namespace WristerEngine::_3D
 {
-	// �Ǐ]�J����
+	// 追従カメラ
 	class FollowCamera : public BaseCamera
 	{
 	private:
-		// �Ǐ]�Ώ�
+		// 追従対象
 		const Transform* targetObject = nullptr;
 		Transform transform;
 		float rotSpeed = 0;
-		// �Ǐ]�Ώۂ���J�����܂ł̃I�t�Z�b�g(0���̎��̒l)
+		// 追従対象からカメラまでのオフセット(0°の時の値)
 		Vector3 posOffset;
 		Input* input = Input::GetInstance();
 		Vector3 interTarget;
-		float destinationAngleY = 0; // �ڕW�p�x
+		float destinationAngleY = 0; // 目標角度
 		float lerpPosRate = 0;
 		float lerpAngleRate = 0;
 		const LockOn* lockOn = nullptr;

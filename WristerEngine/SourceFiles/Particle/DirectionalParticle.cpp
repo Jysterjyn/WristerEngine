@@ -21,22 +21,22 @@ void DirectionalParticle::Initialize(const BaseParticleProp& prop)
 
 void DirectionalParticle::ComputeControlPoints()
 {
-	// Quaternion¶¬
+	// Quaternionç”Ÿæˆ
 	Quaternion rotQ = MakeAxisAngle(end - start, angle);
-	// §Œä“_‚Ì’Ç‰Á
+	// åˆ¶å¾¡ç‚¹ã®è¿½åŠ 
 	controlPoints.push_back(start);
-	// §Œä“_‚ğüŒ`•âŠÔ‚ÅŒvZ
+	// åˆ¶å¾¡ç‚¹ã‚’ç·šå½¢è£œé–“ã§è¨ˆç®—
 	for (size_t i = 0; i < splitNum; i++)
 	{
-		// axis‚Ì•ªŠ„
+		// axisã®åˆ†å‰²
 		Vector3 controlPoint = Lerp(start, end, (float)(i + 1) / (float)(splitNum + 1));
-		// §Œä“_‚ğy²•ûŒü‚Éradius‚¾‚¯ˆÚ“®‚³‚¹‚é
+		// åˆ¶å¾¡ç‚¹ã‚’yè»¸æ–¹å‘ã«radiusã ã‘ç§»å‹•ã•ã›ã‚‹
 		controlPoint.y += radius;
-		// Quaternion‚ÍŒ´“_’†S‚É‰ñ“]‚³‚¹‚é‚Ì‚ÅA‰ñ“]²‚Ìn“_‚ğŒ´“_‚Æ‚·‚é
+		// Quaternionã¯åŸç‚¹ä¸­å¿ƒã«å›è»¢ã•ã›ã‚‹ã®ã§ã€å›è»¢è»¸ã®å§‹ç‚¹ã‚’åŸç‚¹ã¨ã™ã‚‹
 		controlPoint -= start;
-		// §Œä“_‚ğQuaternion‚Å‰ñ“]‚³‚¹‚é
+		// åˆ¶å¾¡ç‚¹ã‚’Quaternionã§å›è»¢ã•ã›ã‚‹
 		controlPoint = RotateVector(controlPoint, rotQ);
-		// •½sˆÚ“®‚ğ‘ŠE
+		// å¹³è¡Œç§»å‹•ã‚’ç›¸æ®º
 		controlPoint += start;
 		controlPoints.push_back(controlPoint);
 	}

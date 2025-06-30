@@ -8,12 +8,12 @@ using namespace _2D;
 
 void ImGuiManager::Initialize()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
-	// ImGui‚ÌƒRƒ“ƒeƒLƒXƒg‚ğ¶¬
+	// ImGuiã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ç”Ÿæˆ
 	CreateContext();
-	// ImGui‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+	// ImGuiã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	StyleColorsDark();
 
 	ImGui_ImplWin32_Init(WindowsAPI::GetInstance()->GetHwnd());
@@ -28,13 +28,13 @@ void ImGuiManager::Initialize()
 	dxCommon->IncrementSRVIndex();
 
 	ImGuiIO& io = GetIO();
-	// •W€ƒtƒHƒ“ƒg‚ğ’Ç‰Á‚·‚é
+	// æ¨™æº–ãƒ•ã‚©ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
 	io.Fonts->AddFontDefault();
 }
 
 void ImGuiManager::Begin()
 {
-	// ImGuiƒtƒŒ[ƒ€ŠJn
+	// ImGuiãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	NewFrame();

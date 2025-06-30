@@ -5,13 +5,13 @@ using namespace WristerEngine;
 std::array<int, 2> FrameTimer::ConvertToSecond(int time, int fps) const
 {
 	std::array<float, 2> timef{};
-	// ƒ~ƒŠ•b‚ğæ“¾‚·‚é‚½‚ß‚Ì•Ï”
+	// ãƒŸãƒªç§’ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 	const float KILO = 1000.0f;
-	// ƒ[ƒœZ‚ğ‰ñ”ğ
+	// ã‚¼ãƒ­é™¤ç®—ã‚’å›é¿
 	fps = std::max(1, fps);
-	// c‚èŠÔ‚ğæ“¾
+	// æ®‹ã‚Šæ™‚é–“ã‚’å–å¾—
 	float t = (float)time / fps;
-	// ®”•”‚Æ¬”•”‚ğ•ª—£
+	// æ•´æ•°éƒ¨ã¨å°æ•°éƒ¨ã‚’åˆ†é›¢
 	timef[1] = modf(t, &timef[0]);
 	return std::array<int, 2>({ (int)timef[0], (int)(timef[1] * KILO) });
 }
@@ -39,7 +39,7 @@ bool RealTimer::Update()
 
 float RealTimer::GetTime() const
 {
-	// ’PˆÊ‚ğ•b(s)‚É‚·‚é‚½‚ß‚Ì•Ï”
+	// å˜ä½ã‚’ç§’(s)ã«ã™ã‚‹ãŸã‚ã®å¤‰æ•°
 	const float KILO = 1000.0f;
 	return (float)duration_cast<milliseconds>(nowTime - startTime).count() / KILO;
 }

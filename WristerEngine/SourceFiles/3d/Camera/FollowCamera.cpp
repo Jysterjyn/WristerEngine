@@ -4,11 +4,11 @@ using namespace _3D;
 
 Vector3 FollowCamera::CalculateOffset() const
 {
-	// ’Ç]‘ÎÛ‚©‚ç‚ÌƒIƒtƒZƒbƒg(–³‰ñ“])
+	// è¿½å¾“å¯¾è±¡ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ(ç„¡å›è»¢æ™‚)
 	Vector3 offset = posOffset;
-	// ‰ñ“]s—ñ‚Ì‡¬
+	// å›è»¢è¡Œåˆ—ã®åˆæˆ
 	Matrix4 rotMat = Matrix4::Rotate(transform.rotation);
-	// ƒIƒtƒZƒbƒg‚ğƒJƒƒ‰‚Ì‰ñ“]‚É‡‚í‚¹‚Ä‰ñ“]‚³‚¹‚é
+	// ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’ã‚«ãƒ¡ãƒ©ã®å›è»¢ã«åˆã‚ã›ã¦å›è»¢ã•ã›ã‚‹
 	offset *= rotMat;
 
 	return offset;
@@ -32,20 +32,20 @@ void FollowCamera::VirtualUpdate()
 {
 	if (lockOn && lockOn->ExistTarget())
 	{
-		// ƒƒbƒNƒIƒ“À•W
+		// ãƒ­ãƒƒã‚¯ã‚ªãƒ³åº§æ¨™
 		Vector3 lockOnPos = lockOn->GetTargetPosition();
-		// ’Ç]‘ÎÛ‚©‚çƒƒbƒNƒIƒ“‘ÎÛ‚Ö‚ÌƒxƒNƒgƒ‹
+		// è¿½å¾“å¯¾è±¡ã‹ã‚‰ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
 		Vector3 sub = lockOnPos - transform.translation;
-		// Y²ü‚èŠp“x
+		// Yè»¸å‘¨ã‚Šè§’åº¦
 		transform.rotation.y = std::atan2(sub.x, sub.z);
 	}
 	else
 	{
-		// ù‰ñ‘€ì
+		// æ—‹å›æ“ä½œ
 		if (input->IsConnectGamePad())
 		{
 			destinationAngleY += (float)input->ConRStick(0, rotSpeed).x;
-			// ‰EƒXƒeƒBƒbƒN‰Ÿ‚µ‚İ‚ÅƒŠƒZƒbƒg
+			// å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯æŠ¼ã—è¾¼ã¿ã§ãƒªã‚»ãƒƒãƒˆ
 			if (input->IsTrigger(0, JoyPad::Rstick))
 			{
 				destinationAngleY = targetObject->rotation.y;
@@ -53,17 +53,17 @@ void FollowCamera::VirtualUpdate()
 		}
 	}
 
-	// Å’ZŠp“x•âŠÔ
+	// æœ€çŸ­è§’åº¦è£œé–“
 	transform.rotation.y = LerpShortAngle(transform.rotation.y, destinationAngleY, lerpAngleRate);
 
-	// ’Ç]‘ÎÛ‚ª‚¢‚ê‚Î
+	// è¿½å¾“å¯¾è±¡ãŒã„ã‚Œã°
 	if (targetObject)
 	{
-		// ’Ç]À•W‚Ì•âŠÔ
+		// è¿½å¾“åº§æ¨™ã®è£œé–“
 		interTarget = Lerp(interTarget, targetObject->GetWorldPosition(), lerpPosRate);
-		// ’Ç]‘ÎÛ‚©‚ç‚ÌƒIƒtƒZƒbƒg
+		// è¿½å¾“å¯¾è±¡ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 		Vector3 offset = CalculateOffset();
-		// ƒJƒƒ‰À•W
+		// ã‚«ãƒ¡ãƒ©åº§æ¨™
 		transform.translation = interTarget + offset;
 	}
 
@@ -72,16 +72,16 @@ void FollowCamera::VirtualUpdate()
 
 void FollowCamera::Reset()
 {
-	// ’Ç]‘ÎÛ‚ª‚¢‚ê‚Î
+	// è¿½å¾“å¯¾è±¡ãŒã„ã‚Œã°
 	if (targetObject)
 	{
-		// ’Ç]À•WEŠp“x‚Ì‰Šú‰»
+		// è¿½å¾“åº§æ¨™ãƒ»è§’åº¦ã®åˆæœŸåŒ–
 		interTarget = targetObject->GetWorldPosition();
 		transform.rotation.y = targetObject->rotation.y;
 	}
 	destinationAngleY = transform.rotation.y;
 
-	// ’Ç]‘ÎÛ‚©‚ç‚ÌƒIƒtƒZƒbƒg
+	// è¿½å¾“å¯¾è±¡ã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 	Vector3 offset = CalculateOffset();
 	transform.translation = interTarget + offset;
 }

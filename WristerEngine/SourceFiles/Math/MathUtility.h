@@ -2,17 +2,17 @@
 #include <vector>
 #include <cmath>
 
-const float PI = 3.141592f; // ‰~ü—¦
-const float ONE_DEG_RAD = PI / 180.0f; // 1‹‚Ìƒ‰ƒWƒAƒ“•ÏŠ·
+const float PI = 3.141592f; // å††å‘¨ç‡
+const float ONE_DEG_RAD = PI / 180.0f; // 1Â°ã®ãƒ©ã‚¸ã‚¢ãƒ³å¤‰æ›
 
-// Šp“x
+// è§’åº¦
 class Angle
 {
 	float angle = 0;
 
-	// “x”–@‚ğƒ‰ƒWƒAƒ“‚É•ÏŠ·
+	// åº¦æ•°æ³•ã‚’ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 	float ToRadian(int deg) { return (float)deg * ONE_DEG_RAD; }
-	// angle‚ğ[-2PI,+2PI]‚Ì”ÍˆÍ‚É‚·‚é
+	// angleã‚’[-2PI,+2PI]ã®ç¯„å›²ã«ã™ã‚‹
 	void ModAngle() { angle = std::fmod(angle, 2.0f * PI); }
 
 public:
@@ -25,8 +25,8 @@ public:
 	float operator-=(int deg) { angle -= ToRadian(deg);  ModAngle(); return angle; }
 	operator float() { return angle; }
 	Angle() = default;
-	Angle(float rad) { angle = rad; ModAngle(); } // ƒ‰ƒWƒAƒ“‘ã“ü
-	Angle(int deg) { angle = ToRadian(deg);  ModAngle(); } // “x”‘ã“ü
+	Angle(float rad) { angle = rad; ModAngle(); } // ãƒ©ã‚¸ã‚¢ãƒ³ä»£å…¥
+	Angle(int deg) { angle = ToRadian(deg);  ModAngle(); } // åº¦æ•°ä»£å…¥
 };
 
 Angle operator+(Angle angle, float rad);
@@ -34,10 +34,10 @@ Angle operator+(float rad, Angle angle);
 Angle operator-(Angle angle, float rad);
 Angle operator-(float rad, Angle angle);
 
-// XYZ²‚Ìenum class
+// XYZè»¸ã®enum class
 enum class Axis { X, Y, Z };
 
-// ”‚ğƒ‹[ƒv‚³‚¹‚éŠÖ”
+// æ•°ã‚’ãƒ«ãƒ¼ãƒ—ã•ã›ã‚‹é–¢æ•°
 template <class T>
 T NumberLoop(T num, T max, T min = 0)
 {
@@ -47,11 +47,11 @@ T NumberLoop(T num, T max, T min = 0)
 }
 
 /// <summary>
-/// ”¼•ª‚Ì’l‚ğ•Ô‚·
+/// åŠåˆ†ã®å€¤ã‚’è¿”ã™
 /// </summary>
-/// <typeparam name="T">Œ^–¼</typeparam>
-/// <param name="num">’l</param>
-/// <returns>num / 2‚Ì’l</returns>
+/// <typeparam name="T">å‹å</typeparam>
+/// <param name="num">å€¤</param>
+/// <returns>num / 2ã®å€¤</returns>
 template<class T>
 T Half(T num)
 {
@@ -59,12 +59,12 @@ T Half(T num)
 }
 
 /// <summary>
-/// •¡”’l”äŠr
+/// è¤‡æ•°å€¤æ¯”è¼ƒ
 /// </summary>
-/// <typeparam name="T">•Ï”Œ^</typeparam>
-/// <param name="n">’l</param>
-/// <param name="list">”äŠr‚·‚é’l‚Ì”z—ñ</param>
-/// <returns>list‚Én‚Æ“¯’l‚ª‚ ‚Á‚½‚çtrue</returns>
+/// <typeparam name="T">å¤‰æ•°å‹</typeparam>
+/// <param name="n">å€¤</param>
+/// <param name="list">æ¯”è¼ƒã™ã‚‹å€¤ã®é…åˆ—</param>
+/// <returns>listã«nã¨åŒå€¤ãŒã‚ã£ãŸã‚‰true</returns>
 template<class T>
 bool IsAny(T n, std::vector<T> list)
 {
@@ -76,5 +76,5 @@ bool IsAny(T n, std::vector<T> list)
 	return flag;
 }
 
-// Å’ZŠp“x•âŠÔ
+// æœ€çŸ­è§’åº¦è£œé–“
 float LerpShortAngle(float a, float b, float t);

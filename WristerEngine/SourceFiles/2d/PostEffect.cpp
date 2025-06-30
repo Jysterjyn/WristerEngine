@@ -7,7 +7,7 @@ using namespace WristerEngine::_2D;
 
 std::vector<std::unique_ptr<PostEffect>> PostEffect::postEffects;
 
-#pragma region ¶¬ŠÖ”
+#pragma region ç”Ÿæˆé–¢æ•°
 void PostEffect::CreateBuffers()
 {
 	vertices =
@@ -22,17 +22,17 @@ void PostEffect::CreateBuffers()
 	ID3D12Resource* vertBuff = nullptr;
 	CreateBuffer<Vertex>(&vertBuff, &vertMap, sizeof(Vertex) * vertices.size());
 
-	// ‘S’¸“_‚É‘Î‚µ‚ÄÀ•W‚ğƒRƒs[
+	// å…¨é ‚ç‚¹ã«å¯¾ã—ã¦åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
 	copy(vertices.begin(), vertices.end(), vertMap);
 
-	// GPU‰¼‘zƒAƒhƒŒƒX
+	// GPUä»®æƒ³ã‚¢ãƒ‰ãƒ¬ã‚¹
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	// ’¸“_ƒoƒbƒtƒ@‚ÌƒTƒCƒY
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 	vbView.SizeInBytes = sizeof(Vertex) * (UINT)vertices.size();
-	// ’¸“_1‚Â•ª‚Ìƒf[ƒ^ƒTƒCƒY
+	// é ‚ç‚¹1ã¤åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º
 	vbView.StrideInBytes = sizeof(Vertex);
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	CreateBuffer(constBuff.GetAddressOf(),
 		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
@@ -92,23 +92,23 @@ PostEffect* PostEffect::Create(Type effectType)
 
 void PostEffect::Draw()
 {
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Æƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìİ’èƒRƒ}ƒ“ƒh
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã¨ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 	PipelineManager::SetPipeline(PipelineType::PostEffect);
-	// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚Ìİ’èƒRƒ}ƒ“ƒh
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // OŠpŒ`ƒŠƒXƒg
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // ä¸‰è§’å½¢ãƒªã‚¹ãƒˆ
 
 	cmdList->SetGraphicsRootDescriptorTable(0, srvHandle.gpu);
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìİ’èƒRƒ}ƒ“ƒh
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®è¨­å®šã‚³ãƒãƒ³ãƒ‰
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
-	// •`‰æƒRƒ}ƒ“ƒh
-	cmdList->DrawInstanced((UINT)vertices.size(), 1, 0, 0); // ‘S‚Ä‚Ì’¸“_‚ğg‚Á‚Ä•`‰æ
+	// æç”»ã‚³ãƒãƒ³ãƒ‰
+	cmdList->DrawInstanced((UINT)vertices.size(), 1, 0, 0); // å…¨ã¦ã®é ‚ç‚¹ã‚’ä½¿ã£ã¦æç”»
 }
 
 void PostEffect::PreDrawScene()
 {
-	// ƒrƒ…[ƒ|[ƒg—Ìˆæ‚Ìİ’è
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆé ˜åŸŸã®è¨­å®š
 	D3D12_VIEWPORT viewport= CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
 
 	DirectXCommon::GetInstance()->PreDraw({ texBuff.Get(),
@@ -117,30 +117,30 @@ void PostEffect::PreDrawScene()
 
 	//ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 
-	//// ƒŠƒ\[ƒXƒoƒŠƒA‚Å‘‚«‚İ‰Â”\‚É•ÏX
+	//// ãƒªã‚½ãƒ¼ã‚¹ãƒãƒªã‚¢ã§æ›¸ãè¾¼ã¿å¯èƒ½ã«å¤‰æ›´
 	//D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
 	//	texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	//cmdList->ResourceBarrier(1, &resourceBarrier);
 
-	//// •`‰ææ‚ÌRTV‚ÆDSV‚ğw’è‚·‚é
+	//// æç”»å…ˆã®RTVã¨DSVã‚’æŒ‡å®šã™ã‚‹
 	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 	//cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
-	//// ‰æ–Ê‘S‘Ì‚ÌF‚ğƒNƒŠƒA
+	//// ç”»é¢å…¨ä½“ã®è‰²ã‚’ã‚¯ãƒªã‚¢
 	//float clearColor[4] = { 0,0,0,1 };
 	//cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	//// ‰æ–Ê‘S‘Ì‚Ì[“x‚ğƒNƒŠƒA
+	//// ç”»é¢å…¨ä½“ã®æ·±åº¦ã‚’ã‚¯ãƒªã‚¢
 	//cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
-	//// SRV—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚ğw’è‚·‚é
+	//// SRVç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’æŒ‡å®šã™ã‚‹
 	//ID3D12DescriptorHeap* ppHeaps[] = { DirectXCommon::GetInstance()->GetSRV() };
 	//cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-	//// ƒrƒ…[ƒ|[ƒg—Ìˆæ‚Ìİ’è
+	//// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆé ˜åŸŸã®è¨­å®š
 	//CD3DX12_VIEWPORT viewport(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
 	//cmdList->RSSetViewports(1, &viewport);
-	//// ƒVƒU[‹éŒ`‚Ìİ’è
+	//// ã‚·ã‚¶ãƒ¼çŸ©å½¢ã®è¨­å®š
 	//CD3DX12_RECT rect(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
 	//cmdList->RSSetScissorRects(1, &rect);
 }

@@ -159,7 +159,7 @@ namespace WristerEngine
 	enum class Mouse
 	{
 		Left, Right, Middle,
-		B_0, B_1, B_2, B_3 // B‚Í"Buttion"‚Ì—ª
+		B_0, B_1, B_2, B_3 // Bã¯"Buttion"ã®ç•¥
 	};
 
 	enum class JoyPad
@@ -167,7 +167,7 @@ namespace WristerEngine
 		A, B, X, Y, L, R, View, Menu, LStick, Rstick
 	};
 
-	// “ü—Í
+	// å…¥åŠ›
 	class Input final
 	{
 	public:
@@ -176,7 +176,7 @@ namespace WristerEngine
 		struct Joystick
 		{
 			ComPtr<IDirectInputDevice8> device;
-			// ƒRƒ“ƒgƒ[ƒ‰[‚ª”½‰‚µ‚È‚¢”ÍˆÍ
+			// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒåå¿œã—ãªã„ç¯„å›²
 			float deadZoneL = 0.2f;
 			float deadZoneR = 0.2f;
 			DIJOYSTATE state{}, statePre{};
@@ -197,10 +197,10 @@ namespace WristerEngine
 		Input(const Input&) = delete;
 		Input& operator=(const Input&) = delete;
 
-		// ƒRƒ“ƒgƒ[ƒ‰[Ú‘±‚ğŠm”F‚µ‚½Û‚ÉŒÄ‚Î‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+		// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ¥ç¶šã‚’ç¢ºèªã—ãŸéš›ã«å‘¼ã°ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 		static int CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef);
 
-		// StickNo‚ªƒWƒ‡ƒCƒpƒbƒh”z—ñ“à‚©Šm”F‚·‚é
+		// StickNoãŒã‚¸ãƒ§ã‚¤ãƒ‘ãƒƒãƒ‰é…åˆ—å†…ã‹ç¢ºèªã™ã‚‹
 		bool IsInArray(uint32_t stickNo) const { return stickNo < joysticks.size(); }
 
 	public:
@@ -215,45 +215,45 @@ namespace WristerEngine
 
 		struct PadState
 		{
-			Vector2 l; // [-1,+1]‚Ì”ÍˆÍ‚Å³‹K‰»
-			Vector2 r; // [-1,+1]‚Ì”ÍˆÍ‚Å³‹K‰»
+			Vector2 l; // [-1,+1]ã®ç¯„å›²ã§æ­£è¦åŒ–
+			Vector2 r; // [-1,+1]ã®ç¯„å›²ã§æ­£è¦åŒ–
 			long lt_rt;
 			Vector2 dirKey;
 		};
 
-		// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static Input* GetInstance();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
 
-		// ƒL[‚ª‰Ÿ‚³‚ê‚Ä‚é‚©
+		// ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã‚‹ã‹
 		bool IsInput(Key KEY) const { return key[(int)KEY]; }
 		bool IsInput(Mouse KEY) const { return mouseState.rgbButtons[(int)KEY]; }
 		bool IsInput(uint32_t stickNo, JoyPad button) const;
 
-		// ƒL[‚ª‰Ÿ‚³‚ê‚½‚©
+		// ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‹
 		bool IsTrigger(Key KEY) const { return !oldkey[(int)KEY] && key[(int)KEY]; }
 		bool IsTrigger(Mouse KEY) const { return !mouseStatePre.rgbButtons[(int)KEY] && mouseState.rgbButtons[(int)KEY]; }
 		bool IsTrigger(uint32_t stickNo, JoyPad button) const;
 
-		// ƒL[‚ª—£‚³‚ê‚½‚©
+		// ã‚­ãƒ¼ãŒé›¢ã•ã‚ŒãŸã‹
 		bool IsUp(Key KEY) const { return oldkey[(int)KEY] && !key[(int)KEY]; }
 		bool IsUp(Mouse KEY) const { return mouseStatePre.rgbButtons[(int)KEY] && !mouseStatePre.rgbButtons[(int)KEY]; }
 		bool IsUp(uint32_t stickNo, JoyPad button) const;
 
-		// ‚¢‚¸‚ê‚©‚ÌƒL[‚ª‰Ÿ‚³‚ê‚½‚çtrue‚ğ•Ô‚·
+		// ã„ãšã‚Œã‹ã®ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰trueã‚’è¿”ã™
 		bool IsAnyInput() const { return std::accumulate(key.begin(), key.end(), false); }
 		bool IsAnyInput(std::vector<Key>& keys) const;
 
-		// KEY1‚ª‰Ÿ‚³‚ê‚Ä‚½‚çƒvƒ‰ƒXAKEY2‚ª‰Ÿ‚³‚ê‚Ä‚½‚çƒ}ƒCƒiƒX
+		// KEY1ãŒæŠ¼ã•ã‚Œã¦ãŸã‚‰ãƒ—ãƒ©ã‚¹ã€KEY2ãŒæŠ¼ã•ã‚Œã¦ãŸã‚‰ãƒã‚¤ãƒŠã‚¹
 		float Move(Key KEY1, Key KEY2, const float spd) const { return (IsInput(KEY1) - IsInput(KEY2)) * spd; }
 		
-		// ‰Ÿ‚³‚ê‚Ä‚¢‚éƒL[‚Ì”
+		// æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã®æ•°
 		size_t KeyInputNum() const { return std::accumulate(key.begin(), key.end(), 0U) / 128; }
 		
-		// ˆê’èˆÈãƒŒƒo[‚ğŒX‚¯‚½‚çˆÚ“®‚·‚é
+		// ä¸€å®šä»¥ä¸Šãƒ¬ãƒãƒ¼ã‚’å‚¾ã‘ãŸã‚‰ç§»å‹•ã™ã‚‹
 		Vector2 ConLStick(uint32_t stickNo, const float spd) const;
 		Vector2 ConRStick(uint32_t stickNo, const float spd) const;
 		
@@ -263,7 +263,7 @@ namespace WristerEngine
 		bool IsConnectGamePad() const { return !joysticks.empty(); }
 		DIJOYSTATE GetJoyState(uint32_t stickNo) const;
 		
-		// ƒRƒ“ƒgƒ[ƒ‰[‚ª”½‰‚µ‚È‚¢”ÍˆÍ‚ğ•ÏX
+		// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒåå¿œã—ãªã„ç¯„å›²ã‚’å¤‰æ›´
 		void SetDeadZone(uint32_t stickNo, float deadZoneL, float deadZoneR);
 	};
 }

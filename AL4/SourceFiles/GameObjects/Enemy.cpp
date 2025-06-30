@@ -31,15 +31,15 @@ void Enemy::Initialize(const std::string& modelGroupName)
 
 void Enemy::Move()
 {
-	// 速さ
+	// 騾溘＆
 	const float ROT_SPEED = Angle(1);
 	const float SPEED = 0.1f;
 
-	// 移動量
+	// 遘ｻ蜍暮㍼
 	rootPos.rotation.y += ROT_SPEED;
 	Vector3 move = { 0.0f,0.0f,1.0f };
 
-	// 移動ベクトルをY軸周りの角度だけ回転する
+	// 遘ｻ蜍輔�吶け繝医Ν繧炭霆ｸ蜻ｨ繧翫�ｮ隗貞ｺｦ縺縺大屓霆｢縺吶ｋ
 	Matrix4 rotMat = Matrix4::RotateY(rootPos.rotation.y);
 	move *= rotMat;
 

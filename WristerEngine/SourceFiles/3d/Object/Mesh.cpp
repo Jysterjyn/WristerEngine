@@ -19,13 +19,13 @@ void Mesh::CalculateSmoothedVertexNormals()
 {
 	for (auto& itr : smoothData)
 	{
-		// Še–Ê—p‚Ì‹¤’Ê’¸“_ƒRƒ“ƒeƒi
+		// å„é¢ç”¨ã®å…±é€šé ‚ç‚¹ã‚³ãƒ³ãƒ†ãƒŠ
 		std::vector<UINT16>& v = itr.second;
-		// ‘S’¸“_‚Ì–@ü‚ğ•½‹Ï‚·‚é
+		// å…¨é ‚ç‚¹ã®æ³•ç·šã‚’å¹³å‡ã™ã‚‹
 		Vector3 normal;
 		for (UINT16 index : v) { normal += Normalize(vertices[index].normal); }
 		normal = Normalize(normal / (float)v.size());
-		// ‹¤’Ê–@ü‚ğg—p‚·‚é‘S‚Ä‚Ì’¸“_ƒf[ƒ^‚É‘‚«‚Ş
+		// å…±é€šæ³•ç·šã‚’ä½¿ç”¨ã™ã‚‹å…¨ã¦ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã«æ›¸ãè¾¼ã‚€
 		for (UINT16 index : v) { vertices[index].normal = normal; }
 	}
 }
@@ -53,7 +53,7 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 		string key;
 		getline(line_stream, key, ' ');
 
-		// ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+		// ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 		if (key == "mtllib")
 		{
 			string filename;
@@ -61,14 +61,14 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 			directoryPath = DIRECTORY_PATH;
 			materialFileName = filename;
 		}
-		// ’¸“_À•W“Ç‚İ‚İ
+		// é ‚ç‚¹åº§æ¨™èª­ã¿è¾¼ã¿
 		if (key == "v")
 		{
 			Vector3 position{};
 			LoadVector3Stream(line_stream, position);
 			positions.emplace_back(position);
 		}
-		// ƒeƒNƒXƒ`ƒƒÀ•W“Ç‚İ‚İ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™èª­ã¿è¾¼ã¿
 		if (key == "vt")
 		{
 			Vector2 texcoord{};
@@ -77,14 +77,14 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 			texcoord.y = 1.0f - texcoord.y;
 			texcoords.emplace_back(texcoord);
 		}
-		// –@üƒxƒNƒgƒ‹“Ç‚İ‚İ
+		// æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«èª­ã¿è¾¼ã¿
 		if (key == "vn")
 		{
 			Vector3 normal{};
 			LoadVector3Stream(line_stream, normal);
 			normals.emplace_back(normal);
 		}
-		// ƒ|ƒŠƒSƒ“ƒf[ƒ^“Ç‚İ‚İ
+		// ãƒãƒªã‚´ãƒ³ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 		if (key == "f")
 		{
 			string index_string;
@@ -95,12 +95,12 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 				istringstream index_stream(index_string);
 				unsigned short indexPosition, indexNormal, indexTexcoord;
 				index_stream >> indexPosition;
-				index_stream.seekg(1, ios_base::cur); // ƒXƒ‰ƒbƒVƒ…‚ğ”ò‚Î‚·
+				index_stream.seekg(1, ios_base::cur); // ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’é£›ã°ã™
 				index_stream >> indexTexcoord;
 				index_stream.seekg(1, ios_base::cur);
 				index_stream >> indexNormal;
 
-				// ’¸“_ƒf[ƒ^‚Ì’Ç‰Á
+				// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 				Mesh::VertexData vertex;
 				vertex.pos = positions[(size_t)indexPosition - 1];
 				vertex.normal = normals[(size_t)indexNormal - 1];
@@ -108,11 +108,11 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 				vertices.emplace_back<Mesh::VertexData&>(vertex);
 				if (isSmooth) { smoothData[indexPosition].emplace_back<UINT16>((UINT16)vertices.size() - 1); }
 
-				// ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^‚Ì’Ç‰Á
+				// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 				if (faceIndexCount >= 3)
 				{
-					// lŠpŒ`ƒ|ƒŠƒSƒ“‚Ì4“_–Ú‚È‚Ì‚ÅA
-					// lŠpŒ`‚Ì0,1,2,3‚Ì“à 2,3,0‚ÅOŠpŒ`‚ğ\’z‚·‚é
+					// å››è§’å½¢ãƒãƒªã‚´ãƒ³ã®4ç‚¹ç›®ãªã®ã§ã€
+					// å››è§’å½¢ã®0,1,2,3ã®å†… 2,3,0ã§ä¸‰è§’å½¢ã‚’æ§‹ç¯‰ã™ã‚‹
 					indices.emplace_back<UINT16>((UINT16)indexCountTex - 1);
 					indices.emplace_back<UINT16>((UINT16)indexCountTex);
 					indices.emplace_back<UINT16>((UINT16)indexCountTex - 3);
@@ -134,23 +134,23 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_, std::string di
 void Mesh::CreateBuffers()
 {
 	UINT sizeVB = static_cast<UINT>(sizeof(Mesh::VertexData) * vertices.size());
-	VertexData* vertMap = nullptr;	// ’¸“_ƒoƒbƒtƒ@‚Ìƒ}ƒbƒv
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	VertexData* vertMap = nullptr;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
-	// ‘S’¸“_‚É‘Î‚µ‚Ä
-	copy(vertices.begin(), vertices.end(), vertMap); // À•W‚ğƒRƒs[
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// å…¨é ‚ç‚¹ã«å¯¾ã—ã¦
+	copy(vertices.begin(), vertices.end(), vertMap); // åº§æ¨™ã‚’ã‚³ãƒ”ãƒ¼
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(Mesh::VertexData);
 
 	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
 	UINT16* indexMap = nullptr;
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateBuffer(&indexBuff, &indexMap, sizeIB);
-	// ‘SƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µ‚Ä
-	copy(indices.begin(), indices.end(), indexMap);	// ƒCƒ“ƒfƒbƒNƒX‚ğƒRƒs[
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// å…¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã¦
+	copy(indices.begin(), indices.end(), indexMap);	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚³ãƒ”ãƒ¼
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeIB;
@@ -159,10 +159,10 @@ void Mesh::CreateBuffers()
 void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	// ’¸“_ƒoƒbƒtƒ@‚Ìİ’è
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìİ’è
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 	cmdList->IASetIndexBuffer(&ibView);
-	// •`‰æƒRƒ}ƒ“ƒh
+	// æç”»ã‚³ãƒãƒ³ãƒ‰
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

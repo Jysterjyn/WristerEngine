@@ -7,9 +7,9 @@ namespace WristerEngine::_3D
 	class PrimitiveDrawer final
 	{
 	private:
-		// ü•ª‚ÌÅ‘å”
+		// ç·šåˆ†ã®æœ€å¤§æ•°
 		static const UINT MAX_LINE_COUNT = 1024;
-		// ü•ª‚Ì’¸“_”
+		// ç·šåˆ†ã®é ‚ç‚¹æ•°
 		static const UINT VERTEX_COUNT_LINE = 2;
 
 		struct ConstBufferData
@@ -23,11 +23,11 @@ namespace WristerEngine::_3D
 			ColorRGBA color;
 		};
 
-		std::vector<VertexData> vertices;	// ’¸“_ƒf[ƒ^”z—ñ
-		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;	// ’¸“_ƒoƒbƒtƒ@
-		VertexData* vertMap = nullptr;	// ’¸“_ƒoƒbƒtƒ@‚Ìƒ}ƒbƒv
-		D3D12_VERTEX_BUFFER_VIEW vbView{};	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
-		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// ’è”ƒoƒbƒtƒ@
+		std::vector<VertexData> vertices;	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿é…åˆ—
+		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+		VertexData* vertMap = nullptr;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—
+		D3D12_VERTEX_BUFFER_VIEW vbView{};	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 		ConstBufferData* constMap = nullptr;
 
 		PrimitiveDrawer() = default;
@@ -36,21 +36,21 @@ namespace WristerEngine::_3D
 		PrimitiveDrawer& operator=(const PrimitiveDrawer&) = delete;
 
 	public:
-		// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìæ“¾
+		// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å–å¾—
 		static PrimitiveDrawer* GetInstance();
 
 		/// <summary>
-		/// 3Dü•ª‚Ì•`‰æ
+		/// 3Dç·šåˆ†ã®æç”»
 		/// </summary>
-		/// <param name="p1">n“_À•W</param>
-		/// <param name="p2">I“_À•W</param>
-		/// <param name="color">F(RGBA)</param>
+		/// <param name="p1">å§‹ç‚¹åº§æ¨™</param>
+		/// <param name="p2">çµ‚ç‚¹åº§æ¨™</param>
+		/// <param name="color">è‰²(RGBA)</param>
 		void DrawLine3d(const Vector3& p1, const Vector3& p2, const ColorRGBA& color);
 
-		// ’¸“_ƒf[ƒ^‚Ì“]‘—
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ã®è»¢é€
 		void TransferVertices();
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
 		void Update();
 		void Draw();

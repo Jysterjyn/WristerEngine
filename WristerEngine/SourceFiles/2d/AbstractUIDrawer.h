@@ -5,8 +5,8 @@
 
 namespace WristerEngine::_2D
 {
-	// UI•`‰æ‚Ì’ŠÛƒNƒ‰ƒX
-	// ŠeƒV[ƒ“‚²‚Æ‚ÉUIDrawerƒNƒ‰ƒX‚ğ’è‹`‚·‚é
+	// UIæç”»ã®æŠ½è±¡ã‚¯ãƒ©ã‚¹
+	// å„ã‚·ãƒ¼ãƒ³ã”ã¨ã«UIDrawerã‚¯ãƒ©ã‚¹ã‚’å®šç¾©ã™ã‚‹
 	class AbstractUIDrawer
 	{
 	protected:
@@ -14,13 +14,13 @@ namespace WristerEngine::_2D
 		std::map<std::string, Sprite*> sprites;
 
 	public:
-		// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+		// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		virtual ~AbstractUIDrawer() = default;
-		// ‰Šú‰»(ƒˆ‰¼‘zŠÖ”)
+		// åˆæœŸåŒ–(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 		virtual void Initialize() = 0;
-		// XV(‰¼‘zŠÖ”)
+		// æ›´æ–°(ä»®æƒ³é–¢æ•°)
 		virtual void Update() {}
-		// •`‰æ(‰¼‘zŠÖ”)
+		// æç”»(ä»®æƒ³é–¢æ•°)
 		virtual void Draw() { for (auto& s : sprites) { s.second->Draw(); } }
 	};
 }

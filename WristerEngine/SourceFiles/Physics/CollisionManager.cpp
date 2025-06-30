@@ -165,24 +165,24 @@ bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* c
 
 bool CollisionManager::Check2Spheres(const SphereCollider* sphereA, const SphereCollider* sphereB)
 {
-	// ’l‚Ìæ“¾
+	// å€¤ã®å–å¾—
 	Vector3 centerA = sphereA->GetCenterPosition();
 	Vector3 centerB = sphereB->GetCenterPosition();
 	float radA = sphereA->GetRadius();
 	float radB = sphereB->GetRadius();
 
-	//”»’è‘ÎÛ‚ÌÀ•W
+	//åˆ¤å®šå¯¾è±¡ã®åº§æ¨™
 	Vector3 vecAB = centerA - centerB;
 	float dist = Dot(vecAB, vecAB);
-	//”»’è‘ÎÛ‚Ì”¼Œa
+	//åˆ¤å®šå¯¾è±¡ã®åŠå¾„
 	float radAB = radA + radB;
 
 	if (dist > radAB * radAB) { return false; }
 
-	// A‚Ì”¼Œa‚ª0‚ÌÀ•W‚ÍB‚Ì’†S@B‚Ì”¼Œa‚ª0‚ÌÀ•W‚ÍA‚Ì’†S@‚Æ‚È‚é‚æ‚¤•âŠ®
+	// Aã®åŠå¾„ãŒ0ã®æ™‚åº§æ¨™ã¯Bã®ä¸­å¿ƒã€€Bã®åŠå¾„ãŒ0ã®æ™‚åº§æ¨™ã¯Aã®ä¸­å¿ƒã€€ã¨ãªã‚‹ã‚ˆã†è£œå®Œ
 	float t = radB / radAB;
 	inter = Lerp(centerA, centerB, t);
-	// ‰Ÿ‚µo‚·ƒxƒNƒgƒ‹‚ğŒvZ
+	// æŠ¼ã—å‡ºã™ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	float rejectLen = radAB - sqrtf(dist);
 	reject = Normalize(vecAB) * rejectLen;
 	return true;
@@ -190,14 +190,14 @@ bool CollisionManager::Check2Spheres(const SphereCollider* sphereA, const Sphere
 
 bool CollisionManager::CheckSpherePlane(const SphereCollider* sphere, const PlaneCollider* plane)
 {
-	// À•WŒn‚ÌŒ´“_‚©‚ç‹…‚Ì’†SÀ•W‚Ö‚Ì‹——£
+	// åº§æ¨™ç³»ã®åŸç‚¹ã‹ã‚‰çƒã®ä¸­å¿ƒåº§æ¨™ã¸ã®è·é›¢
 	float dist = Dot(sphere->GetCenterPosition(), plane->GetNormal());
-	// •½–Ê‚ÌŒ´“_À•W‚ğŒ¸Z‚·‚é‚±‚Æ‚ÅA•½–Ê‚Æ‹…‚Ì’†S‚Æ‚Ì‹——£‚ªo‚é
+	// å¹³é¢ã®åŸç‚¹åº§æ¨™ã‚’æ¸›ç®—ã™ã‚‹ã“ã¨ã§ã€å¹³é¢ã¨çƒã®ä¸­å¿ƒã¨ã®è·é›¢ãŒå‡ºã‚‹
 	dist -= plane->GetDistance();
-	// ‹——£‚Ìâ‘Î’l‚ª”¼Œa‚æ‚è‘å‚«‚¯‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢
+	// è·é›¢ã®çµ¶å¯¾å€¤ãŒåŠå¾„ã‚ˆã‚Šå¤§ãã‘ã‚Œã°å½“ãŸã£ã¦ã„ãªã„
 	if (fabsf(dist) > sphere->GetRadius()) { return false; }
-	// ‹^—Œğ“_‚ğŒvZ
-	// •½–Êã‚ÌÅ‹ßÚ“_‚ğ‹^—Œğ“_‚Æ‚·‚é
+	// ç–‘ä¼¼äº¤ç‚¹ã‚’è¨ˆç®—
+	// å¹³é¢ä¸Šã®æœ€è¿‘æ¥ç‚¹ã‚’ç–‘ä¼¼äº¤ç‚¹ã¨ã™ã‚‹
 	inter = -dist * plane->GetNormal() + sphere->GetCenterPosition();
 
 	return true;
@@ -206,7 +206,7 @@ bool CollisionManager::CheckSpherePlane(const SphereCollider* sphere, const Plan
 static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleCollider* triangle)
 {
 	const std::array<Vector3, 3> p = triangle->GetVertices();
-	// point‚ªp[0]‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp[0]ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p0_p1 = p[1] - p[0];
 	Vector3 p0_p2 = p[2] - p[0];
 	Vector3 p0_pt = point - p[0];
@@ -216,11 +216,11 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 
 	if (d1 <= 0.0f && d2 <= 0.0f)
 	{
-		// p[0]‚ªÅ‹ß–T
+		// p[0]ãŒæœ€è¿‘å‚
 		return p[0];
 	}
 
-	// point‚ªp[1]‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp[1]ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p1_pt = point - p[1];
 
 	float d3 = Dot(p0_p1, p1_pt);
@@ -228,11 +228,11 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 
 	if (d3 >= 0.0f && d4 <= d3)
 	{
-		// p[1]‚ªÅ‹ß–T
+		// p[1]ãŒæœ€è¿‘å‚
 		return p[1];
 	}
 
-	// point‚ªp0_p1‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp0_p1ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp0_p1ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p0_p1ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float vc = d1 * d4 - d3 * d2;
 	if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
 	{
@@ -240,7 +240,7 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 		return p[0] + v * p0_p1;
 	}
 
-	// point‚ªp[2]‚ÌŠO‘¤‚Ì’¸“_—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// pointãŒp[2]ã®å¤–å´ã®é ‚ç‚¹é ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 	Vector3 p2_pt = point - p[2];
 
 	float d5 = Dot(p0_p1, p2_pt);
@@ -250,7 +250,7 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 		return p[2];
 	}
 
-	// point‚ªp0_p2‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp0_p2ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp0_p2ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p0_p2ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float vb = d5 * d2 - d1 * d6;
 	if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
 	{
@@ -258,7 +258,7 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 		return p[0] + w * p0_p2;
 	}
 
-	// point‚ªp1_p2‚Ì•Ó—Ìˆæ‚Ì’†‚É‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚µA‚ ‚ê‚Îpoint‚Ìp1_p2ã‚É‘Î‚·‚éË‰e‚ğ•Ô‚·
+	// pointãŒp1_p2ã®è¾ºé ˜åŸŸã®ä¸­ã«ã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã—ã€ã‚ã‚Œã°pointã®p1_p2ä¸Šã«å¯¾ã™ã‚‹å°„å½±ã‚’è¿”ã™
 	float va = d3 * d6 - d5 * d4;
 	if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
 	{
@@ -274,23 +274,23 @@ static Vector3 ClosestPtPoint2Triangle(const Vector3& point, const TriangleColli
 
 bool CollisionManager::CheckSphereTriangle(const SphereCollider* sphere, const TriangleCollider* triangle)
 {
-	// ’l‚Ìæ“¾
+	// å€¤ã®å–å¾—
 	Vector3 spherePos = sphere->GetCenterPosition();
 	float sphereRad = sphere->GetRadius();
 	Vector3 triNormal = triangle->GetNormal();
 
-	// ‹…‚Ì’†S‚É‘Î‚·‚éÅ‹ßÚ“_‚Å‚ ‚éOŠpŒ`ã‚É‚ ‚é“_p‚ğŒ©‚Â‚¯‚é
+	// çƒã®ä¸­å¿ƒã«å¯¾ã™ã‚‹æœ€è¿‘æ¥ç‚¹ã§ã‚ã‚‹ä¸‰è§’å½¢ä¸Šã«ã‚ã‚‹ç‚¹pã‚’è¦‹ã¤ã‘ã‚‹
 	Vector3 p = ClosestPtPoint2Triangle(spherePos, triangle);
-	// “_p‚Æ‹…‚Ì’†S‚Ì·•ªƒxƒNƒgƒ‹
+	// ç‚¹pã¨çƒã®ä¸­å¿ƒã®å·®åˆ†ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 v = p - spherePos;
-	// ‹——£‚Ì“ñæ‚ğ‹‚ß‚é
+	// è·é›¢ã®äºŒä¹—ã‚’æ±‚ã‚ã‚‹
 	float vLenSq = Dot(v, v);
-	// ‹…‚ÆOŠpŒ`‚Ì‹——£‚ª”¼ŒaˆÈ‰º‚È‚ç“–‚½‚Á‚Ä‚¢‚È‚¢
+	// çƒã¨ä¸‰è§’å½¢ã®è·é›¢ãŒåŠå¾„ä»¥ä¸‹ãªã‚‰å½“ãŸã£ã¦ã„ãªã„
 	if (vLenSq > sphereRad * sphereRad) { return false; }
-	// ‹^—Œğ“_‚ğŒvZ
-	// OŠpŒ`ã‚ÌÅ‹ßÚ“_p‚ğ‹^—Œğ“_‚Æ‚·‚é
+	// ç–‘ä¼¼äº¤ç‚¹ã‚’è¨ˆç®—
+	// ä¸‰è§’å½¢ä¸Šã®æœ€è¿‘æ¥ç‚¹pã‚’ç–‘ä¼¼äº¤ç‚¹ã¨ã™ã‚‹
 	inter = p;
-	// ‰Ÿ‚µo‚·ƒxƒNƒgƒ‹‚ğŒvZ
+	// æŠ¼ã—å‡ºã™ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 	float ds = Dot(spherePos, triNormal);
 	float dt = Dot(triangle->GetVertices()[0], triNormal);
 	float rejectLen = dt - ds + sphereRad;
@@ -310,7 +310,7 @@ bool CollisionManager::Check2Boxes(const BoxCollider* boxA, const BoxCollider* b
 bool CollisionManager::Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB)
 {
 	Vector3 vecAB = iBoxA->GetCenterPosition() - iBoxB->GetCenterPosition();
-	// g—pƒtƒ‰ƒO‚Ìæ“¾
+	// ä½¿ç”¨ãƒ•ãƒ©ã‚°ã®å–å¾—
 	array<bool, 3> isUse{};
 
 	for (size_t i = 0; i < isUse.size(); i++)
@@ -318,7 +318,7 @@ bool CollisionManager::Check2IncludeBoxes(const IncludeCollider* iBoxA, const In
 		isUse[i] = iBoxA->GetUseAxis()[i] && iBoxB->GetUseAxis()[i];
 	}
 
-	// ŒvZ‚Ég‚í‚È‚¢’l‚ğ0‚É‚·‚é
+	// è¨ˆç®—ã«ä½¿ã‚ãªã„å€¤ã‚’0ã«ã™ã‚‹
 	if (!isUse[(size_t)IncludeCollider::Axis::X]) { vecAB.x = 0; }
 	if (!isUse[(size_t)IncludeCollider::Axis::Y]) { vecAB.y = 0; }
 	if (!isUse[(size_t)IncludeCollider::Axis::Z]) { vecAB.z = 0; }
@@ -328,44 +328,44 @@ bool CollisionManager::Check2IncludeBoxes(const IncludeCollider* iBoxA, const In
 
 bool CollisionManager::CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane)
 {
-	const float epsilon = 1.0e-5f; // Œë·‹zû—p‚Ì”÷¬‚È’l
-	// –Ê–@ü‚ÆƒŒƒC‚Ì•ûŒüƒxƒNƒgƒ‹‚Ì“àÏ
+	const float epsilon = 1.0e-5f; // èª¤å·®å¸åç”¨ã®å¾®å°ãªå€¤
+	// é¢æ³•ç·šã¨ãƒ¬ã‚¤ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
 	float d1 = Dot(plane->GetNormal(), ray->GetDir());
-	// — –Ê‚É‚Í“–‚½‚ç‚È‚¢
+	// è£é¢ã«ã¯å½“ãŸã‚‰ãªã„
 	if (d1 > -epsilon) { return false; }
-	// n“_‚ÆŒ´“_‚Ì‹——£(•½–Ê‚Ì–@ü•ûŒü)
-	// –Ê–@ü‚ÆƒŒƒC‚Ìn“_À•W(ˆÊ’uƒxƒNƒgƒ‹)‚Ì“àÏ
+	// å§‹ç‚¹ã¨åŸç‚¹ã®è·é›¢(å¹³é¢ã®æ³•ç·šæ–¹å‘)
+	// é¢æ³•ç·šã¨ãƒ¬ã‚¤ã®å§‹ç‚¹åº§æ¨™(ä½ç½®ãƒ™ã‚¯ãƒˆãƒ«)ã®å†…ç©
 	float d2 = Dot(plane->GetNormal(), ray->GetStartPos());
-	// n“_‚Æ•½–Ê‚Ì‹——£(ƒŒƒC•ûŒü)
+	// å§‹ç‚¹ã¨å¹³é¢ã®è·é›¢(ãƒ¬ã‚¤æ–¹å‘)
 	float t = (plane->GetDistance() - d2) / d1;
-	// Œğ“_‚ªn“_‚æ‚èŒã‚ë‚É‚ ‚é‚Ì‚Å“–‚½‚ç‚È‚¢
+	// äº¤ç‚¹ãŒå§‹ç‚¹ã‚ˆã‚Šå¾Œã‚ã«ã‚ã‚‹ã®ã§å½“ãŸã‚‰ãªã„
 	if (t < 0) { return false; }
-	// ‹——£‚ğ‘‚«‚Ş
+	// è·é›¢ã‚’æ›¸ãè¾¼ã‚€
 	distance = t;
-	// Œğ“_‚ğŒvZ
+	// äº¤ç‚¹ã‚’è¨ˆç®—
 	inter = ray->GetStartPos() + t * ray->GetDir();
 	return true;
 }
 
 bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle)
 {
-	// OŠpŒ`‚ªæ‚Á‚Ä‚¢‚é•½–Ê‚ğZo
+	// ä¸‰è§’å½¢ãŒä¹—ã£ã¦ã„ã‚‹å¹³é¢ã‚’ç®—å‡º
 	PlaneCollider plane(*triangle);
 
-	// ƒŒƒC‚Æ•½–Ê‚ª“–‚½‚Á‚Ä‚¢‚È‚¯‚ê‚ÎA“–‚½‚Á‚Ä‚¢‚È‚¢
+	// ãƒ¬ã‚¤ã¨å¹³é¢ãŒå½“ãŸã£ã¦ã„ãªã‘ã‚Œã°ã€å½“ãŸã£ã¦ã„ãªã„
 	if (!CheckRayPlane(ray, &plane)) { return false; }
-	// ƒŒƒC‚Æ•½–Ê‚ª“–‚½‚Á‚Ä‚¢‚½‚Ì‚ÅA‹——£‚ÆÀ•W‚ª‘‚«‚Ü‚ê‚½
-	// ƒŒƒC‚Æ•½–Ê‚ÌŒğ“_‚ªOŠpŒ`‚Ì“à‘¤‚É‚ ‚é‚©”»’è
-	const float epsilon = 1.0e-5f; // Œë·‹zû—p‚Ì”÷¬‚È’l
+	// ãƒ¬ã‚¤ã¨å¹³é¢ãŒå½“ãŸã£ã¦ã„ãŸã®ã§ã€è·é›¢ã¨åº§æ¨™ãŒæ›¸ãè¾¼ã¾ã‚ŒãŸ
+	// ãƒ¬ã‚¤ã¨å¹³é¢ã®äº¤ç‚¹ãŒä¸‰è§’å½¢ã®å†…å´ã«ã‚ã‚‹ã‹åˆ¤å®š
+	const float epsilon = 1.0e-5f; // èª¤å·®å¸åç”¨ã®å¾®å°ãªå€¤
 
 	size_t vertexSize = triangle->GetVertices().size();
 	for (size_t i = 0; i < vertexSize; i++)
 	{
-		// •Ópi_p(i+1)‚É‚Â‚¢‚Ä
+		// è¾ºpi_p(i+1)ã«ã¤ã„ã¦
 		Vector3 pt_px = triangle->GetVertices()[i] - *inter;
 		Vector3 px_py = triangle->GetVertices()[(i + 1) % vertexSize] - triangle->GetVertices()[i];
 		Vector3 m = Cross(pt_px, px_py);
-		// •Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
+		// è¾ºã®å¤–å´ã§ã‚ã‚Œã°å½“ãŸã£ã¦ã„ãªã„ã®ã§åˆ¤å®šã‚’æ‰“ã¡åˆ‡ã‚‹
 		if (Dot(m, triangle->GetNormal()) < -epsilon)
 		{
 			Reset();
@@ -373,7 +373,7 @@ bool CollisionManager::CheckRayTriangle(const RayCollider* ray, const TriangleCo
 		}
 	}
 
-	// “à‘¤‚È‚Ì‚Å“–‚½‚Á‚Ä‚¢‚é
+	// å†…å´ãªã®ã§å½“ãŸã£ã¦ã„ã‚‹
 	return true;
 }
 
@@ -382,16 +382,16 @@ bool CollisionManager::CheckRaySphere(const RayCollider* ray, const SphereCollid
 	Vector3 m = ray->GetStartPos() - sphere->GetCenterPosition();
 	float b = Dot(m, ray->GetDir());
 	float c = Dot(m, m) - sphere->GetRadius() * sphere->GetRadius();
-	// ƒŒƒC‚Ìn“_‚ªsphere‚ÌŠO‘¤‚É‚ ‚è(c > 0)AƒŒƒC‚ª—£‚ê‚Ä‚¢‚­•ûŒü‚ğ·‚µ‚Ä‚¢‚éê‡(b > 0)A“–‚½‚ç‚È‚¢
+	// ãƒ¬ã‚¤ã®å§‹ç‚¹ãŒsphereã®å¤–å´ã«ã‚ã‚Š(c > 0)ã€ãƒ¬ã‚¤ãŒé›¢ã‚Œã¦ã„ãæ–¹å‘ã‚’å·®ã—ã¦ã„ã‚‹å ´åˆ(b > 0)ã€å½“ãŸã‚‰ãªã„
 	if (c > 0.0f && b > 0.0f) { return false; }
 
-	float discr = b * b - c; // ”»•Ê®
-	// •‰‚Ì”»•Ê®‚ÍƒŒƒC‚ª‹…‚©‚çŠO‚ê‚Ä‚¢‚é
+	float discr = b * b - c; // åˆ¤åˆ¥å¼
+	// è² ã®åˆ¤åˆ¥å¼ã¯ãƒ¬ã‚¤ãŒçƒã‹ã‚‰å¤–ã‚Œã¦ã„ã‚‹
 	if (discr < 0.0f) { return false; }
 
-	// ƒŒƒC‚Í‹…‚ÆŒğ·‚µ‚Ä‚¢‚é
-	float t = -b - sqrtf(discr); // Œğ·‚·‚éÅ¬‚Ì’lt‚ğŒvZ
-	// t‚ª•‰‚Å‚ ‚éê‡AƒŒƒC‚Í‹…‚Ì“à‘¤‚©‚çŠJn‚µ‚Ä‚¢‚é‚Ì‚Åt‚ğ0‚ÉƒNƒ‰ƒ“ƒv
+	// ãƒ¬ã‚¤ã¯çƒã¨äº¤å·®ã—ã¦ã„ã‚‹
+	float t = -b - sqrtf(discr); // äº¤å·®ã™ã‚‹æœ€å°ã®å€¤tã‚’è¨ˆç®—
+	// tãŒè² ã§ã‚ã‚‹å ´åˆã€ãƒ¬ã‚¤ã¯çƒã®å†…å´ã‹ã‚‰é–‹å§‹ã—ã¦ã„ã‚‹ã®ã§tã‚’0ã«ã‚¯ãƒ©ãƒ³ãƒ—
 	t = max(t, 0.0f);
 
 	distance = t;
@@ -401,7 +401,7 @@ bool CollisionManager::CheckRaySphere(const RayCollider* ray, const SphereCollid
 
 bool CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshCollider* mesh)
 {
-	// ƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒJƒ‹À•WŒn‚Å‚Ì‹…‚ğ“¾‚éi”¼Œa‚ÍXƒXƒP[ƒ‹‚ğQÆ)
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»ã§ã®çƒã‚’å¾—ã‚‹ï¼ˆåŠå¾„ã¯Xã‚¹ã‚±ãƒ¼ãƒ«ã‚’å‚ç…§)
 	SphereCollider localSphere(true);
 	localSphere.SetCenterPosition(sphere->GetCenterPosition() * mesh->GetInvMatWorld());
 	localSphere.SetRadius(sphere->GetRadius() * mesh->GetInvMatWorld().GetVector(0).Length());
@@ -421,7 +421,7 @@ bool CollisionManager::CheckSphereMesh(const SphereCollider* sphere, const MeshC
 
 bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh)
 {
-	// ƒIƒuƒWƒFƒNƒg‚Ìƒ[ƒJƒ‹À•WŒn‚Å‚ÌƒŒƒC‚ğ“¾‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»ã§ã®ãƒ¬ã‚¤ã‚’å¾—ã‚‹
 	RayCollider localRay(true);
 	localRay.SetStartPos(ray->GetStartPos() * mesh->GetInvMatWorld());
 	Matrix4 invTransformMat = mesh->GetInvMatWorld();
@@ -443,13 +443,13 @@ bool CollisionManager::CheckRayMesh(const RayCollider* ray, const MeshCollider* 
 bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo, const float maxDistance)
 {
 	bool result = false;
-	//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚ğ‹L˜^‚·‚é‚½‚ß‚ÌƒCƒeƒŒ[ƒ^
+	//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¨˜éŒ²ã™ã‚‹ãŸã‚ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
 	BaseCollider* it_hit = nullptr;
-	//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚Ì‹——£‚ğ‹L˜^‚·‚é•Ï”
+	//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è·é›¢ã‚’è¨˜éŒ²ã™ã‚‹å¤‰æ•°
 	float tempDistance = maxDistance;
 	Vector3 tempInter;
 
-	//‘SƒRƒ‰ƒCƒ_[‚Æ‘“–‚½‚èƒ`ƒFƒbƒN
+	//å…¨ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ç·å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	for (auto& group : colliderGroups)
 	{
 		if (!(group.second->GetAttribute() & attribute))continue;
@@ -457,32 +457,32 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 		for (auto& it : *group.second->GetColliders())
 		{
 			BaseCollider* colA = it.get();
-			//‘®«‚ª‡‚í‚È‚¢ê‡ƒXƒLƒbƒv
+			//å±æ€§ãŒåˆã‚ãªã„å ´åˆã‚¹ã‚­ãƒƒãƒ—
 			if (!(colA->GetAttribute() & attribute))continue;
 
-			//‹…‚Ìê‡
+			//çƒã®å ´åˆ
 			if (colA->GetShapeType() == CollisionShapeType::Sphere)
 			{
 				SphereCollider* sphere = dynamic_cast<SphereCollider*>(colA);
-				//“–‚½‚ç‚È‚¯‚ê‚ÎœŠO
+				//å½“ãŸã‚‰ãªã‘ã‚Œã°é™¤å¤–
 				if (!CheckRaySphere(ray, sphere))continue;
-				//‹——£‚ªÅ¬‚Å‚È‚¯‚ê‚ÎœŠO
+				//è·é›¢ãŒæœ€å°ã§ãªã‘ã‚Œã°é™¤å¤–
 				if (distance >= tempDistance)continue;
-				//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢‚Ì‚Å‹L˜^‚ğæ‚é
+				//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã®ã§è¨˜éŒ²ã‚’å–ã‚‹
 				result = true;
 				tempDistance = *distance;
 				tempInter = *inter;
 				it_hit = it.get();
 			}
-			//ƒƒbƒVƒ…‚Ìê‡
+			//ãƒ¡ãƒƒã‚·ãƒ¥ã®å ´åˆ
 			else if (colA->GetShapeType() == CollisionShapeType::Mesh)
 			{
 				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
-				//“–‚½‚ç‚È‚¯‚ê‚ÎœŠO
+				//å½“ãŸã‚‰ãªã‘ã‚Œã°é™¤å¤–
 				if (!CheckRayMesh(ray, meshCollider))continue;
-				//‹——£‚ªÅ¬‚Å‚È‚¯‚ê‚ÎœŠO
+				//è·é›¢ãŒæœ€å°ã§ãªã‘ã‚Œã°é™¤å¤–
 				if (distance >= tempDistance)continue;
-				//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢‚Ì‚Å‹L˜^‚ğæ‚é
+				//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã®ã§è¨˜éŒ²ã‚’å–ã‚‹
 				result = true;
 				tempDistance = *distance;
 				tempInter = *inter;
@@ -490,7 +490,7 @@ bool CollisionManager::Raycast(const RayCollider* ray, uint32_t attribute, Rayca
 			}
 		}
 	}
-	//ÅI“I‚É‰½‚©‚É“–‚½‚Á‚Ä‚¢‚ê‚ÎŒ‹‰Ê‚ğ‘‚«‚Ş
+	//æœ€çµ‚çš„ã«ä½•ã‹ã«å½“ãŸã£ã¦ã„ã‚Œã°çµæœã‚’æ›¸ãè¾¼ã‚€
 	if (result && hitInfo)
 	{
 		hitInfo->distance = tempDistance;
@@ -507,51 +507,51 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 {
 	assert(callback);
 
-	// ‘S‚Ä‚ÌƒRƒ‰ƒCƒ_[‚Æ‘“–‚èƒ`ƒFƒbƒN
+	// å…¨ã¦ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ç·å½“ã‚Šãƒã‚§ãƒƒã‚¯
 	for (auto& group : colliderGroups) 
 	{
-		// ‘®«‚ª‡‚í‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+		// å±æ€§ãŒåˆã‚ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 		if (!(group.second->GetAttribute() & attribute)) { continue; }
 
 		for (auto& it : *group.second->GetColliders())
 		{
 			BaseCollider* col = it.get();
-			// ‘®«‚ª‡‚í‚È‚¯‚ê‚ÎƒXƒLƒbƒv
+			// å±æ€§ãŒåˆã‚ãªã‘ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
 			if (!(col->GetAttribute() & attribute)) { continue; }
 
-			// ‹…
+			// çƒ
 			if (col->GetShapeType() == CollisionShapeType::Sphere) {
 				SphereCollider* sphereB = dynamic_cast<SphereCollider*>(col);
 
 				if (!Check2Spheres(sphere, sphereB)) continue;
 
-				// Œğ·î•ñ‚ğƒZƒbƒg
+				// äº¤å·®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 				QueryHit info;
 				info.collider = col;
 				info.inter = *inter;
 				info.reject = *reject;
 
-				// ƒNƒGƒŠ[ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ
+				// ã‚¯ã‚¨ãƒªãƒ¼ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—
 				if (!callback->OnQueryHit(info)) {
-					// –ß‚è’l‚ªfalse‚Ìê‡AŒp‘±‚¹‚¸I—¹
+					// æˆ»ã‚Šå€¤ãŒfalseã®å ´åˆã€ç¶™ç¶šã›ãšçµ‚äº†
 					return;
 				}
 			}
-			// ƒƒbƒVƒ…
+			// ãƒ¡ãƒƒã‚·ãƒ¥
 			else if (col->GetShapeType() == CollisionShapeType::Mesh) {
 				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(col);
 
 				if (!CheckSphereMesh(sphere, meshCollider)) continue;
 
-				// Œğ·î•ñ‚ğƒZƒbƒg
+				// äº¤å·®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 				QueryHit info;
 				info.collider = col;
 				info.inter = *inter;
 				info.reject = *reject;
 
-				// ƒNƒGƒŠ[ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ
+				// ã‚¯ã‚¨ãƒªãƒ¼ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—
 				if (!callback->OnQueryHit(info)) {
-					// –ß‚è’l‚ªfalse‚Ìê‡AŒp‘±‚¹‚¸I—¹
+					// æˆ»ã‚Šå€¤ãŒfalseã®å ´åˆã€ç¶™ç¶šã›ãšçµ‚äº†
 					return;
 				}
 			}
@@ -574,12 +574,12 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //	for (size_t i = 0; i < box2DColliders.size(); i++)
 //	{
 //		trans[i] = box2DColliders[i]->GetTransform();
-//		// ’†S“_‚ğŒvZ
+//		// ä¸­å¿ƒç‚¹ã‚’è¨ˆç®—
 //		auto pos = box2DColliders[i]->GetVertex();
 //		posCenter[i] = Half<Vector2>(pos["LT"] + pos["RB"]);
 //	}
 //
-//	// “–‚½‚è”»’è
+//	// å½“ãŸã‚Šåˆ¤å®š
 //	if (std::abs(posCenter[0].x - posCenter[1].x) <= Half(trans[0]->size.x + trans[1]->size.x) &&
 //		std::abs(posCenter[0].y - posCenter[1].y) <= Half(trans[0]->size.y + trans[1]->size.y))
 //	{
@@ -606,11 +606,11 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //
 //	const _2D::Sprite* rayTrans = rayCollider->GetTransform();
 //
-//	// ‹–ìŠp‚ğŒvZ
+//	// è¦–é‡è§’ã‚’è¨ˆç®—
 //	float leftRot = Angle(90) + rayCollider->GetFOV() + rayTrans->rotation;
 //	float rightRot = Angle(90) - rayCollider->GetFOV() + rayTrans->rotation;
 //
-//	// ƒ{ƒbƒNƒX‚Ì¶ã’[‚Æ‰E‰º’[‚ÌÀ•W‚ğ‹‚ß‚é
+//	// ãƒœãƒƒã‚¯ã‚¹ã®å·¦ä¸Šç«¯ã¨å³ä¸‹ç«¯ã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹
 //	const _2D::Sprite* pSprite = boxCollider->GetTransform();
 //	Vector2 pPosLT, pPosRB;
 //	pPosLT = pPosRB = pSprite->position;
@@ -618,12 +618,12 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //	pPosLT -= Vector2(pSprite->size.x * pSprite->anchorPoint.x, pSprite->size.y * pSprite->anchorPoint.y);
 //	pPosRB += Vector2(pSprite->size.x * (1.0f - pSprite->anchorPoint.x), pSprite->size.y * (1.0f - pSprite->anchorPoint.y));
 //
-//	// ¶ã‚ÌÚG”»’è
+//	// å·¦ä¸Šã®æ¥è§¦åˆ¤å®š
 //	Vector2 vec = Normalize(Vector2(std::cos(rightRot), std::sin(rightRot)));
 //	Vector2 toEyePlayerLT = Normalize(pPosLT - rayTrans->position);
 //	float crossLT = Cross(vec, Normalize(toEyePlayerLT));
 //
-//	// ‰E‰º‚ÌÚG”»’è
+//	// å³ä¸‹ã®æ¥è§¦åˆ¤å®š
 //	vec = Normalize(Vector2(std::cos(leftRot), std::sin(leftRot)));
 //	Vector2 toEyePlayerRB = Normalize(pPosRB - rayTrans->position);
 //	float crossRB = Cross(vec, Normalize(toEyePlayerRB));
@@ -636,12 +636,12 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //	pPosLB += Vector2(-pSprite->size.x * pSprite->anchorPoint.x, pSprite->size.y * (1.0f - pSprite->anchorPoint.y));
 //	pPosRT += Vector2(pSprite->size.x * (1.0f - pSprite->anchorPoint.x), -pSprite->size.y * pSprite->anchorPoint.y);
 //
-//	// ¶‰º‚ÌÚG”»’è
+//	// å·¦ä¸‹ã®æ¥è§¦åˆ¤å®š
 //	vec = Normalize(Vector2(std::cos(rightRot), std::sin(rightRot)));
 //	Vector2 toEyePlayerLB = Normalize(pPosLB - rayTrans->position);
 //	float crossLB = Cross(vec, Normalize(toEyePlayerLB));
 //
-//	// ‰Eã‚ÌÚG”»’è
+//	// å³ä¸Šã®æ¥è§¦åˆ¤å®š
 //	vec = Normalize(Vector2(std::cos(leftRot), std::sin(leftRot)));
 //	Vector2 toEyePlayerRT = Normalize(pPosRT - rayTrans->position);
 //	float crossRT = Cross(vec, Normalize(toEyePlayerRT));
@@ -655,13 +655,13 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //	PolygonCollider pCollider;
 //	Vector3 boxPos = colliderB->GetCenterPosition();
 //	Vector3 boxRad = colliderB->GetRadius3D();
-//	// ã’ê¶‰œ
+//	// ä¸Šåº•å·¦å¥¥
 //	pCollider.AddVertices({ boxPos.x - boxRad.x,boxPos.y + boxRad.y,boxPos.z + boxRad.z });
-//	// ã’ê‰E‰œ
+//	// ä¸Šåº•å³å¥¥
 //	pCollider.AddVertices({ boxPos.x + boxRad.x,boxPos.y + boxRad.y,boxPos.z + boxRad.z });
-//	// ã’ê‰E‘O
+//	// ä¸Šåº•å³å‰
 //	pCollider.AddVertices({ boxPos.x + boxRad.x,boxPos.y + boxRad.y,boxPos.z - boxRad.z });
-//	// ã’ê¶‘O
+//	// ä¸Šåº•å·¦å‰
 //	pCollider.AddVertices({ boxPos.x - boxRad.x,boxPos.y + boxRad.y,boxPos.z - boxRad.z });
 //
 //	pCollider.SetBaseNormal({ Vector3::MakeAxis(Axis::Y) });
@@ -679,7 +679,7 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //	bool isHitGroup = false;
 //	size_t aIndex = 0;
 //
-//	// 2‚Â‚ÌƒRƒ‰ƒCƒ_[ƒOƒ‹[ƒv‚Ì‘S‚Ä‚ÌƒRƒ‰ƒCƒ_[‚Æ“–‚½‚è”»’è‚ğæ‚é
+//	// 2ã¤ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚°ãƒ«ãƒ¼ãƒ—ã®å…¨ã¦ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨å½“ãŸã‚Šåˆ¤å®šã‚’å–ã‚‹
 //	std::map<_2D::CollisionShapeType, size_t> shapeTypeCount;
 //	auto itrA = collidersA.begin();
 //	for (; itrA != collidersA.end(); itrA++, aIndex++)
@@ -692,12 +692,12 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //			shapeTypeCount.clear();
 //			shapeTypeCount[itrA->get()->GetShapeType()]++;
 //			shapeTypeCount[itrB->get()->GetShapeType()]++;
-//			// ƒ{ƒbƒNƒX‚Æƒ{ƒbƒNƒX‚Ì“–‚½‚è”»’è
+//			// ãƒœãƒƒã‚¯ã‚¹ã¨ãƒœãƒƒã‚¯ã‚¹ã®å½“ãŸã‚Šåˆ¤å®š
 //			if (shapeTypeCount[_2D::CollisionShapeType::Box] == 2)
 //			{
 //				isHitPair = Check2DCollision2Boxes({ itrA->get(),itrB->get() });
 //			}
-//			// ƒ{ƒbƒNƒX‚Æ2ƒŒƒC‚Ì“–‚½‚è”»’è
+//			// ãƒœãƒƒã‚¯ã‚¹ã¨2ãƒ¬ã‚¤ã®å½“ãŸã‚Šåˆ¤å®š
 //			else if (shapeTypeCount[_2D::CollisionShapeType::Box] == shapeTypeCount[_2D::CollisionShapeType::TwoRay])
 //			{
 //				isHitPair = Check2DCollisionBox2Rays({ itrA->get(),itrB->get() });
@@ -705,7 +705,7 @@ void WristerEngine::CollisionManager::QuerySphere(const SphereCollider* sphere, 
 //
 //			if (isHitPair)
 //			{
-//				// ƒRƒŠƒWƒ‡ƒ“ƒyƒA‚Ì“o˜^
+//				// ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒšã‚¢ã®ç™»éŒ²
 //				groupA->AddCollisionPair(aIndex, bIndex);
 //				groupB->AddCollisionPair(bIndex, aIndex);
 //				isHitGroup = true;

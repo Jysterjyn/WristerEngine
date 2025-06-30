@@ -12,7 +12,7 @@ void WristerEngine::TimedCall::Update()
 	if (timer.Update())
 	{
 		isFinished = true;
-		// ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌŒÄ‚Ño‚µ
+		// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®å‘¼ã³å‡ºã—
 		callfunc();
 	}
 }

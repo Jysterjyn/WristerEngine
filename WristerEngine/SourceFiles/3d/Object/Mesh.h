@@ -4,47 +4,47 @@
 
 namespace WristerEngine::_3D
 {
-	// Œ`óƒf[ƒ^
+	// å½¢çŠ¶ãƒ‡ãƒ¼ã‚¿
 	class Mesh
 	{
 	public:
-		// ’¸“_ƒf[ƒ^\‘¢‘Ì
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct VertexData
 		{
-			Vector3 pos; // xyzÀ•W
-			Vector3 normal; // –@üƒxƒNƒgƒ‹
-			Vector2 uv;  // uvÀ•W
+			Vector3 pos; // xyzåº§æ¨™
+			Vector3 normal; // æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+			Vector2 uv;  // uvåº§æ¨™
 		};
 
 	private:
 
 		friend Material;
-		// Microsoft::WRL::‚ğÈ—ª
+		// Microsoft::WRL::ã‚’çœç•¥
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		std::vector<VertexData> vertices;	// ’¸“_ƒf[ƒ^”z—ñ
-		std::vector<uint16_t> indices;		// ’¸“_ƒCƒ“ƒfƒbƒNƒX”z—ñ
-		std::unordered_map<uint16_t, std::vector<uint16_t>> smoothData;	// ’¸“_À•WƒXƒ€[ƒWƒ“ƒO—pƒf[ƒ^
-		ComPtr<ID3D12Resource> vertBuff;	// ’¸“_ƒoƒbƒtƒ@
-		D3D12_VERTEX_BUFFER_VIEW vbView{};	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
-		ComPtr<ID3D12Resource> indexBuff;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
-		D3D12_INDEX_BUFFER_VIEW ibView{};	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
-		bool isSmooth = false;	// ƒXƒ€[ƒWƒ“ƒO
-		std::string modelName;	// ƒ‚ƒfƒ‹–¼
-		std::string materialFileName;	// ƒ}ƒeƒŠƒAƒ‹ƒtƒ@ƒCƒ‹–¼
-		std::string directoryPath;	// ƒfƒBƒŒƒNƒgƒŠƒpƒX–¼
+		std::vector<VertexData> vertices;	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿é…åˆ—
+		std::vector<uint16_t> indices;		// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
+		std::unordered_map<uint16_t, std::vector<uint16_t>> smoothData;	// é ‚ç‚¹åº§æ¨™ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ç”¨ãƒ‡ãƒ¼ã‚¿
+		ComPtr<ID3D12Resource> vertBuff;	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+		D3D12_VERTEX_BUFFER_VIEW vbView{};	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+		ComPtr<ID3D12Resource> indexBuff;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
+		D3D12_INDEX_BUFFER_VIEW ibView{};	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
+		bool isSmooth = false;	// ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°
+		std::string modelName;	// ãƒ¢ãƒ‡ãƒ«å
+		std::string materialFileName;	// ãƒãƒ†ãƒªã‚¢ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«å
+		std::string directoryPath;	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹å
 
-		// ’¸“_–@ü‚Ì•½‹Ï‰»
+		// é ‚ç‚¹æ³•ç·šã®å¹³å‡åŒ–
 		void CalculateSmoothedVertexNormals();
-		// ƒoƒbƒtƒ@¶¬
+		// ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		void CreateBuffers();
 
 	public:
 		static std::string DEFAULT_DIRECTORY;
 
-		// objƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+		// objãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 		void LoadOBJ(const std::string& modelName, bool isSmooth, std::string directoryName = "");
-		// •`‰æ
+		// æç”»
 		void Draw();
 		const std::vector<VertexData>& GetVertices() const { return vertices; }
 		const std::vector<uint16_t>& GetIndices() const { return indices; }

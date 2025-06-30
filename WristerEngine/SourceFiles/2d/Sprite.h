@@ -6,7 +6,7 @@
 
 namespace WristerEngine::_2D
 {
-	// ƒeƒNƒXƒ`ƒƒ1–‡•ª‚Ìƒf[ƒ^
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£1æšåˆ†ã®ãƒ‡ãƒ¼ã‚¿
 	struct TextureData : DXCommonGetter
 	{
 		static std::list<std::unique_ptr<TextureData>> textures;
@@ -14,24 +14,24 @@ namespace WristerEngine::_2D
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
 		SRVHandle srvHandle;
 
-		// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 		static TextureData* Load(const std::string& fileName);
 	};
 
-	// ƒXƒvƒ‰ƒCƒg
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	struct Sprite : private DXCommonGetter
 	{
 		Vector2 position;
 		float rotation = 0;
 		ColorRGBA color;
-		Vector2 size; // •\¦ƒTƒCƒY
+		Vector2 size; // è¡¨ç¤ºã‚µã‚¤ã‚º
 		Vector2 anchorPoint;
 		bool isFlipX = false;
 		bool isFlipY = false;
 		bool isInvisible = false;
-		Vector2 textureLeftTop; // Ø‚èæ‚è—Ìˆæ‚Ì¶ãÀ•W
-		Vector2 textureSize; // Ø‚èæ‚è—Ìˆæ‚ÌƒTƒCƒY
-		Vector2 posOffset; // •\¦ˆÊ’u‚Ì’²®
+		Vector2 textureLeftTop; // åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã®å·¦ä¸Šåº§æ¨™
+		Vector2 textureSize; // åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã®ã‚µã‚¤ã‚º
+		Vector2 posOffset; // è¡¨ç¤ºä½ç½®ã®èª¿æ•´
 
 	private:
 		class Animation
@@ -45,13 +45,13 @@ namespace WristerEngine::_2D
 
 		public:
 			/// <summary>
-			/// ‰Šú‰»
+			/// åˆæœŸåŒ–
 			/// </summary>
-			/// <param name="sprite">spriteƒ|ƒCƒ“ƒ^</param>
-			/// <param name="spriteNum">ƒAƒjƒ[ƒVƒ‡ƒ“–‡”</param>
-			/// <param name="animationIntervel">ƒAƒjƒ[ƒVƒ‡ƒ“‘¬“x</param>
+			/// <param name="sprite">spriteãƒã‚¤ãƒ³ã‚¿</param>
+			/// <param name="spriteNum">ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æšæ•°</param>
+			/// <param name="animationIntervel">ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é€Ÿåº¦</param>
 			void Initialize(Sprite* sprite, size_t spriteNum, int animationIntervel);
-			// XV
+			// æ›´æ–°
 			void Update();
 		};
 
@@ -63,10 +63,10 @@ namespace WristerEngine::_2D
 
 		enum class VertexNumber
 		{
-			LB, // ¶‰º
-			LT, // ¶ã
-			RB, // ‰E‰º
-			RT  // ‰Eã
+			LB, // å·¦ä¸‹
+			LT, // å·¦ä¸Š
+			RB, // å³ä¸‹
+			RT  // å³ä¸Š
 		};
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -83,44 +83,44 @@ namespace WristerEngine::_2D
 		std::vector<TextureData*> textures{};
 		std::unique_ptr<Animation> animation;
 
-		// ƒeƒNƒXƒ`ƒƒƒTƒCƒY‚ğƒCƒ[ƒW‚É‡‚í‚¹‚é
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã‚’ã‚¤ãƒ¡ãƒ¼ã‚¸ã«åˆã‚ã›ã‚‹
 		void AdjustTextureSize();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
 
 	public:
 		static void UpdateAll();
 
 		void SetAnimation(size_t spriteNum, int animationIntervel);
-		// •`‰æ
+		// æç”»
 		void Draw();
-		// ˆÊ’u‚ğ‰æ–Ê’†‰›‚É‚·‚é
+		// ä½ç½®ã‚’ç”»é¢ä¸­å¤®ã«ã™ã‚‹
 		void SetCenterPos() { position = Half(WIN_SIZE); }
-		// anchorPoint = { 0.5f,0.5f } ‚É‚·‚é
+		// anchorPoint = { 0.5f,0.5f } ã«ã™ã‚‹
 		void SetCenterAnchor() { anchorPoint = { 0.5f,0.5f }; }
-		// ƒXƒvƒ‰ƒCƒg¶¬
+		// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”Ÿæˆ
 		static Sprite* Create(std::initializer_list<const std::string> fileNames,
 			const Vector2& pos = {}, const Vector2& anchorPoint = {},
 			const Vector2& textureSize = {}, const Vector2& textureLeftTop = {});
-		// •`‰æ‘Oˆ—
+		// æç”»å‰å‡¦ç†
 		static void PreDraw();
 
-		// Œ»İ‚ÌƒCƒ“ƒfƒbƒNƒX‚ª¦‚·ƒeƒNƒXƒ`ƒƒ‚ÌGPUƒnƒ“ƒhƒ‹‚ğæ“¾
+		// ç¾åœ¨ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¤ºã™ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®GPUãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return textures[texIndex]->srvHandle.gpu; }
 
 		/// <summary>
-		/// Ø‚èæ‚è—Ìˆæ‚ğw’è(•`‰æƒTƒCƒY‚à•Ï‚¦‚é)
+		/// åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã‚’æŒ‡å®š(æç”»ã‚µã‚¤ã‚ºã‚‚å¤‰ãˆã‚‹)
 		/// </summary>
-		/// <param name="textureSize">Ø‚èæ‚è—Ìˆæ‚ÌƒTƒCƒY</param>
-		/// <param name="textureLeftTop">Ø‚èæ‚è—Ìˆæ‚Ì¶ãÀ•W</param>
+		/// <param name="textureSize">åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã®ã‚µã‚¤ã‚º</param>
+		/// <param name="textureLeftTop">åˆ‡ã‚Šå–ã‚Šé ˜åŸŸã®å·¦ä¸Šåº§æ¨™</param>
 		void SetRect(const Vector2& textureSize, const Vector2& textureLeftTop = {});
 
 		/// <summary>
-		/// ƒeƒNƒXƒ`ƒƒ•ªŠ„
+		/// ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ†å‰²
 		/// </summary>
-		/// <param name="spritNum">•ªŠ„”</param>
+		/// <param name="spritNum">åˆ†å‰²æ•°</param>
 		void Split(const Vector2& spritNum);
 
 		void SetTextureIndex(UINT16 texIndex);

@@ -23,9 +23,9 @@ void PrimitiveDrawer::TransferVertices()
 void PrimitiveDrawer::Initialize()
 {
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexData) * MAX_LINE_COUNT * VERTEX_COUNT_LINE);
-	// ’¸“_ƒoƒbƒtƒ@¶¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	CreateBuffer(&vertBuff, &vertMap, sizeVB);
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(VertexData);

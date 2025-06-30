@@ -29,6 +29,6 @@ size_t Roulette::operator()() const
 	{
 		if (randNum <= std::accumulate(rateTable.begin(), rateTable.begin() + i + 1, 0)) { return i; }
 	}
-	// ƒGƒ‰[
+	// ã‚¨ãƒ©ãƒ¼
 	return (size_t)-1;
 }

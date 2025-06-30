@@ -4,24 +4,24 @@
 
 namespace WristerEngine::_3D
 {
-	// ƒXƒe[ƒWã‚É‚ ‚éƒQ[ƒ€•\¦•¨ŠÇ—ƒNƒ‰ƒX
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ä¸Šã«ã‚ã‚‹ã‚²ãƒ¼ãƒ è¡¨ç¤ºç‰©ç®¡ç†ã‚¯ãƒ©ã‚¹
 	class BaseStage
 	{
 	private:
-		// ƒXƒe[ƒWã‚É‚ ‚éƒQ[ƒ€•\¦•¨
+		// ã‚¹ãƒ†ãƒ¼ã‚¸ä¸Šã«ã‚ã‚‹ã‚²ãƒ¼ãƒ è¡¨ç¤ºç‰©
 		std::list<GameObject> stageObjects;
-		// Json‚©‚ç“Ç‚İ‚ñ‚¾ƒf[ƒ^
+		// Jsonã‹ã‚‰èª­ã¿è¾¼ã‚“ã ãƒ‡ãƒ¼ã‚¿
 		//ObjectData objData;
 
 	protected:
-		// ŒÅ—L‰Šú‰»
+		// å›ºæœ‰åˆæœŸåŒ–
 		virtual void VirtualInitialize() {};
-		// ŒÅ—LXV
+		// å›ºæœ‰æ›´æ–°
 		virtual void VirtualUpdate() {};
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
 	};
 }

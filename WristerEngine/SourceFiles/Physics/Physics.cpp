@@ -5,8 +5,8 @@
 using namespace WristerEngine;
 
 std::vector<std::array<Physics*, 2>> Physics::collideList;
-float Physics::gravity = 0.5f; // d—Í‰Á‘¬“x g
-Vector3 Physics::gravityDir = { 0,-1,0 }; // ‰ºŒü‚«d—Í
+float Physics::gravity = 0.5f; // é‡åŠ›åŠ é€Ÿåº¦ g
+Vector3 Physics::gravityDir = { 0,-1,0 }; // ä¸‹å‘ãé‡åŠ›
 float Physics::k_air = 0.4f;
 
 void PosVelAcc::Update()
@@ -15,7 +15,7 @@ void PosVelAcc::Update()
 	velocity += acceleration;
 }
 
-// •¨—ƒNƒ‰ƒX¶¬ (Unity‚Å‚¢‚¤ Rigidbody)
+// ç‰©ç†ã‚¯ãƒ©ã‚¹ç”Ÿæˆ (Unityã§ã„ã† Rigidbody)
 std::unique_ptr<Physics> Physics::Create(_3D::Transform* w)
 {
 	std::unique_ptr<Physics> instance = std::make_unique<Physics>();
@@ -25,13 +25,13 @@ std::unique_ptr<Physics> Physics::Create(_3D::Transform* w)
 
 void Physics::Backlash(const Vector3& wallNormal, float e)
 {
-	// •¨‘Ì‚Ì•Ï‰»Œã‚Ì‘¬“x
+	// ç‰©ä½“ã®å¤‰åŒ–å¾Œã®é€Ÿåº¦
 	vel = -(1.0f + e) * Dot(vel + wallNormal, wallNormal) * wallNormal / 2.0f + vel;
 }
 
 void Physics::Backlash(Physics* p1, Physics* p2, float e)
 {
-	// ©•ª‚Æ‘Šè‚ªÕ“ËÏ‚È‚çˆ—‚ğƒXƒLƒbƒv
+	// è‡ªåˆ†ã¨ç›¸æ‰‹ãŒè¡çªæ¸ˆãªã‚‰å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
 	for (auto& collidedPair : collideList)
 	{
 		int isCollided = 0;
@@ -42,37 +42,37 @@ void Physics::Backlash(Physics* p1, Physics* p2, float e)
 		}
 		if (isCollided == 0b11) { return; }
 	}
-	// ƒ|ƒWƒVƒ‡ƒ“‚ğæ“¾
+	// ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 	Vector3 p1Pos = p1->transform->GetWorldPosition();
 	Vector3 p2Pos = p2->transform->GetWorldPosition();
-	// Õ“Ë‚Ì–@üƒxƒNƒgƒ‹
+	// è¡çªã®æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 n = Normalize(p2Pos - p1Pos);
-	// 2•¨‘Ì‚Ì‘¬“x
+	// 2ç‰©ä½“ã®é€Ÿåº¦
 	Vector3 v0 = p1->vel;
 	Vector3 V0 = p2->vel;
-	// 2•¨‘Ì‚Ì¿—Ê
+	// 2ç‰©ä½“ã®è³ªé‡
 	float m = p1->mass;
 	float M = p2->mass;
-	// ‘¬“xŒvZ‚Ì‹¤’Ê•”•ª
+	// é€Ÿåº¦è¨ˆç®—ã®å…±é€šéƒ¨åˆ†
 	float m_t = ((1.0f + e) * M * m) / (M + m);
-	// 2•¨‘Ì‚Ì•Ï‰»Œã‚Ì‘¬“x
+	// 2ç‰©ä½“ã®å¤‰åŒ–å¾Œã®é€Ÿåº¦
 	Vector3 v = -(m_t * Dot(v0 - V0, n) * n) / m + v0;
 	Vector3 V = -(m_t * Dot(V0 - v0, n) * n) / M + V0;
 	p1->vel = v;
 	p2->vel = V;
 	collideList.push_back({ p1,p2 });
-	// ‰Ÿ‚µo‚µˆ—
+	// æŠ¼ã—å‡ºã—å‡¦ç†
 	p1->vel += Normalize(p1Pos - p2Pos) * 0.25f;
 	p2->vel += Normalize(p2Pos - p1Pos) * 0.25f;
 }
 
 void Physics::Update()
 {
-	accel = force / mass; // ‰Á‘¬“x‚ğŒvZ
-	vel += accel * forceDir; // ‘¬“x‚É‰Á‘¬“x‚ğ‰ÁZ
-	transform->translation += vel; // ˆÊ’u‚É‘¬“x‰ÁZ
+	accel = force / mass; // åŠ é€Ÿåº¦ã‚’è¨ˆç®—
+	vel += accel * forceDir; // é€Ÿåº¦ã«åŠ é€Ÿåº¦ã‚’åŠ ç®—
+	transform->translation += vel; // ä½ç½®ã«é€Ÿåº¦åŠ ç®—
 
-	// —‰ºˆ—
+	// è½ä¸‹å‡¦ç†
 	if (isFreeFall)
 	{
 		fallSpd += gravity;
@@ -80,11 +80,11 @@ void Physics::Update()
 		fallSpd = max(fallSpd, 0);
 		vel += fallSpd * gravityDir;
 	}
-	// Ú’nˆ—
+	// æ¥åœ°å‡¦ç†
 	else
 	{
-		// –€C‚ğ•\Œ»
-		float friction = mu * mass * gravity; // –€C—Í
+		// æ‘©æ“¦ã‚’è¡¨ç¾
+		float friction = mu * mass * gravity; // æ‘©æ“¦åŠ›
 		float nextSpd = max(vel.Length() - friction, 0);
 		vel = Normalize(vel) * nextSpd;
 	}

@@ -9,19 +9,19 @@ namespace WristerEngine::_3D
 
 	struct TextureTransform
 	{
-		Vector2 uvOffset;  // uv‚¸‚ç‚µ
-		Vector2 tiling = { 1,1 }; // ƒ^ƒCƒŠƒ“ƒO
+		Vector2 uvOffset;  // uvãšã‚‰ã—
+		Vector2 tiling = { 1,1 }; // ã‚¿ã‚¤ãƒªãƒ³ã‚°
 	};
 
-	// ƒeƒNƒXƒ`ƒƒ‚Ì–ğŠ„
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å½¹å‰²
 	enum class TexType
 	{
-		Main,		// ƒƒCƒ“ƒeƒNƒXƒ`ƒƒ
-		Sub,		// ƒTƒuƒeƒNƒXƒ`ƒƒ
-		Blend, 		// ƒuƒŒƒ“ƒhƒ}ƒbƒv
-		Specular,	// ƒXƒyƒLƒ…ƒ‰ƒ}ƒbƒv
-		Dissolve,	// ƒfƒBƒ]ƒ‹ƒuƒ}ƒbƒv
-		Num 		// ƒeƒNƒXƒ`ƒƒ”
+		Main,		// ãƒ¡ã‚¤ãƒ³ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		Sub,		// ã‚µãƒ–ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		Blend, 		// ãƒ–ãƒ¬ãƒ³ãƒ‰ãƒãƒƒãƒ—
+		Specular,	// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒãƒƒãƒ—
+		Dissolve,	// ãƒ‡ã‚£ã‚¾ãƒ«ãƒ–ãƒãƒƒãƒ—
+		Num 		// ãƒ†ã‚¯ã‚¹ãƒãƒ£æ•°
 	};
 
 	struct MaterialData : public TextureTransform
@@ -30,7 +30,7 @@ namespace WristerEngine::_3D
 		_2D::TextureData* data = nullptr;
 	};
 
-	// ƒ}ƒeƒŠƒAƒ‹
+	// ãƒãƒ†ãƒªã‚¢ãƒ«
 	struct Material
 	{
 		std::string name;
@@ -39,34 +39,34 @@ namespace WristerEngine::_3D
 		ColorRGB specular;
 		float alpha = 1.0f;
 		std::string directoryPath;
-		std::array<MaterialData, (size_t)TexType::Num> textures; // ƒeƒNƒXƒ`ƒƒ‚Ì”z—ñ
+		std::array<MaterialData, (size_t)TexType::Num> textures; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é…åˆ—
 
 		void ChangeTexture(size_t texIndex, const std::string& texName);
 
 	private:
 		friend Object3d;
 
-		// ƒ}ƒeƒŠƒAƒ‹
+		// ãƒãƒ†ãƒªã‚¢ãƒ«
 		struct ConstBufferData
 		{
-			ColorRGBA ambient; // ƒpƒfƒBƒ“ƒOŠÜ‚Ş
+			ColorRGBA ambient; // ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°å«ã‚€
 			ColorRGBA diffuse;
 			ColorRGBA specular;
 			std::array<TextureTransform, 4> texTrans;
-			std::array<ColorRGBA, 2> color; // F
-			std::array<float, 3> maskPow{}; // ƒ}ƒXƒN‚Ì‹­‚³
+			std::array<ColorRGBA, 2> color; // è‰²
+			std::array<float, 3> maskPow{}; // ãƒã‚¹ã‚¯ã®å¼·ã•
 		};
 
-		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// ’è”ƒoƒbƒtƒ@
+		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 		ConstBufferData* constMap = nullptr;
 
-		// ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+		// ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 		void Load(Mesh* mesh);
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
-		// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 		void LoadTexture(std::istringstream& line_stream, TexType spriteIndex);
 	};
 }

@@ -11,15 +11,15 @@ void Transform::Initialize()
 
 void Transform::Update()
 {
-	// �e�|�C���^�̍X�V
+	// 親ポインタの更新
 	if (parent) { parent->Update(); }
-	// �X�V�ςȂ�֐��𔲂���
+	// 更新済なら関数を抜ける
 	if (isUpdated) { return; }
-	Matrix4 matScale = Matrix4::Scale(scale); // �X�P�[���s��
-	Matrix4 matRot = Matrix4::Rotate(rotation); // ��]�s��
+	Matrix4 matScale = Matrix4::Scale(scale); // スケール行列
+	Matrix4 matRot = Matrix4::Rotate(rotation); // 回転行列
 	matWorld = matScale * matRot;
-	matWorld.SetVector(translation, 3); // ���s�ړ���������
-	if (parent) { matWorld *= parent->matWorld; } // �e�̃��[���h�s����|����
+	matWorld.SetVector(translation, 3); // 平行移動成分を代入
+	if (parent) { matWorld *= parent->matWorld; } // 親のワールド行列を掛ける
 	if (isObject3d) { isUpdated = true; }
 	if (constMap) { constMap->world = matWorld; }
 }
@@ -35,7 +35,7 @@ void Transform::Draw()
 Vector3 Transform::GetScale() const
 {
 	Vector3 scale_;
-	// �O���[�o���s�񂩂�X�P�[���l�𒊏o
+	// グローバル行列からスケール値を抽出
 	for (size_t i = 0; i < 3; i++) { scale_[i] = matWorld.GetVector(i).Length(); }
 	return scale_;
 }

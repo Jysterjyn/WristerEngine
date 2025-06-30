@@ -15,41 +15,41 @@ void LockOn::Update()
 {
 	Input* input = Input::GetInstance();
 
-	// ƒƒbƒNƒIƒ“ó‘Ô‚È‚ç
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³çŠ¶æ…‹ãªã‚‰
 	if (target)
 	{
-		// ƒƒbƒNƒIƒ“ƒ{ƒ^ƒ“‚ğƒgƒŠƒK[‚µ‚½‚ç
+		// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒœã‚¿ãƒ³ã‚’ãƒˆãƒªã‚¬ãƒ¼ã—ãŸã‚‰
 		if (input->IsTrigger(0, JoyPad::X))
 		{
-			// ƒƒbƒNƒIƒ“‚ğŠO‚·
+			// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ã‚’å¤–ã™
 			target = nullptr; 
 		}
-		// ”ÍˆÍŠO”»’è
+		// ç¯„å›²å¤–åˆ¤å®š
 		else if (IsOutRange(target)) 
 		{ 
-			// ƒƒbƒNƒIƒ“‚ğŠO‚·
+			// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ã‚’å¤–ã™
 			target = nullptr;
 		}
 	}
 	else
 	{
-		// ƒƒbƒNƒIƒ“ƒ{ƒ^ƒ“‚ğƒgƒŠƒK[‚µ‚½‚çƒƒbƒNƒIƒ“‘ÎÛ‚ÌŒŸõ
+		// ãƒ­ãƒƒã‚¯ã‚ªãƒ³ãƒœã‚¿ãƒ³ã‚’ãƒˆãƒªã‚¬ãƒ¼ã—ãŸã‚‰ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡ã®æ¤œç´¢
 		if (input->IsTrigger(0, JoyPad::X)) { Search(); }
 	}
 
-	// ƒƒbƒNƒIƒ“ó‘Ô‚È‚ç
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³çŠ¶æ…‹ãªã‚‰
 	if (target)
 	{
-		// ƒXƒvƒ‰ƒCƒg‚ÌÀ•W‚ğİ’è
+		// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åº§æ¨™ã‚’è¨­å®š
 		lockOnMark->position = To2DVector(target->GetCenterPos());
 	}
 }
 
 void LockOn::Search()
 {
-	// –Ú•W
+	// ç›®æ¨™
 	std::list<std::pair<float, const LockOnObject*>> targets;
-	// ‘S‚Ä‚Ì‘ÎÛ‚É‘Î‚µ‚Ä‡‚ÉƒƒbƒNƒIƒ“”»’è
+	// å…¨ã¦ã®å¯¾è±¡ã«å¯¾ã—ã¦é †ã«ãƒ­ãƒƒã‚¯ã‚ªãƒ³åˆ¤å®š
 	for (auto& object : *objects)
 	{
 		float positionViewZ = 0;
@@ -59,41 +59,41 @@ void LockOn::Search()
 		}
 	}
 
-	// ƒƒbƒNƒIƒ“‘ÎÛ‚ğƒŠƒZƒbƒg
+	// ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡ã‚’ãƒªã‚»ãƒƒãƒˆ
 	target = nullptr;
 	if (!targets.empty())
 	{
-		// ‹——£‚Å¸‡‚Éƒ\[ƒg
+		// è·é›¢ã§æ˜‡é †ã«ã‚½ãƒ¼ãƒˆ
 		targets.sort([](auto& pair1, auto& pair2) { return pair1.first < pair2.first; });
-		// ƒ\[ƒg‚ÌŒ‹‰Êˆê”Ô‹ß‚¢‘ÎÛ‚ğƒƒbƒNƒIƒ“‘ÎÛ‚Æ‚·‚é
+		// ã‚½ãƒ¼ãƒˆã®çµæœä¸€ç•ªè¿‘ã„å¯¾è±¡ã‚’ãƒ­ãƒƒã‚¯ã‚ªãƒ³å¯¾è±¡ã¨ã™ã‚‹
 		target = targets.front().second;
 	}
 }
 
 bool LockOn::IsOutRange(const LockOnObject* object, float* positionViewZ)
 {
-	// ‘ÎÛ‚ÌƒƒbƒNƒIƒ“À•Wæ“¾
+	// å¯¾è±¡ã®ãƒ­ãƒƒã‚¯ã‚ªãƒ³åº§æ¨™å–å¾—
 	Vector3 positionWorld = object->GetCenterPos();
-	// ƒ[ƒ‹ƒh¨ƒrƒ…[À•W•ÏŠ·
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰â†’ãƒ“ãƒ¥ãƒ¼åº§æ¨™å¤‰æ›
 	Vector3 positionView = positionWorld * camera->GetViewMatrix();
 	if (positionViewZ) { *positionViewZ = positionView.z; }
 
-	// ‹——£ğŒƒ`ƒFƒbƒN
+	// è·é›¢æ¡ä»¶ãƒã‚§ãƒƒã‚¯
 	if (minDistance <= positionView.z && positionView.z <= maxDistance)
 	{
-		// ƒJƒƒ‰‘O•û‚Æ‚ÌŠp“x‚ğŒvZ
+		// ã‚«ãƒ¡ãƒ©å‰æ–¹ã¨ã®è§’åº¦ã‚’è¨ˆç®—
 		float arcTangent = std::atan2(std::sqrt(
 			positionView.x * positionView.x + positionView.y * positionView.y),
 			positionView.z);
 
-		// Šp“xğŒƒ`ƒFƒbƒN(ƒR[ƒ“‚Éû‚Ü‚Á‚Ä‚¢‚é‚©)
+		// è§’åº¦æ¡ä»¶ãƒã‚§ãƒƒã‚¯(ã‚³ãƒ¼ãƒ³ã«åã¾ã£ã¦ã„ã‚‹ã‹)
 		if (std::abs(arcTangent) <= angleRange)
 		{
-			// ”ÍˆÍŠO‚Å‚Í‚È‚¢
+			// ç¯„å›²å¤–ã§ã¯ãªã„
 			return false; 
 		}
 	}
-	// ”ÍˆÍŠO‚Å‚ ‚é
+	// ç¯„å›²å¤–ã§ã‚ã‚‹
 	return true;
 }
 

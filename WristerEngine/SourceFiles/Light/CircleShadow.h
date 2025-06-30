@@ -5,7 +5,7 @@
 
 namespace WristerEngine
 {
-	// �ۉe
+	// 丸影
 	class CircleShadow
 	{
 	private:

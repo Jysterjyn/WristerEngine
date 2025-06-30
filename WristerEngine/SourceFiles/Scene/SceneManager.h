@@ -7,7 +7,7 @@
 
 namespace WristerEngine
 {
-	// ƒV[ƒ“ŠÇ—
+	// ã‚·ãƒ¼ãƒ³ç®¡ç†
 	class SceneManager final
 	{
 	private:
@@ -25,23 +25,23 @@ namespace WristerEngine
 		SceneManager& operator=(const SceneManager&) = delete;
 
 	public:
-		// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static SceneManager* GetInstance();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(std::unique_ptr<AbstractSceneFactory>& sceneFactory, const std::string& startScene);
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
-		// I—¹
+		// çµ‚äº†
 		void Finalize() { scene->Finalize(); }
-		// ƒ|[ƒYƒƒjƒ…[‚ğƒZƒbƒg
+		// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 		void SetPauseMenu(BasePauseMenu* pauseMenu_) { pauseMenu = pauseMenu_; }
-		// ƒ|[ƒYØ‚è‘Ö‚¦
+		// ãƒãƒ¼ã‚ºåˆ‡ã‚Šæ›¿ãˆ
 		void Pause() { pauseMenu->Pause(); }
-		// ƒV[ƒ“Ø‚è‘Ö‚¦
+		// ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
 		void ChangeScene(const std::string& nextScene, bool isObjectClear = true, bool isParticleClear = true, bool isUseFade = true);
-		// Œ»İ‚ÌƒV[ƒ“æ“¾
+		// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³å–å¾—
 		const std::string& GetNowScene() const { return nowScene; }
 	};
 }

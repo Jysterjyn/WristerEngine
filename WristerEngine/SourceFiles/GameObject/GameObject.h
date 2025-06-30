@@ -8,7 +8,7 @@ namespace WristerEngine
 {
 	namespace _2D
 	{
-		// ƒQ[ƒ€‚É•\¦‚³‚ê‚Ä‚¢‚é2DƒXƒvƒ‰ƒCƒg‚ÌŠî’êƒNƒ‰ƒX
+		// ã‚²ãƒ¼ãƒ ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹2Dã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åŸºåº•ã‚¯ãƒ©ã‚¹
 		class GameObject
 		{
 		protected:
@@ -17,22 +17,22 @@ namespace WristerEngine
 			std::unique_ptr<Sprite> sprite;
 
 		public:
-			// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+			// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 			virtual ~GameObject() = default;
-			// ‰Šú‰»(ƒˆ‰¼‘zŠÖ”)
+			// åˆæœŸåŒ–(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 			virtual void Initialize(const ObjectData& objData) = 0;
-			// XV(ƒˆ‰¼‘zŠÖ”)
+			// æ›´æ–°(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 			virtual void Update() = 0;
-			// •`‰æ(ƒˆ‰¼‘zŠÖ”)
+			// æç”»(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 			virtual void Draw() = 0;
-			// Œ»İ‚ÌƒV[ƒ“‚ğæ“¾
+			// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’å–å¾—
 			const std::string& GetNowScene() const { return SceneManager::GetInstance()->GetNowScene(); }
 		};
 	}
 
 	namespace _3D
 	{
-		// ƒQ[ƒ€‚É•\¦‚³‚ê‚Ä‚¢‚é3DƒIƒuƒWƒFƒNƒg‚ÌŠî’êƒNƒ‰ƒX
+		// ã‚²ãƒ¼ãƒ ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åŸºåº•ã‚¯ãƒ©ã‚¹
 		class GameObject
 		{
 		protected:
@@ -40,16 +40,16 @@ namespace WristerEngine
 			Constant* constant = Constant::GetInstance();
 
 		public:
-			// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+			// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 			virtual ~GameObject() = default;
 			/// <summary>
-			/// ‰Šú‰»(ƒˆ‰¼‘zŠÖ”)
+			/// åˆæœŸåŒ–(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 			/// </summary>
-			/// <param name="objectData">Jsonƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾ƒf[ƒ^</param>
+			/// <param name="objectData">Jsonãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã ãƒ‡ãƒ¼ã‚¿</param>
 			virtual void Initialize(const ObjectData& objectData) = 0;
-			// XV(ƒˆ‰¼‘zŠÖ”)
+			// æ›´æ–°(ç´”ç²‹ä»®æƒ³é–¢æ•°)
 			virtual void Update() = 0;
-			// Œ»İ‚ÌƒV[ƒ“‚ğæ“¾
+			// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚’å–å¾—
 			const std::string& GetNowScene() const { return SceneManager::GetInstance()->GetNowScene(); }
 		};
 	}

@@ -21,7 +21,7 @@ namespace WristerEngine
 		bool isDestroy = false;
 
 	protected:
-		Vector3 position; // ç¿ïW
+		Vector3 position; // Â∫ßÊ®ô
 		float scale = 0;
 		ColorRGBA color;
 

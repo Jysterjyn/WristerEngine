@@ -5,17 +5,17 @@ namespace WristerEngine
 {
 	enum class ColorMode
 	{
-		Normal,		// ¡‚Ü‚Å‚Æ“¯‚¶
-		Clamp,		// 0~1‚Ì”ÍˆÍ‚ğ’´‚¦‚È‚¢
-		Loop,		// 0~1‚Ì”ÍˆÍ‚ğƒ‹[ƒv
-		Infinite	// ’l‚Ì§ŒÀ‚È‚µ
+		Normal,		// ä»Šã¾ã§ã¨åŒã˜
+		Clamp,		// 0~1ã®ç¯„å›²ã‚’è¶…ãˆãªã„
+		Loop,		// 0~1ã®ç¯„å›²ã‚’ãƒ«ãƒ¼ãƒ—
+		Infinite	// å€¤ã®åˆ¶é™ãªã—
 	};
 
-	// 1F•ª‚Ì\‘¢‘Ì
+	// 1è‰²åˆ†ã®æ§‹é€ ä½“
 	struct Color
 	{
 	public:
-		// ƒJƒ‰[‚ÌÅ‘å’l
+		// ã‚«ãƒ©ãƒ¼ã®æœ€å¤§å€¤
 		static const float MAX;
 
 	private:
@@ -24,7 +24,7 @@ namespace WristerEngine
 	public:
 		Color() = default;
 		Color(float color) { val_ = color; }
-		// ‰‰ZqƒI[ƒo[ƒ[ƒh
+		// æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 		float operator=(float val);
 		Color operator*=(float rate) { val_ *= rate; return val_; }
 		void operator+=(float val) { operator=(val_ + val); }
@@ -32,18 +32,18 @@ namespace WristerEngine
 		operator float() { return val_; }
 	};
 
-	// ƒJƒ‰[’lRGB
+	// ã‚«ãƒ©ãƒ¼å€¤RGB
 	struct ColorRGB
 	{
 		Color r, g, b;
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		ColorRGB() = default;
 		ColorRGB(Color red, Color green, Color blue) { r = red, g = green, b = blue; }
 
-		// ‰‰ZqƒI[ƒo[ƒ[ƒh
+		// æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 		ColorRGB& operator*=(float rate);
 
-		// Fæ“¾
+		// è‰²å–å¾—
 		static ColorRGB Red() { return { 1,0,0 }; }
 		static ColorRGB Green() { return { 0,1,0 }; }
 		static ColorRGB Blue() { return { 0,0,1 }; }
@@ -54,19 +54,19 @@ namespace WristerEngine
 		static ColorRGB Cyan() { return { 0,1,1 }; }
 	};
 
-	// ƒJƒ‰[’lRGBA
+	// ã‚«ãƒ©ãƒ¼å€¤RGBA
 	struct ColorRGBA
 	{
 		Color r, g, b, a;
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		ColorRGBA() {}
 		ColorRGBA(Color red, Color green, Color blue, Color alpha = Color::MAX) { r = red, g = green, b = blue, a = alpha; }
 		ColorRGBA(ColorRGB color, float alpha = Color::MAX) { r = color.r, g = color.g, b = color.b, a = alpha; }
 
-		// ‰‰ZqƒI[ƒo[ƒ[ƒh
+		// æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 		ColorRGBA& operator*=(float rate);
 
-		// Fæ“¾
+		// è‰²å–å¾—
 		static ColorRGBA Red() { return { 1,0,0,1 }; }
 		static ColorRGBA Green() { return { 0,1,0,1 }; }
 		static ColorRGBA Blue() { return { 0,0,1,1 }; }
@@ -77,7 +77,7 @@ namespace WristerEngine
 		static ColorRGBA Cyan() { return { 0,1,1,1 }; }
 	};
 
-	// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	const Color operator*(Color color, float rate);
 	const ColorRGB operator*(ColorRGB color, float rate);
 	const ColorRGBA operator*(ColorRGBA color, float rate);

@@ -9,7 +9,7 @@
 
 namespace WristerEngine
 {
-	// ’è”‚Ìî•ñ‚ğ"constant.json"‚©‚ç“Ç‚İæ‚é
+	// å®šæ•°ã®æƒ…å ±ã‚’"constant.json"ã‹ã‚‰èª­ã¿å–ã‚‹
 	class Constant final : public JsonLoader
 	{
 	private:
@@ -21,7 +21,7 @@ namespace WristerEngine
 		Constant(const Constant&) = delete;
 		Constant& operator=(const Constant&) = delete;
 
-		// Œ^•Ê“Ç‚İ‚İ
+		// å‹åˆ¥èª­ã¿è¾¼ã¿
 		void LoadInt();
 		void LoadFloat();
 		void LoadDouble();
@@ -32,7 +32,7 @@ namespace WristerEngine
 	public:
 		static Constant* GetInstance();
 
-		// ’è”‚ğ“Ç‚İ‚Ş
+		// å®šæ•°ã‚’èª­ã¿è¾¼ã‚€
 		void LoadConstants();
 
 		template<class T>
@@ -45,7 +45,7 @@ namespace WristerEngine
 
 		int operator*() { return 0; }
 
-		// I—¹ˆ—
+		// çµ‚äº†å‡¦ç†
 		void Finalize();
 	};
 }

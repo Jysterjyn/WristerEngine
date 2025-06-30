@@ -21,40 +21,40 @@ void BaseCamera::Initialize()
 
 void BaseCamera::Update()
 {
-	// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ‚ÌXV
+	// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—ã®æ›´æ–°
 	Projection::UpdateMatrix();
-	// ŒÅ—L‚ÌXV
+	// å›ºæœ‰ã®æ›´æ–°
 	VirtualUpdate();
-	// ‘SƒJƒƒ‰‹¤’Ê‚ÌXVˆ—
+	// å…¨ã‚«ãƒ¡ãƒ©å…±é€šã®æ›´æ–°å‡¦ç†
 	UpdateViewMatrix();
-	// 2s—ñ‚ğŠ|‚¯‚é
+	// 2è¡Œåˆ—ã‚’æ›ã‘ã‚‹
 	matViewProjection = matView * GetProjectionMatrix();
-	// GPU“]‘—
+	// GPUè»¢é€
 	constMap->viewproj = matViewProjection;
 	constMap->cameraPos = cameraPos;
 }
 
 void BaseCamera::UpdateViewMatrix()
 {
-	// ƒVƒFƒCƒN‚ğŒvZ
+	// ã‚·ã‚§ã‚¤ã‚¯ã‚’è¨ˆç®—
 	Vector3 shakeVal;
 	if (shake) { shakeVal = shake->Update(); }
 
-	// ƒ[ƒ‹ƒhs—ñ‚©‚çƒrƒ…[s—ñ‚ğŒvZ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‹ã‚‰ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’è¨ˆç®—
 	if (calMode == CalMode::Transform)
 	{
 		assert(pTransform);
-		// ƒVƒFƒCƒN‚Ì’l‚¾‚¯ˆÊ’u‚ğ‚¸‚ç‚·
+		// ã‚·ã‚§ã‚¤ã‚¯ã®å€¤ã ã‘ä½ç½®ã‚’ãšã‚‰ã™
 		Matrix4 sMatWorld = pTransform->matWorld * Matrix4::Translate(shakeVal);
 		matView = Inverse(sMatWorld);
 		cameraPos = sMatWorld.GetVector(3);
-		// eye, target‚É•ÏŠ·
+		// eye, targetã«å¤‰æ›
 		eye = pTransform->GetWorldPosition();
 		target = Vector3(0, 0, 1) * Matrix4::Rotate(pTransform->rotation);
 		return;
 	}
 
-	// eye, target, up‚©‚çs—ñ‚ğŒvZ
+	// eye, target, upã‹ã‚‰è¡Œåˆ—ã‚’è¨ˆç®—
 	Vector3 sTarget = target + shakeVal;
 	Vector3 sEye = eye + shakeVal;
 	std::array<Vector3, 3> axis = CalculateAxis(sTarget - sEye, &up);
@@ -80,7 +80,7 @@ void BaseCamera::CameraMove(const Vector3& move)
 Matrix4 BaseCamera::GetBillboard() const
 {
 	//Vector3 cameraAxisZ = target - eye;
-	//// 0ƒxƒNƒgƒ‹‚Ì
+	//// 0ãƒ™ã‚¯ãƒˆãƒ«ã®æ™‚
 	//assert(!(cameraAxisZ.Length() == 0));
 	//assert(!(up.Length() == 0));
 

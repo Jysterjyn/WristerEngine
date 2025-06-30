@@ -1,4 +1,4 @@
-﻿#include "AudioManager.h"
+#include "AudioManager.h"
 #include "CollisionManager.h"
 #include "MyGame.h"
 #include "ParticleManager.h"

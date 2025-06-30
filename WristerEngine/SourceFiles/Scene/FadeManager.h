@@ -3,7 +3,7 @@
 
 namespace WristerEngine
 {
-	// ‰æ–Ê‚ÌƒtƒF[ƒh‰‰o
+	// ç”»é¢ã®ãƒ•ã‚§ãƒ¼ãƒ‰æ¼”å‡º
 	class FadeManager
 	{
 	private:
@@ -15,13 +15,13 @@ namespace WristerEngine
 		bool isChange = false;
 
 	public:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw() { sprite->Draw(); }
-		// ƒtƒF[ƒh‚ğƒIƒ“‚É‚·‚é
+		// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚’ã‚ªãƒ³ã«ã™ã‚‹
 		void FadeScene() { isFade = true; }
 		// getter
 		bool IsChange() const { return isChange; }

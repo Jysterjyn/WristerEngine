@@ -63,9 +63,9 @@ void CameraManager::Change(const std::string& name_)
 BaseCamera* CameraManager::Get(const std::string& cameraName) const
 {
 	std::string getCameraName;
-	// cameraNameが空なら現在使用しているカメラ
+	// cameraName縺檎ｩｺ縺ｪ繧臥樟蝨ｨ菴ｿ逕ｨ縺励※縺�繧九き繝｡繝ｩ
 	if (cameraName.empty()) { getCameraName = name; }
-	// そうでなければcameraNameキーのカメラを返す
+	// 縺昴≧縺ｧ縺ｪ縺代ｌ縺ｰcameraName繧ｭ繝ｼ縺ｮ繧ｫ繝｡繝ｩ繧定ｿ斐☆
 	else 
 	{
 		assert(cameras.contains(cameraName));

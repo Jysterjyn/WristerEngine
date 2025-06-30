@@ -30,13 +30,13 @@ Angle operator-(float rad, Angle angle)
 
 float LerpShortAngle(float a, float b, float t)
 {
-	// Šp“x·•ª‚ð‹‚ß‚é
+	// è§’åº¦å·®åˆ†ã‚’æ±‚ã‚ã‚‹
 	float diff = b - a;
-	// Šp“x‚ð•â³‚·‚é
+	// è§’åº¦ã‚’è£œæ­£ã™ã‚‹
 	diff = std::fmod(diff, 2 * PI); // [-2PI,+2PI]
 
 	if (diff > PI) { diff -= 2 * PI; }
-	else if (diff < -PI) { diff += 2 * PI; } // Å’ZŠp“x‚É‚·‚é
+	else if (diff < -PI) { diff += 2 * PI; } // æœ€çŸ­è§’åº¦ã«ã™ã‚‹
 
 	return std::lerp(a, a + diff, t);
 }

@@ -29,7 +29,7 @@ namespace WristerEngine
 		D3D12_VIEWPORT* viewport;
 	};
 
-	// DirectXŠî”Õ
+	// DirectXåŸºç›¤
 	class DirectXCommon final
 	{
 	private:
@@ -55,38 +55,38 @@ namespace WristerEngine
 		~DirectXCommon() = default;
 		DirectXCommon(const DirectXCommon&) = delete;
 		DirectXCommon& operator=(const DirectXCommon&) = delete;
-		// ƒfƒoƒCƒX‚Ì¶¬
+		// ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 		void CreateDevice();
-		// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ì¶¬
+		// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ç”Ÿæˆ
 		void CreateCommandList();
-		// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ì¶¬
+		// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ç”Ÿæˆ
 		void CreateSwapchain();
-		// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ì¶¬
+		// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ç”Ÿæˆ
 		void CreateRenderTargetView();
-		// ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚Ì¶¬
+		// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ç”Ÿæˆ
 		void CreateShaderResourceView();
-		// ƒtƒFƒ“ƒX‚Ì¶¬
+		// ãƒ•ã‚§ãƒ³ã‚¹ã®ç”Ÿæˆ
 		void CreateFence();
 
 	public:
-		// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static DirectXCommon* GetInstance();
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// •`‰æ‘Oˆ—
+		// æç”»å‰å‡¦ç†
 		void PreDraw();
-		// ƒ|ƒXƒgƒGƒtƒFƒNƒgƒNƒ‰ƒX“à‚Åg‚¤‹¤’Êˆ—•”•ª
+		// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚¯ãƒ©ã‚¹å†…ã§ä½¿ã†å…±é€šå‡¦ç†éƒ¨åˆ†
 		void PreDraw(const PreDrawProp& prop);
-		// •`‰æŒãˆ—
+		// æç”»å¾Œå‡¦ç†
 		void PostDraw();
 
 		/// <summary>
-		/// SRV‚ğ¶¬
+		/// SRVã‚’ç”Ÿæˆ
 		/// </summary>
-		/// <returns>Œ»İ¶¬‚µ‚½SRVƒnƒ“ƒhƒ‹</returns>
+		/// <returns>ç¾åœ¨ç”Ÿæˆã—ãŸSRVãƒãƒ³ãƒ‰ãƒ«</returns>
 		SRVHandle CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
 
-		// SRVIndex‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+		// SRVIndexã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 		void IncrementSRVIndex() { srvIndex++; }
 
 		// setter

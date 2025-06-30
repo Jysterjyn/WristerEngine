@@ -7,7 +7,7 @@ using namespace WristerEngine;
 
 Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
 
-//ƒQ[ƒ€ƒpƒbƒhƒfƒoƒCƒX‚Ìì¬-ƒfƒoƒCƒX—ñ‹“‚ÌŒ‹‰Ê‚ğó‚¯æ‚é\‘¢‘Ì
+//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®ä½œæˆ-ãƒ‡ãƒã‚¤ã‚¹åˆ—æŒ™ã®çµæœã‚’å—ã‘å–ã‚‹æ§‹é€ ä½“
 struct DeviceEnumParameter
 {
 	std::vector<Input::Joystick>* joysticks;
@@ -25,27 +25,27 @@ void Input::Initialize()
 	WindowsAPI* wAPI = WindowsAPI::GetInstance();
 
 	result = DirectInput8Create(wAPI->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	// ƒL[ƒ{[ƒh¶¬
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ç”Ÿæˆ
 	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
 	result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	// ƒ}ƒEƒX¶¬
+	// ãƒã‚¦ã‚¹ç”Ÿæˆ
 	result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
 	result = mouse->SetDataFormat(&c_dfDIMouse2);
 	result = mouse->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 
-	// ƒQ[ƒ€ƒpƒbƒh¶¬
+	// ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ç”Ÿæˆ
 	DeviceEnumParameter parameter{ &joysticks };
 
-	// GAMEPAD‚ğ’²‚×‚é
+	// GAMEPADã‚’èª¿ã¹ã‚‹
 	directInput->EnumDevices(
-		DI8DEVTYPE_GAMEPAD,			// ŒŸõ‚·‚éƒfƒoƒCƒX‚Ìí—Ş
-		DeviceFindCallBack,			// ”­Œ©‚ÉÀs‚·‚éŠÖ”
-		&parameter,					// ŠÖ”‚É“n‚·’l
-		DIEDFL_ATTACHEDONLY			// ŒŸõ•û–@
+		DI8DEVTYPE_GAMEPAD,			// æ¤œç´¢ã™ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã®ç¨®é¡
+		DeviceFindCallBack,			// ç™ºè¦‹æ™‚ã«å®Ÿè¡Œã™ã‚‹é–¢æ•°
+		&parameter,					// é–¢æ•°ã«æ¸¡ã™å€¤
+		DIEDFL_ATTACHEDONLY			// æ¤œç´¢æ–¹æ³•
 	);
 
-	// JOYSTICK‚ğ’²‚×‚é
+	// JOYSTICKã‚’èª¿ã¹ã‚‹
 	directInput->EnumDevices(
 		DI8DEVTYPE_JOYSTICK,
 		DeviceFindCallBack,
@@ -53,21 +53,21 @@ void Input::Initialize()
 		DIEDFL_ATTACHEDONLY
 	);
 
-	// ‚Ç‚¿‚ç‚àŒ©‚Â‚¯‚é‚±‚Æ‚ªo—ˆ‚È‚©‚Á‚½‚ç¸”s
+	// ã©ã¡ã‚‰ã‚‚è¦‹ã¤ã‘ã‚‹ã“ã¨ãŒå‡ºæ¥ãªã‹ã£ãŸã‚‰å¤±æ•—
 	if (joysticks.empty()) { return; }
 
 	for (auto& j : joysticks)
 	{
-		// ƒfƒoƒCƒX‚ª¶¬‚³‚ê‚Ä‚È‚¢
+		// ãƒ‡ãƒã‚¤ã‚¹ãŒç”Ÿæˆã•ã‚Œã¦ãªã„
 		if (!j.device) { continue; }
 
-		// §ŒäŠJn
+		// åˆ¶å¾¡é–‹å§‹
 		DIDEVCAPS cap;
 		j.device->GetCapabilities(&cap);
-		// ƒ|[ƒŠƒ“ƒO”»’è
+		// ãƒãƒ¼ãƒªãƒ³ã‚°åˆ¤å®š
 		if (cap.dwFlags & DIDC_POLLEDDATAFORMAT)
 		{
-			// ƒ|[ƒŠƒ“ƒOŠJn
+			// ãƒãƒ¼ãƒªãƒ³ã‚°é–‹å§‹
 			j.device->Acquire();
 			j.device->Poll();
 		}
@@ -76,7 +76,7 @@ void Input::Initialize()
 
 static bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 {
-	// ²ƒ‚[ƒh‚ğâ‘Î’lƒ‚[ƒh‚Æ‚µ‚Äİ’è
+	// è»¸ãƒ¢ãƒ¼ãƒ‰ã‚’çµ¶å¯¾å€¤ãƒ¢ãƒ¼ãƒ‰ã¨ã—ã¦è¨­å®š
 	DIPROPDWORD diprop;
 	ZeroMemory(&diprop, sizeof(diprop));
 	diprop.diph.dwSize = sizeof(diprop);
@@ -86,7 +86,7 @@ static bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 	diprop.dwData = DIPROPAXISMODE_ABS;
 	if (FAILED(device->SetProperty(DIPROP_AXISMODE, &diprop.diph))) { return false; }
 
-	// X²‚Ì’l‚Ì”ÍˆÍİ’è
+	// Xè»¸ã®å€¤ã®ç¯„å›²è¨­å®š
 	DIPROPRANGE diprg;
 	ZeroMemory(&diprg, sizeof(diprg));
 	diprg.diph.dwSize = sizeof(diprg);
@@ -97,14 +97,14 @@ static bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 	diprg.lMax = Input::PADSTICK_MAX_VAL;
 	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph))) { return false; }
 
-	// Y²‚Ì’l‚Ì”ÍˆÍİ’è
+	// Yè»¸ã®å€¤ã®ç¯„å›²è¨­å®š
 	diprg.diph.dwObj = DIJOFS_Y;
 	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph))) { return false; }
 
-	// RX²‚Ì’l‚Ì”ÍˆÍİ’è
+	// RXè»¸ã®å€¤ã®ç¯„å›²è¨­å®š
 	diprg.diph.dwObj = DIJOFS_RX;
 	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph))) { return false; }
-	// RY²‚Ì’l‚Ì”ÍˆÍİ’è
+	// RYè»¸ã®å€¤ã®ç¯„å›²è¨­å®š
 	diprg.diph.dwObj = DIJOFS_RY;
 	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph))) { return false; }
 
@@ -118,7 +118,7 @@ int CALLBACK Input::DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 
 	Joystick joysticks;
 
-	// ƒfƒoƒCƒX¶¬
+	// ãƒ‡ãƒã‚¤ã‚¹ç”Ÿæˆ
 	HRESULT hr = directInput->CreateDevice(
 		lpddi->guidInstance,
 		&joysticks.device,
@@ -126,16 +126,16 @@ int CALLBACK Input::DeviceFindCallBack(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
 
 	if (FAILED(hr)) { return DIENUM_STOP; }
 
-	// “ü—ÍƒtƒH[ƒ}ƒbƒg‚Ìw’è
+	// å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®æŒ‡å®š
 	device = joysticks.device.Get();
 	hr = device->SetDataFormat(&c_dfDIJoystick);
 
 	if (FAILED(hr)) { return DIENUM_STOP; }
 
-	// ƒvƒƒpƒeƒB‚Ìİ’è
+	// ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®è¨­å®š
 	if (!SetUpGamePadProperty(device)) { return DIENUM_STOP; }
 
-	// ‹¦’²ƒŒƒxƒ‹‚Ìİ’è
+	// å”èª¿ãƒ¬ãƒ™ãƒ«ã®è¨­å®š
 	WindowsAPI* wAPI = WindowsAPI::GetInstance();
 	device->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 
@@ -195,16 +195,16 @@ Input::PadState Input::GetPadState(uint32_t stickNo) const
 	if (!IsInArray(stickNo)) { return {}; }
 
 	DIJOYSTATE joyState = GetJoyState(stickNo);
-	// \šƒL[‚Ì•ûŒü
+	// åå­—ã‚­ãƒ¼ã®æ–¹å‘
 	float angle = joyState.rgdwPOV[0] * PI / 18000.0f;
 	Vector2 dirKey;
 	if (joyState.rgdwPOV[0] != -1) { dirKey = { std::sin(angle), std::cos(angle) }; }
 
-	// ƒXƒeƒBƒbƒN’l‚Ì³‹K‰»
-	Vector2 stickL = { (float)joyState.lX, (float)joyState.lY }; // LƒXƒeƒBƒbƒN
+	// ã‚¹ãƒ†ã‚£ãƒƒã‚¯å€¤ã®æ­£è¦åŒ–
+	Vector2 stickL = { (float)joyState.lX, (float)joyState.lY }; // Lã‚¹ãƒ†ã‚£ãƒƒã‚¯
 	stickL /= (float)Input::PADSTICK_MAX_VAL;
 
-	Vector2 stickR = { (float)joyState.lRx, (float)joyState.lRy };  // RƒXƒeƒBƒbƒN
+	Vector2 stickR = { (float)joyState.lRx, (float)joyState.lRy };  // Rã‚¹ãƒ†ã‚£ãƒƒã‚¯
 	stickR /= (float)Input::PADSTICK_MAX_VAL;
 
 	return PadState(stickL, stickR, joyState.lZ, dirKey);

@@ -3,40 +3,40 @@
 
 namespace WristerEngine::_2D
 {
-	// ƒ}ƒbƒvƒ`ƒbƒv•`‰æ”Ä—pƒNƒ‰ƒX
+	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—æç”»æ±ç”¨ã‚¯ãƒ©ã‚¹
 	class BaseMapChip
 	{
 	protected:
-		Vector2 leftTopPos; // ‹N“_‚Æ‚È‚éˆÊ’u
-		Vector2 chipSize; // ƒ`ƒbƒv1–‡‚ÌƒTƒCƒY
-		Vector2 chipAnchor; // ƒ`ƒbƒv‚ÌƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg
-		std::vector<Sprite*> sprites; // •`‰æ‚Ég‚¤ƒXƒvƒ‰ƒCƒg
+		Vector2 leftTopPos; // èµ·ç‚¹ã¨ãªã‚‹ä½ç½®
+		Vector2 chipSize; // ãƒãƒƒãƒ—1æšã®ã‚µã‚¤ã‚º
+		Vector2 chipAnchor; // ãƒãƒƒãƒ—ã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ
+		std::vector<Sprite*> sprites; // æç”»ã«ä½¿ã†ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 
 	public:
 		virtual ~BaseMapChip() = default;
 
 		/// <summary>
-		/// ‰Šú‰»
+		/// åˆæœŸåŒ–
 		/// </summary>
-		/// <param name="leftTopPos">‹N“_‚Æ‚È‚éˆÊ’u</param>
-		/// <param name="chipSize">ƒ`ƒbƒv1–‡‚ÌƒTƒCƒY</param>
-		/// <param name="chipAnchor">ƒ`ƒbƒv‚ÌƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg</param>
+		/// <param name="leftTopPos">èµ·ç‚¹ã¨ãªã‚‹ä½ç½®</param>
+		/// <param name="chipSize">ãƒãƒƒãƒ—1æšã®ã‚µã‚¤ã‚º</param>
+		/// <param name="chipAnchor">ãƒãƒƒãƒ—ã®ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ</param>
 		void Initialize(const Vector2& leftTopPos, const Vector2& chipSize, const Vector2& chipAnchor);
 
 		virtual void VirtualInitialize(Sprite* sprite, float splitNum) = 0;
 
 		/// <summary>
-		/// ƒXƒvƒ‰ƒCƒgî•ñ’Ç‰Á
+		/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæƒ…å ±è¿½åŠ 
 		/// </summary>
-		/// <param name="fileName">ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼</param>
-		/// <param name="chipPos">ƒ`ƒbƒv’PˆÊ‚Å‚ÌêŠ</param>
-		/// <param name="splitNum">•ªŠ„”</param>
-		/// <param name="drawSize">•`‰æƒTƒCƒY(0,0‚¾‚Æ‹K’èƒTƒCƒY)</param>
+		/// <param name="fileName">ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å</param>
+		/// <param name="chipPos">ãƒãƒƒãƒ—å˜ä½ã§ã®å ´æ‰€</param>
+		/// <param name="splitNum">åˆ†å‰²æ•°</param>
+		/// <param name="drawSize">æç”»ã‚µã‚¤ã‚º(0,0ã ã¨è¦å®šã‚µã‚¤ã‚º)</param>
 		void AddSprite(const std::string& fileName, const Vector2& chipPos, float splitNum = 2.0f, const Vector2& drawSize = {});
 
-		// XV
+		// æ›´æ–°
 		virtual void Update() = 0;
-		// •`‰æ
+		// æç”»
 		void Draw();
 	};
 }

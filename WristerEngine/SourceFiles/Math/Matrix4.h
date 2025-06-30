@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector.h"
 
-// 4x4s—ñ
+// 4x4è¡Œåˆ—
 class Matrix4
 {
 public:
@@ -13,36 +13,36 @@ public:
 		0.0f,0.0f,0.0f,1.0f
 	};
 	Matrix4 operator*=(const Matrix4& m2);
-	// ƒxƒNƒgƒ‹‚Ì‘ã“ü
+	// ãƒ™ã‚¯ãƒˆãƒ«ã®ä»£å…¥
 	void SetVector(Vector3 vec, size_t row);
-	// s—ñ‚©‚çƒxƒNƒgƒ‹‚ð“¾‚é
+	// è¡Œåˆ—ã‹ã‚‰ãƒ™ã‚¯ãƒˆãƒ«ã‚’å¾—ã‚‹
 	Vector3 GetVector(size_t row) const;
-	// ‹ts—ñ‚É‚·‚é
+	// é€†è¡Œåˆ—ã«ã™ã‚‹
 	void Inverse();
 
-	// ’PˆÊs—ñ
+	// å˜ä½è¡Œåˆ—
 	static Matrix4 Identity();
-	// ƒ[ƒs—ñ
+	// ã‚¼ãƒ­è¡Œåˆ—
 	static Matrix4 Zero();
-	// ƒXƒP[ƒ‹s—ñ
+	// ã‚¹ã‚±ãƒ¼ãƒ«è¡Œåˆ—
 	static Matrix4 Scale(const Vector3& s);
-	// XŽ²Žü‚è‚Ì‰ñ“]s—ñ
+	// Xè»¸å‘¨ã‚Šã®å›žè»¢è¡Œåˆ—
 	static Matrix4 RotateX(float angle);
-	// YŽ²Žü‚è‚Ì‰ñ“]s—ñ
+	// Yè»¸å‘¨ã‚Šã®å›žè»¢è¡Œåˆ—
 	static Matrix4 RotateY(float angle);
-	// ZŽ²Žü‚è‚Ì‰ñ“]s—ñ
+	// Zè»¸å‘¨ã‚Šã®å›žè»¢è¡Œåˆ—
 	static Matrix4 RotateZ(float angle);
-	// ‰ñ“]s—ñ
+	// å›žè»¢è¡Œåˆ—
 	static Matrix4 Rotate(const Vector3& r);
-	// •½sˆÚ“®s—ñ
+	// å¹³è¡Œç§»å‹•è¡Œåˆ—
 	static Matrix4 Translate(const Vector3& t);
 };
 
-// “]’us—ñ
+// è»¢ç½®è¡Œåˆ—
 Matrix4 Transpose(const Matrix4& mat);
-// ‹ts—ñ
+// é€†è¡Œåˆ—
 Matrix4 Inverse(const Matrix4& mat);
-// 3DƒxƒNƒgƒ‹‚©‚çs—ñ‚ðì‚é
+// 3Dãƒ™ã‚¯ãƒˆãƒ«ã‹ã‚‰è¡Œåˆ—ã‚’ä½œã‚‹
 Matrix4 CreateFromVector(const Vector3& vec1 = { 1,0,0 }, const Vector3& vec2 = { 0,1,0 }, const Vector3& vec3 = { 0,0,1 }, const Vector3& vec4 = {});
 
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);

@@ -7,17 +7,17 @@ namespace WristerEngine::_3D
 {
 	enum class RootParamNum { MatWorld = (int)TexType::Num, Material, Light, Camera };
 
-	// 3DƒIƒuƒWƒFƒNƒg‚ÌŠÇ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç®¡ç†
 	class ModelManager final
 	{
 	private:
-		// “Ç‚İ‚ñ‚¾ƒ‚ƒfƒ‹î•ñ
+		// èª­ã¿è¾¼ã‚“ã ãƒ¢ãƒ‡ãƒ«æƒ…å ±
 		std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
-		// ¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg
+		// ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		std::list<std::unique_ptr<Object3d>> objects;
-		// ƒJƒƒ‰ƒ}ƒl[ƒWƒƒ[
+		// ã‚«ãƒ¡ãƒ©ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 		CameraManager* cameraManager = CameraManager::GetInstance();
-		// ƒ‰ƒCƒg
+		// ãƒ©ã‚¤ãƒˆ
 		std::unique_ptr<LightGroup> lightGroup;
 
 		ModelManager() = default;
@@ -28,17 +28,17 @@ namespace WristerEngine::_3D
 	public:
 		static ModelManager* GetInstance();
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æˆ—
+		// æç”»å‡¦ç†
 		void Draw();
-		// ƒ‚ƒfƒ‹ì¬
+		// ãƒ¢ãƒ‡ãƒ«ä½œæˆ
 		Object3d* Create(const std::string& modelName, bool smoothing = false, const std::string& directoryName = "");
-		// ƒ‚ƒfƒ‹ƒOƒ‹[ƒvì¬
+		// ãƒ¢ãƒ‡ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—ä½œæˆ
 		std::unordered_map<std::string, Object3d*> CreateGroup(const std::string& directoryName, bool smoothing = false);
-		// ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
+		// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
 		void ClearObjects() { objects.clear(); }
 		// getter
 		LightGroup* GetLightGroup() const { return lightGroup.get(); }

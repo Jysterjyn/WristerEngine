@@ -32,6 +32,6 @@ void AudioManager::Update()
 {
 	audios.remove_if([](auto& audio) { return audio->isSE && audio->IsFinished(); });
 
-	// XVˆ—
+	// æ›´æ–°å‡¦ç†
 	for (auto& audio : audios) { audio->Update(); }
 }

@@ -7,17 +7,17 @@ const std::string JsonLoader::DEFAULT_BASE_DIRECTORY = "Resources/JsonFiles/";
 
 nlohmann::json WristerEngine::JsonLoader::LoadJson(const std::string& fileName)
 {
-	// ƒtƒ‹ƒpƒX
+	// ãƒ•ãƒ«ãƒ‘ã‚¹
 	const std::string fullpath = DEFAULT_BASE_DIRECTORY + fileName + ".json";
-	std::ifstream file; // ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
-	// ƒtƒ@ƒCƒ‹‚ðŠJ‚­
+	std::ifstream file; // ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	file.open(fullpath);
-	// “Ç‚Ýž‚ÝŽ¸”s‚ÌŽž
+	// èª­ã¿è¾¼ã¿å¤±æ•—ã®æ™‚
 	if (file.fail()) { return{}; }
 
-	// JSON•¶Žš—ñ‚©‚ç‰ð“€‚µ‚½ƒf[ƒ^
+	// JSONæ–‡å­—åˆ—ã‹ã‚‰è§£å‡ã—ãŸãƒ‡ãƒ¼ã‚¿
 	nlohmann::json deserialized;
-	// ‰ð“€
+	// è§£å‡
 	file >> deserialized;
 	file.close();
 	return deserialized;

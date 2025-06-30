@@ -12,7 +12,7 @@ namespace WristerEngine
 {
 	class AudioManager;
 
-	// ƒI[ƒfƒBƒI
+	// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
 	class Audio
 	{
 	private:
@@ -23,34 +23,34 @@ namespace WristerEngine
 		bool isLoop = false;
 		bool isSE = false;
 
-		// ƒfƒtƒHƒ‹ƒgƒfƒBƒŒƒNƒgƒŠ
+		// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 		static std::string DIRECTORY_PATH;
 
-		// Ä¶‚ªI‚í‚Á‚½‚©
+		// å†ç”ŸãŒçµ‚ã‚ã£ãŸã‹
 		bool IsFinished();
 
 	protected:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(const std::string& fileName, bool isLoop);
-		// XV
+		// æ›´æ–°
 		virtual void Update();
 
 	public:
 		friend AudioManager;
-		// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+		// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		virtual ~Audio() = default;
-		// Ä¶
+		// å†ç”Ÿ
 		void Play() { PlayResume(); SetPlayPosition(0); }
 		void PlayResume() { mediaControl->Run(); }
-		// ’†’f
+		// ä¸­æ–­
 		void Stop() { mediaControl->Stop(); }
-		// ƒXƒs[ƒh•ÏX
+		// ã‚¹ãƒ”ãƒ¼ãƒ‰å¤‰æ›´
 		void SetSpeed(double playSpd) { mediaPosition->put_Rate(playSpd); }
-		// Ä¶ˆÊ’u•ÏX(•b’PˆÊ)
+		// å†ç”Ÿä½ç½®å¤‰æ›´(ç§’å˜ä½)
 		void SetPlayPosition(double playPosition) { mediaPosition->put_CurrentPosition(playPosition); }
-		// -10000(–³‰¹)~0(Å‘å‰¹—Ê) : ’PˆÊ ƒfƒVƒxƒ‹
+		// -10000(ç„¡éŸ³)~0(æœ€å¤§éŸ³é‡) : å˜ä½ ãƒ‡ã‚·ãƒ™ãƒ«
 		void SetVolume(long volume) { basicAudio->put_Volume(volume); }
-		// -10000(¶)`10000(‰E)
+		// -10000(å·¦)ã€œ10000(å³)
 		void SetBalance(long balance) { basicAudio->put_Balance(balance); }
 
 		REFTIME time = 0;

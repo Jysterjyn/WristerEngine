@@ -7,7 +7,7 @@
 
 namespace WristerEngine
 {
-	// n“_‚©‚çI“_‚ÖŒü‚©‚¤ƒp[ƒeƒBƒNƒ‹
+	// å§‹ç‚¹ã‹ã‚‰çµ‚ç‚¹ã¸å‘ã‹ã†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	class DirectionalParticle : public Particle
 	{
 	public:
@@ -16,14 +16,14 @@ namespace WristerEngine
 			Vector3 start;
 			Vector3 end;
 			float scale = 1;
-			uint16_t splitNum = 1; // §Œä“_‚Ì”
-			Angle angle = 0; // {0,1,0}‚ª0ƒ‰ƒWƒAƒ“
+			uint16_t splitNum = 1; // åˆ¶å¾¡ç‚¹ã®æ•°
+			Angle angle = 0; // {0,1,0}ãŒ0ãƒ©ã‚¸ã‚¢ãƒ³
 
 			/// <summary>
-			/// angle‚Æ‚ÌŠp“x·
+			/// angleã¨ã®è§’åº¦å·®
 			/// </summary>
-			/// <param name="x">ƒ}ƒCƒiƒX‚Ì”ÍˆÍ</param>
-			/// <param name="y">ƒvƒ‰ƒX‚Ì”ÍˆÍ</param>
+			/// <param name="x">ãƒã‚¤ãƒŠã‚¹ã®ç¯„å›²</param>
+			/// <param name="y">ãƒ—ãƒ©ã‚¹ã®ç¯„å›²</param>
 			Vector2 angleRange;
 
 			float radius = 0;
@@ -32,17 +32,17 @@ namespace WristerEngine
 		};
 
 	private:
-		Vector3 start; // n“_
-		Vector3 end; // I“_
+		Vector3 start; // å§‹ç‚¹
+		Vector3 end; // çµ‚ç‚¹
 		uint16_t splitNum = 1;
 		Angle angle = 0;
 		float radius = 0;
 		FrameTimer frame;
-		std::vector<Vector3> controlPoints; // §Œä“_
+		std::vector<Vector3> controlPoints; // åˆ¶å¾¡ç‚¹
 
 		void ComputeControlPoints();
 
-		// Particle ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+		// Particle ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 		void Initialize(const BaseParticleProp& prop) override;
 		void Update() override;
 	};

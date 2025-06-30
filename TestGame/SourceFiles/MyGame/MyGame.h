@@ -5,19 +5,19 @@
 #include <PrimitiveDrawer.h>
 #include "ParticleManager.h"
 
-// ‚±‚ÌƒQ[ƒ€ŒÅ—L‚Ìˆ—ƒNƒ‰ƒX
+// ã“ã®ã‚²ãƒ¼ãƒ å›ºæœ‰ã®å‡¦ç†ã‚¯ãƒ©ã‚¹
 class MyGame : public WE::Framework
 {
 	WE::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
 	WE::_3D::PrimitiveDrawer* pDrawer = WE::_3D::PrimitiveDrawer::GetInstance();
 	WE::ParticleManager* particleManager = WE::ParticleManager::GetInstance();
 
-	// ‰Šú‰»(ƒI[ƒo[ƒ‰ƒCƒh)
+	// åˆæœŸåŒ–(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Initialize();
-	// XV(ƒI[ƒo[ƒ‰ƒCƒh)
+	// æ›´æ–°(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Update();
-	// •`‰æ(ƒI[ƒo[ƒ‰ƒCƒh)
+	// æç”»(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Draw();
-	// I—¹ˆ—(ƒI[ƒo[ƒ‰ƒCƒh)
+	// çµ‚äº†å‡¦ç†(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Finalize();
 };

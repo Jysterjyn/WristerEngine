@@ -15,19 +15,19 @@ void Framework::Initialize()
 	PipelineManager::Initialize();
 	constant->LoadConstants();
 	ImGuiManager::Initialize();
-	// ƒOƒ[ƒoƒ‹•Ï”‚Ì“Ç‚Ýž‚Ý
+	// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®èª­ã¿è¾¼ã¿
 	GlobalVariables::GetInstance()->LoadFiles();
 }
 
 void Framework::Update()
 {
-	// “ü—ÍŠÖ˜A‚Ì–ˆƒtƒŒ[ƒ€ˆ—
+	// å…¥åŠ›é–¢é€£ã®æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	input->Update();
-	// ƒOƒ[ƒoƒ‹•Ï”‚ÌXV
+	// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®æ›´æ–°
 	GlobalVariables::GetInstance()->Update();
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì–ˆƒtƒŒ[ƒ€ˆ—
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	sceneManager->Update();
-	// ƒXƒvƒ‰ƒCƒg‚ÌXV
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®æ›´æ–°
 	Sprite::UpdateAll();
 }
 
@@ -43,18 +43,18 @@ void Framework::Run()
 {
 	Initialize();
 
-	// Xƒ{ƒ^ƒ“‚ÅI—¹ƒƒbƒZ[ƒW‚ª—ˆ‚½‚çƒQ[ƒ€ƒ‹[ƒv‚ð”²‚¯‚é
+	// Xãƒœã‚¿ãƒ³ã§çµ‚äº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸã‚‰ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 	while (!(IsEndRequest() || wAPI->ProcessMessage()))
 	{
-		// ImGuiŽó•tŠJŽn
+		// ImGuiå—ä»˜é–‹å§‹
 		ImGuiManager::Begin();
 
 		Update();
 
-		// ImGuiŽó•tI—¹
+		// ImGuiå—ä»˜çµ‚äº†
 		ImGuiManager::End();
 
-		// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚ðƒZƒbƒg
+		// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã‚’ã‚»ãƒƒãƒˆ
 		dxCommon->SetDescriptorHeap();
 
 		Draw();

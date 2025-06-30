@@ -3,23 +3,23 @@
 #include <Timer.h>
 
 namespace WristerEngine
-{	// ŒÀ”­“®
+{	// æ™‚é™ç™ºå‹•
 	class TimedCall
 	{
 	private:
-		// ƒR[ƒ‹ƒoƒbƒN
+		// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 		std::function<void(void)> callfunc;
-		// c‚èŠÔ
+		// æ®‹ã‚Šæ™‚é–“
 		FrameTimer timer;
-		// Š®—¹ƒtƒ‰ƒO
+		// å®Œäº†ãƒ•ãƒ©ã‚°
 		bool isFinished = false;
 
 	public:
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		TimedCall(std::function<void(void)>callfunc, uint32_t time);;
-		// XV
+		// æ›´æ–°
 		void Update();
-		// Š®—¹‚È‚çtrue‚ğ•Ô‚·
+		// å®Œäº†ãªã‚‰trueã‚’è¿”ã™
 		bool IsFinished()const { return isFinished; }
 	};
 }

@@ -2,24 +2,24 @@
 #include "MathUtility.h"
 #include <array>
 
-// 2DƒxƒNƒgƒ‹
+// 2Dãƒ™ã‚¯ãƒˆãƒ«
 class Vector2
 {
 public:
 	float x = 0, y = 0;
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Vector2(float x_ = 0, float y_ = 0) { x = x_, y = y_; }
 
-	// ƒmƒ‹ƒ€(’·‚³)
+	// ãƒãƒ«ãƒ (é•·ã•)
 	float Length() const { return sqrtf(x * x + y * y); }
-	// ³‹K‰»
+	// æ­£è¦åŒ–
 	Vector2 Normalize();
 
-	// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector2 operator-() const { return Vector2(-x, -y); }
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector2& operator+=(const Vector2& v);
 	Vector2& operator-=(const Vector2& v);
 	Vector2& operator*=(float s);
@@ -29,27 +29,27 @@ public:
 
 class Matrix4;
 
-// 3DƒxƒNƒgƒ‹
+// 3Dãƒ™ã‚¯ãƒˆãƒ«
 class Vector3
 {
 public:
 	float x = 0, y = 0, z = 0;
 
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	Vector3(float x_ = 0, float y_ = 0, float z_ = 0) { x = x_, y = y_, z = z_; }
 	Vector3(const Vector2& v, float z_ = 0) { x = v.x, y = v.y, z = z_; }
 
-	// ƒmƒ‹ƒ€(’·‚³)
+	// ãƒãƒ«ãƒ (é•·ã•)
 	float Length() const { return sqrtf(x * x + y * y + z * z); }
-	// ³‹K‰»
+	// æ­£è¦åŒ–
 	Vector3 Normalize();
-	// Še¬•ª‚Ìâ‘Î’l‚ğ•Ô‚·
+	// å„æˆåˆ†ã®çµ¶å¯¾å€¤ã‚’è¿”ã™
 	Vector3 abs();
 
-	// ’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	// å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3 operator-() const { return Vector3(-x, -y, -z); }
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3& operator+=(const Vector3& v);
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
@@ -62,16 +62,16 @@ public:
 	bool operator>(Vector3) const;
 	bool operator==(Vector3) const;
 
-	// ”z—ñ‚Æ‚µ‚Äˆµ‚¦‚é
+	// é…åˆ—ã¨ã—ã¦æ‰±ãˆã‚‹
 	float& operator[](size_t index);
 
-	// ²‚ğì¬
+	// è»¸ã‚’ä½œæˆ
 	static Vector3 MakeAxis(Axis axis);
 
 	operator Vector2() { return { x,y }; }
 };
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 const Vector2 operator+(const Vector2& v1, const Vector2& v2);
 const Vector2 operator-(const Vector2& v1, const Vector2& v2);
 const Vector2 operator*(const Vector2& v, float s);
@@ -83,39 +83,39 @@ const Vector3 operator*(const Vector3& v, float s);
 const Vector3 operator*(float s, const Vector3& v);
 const Vector3 operator/(const Vector3& v, float s);
 
-// “àÏ’l
+// å†…ç©å€¤
 float Dot(const Vector2& v1, const Vector2& v2);
 float Dot(const Vector3& v1, const Vector3& v2);
-// ŠOÏ’l
+// å¤–ç©å€¤
 float Cross(const Vector2& v1, const Vector2& v2);
 Vector3 Cross(const Vector3& v1, const Vector3& v2);
-// ƒƒ“ƒoŠÖ”‚ÌƒOƒ[ƒoƒ‹ŠÖ””Å
-// ƒmƒ‹ƒ€(’·‚³)
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«é–¢æ•°ç‰ˆ
+// ãƒãƒ«ãƒ (é•·ã•)
 float Length(const Vector3& v);
-// ³‹K‰»
+// æ­£è¦åŒ–
 Vector2 Normalize(const Vector2& v);
 Vector3 Normalize(const Vector3& v);
-// 3D¨2DÀ•W
+// 3Dâ†’2Dåº§æ¨™
 Vector2 To2DVector(const Vector3& vec);
 
 /// <summary>
-/// 2D¨3DÀ•W
+/// 2Dâ†’3Dåº§æ¨™
 /// </summary>
-/// <param name="distanceFromNear">NearƒNƒŠƒbƒv–Ê‚©‚ç‚Ì‹——£</param>
+/// <param name="distanceFromNear">Nearã‚¯ãƒªãƒƒãƒ—é¢ã‹ã‚‰ã®è·é›¢</param>
 Vector3 To3DVector(const Vector2& vec, float distanceFromNear);
 
-// forward‚ğ³–ÊƒxƒNƒgƒ‹‚Æ‚·‚é3²‚ğŒvZ‚·‚é
+// forwardã‚’æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹3è»¸ã‚’è¨ˆç®—ã™ã‚‹
 std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up = nullptr);
 
-// ”ÍˆÍ“à‚Ìƒ‰ƒ“ƒ_ƒ€‚È‘å‚«‚³‚ÌƒxƒNƒgƒ‹‚ğ¶¬‚·‚é
+// ç¯„å›²å†…ã®ãƒ©ãƒ³ãƒ€ãƒ ãªå¤§ãã•ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 Vector2 RandomVector(Vector2 range);
 Vector3 RandomVector(Vector3 range);
 
-// üŒ`•âŠÔ
+// ç·šå½¢è£œé–“
 template <class T>
 T Lerp(const T& start, const T& end, const float t) { return start * (1.0f - t) + end * t; }
-// ƒxƒWƒG‹Èü
+// ãƒ™ã‚¸ã‚¨æ›²ç·š
 Vector3 BezierCurve(std::vector<Vector3> p, float t);
-// ƒXƒvƒ‰ƒCƒ“‹Èü
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒ³æ›²ç·š
 Vector3 SplineCurve(const std::vector<Vector3>& points, size_t startIndex, float t);
 Vector3 SplineCurve(const std::vector<Vector3>& points, float t);

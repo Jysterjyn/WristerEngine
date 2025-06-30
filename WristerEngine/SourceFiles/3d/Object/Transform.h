@@ -8,19 +8,19 @@ namespace WristerEngine::_3D
 {
 	class Object3d;
 
-	// ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
 	class Transform
 	{
 	private:
-		// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct ConstBufferData
 		{
-			Matrix4 world; // ƒ[ƒ‹ƒhs—ñ
+			Matrix4 world; // ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 		};
 
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
-		bool isObject3d = false; // Object3D‚Ìƒƒ“ƒo•Ï”‚©
+		bool isObject3d = false; // Object3Dã®ãƒ¡ãƒ³ãƒå¤‰æ•°ã‹
 		bool isUpdated = false;
 		friend Object3d;
 
@@ -29,11 +29,11 @@ namespace WristerEngine::_3D
 		Vector3 scale = { 1,1,1 }, rotation, translation;
 		Transform* parent = nullptr;
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize();
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
 		// getter
 		Vector3 GetWorldPosition() const { return matWorld.GetVector(3); }

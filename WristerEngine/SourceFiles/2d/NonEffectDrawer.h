@@ -3,7 +3,7 @@
 
 namespace WristerEngine
 {
-	// ポストエフェクトの影響を受けない描画
+	// 繝昴せ繝医お繝輔ぉ繧ｯ繝医�ｮ蠖ｱ髻ｿ繧貞女縺代↑縺�謠冗判
 	class NonEffectDrawer
 	{
 		static std::list<_2D::Sprite*> sprites;

@@ -5,13 +5,13 @@
 
 namespace WristerEngine
 {
-	// ƒV[ƒ“ƒtƒ@ƒNƒgƒŠ[‚Ì’ŠÛƒNƒ‰ƒX
+	// ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼ã®æŠ½è±¡ã‚¯ãƒ©ã‚¹
 	class AbstractSceneFactory
 	{
 	public:
-		// ‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+		// ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		virtual ~AbstractSceneFactory() = default;
-		// ƒV[ƒ“ì¬
+		// ã‚·ãƒ¼ãƒ³ä½œæˆ
 		virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
 	};
 }

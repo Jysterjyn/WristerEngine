@@ -14,7 +14,7 @@ void PointAudio::Initialize(const std::string& fileName, Vector3 audioPos_, bool
 
 void PointAudio::Update()
 {
-	// ƒ‹[ƒvÄ¶‚·‚é
+	// ãƒ«ãƒ¼ãƒ—å†ç”Ÿã™ã‚‹
 	Audio::Update();
 
 	if (useCamera)
@@ -23,20 +23,20 @@ void PointAudio::Update()
 		micPos = vp->eye;
 		forward = Normalize(vp->target - vp->eye);
 	}
-	// ƒ}ƒCƒN‚©‚ç‰¹Œ¹‚Ì‹——£
+	// ãƒžã‚¤ã‚¯ã‹ã‚‰éŸ³æºã®è·é›¢
 	Vector3 toMic = micPos - audioPos;
 	float dis = toMic.Length();
-	// ‹——£‚ª1–¢–ž‚¾‚ÆA‰¹Œ¹‚Ì‰¹—Ê‚æ‚è‘å‚«‚­‚È‚é‚Ì‚Å’²®
+	// è·é›¢ãŒ1æœªæº€ã ã¨ã€éŸ³æºã®éŸ³é‡ã‚ˆã‚Šå¤§ãããªã‚‹ã®ã§èª¿æ•´
 	dis = max(dis, 1.0f);
-	// ‹——£Œ¸Š
-	float dic = 20.0f * std::log10f(dis); // ƒfƒVƒxƒ‹‚ÌŒvŽZŽ®(20 * log10(d)‚æ‚è)
-	// dicÅ¬’l
+	// è·é›¢æ¸›è¡°
+	float dic = 20.0f * std::log10f(dis); // ãƒ‡ã‚·ãƒ™ãƒ«ã®è¨ˆç®—å¼(20 * log10(d)ã‚ˆã‚Š)
+	// dicæœ€å°å€¤
 	const float MIN_VOLUME = -10000.0f;
 	dic = max(dic, MIN_VOLUME);
 	SetVolume(-(long)(dic * 100.0f));
-	// ‰¹Œ¹‚Ì¶‰EˆÚ“®(ƒpƒ“)
+	// éŸ³æºã®å·¦å³ç§»å‹•(ãƒ‘ãƒ³)
 	if (!usePan) { return; }
-	// yŽ²¬•ª‚ðÁ‚µ‚½2¬•ªŽ²‚ÅŠOÏ‚ðŽæ‚é
+	// yè»¸æˆåˆ†ã‚’æ¶ˆã—ãŸ2æˆåˆ†è»¸ã§å¤–ç©ã‚’å–ã‚‹
 	Vector2 dVec[2];
 	dVec[0] = { forward.x,forward.z };
 	toMic.Normalize();

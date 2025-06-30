@@ -24,7 +24,7 @@ void ParticleManager::Update()
 	{
 		for (auto& particles : particleGroup.second) { particles->Update(); }
 	}
-	// ’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	const BaseCamera* camera = CameraManager::GetInstance()->Get();
 	constMap->mat = camera->GetViewProjectionMatrix();
 	constMap->matBillboard = camera->GetBillboard();
@@ -47,12 +47,12 @@ void ParticleManager::Draw()
 	for (auto& particleGroup : particleGroups)
 	{
 		if (particleGroup.second.empty()) { continue; }
-		// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ðƒZƒbƒg
+		// ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’ã‚»ãƒƒãƒˆ
 		ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-		// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ðÝ’è
+		// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã‚’è¨­å®š
 		PipelineManager::SetPipeline(ConvertType(particleGroup.first));
 		cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
-		// ’è”ƒoƒbƒtƒ@ƒrƒ…[‚ðƒZƒbƒg
+		// å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 		cmdList->SetGraphicsRootConstantBufferView(1, constBuff->GetGPUVirtualAddress());
 		for (auto& particles : particleGroup.second) { particles->Draw(); }
 	}

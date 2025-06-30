@@ -5,7 +5,7 @@
 
 class TestSceneUIDrawer :public WristerEngine::_2D::AbstractUIDrawer
 {
-	// AbstractUIDrawer ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// AbstractUIDrawer ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 };
@@ -16,7 +16,7 @@ class TestScene : public WristerEngine::BaseScene
 	Player player;
 	WE::_3D::Transform transform;
 
-	// BaseScene ‚ğ‰î‚µ‚ÄŒp³‚³‚ê‚Ü‚µ‚½
+	// BaseScene ã‚’ä»‹ã—ã¦ç¶™æ‰¿ã•ã‚Œã¾ã—ãŸ
 	void Initialize() override;
 	void Update() override;
 	void Draw() {}

@@ -74,15 +74,15 @@ namespace WristerEngine::_3D
 		ConstBufferDataMaterial* constMapMaterial = nullptr;
 		vector<Bone> bones;
 		FbxScene* fbxScene = nullptr;
-		// ƒeƒNƒXƒ`ƒƒ
-		_2D::TextureData* baseTexture; // ƒx[ƒX
-		_2D::TextureData* metalnessTexture; // ƒƒ^ƒ‹
-		_2D::TextureData* roughnessTexture; // ƒ‰ƒtƒlƒX
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		_2D::TextureData* baseTexture; // ãƒ™ãƒ¼ã‚¹
+		_2D::TextureData* metalnessTexture; // ãƒ¡ã‚¿ãƒ«
+		_2D::TextureData* roughnessTexture; // ãƒ©ãƒ•ãƒã‚¹
 
-		ColorRGB baseColor = { 1,1,1 }; // ƒAƒ‹ƒxƒh
-		float metalness = 0.0f; // ‹à‘®“x(0 or 1)
-		float specular = 0.5f; // ‹¾–Ê”½ŽË“x(0 ~ 1)
-		float roughness = 0.0f; // ‘e‚³
+		ColorRGB baseColor = { 1,1,1 }; // ã‚¢ãƒ«ãƒ™ãƒ‰
+		float metalness = 0.0f; // é‡‘å±žåº¦(0 or 1)
+		float specular = 0.5f; // é¡é¢åå°„åº¦(0 ~ 1)
+		float roughness = 0.0f; // ç²—ã•
 
 		void ParseMeshVertices(FbxMesh* fbxMesh);
 		void ParseMeshFaces(FbxMesh* fbxMesh);

@@ -4,7 +4,7 @@
 
 namespace WristerEngine
 {
-	// “_‰¹Œ¹ ƒ}ƒCƒN‚Æ‚ÌˆÊ’uŠÖŒW‚Å‰¹‚ª•Ï‚í‚é
+	// ç‚¹éŸ³æº ãƒã‚¤ã‚¯ã¨ã®ä½ç½®é–¢ä¿‚ã§éŸ³ãŒå¤‰ã‚ã‚‹
 	class PointAudio : public Audio
 	{
 	private:
@@ -13,7 +13,7 @@ namespace WristerEngine
 		Vector3 forward;
 		bool useCamera = true;
 		bool usePan = true;
-		long panStrength = 2500; // ƒpƒ“‚Ì‹­‚³(‘å‚«‚¢‚Ù‚Ç¶‰E‚Ì‰¹—Ê·‚ª‘å‚«‚­‚È‚é)
+		long panStrength = 2500; // ãƒ‘ãƒ³ã®å¼·ã•(å¤§ãã„ã»ã©å·¦å³ã®éŸ³é‡å·®ãŒå¤§ãããªã‚‹)
 
 		void Initialize(const std::string& fileName, Vector3 audioPos, bool useCamera, bool usePan, bool isLoop);
 		void Update();

@@ -5,17 +5,17 @@ namespace WristerEngine::_3D
 {
 	enum class CameraType
 	{
-		Normal,	// ’ÊíƒJƒƒ‰
-		Debug,	// ƒfƒoƒbƒOƒJƒƒ‰
-		Rail,	// ƒŒ[ƒ‹ƒJƒƒ‰
-		Follow	// ’Ç]ƒJƒƒ‰
+		Normal,	// é€šå¸¸ã‚«ãƒ¡ãƒ©
+		Debug,	// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©
+		Rail,	// ãƒ¬ãƒ¼ãƒ«ã‚«ãƒ¡ãƒ©
+		Follow	// è¿½å¾“ã‚«ãƒ¡ãƒ©
 	};
 
 	class CameraManager
 	{
-		// Œ»İg‚Á‚Ä‚¢‚éƒJƒƒ‰‚Ì–¼‘O
+		// ç¾åœ¨ä½¿ã£ã¦ã„ã‚‹ã‚«ãƒ¡ãƒ©ã®åå‰
 		std::string name = "default";
-		// ƒJƒƒ‰‚Ìƒ|ƒCƒ“ƒ^
+		// ã‚«ãƒ¡ãƒ©ã®ãƒã‚¤ãƒ³ã‚¿
 		static std::unordered_map<std::string, std::unique_ptr<BaseCamera>> cameras;
 
 		CameraManager() = default;
@@ -23,17 +23,17 @@ namespace WristerEngine::_3D
 
 	public:
 		static CameraManager* GetInstance();
-		// ƒJƒƒ‰ì¬
+		// ã‚«ãƒ¡ãƒ©ä½œæˆ
 		BaseCamera* Create(const std::string& name, CameraType type = CameraType::Normal, BaseCameraProp* prop = nullptr);
-		// XV
+		// æ›´æ–°
 		void Update() const { Get()->Update(); }
-		// •`‰æ
+		// æç”»
 		void Draw(UINT rootParameterIndex) const;
-		// ƒJƒƒ‰‚Ì‰ğ•ú
+		// ã‚«ãƒ¡ãƒ©ã®è§£æ”¾
 		void Clear() { cameras.clear(); }
-		// g—pƒJƒƒ‰‚Ì•ÏX
+		// ä½¿ç”¨ã‚«ãƒ¡ãƒ©ã®å¤‰æ›´
 		void Change(const std::string& name);
-		// g—pƒJƒƒ‰‚Ìæ“¾
+		// ä½¿ç”¨ã‚«ãƒ¡ãƒ©ã®å–å¾—
 		BaseCamera* Get(const std::string& cameraName = "") const;
 	};
 }

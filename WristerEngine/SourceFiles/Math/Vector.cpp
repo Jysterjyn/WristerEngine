@@ -249,15 +249,15 @@ Vector2 To2DVector(const Vector3& vec)
 
 Vector3 To3DVector(const Vector2& vec, float distance)
 {
-	// ‡¬s—ñ‚Ì‹ts—ñ‚ğŒvZ‚·‚é
+	// åˆæˆè¡Œåˆ—ã®é€†è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 	Matrix4 matInverseVPV = Inverse(GetViewProjectionViewportMatrix());
-	// ƒXƒNƒŠ[ƒ“À•W
+	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
 	Vector3 posNear(vec, 0);
 	Vector3 posFar(vec, 1);
-	// ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çƒ[ƒ‹ƒhÀ•WŒn‚Ö
+	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã¸
 	posNear *= matInverseVPV;
 	posFar *= matInverseVPV;
-	// ƒŒƒC‚Ì•ûŒü
+	// ãƒ¬ã‚¤ã®æ–¹å‘
 	Vector3 direction = Normalize(posFar - posNear);
 	return posNear + direction * distance;
 }
@@ -295,7 +295,7 @@ Vector3 RandomVector(Vector3 range)
 Vector3 BezierCurve(std::vector<Vector3> p, float t)
 {
 	assert(p.size() >= 2);
-	// §Œä“_2‚Â‚Ì‚Æ‚«‚ÍüŒ`•âŠÔ
+	// åˆ¶å¾¡ç‚¹2ã¤ã®ã¨ãã¯ç·šå½¢è£œé–“
 	if (p.size() == 2) { return Lerp(p[0], p[1], t); }
 
 	std::vector<Vector3> controlPoints;
@@ -314,7 +314,7 @@ Vector3 BezierCurve(std::vector<Vector3> p, float t)
 
 Vector3 SplineCurve(const std::vector<Vector3>& points, size_t startIndex, float t)
 {
-	// Å‰‚ÆÅŒã‚É§Œä“_‚ğ’Ç‰Á
+	// æœ€åˆã¨æœ€å¾Œã«åˆ¶å¾¡ç‚¹ã‚’è¿½åŠ 
 	std::vector<Vector3> newPoints = points;
 	newPoints.insert(newPoints.begin(), points[0]);
 	newPoints.push_back(points.back());

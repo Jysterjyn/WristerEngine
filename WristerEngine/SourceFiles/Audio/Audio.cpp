@@ -9,23 +9,23 @@ std::string Audio::DIRECTORY_PATH = "Sounds/";
 void Audio::Initialize(const std::string& fileName, bool isLoop_)
 {
 	Result result;
-	// FilterGraph‚ð¶¬
+	// FilterGraphã‚’ç”Ÿæˆ
 	result = CoCreateInstance(CLSID_FilterGraph,
 		NULL, CLSCTX_INPROC,
 		IID_IGraphBuilder,
 		(LPVOID*)&graphBuilder);
 
-	// MediaControlƒCƒ“ƒ^[ƒtƒF[ƒXŽæ“¾
+	// MediaControlã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹å–å¾—
 	result = graphBuilder->QueryInterface(IID_IMediaControl, (LPVOID*)&mediaControl);
 	result = graphBuilder->QueryInterface(IID_IMediaPosition, (LPVOID*)&mediaPosition);
 	result = graphBuilder->QueryInterface(IID_IBasicAudio, (LPVOID*)&basicAudio);
 
 	std::string fullPath = CreateResourcePath(DIRECTORY_PATH + fileName);
 
-	// ƒƒCƒh•¶Žš—ñ‚É•ÏŠ·
+	// ãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—ã«å¤‰æ›
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
-	// Graph‚ð¶¬
+	// Graphã‚’ç”Ÿæˆ
 	result = mediaControl->RenderFile((BSTR)wfilePath.data());
 
 	isLoop = isLoop_;

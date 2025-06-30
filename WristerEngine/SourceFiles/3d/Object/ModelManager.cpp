@@ -16,9 +16,9 @@ ModelManager* ModelManager::GetInstance()
 
 void ModelManager::Initialize()
 {
-	// ƒ‰ƒCƒgƒOƒ‹[ƒv¶¬
+	// ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—ç”Ÿæˆ
 	lightGroup = LightGroup::Create();
-	// ƒJƒƒ‰¶¬
+	// ã‚«ãƒ¡ãƒ©ç”Ÿæˆ
 	cameraManager->Create("default");
 }
 
@@ -26,11 +26,11 @@ Object3d* ModelManager::Create(const std::string& modelName, bool smoothing, con
 {
 	std::unique_ptr<Object3d> newObj3d = std::make_unique<Object3d>();
 
-	// ƒ‚ƒfƒ‹‚ÌÄ“Ç‚Ýž‚Ý‚ðƒ`ƒFƒbƒN
+	// ãƒ¢ãƒ‡ãƒ«ã®å†èª­ã¿è¾¼ã¿ã‚’ãƒã‚§ãƒƒã‚¯
 	Mesh* mesh = meshes[modelName][smoothing].get();
 	if (mesh)
 	{
-		// Šù‚É“Ç‚Ýž‚ñ‚Å‚¢‚½ƒ‚ƒfƒ‹‚Ìê‡
+		// æ—¢ã«èª­ã¿è¾¼ã‚“ã§ã„ãŸãƒ¢ãƒ‡ãƒ«ã®å ´åˆ
 		newObj3d->Initialize(mesh);
 		objects.push_back(move(newObj3d));
 		return objects.back().get();
@@ -61,15 +61,15 @@ std::unordered_map<std::string, Object3d*> ModelManager::CreateGroup(const std::
 void ModelManager::Draw()
 {
 	if (objects.empty()) { return; }
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ðƒZƒbƒg
+	// ã‚³ãƒžãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 
 	PipelineManager::SetPipeline(PipelineType::Object);
-	// ƒvƒŠƒ~ƒeƒBƒuŒ`ó‚ðÝ’è
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å½¢çŠ¶ã‚’è¨­å®š
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// ƒ‰ƒCƒg‚Ì•`‰æ
+	// ãƒ©ã‚¤ãƒˆã®æç”»
 	lightGroup->Draw((UINT)RootParamNum::Light);
-	// ƒJƒƒ‰
+	// ã‚«ãƒ¡ãƒ©
 	cameraManager->Draw((UINT)RootParamNum::Camera);
 	for (auto& object : objects) { object->Draw(); }
 }

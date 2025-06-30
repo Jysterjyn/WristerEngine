@@ -3,18 +3,18 @@
 #include "PostEffect.h"
 #include "ModelManager.h"
 
-// ‚±‚ÌƒQ[ƒ€ŒÅ—L‚Ìˆ—ƒNƒ‰ƒX
+// ã“ã®ã‚²ãƒ¼ãƒ å›ºæœ‰ã®å‡¦ç†ã‚¯ãƒ©ã‚¹
 class MyGame : public WristerEngine::Framework
 {
 	WristerEngine::_3D::ModelManager* modelManager = WristerEngine::_3D::ModelManager::GetInstance();
 
-	// ‰Šú‰»(ƒI[ƒo[ƒ‰ƒCƒh)
+	// åˆæœŸåŒ–(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Initialize() override;
-	// XV(ƒI[ƒo[ƒ‰ƒCƒh)
+	// æ›´æ–°(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Update() override;
-	// •`‰æ(ƒI[ƒo[ƒ‰ƒCƒh)
+	// æç”»(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Draw() override;
-	// I—¹ˆ—(ƒI[ƒo[ƒ‰ƒCƒh)
+	// çµ‚äº†å‡¦ç†(ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰)
 	void Finalize() override;
 	bool IsEndRequest() override;
 };

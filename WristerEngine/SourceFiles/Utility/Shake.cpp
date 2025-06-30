@@ -4,7 +4,7 @@ using namespace WristerEngine::_3D;
 
 std::unique_ptr<Shake> Shake::Create(const Prop& shakeProp)
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	std::unique_ptr<Shake> instance = std::make_unique<Shake>();
 	instance->SetShakeRange(shakeProp.range);
 	instance->easing.Initialize(shakeProp.time, shakeProp.easingType);
@@ -13,7 +13,7 @@ std::unique_ptr<Shake> Shake::Create(const Prop& shakeProp)
 
 void Shake::SetShakeRange(const Vector3& shakeRange_)
 {
-	// —”‚Ì¶¬
+	// ä¹±æ•°ã®ç”Ÿæˆ
 	rand[Axis::X] = Random_Float(-shakeRange_.x, shakeRange_.x);
 	rand[Axis::Y] = Random_Float(-shakeRange_.y, shakeRange_.y);
 	rand[Axis::Z] = Random_Float(-shakeRange_.z, shakeRange_.z);
@@ -27,13 +27,13 @@ void Shake::Start()
 
 Vector3 Shake::Update()
 {
-	// ƒC[ƒWƒ“ƒO‚µ‚Ä‚È‚¢‚È‚ç’l‚Í0
+	// ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã—ã¦ãªã„ãªã‚‰å€¤ã¯0
 	if (!isWhile) { return {}; }
 
-	Vector3 shake = { rand[Axis::X](),rand[Axis::Y](),rand[Axis::Z]() }; // ƒVƒFƒCƒN—Ê‚ğİ’è
-	shake *= Easing::MAX - easing.Update(); // ƒVƒFƒCƒN‚ğƒC[ƒWƒ“ƒO‚ÅŒ¸Š‚³‚¹‚é
+	Vector3 shake = { rand[Axis::X](),rand[Axis::Y](),rand[Axis::Z]() }; // ã‚·ã‚§ã‚¤ã‚¯é‡ã‚’è¨­å®š
+	shake *= Easing::MAX - easing.Update(); // ã‚·ã‚§ã‚¤ã‚¯ã‚’ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ã§æ¸›è¡°ã•ã›ã‚‹
 
-	// ƒVƒFƒCƒNI—¹
+	// ã‚·ã‚§ã‚¤ã‚¯çµ‚äº†
 	if (easing.IsFinish()) { isWhile = false; }
 
 	return shake;

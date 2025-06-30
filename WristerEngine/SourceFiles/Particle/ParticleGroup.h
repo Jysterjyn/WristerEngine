@@ -8,50 +8,50 @@
 
 namespace WristerEngine
 {
-	// ƒp[ƒeƒBƒNƒ‹ƒOƒ‹[ƒv
-	// ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX1‚Â‚É‚Â‚«1–‡‚ÌƒeƒNƒXƒ`ƒƒ‚ªg‚¦‚é
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚°ãƒ«ãƒ¼ãƒ—
+	// ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹1ã¤ã«ã¤ã1æšã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒä½¿ãˆã‚‹
 	class ParticleGroup
 	{
 	private:
-		// ’¸“_ƒf[ƒ^\‘¢‘Ì
+		// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 		struct VertexPos
 		{
-			Vector3 pos; // xyzÀ•W
+			Vector3 pos; // xyzåº§æ¨™
 			float scale;
 			ColorRGBA color;
 		};
 
-		// Microsoft::WRL::‚ğÈ—ª
+		// Microsoft::WRL::ã‚’çœç•¥
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		static const int PARTICLE_MAX = 6000; // ƒp[ƒeƒBƒNƒ‹Å‘å”
-		// ’¸“_ƒoƒbƒtƒ@
+		static const int PARTICLE_MAX = 6000; // ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æœ€å¤§æ•°
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> vertBuff;
 		VertexPos* vertMap = nullptr;
-		// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
-		// ƒeƒNƒXƒ`ƒƒƒCƒ“ƒfƒbƒNƒX
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		_2D::TextureData* texture = nullptr;
-		// ŠgU‚·‚éƒp[ƒeƒBƒNƒ‹
+		// æ‹¡æ•£ã™ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 		std::list<std::unique_ptr<Particle>> particles;
 
-		// ’¸“_ƒoƒbƒtƒ@¶¬
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		void CreateVertexBuffer();
-		// ‘S‚Ä‚Ìƒp[ƒeƒBƒNƒ‹‚Ì‡Œv”
+		// å…¨ã¦ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®åˆè¨ˆæ•°
 		size_t AllParticleNum() { return particles.size(); }
-		// ƒp[ƒeƒBƒNƒ‹‚ªÅ‘å’l‚É’B‚µ‚Ä‚é‚©
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãŒæœ€å¤§å€¤ã«é”ã—ã¦ã‚‹ã‹
 		bool IsParticleMax() { return AllParticleNum() >= PARTICLE_MAX; }
 
 	public:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		void Initialize(const std::string& textureName);
-		// XV
+		// æ›´æ–°
 		void Update();
-		// •`‰æ
+		// æç”»
 		void Draw();
-		// ƒp[ƒeƒBƒNƒ‹‚Ì’Ç‰Á
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®è¿½åŠ 
 		void Add(const BaseParticleProp& particleProp, size_t addNum = 1);
-		// ƒp[ƒeƒBƒNƒ‹‚Ìíœ
+		// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®å‰Šé™¤
 		void Clear();
 	};
 

@@ -27,17 +27,17 @@ void DebugCamera::VirtualUpdate()
 	Vector2 scale = { 1.0f / WIN_SIZE.x, 1.0f / WIN_SIZE.y };
 	Input* input = Input::GetInstance();
 
-	// ƒ}ƒEƒX‚Ì“ü—Í‚ðŽæ“¾
+	// ãƒžã‚¦ã‚¹ã®å…¥åŠ›ã‚’å–å¾—
 	Input::MouseMove mouseMove = input->GetMouseMove();
 
-	// ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒJƒƒ‰‚ð‰ñ“]‚³‚¹‚é
+	// ãƒžã‚¦ã‚¹ã®å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚«ãƒ¡ãƒ©ã‚’å›žè»¢ã•ã›ã‚‹
 	if (input->IsInput(Mouse::Right))
 	{
 		angle = -Vector2((float)mouseMove.lY * scale.x, (float)mouseMove.lX * scale.y) * PI;
 		dirty = true;
 	}
 
-	// ƒ}ƒEƒX‚Ì’†ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒJƒƒ‰‚ð•½sˆÚ“®‚³‚¹‚é
+	// ãƒžã‚¦ã‚¹ã®ä¸­ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚«ãƒ¡ãƒ©ã‚’å¹³è¡Œç§»å‹•ã•ã›ã‚‹
 	if (input->IsInput(Mouse::Middle))
 	{
 		Vector3 move = Vector3(-(float)mouseMove.lX, (float)mouseMove.lY) / mouseMoveDec;
@@ -47,7 +47,7 @@ void DebugCamera::VirtualUpdate()
 		dirty = true;
 	}
 
-	// ƒzƒC[ƒ‹“ü—Í‚Å‹——£‚ð•ÏX
+	// ãƒ›ã‚¤ãƒ¼ãƒ«å…¥åŠ›ã§è·é›¢ã‚’å¤‰æ›´
 	if (mouseMove.lZ != 0)
 	{
 		distance -= mouseMove.lZ / wheelSpdDec;
@@ -56,26 +56,26 @@ void DebugCamera::VirtualUpdate()
 	}
 
 	if (!dirty) { return; }
-	// ’Ç‰Á‰ñ“]•ª‚ÌQuaternion‚ð¶¬
+	// è¿½åŠ å›žè»¢åˆ†ã®Quaternionã‚’ç”Ÿæˆ
 	Quaternion rotQNew;
 	rotQNew = MakeAxisAngle(Vector3::MakeAxis(Axis::Y), -angle.y);
 	rotQNew *= MakeAxisAngle(Vector3::MakeAxis(Axis::X), -angle.x);
 
-	// —ÝÏ‚ÌQuaternion‚ð‡¬
+	// ç´¯ç©ã®Quaternionã‚’åˆæˆ
 	rotQ *= rotQNew;
 
-	// ’Ž‹“_‚©‚çŽ‹“_‚Ö‚ÌƒxƒNƒgƒ‹‚ÆAã•ûŒüƒxƒNƒgƒ‹
+	// æ³¨è¦–ç‚¹ã‹ã‚‰è¦–ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«ã¨ã€ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 vTargetEye = { 0.0f, 0.0f, -distance };
 	Vector3 vUp = Vector3::MakeAxis(Axis::Y);
 
-	// ƒxƒNƒgƒ‹‚ð‰ñ“]
+	// ãƒ™ã‚¯ãƒˆãƒ«ã‚’å›žè»¢
 	vTargetEye = RotateVector(vTargetEye, rotQ);
 	vUp = RotateVector(vUp, rotQ);
 
-	// ’Ž‹“_‚©‚ç‚¸‚ç‚µ‚½ˆÊ’u‚ÉŽ‹“_À•W‚ðŒˆ’è
+	// æ³¨è¦–ç‚¹ã‹ã‚‰ãšã‚‰ã—ãŸä½ç½®ã«è¦–ç‚¹åº§æ¨™ã‚’æ±ºå®š
 	eye = target + vTargetEye;
 	up = vUp;
 
-	// ƒfƒoƒbƒOƒJƒƒ‰‘€ì’†‚ÍƒJ[ƒ\ƒ‹‚ªƒEƒBƒ“ƒhƒEŠO‚Éo‚È‚¢‚æ‚¤‚É‚·‚é
+	// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©æ“ä½œä¸­ã¯ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å¤–ã«å‡ºãªã„ã‚ˆã†ã«ã™ã‚‹
 	WindowsAPI::GetInstance()->InWindowCursor();
 }

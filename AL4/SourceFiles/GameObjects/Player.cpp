@@ -53,7 +53,7 @@ void Player::Update()
 	if (BaseBehavior::GetBehaviorRequest())
 	{
 		BaseBehavior::Behavior b = BaseBehavior::GetBehaviorRequest().value();
-		// ŠeU‚é•‘‚¢‚²‚Æ‚Ì‰Šú‰»‚ğÀs
+		// å„æŒ¯ã‚‹èˆã„ã”ã¨ã®åˆæœŸåŒ–ã‚’å®Ÿè¡Œ
 		switch (b)
 		{
 		case BaseBehavior::Behavior::Root:
@@ -71,7 +71,7 @@ void Player::Update()
 			break;
 		}
 		pBehavior->Initialize();
-		// U‚é•‘‚¢ƒŠƒNƒGƒXƒg‚ğƒŠƒZƒbƒg
+		// æŒ¯ã‚‹èˆã„ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
 		BaseBehavior::SetBehaviorRequest(std::nullopt);
 	}
 

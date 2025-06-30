@@ -5,7 +5,7 @@
 
 namespace WristerEngine
 {
-	// ImGUI‚ÌŠÇ—
+	// ImGUIã®ç®¡ç†
 	class ImGuiManager final
 	{
 	private:
@@ -13,31 +13,31 @@ namespace WristerEngine
 		~ImGuiManager() = delete;
 
 	public:
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		static void Initialize();
-		// ImGuió•tŠJn
+		// ImGuiå—ä»˜é–‹å§‹
 		static void Begin();
-		// ImGuió•tI—¹
+		// ImGuiå—ä»˜çµ‚äº†
 		static void End();
-		// ‰æ–Ê‚Ö‚Ì•`‰æ
+		// ç”»é¢ã¸ã®æç”»
 		static void Draw();
-		// I—¹ˆ—
+		// çµ‚äº†å‡¦ç†
 		static void Finalize();
-		// ƒxƒNƒgƒ‹’l‚Ì•`‰æ
+		// ãƒ™ã‚¯ãƒˆãƒ«å€¤ã®æç”»
 		static void PrintVector(std::string str, const Vector2& vec);
 		static void PrintVector(std::string str, const Vector3& vec);
-		// ƒNƒH[ƒ^ƒjƒIƒ“‚Ì•`‰æ
+		// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã®æç”»
 		static void PrintQuaternion(std::string str, const Quaternion& q);
-		// ƒxƒNƒgƒ‹’l‚ÌƒXƒ‰ƒCƒ_[•ÏX
+		// ãƒ™ã‚¯ãƒˆãƒ«å€¤ã®ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼å¤‰æ›´
 		static void SliderVector(std::string str, Vector2& vec, float minVal, float maxVal);
 		static void SliderVector(std::string str, Vector3& vec, float minVal, float maxVal);
-		// ƒxƒNƒgƒ‹’l‚Ìƒhƒ‰ƒbƒO•ÏX
+		// ãƒ™ã‚¯ãƒˆãƒ«å€¤ã®ãƒ‰ãƒ©ãƒƒã‚°å¤‰æ›´
 		static void DragVector(std::string str, Vector2& vec, float spd = 0.1f);
 		static void DragVector(std::string str, Vector3& vec, float spd = 0.1f);
-		// ƒxƒNƒgƒ‹’l‚Ì“ü—Í•ÏX
+		// ãƒ™ã‚¯ãƒˆãƒ«å€¤ã®å…¥åŠ›å¤‰æ›´
 		static void InputVector(std::string str, Vector2& vec);
 		static void InputVector(std::string str, Vector3& vec);
-		// F•ÏX
+		// è‰²å¤‰æ›´
 		static void ColorEdit(std::string str, ColorRGB& color);
 		static void ColorEdit(std::string str, ColorRGBA& color);
 	};

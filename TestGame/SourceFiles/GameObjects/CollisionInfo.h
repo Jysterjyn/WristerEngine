@@ -9,7 +9,7 @@ enum class CollisionAttribute
 	Triangle = 0b1 << 3,
 	Ray = 0b1 << 4,
 	Allies = 0b1 << 5,
-	Landshape = 0b1 << 6 // ’nŒ`
+	Landshape = 0b1 << 6 // åœ°å½¢
 };
 
 inline uint32_t ChangeVal(CollisionAttribute attribute) { return static_cast<uint32_t>(attribute); }
