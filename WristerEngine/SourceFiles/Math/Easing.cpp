@@ -1,4 +1,4 @@
-#include "Easing.h"
+﻿#include "Easing.h"
 
 using namespace WristerEngine;
 

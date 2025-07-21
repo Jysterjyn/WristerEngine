@@ -1,4 +1,4 @@
-#include "MyGame.h"
+﻿#include "MyGame.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

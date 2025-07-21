@@ -18,8 +18,7 @@ void MyGame::Initialize()
 
 	modelManager->Initialize();
 	particleManager->Initialize();
-	particleManager->AddParticleGroup("particle1.png");
-	particleManager->AddParticleGroup("particle1.png", WE::ParticleType::Dark);
+	particleManager->AddParticleGroup("testparticle.png", WE::ParticleType::Dark);
 
 	pDrawer->Initialize();
 }

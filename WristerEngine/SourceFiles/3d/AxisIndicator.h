@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <ModelManager.h>
 
 namespace WristerEngine

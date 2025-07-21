@@ -1,4 +1,4 @@
-#include "BitMapNumber.h"
+﻿#include "BitMapNumber.h"
 using namespace WristerEngine;
 using namespace _2D;
 

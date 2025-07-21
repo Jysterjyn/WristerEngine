@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Constant.h"
 #include "Sprite.h"
 #include <map>

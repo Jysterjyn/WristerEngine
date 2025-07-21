@@ -1,4 +1,4 @@
-#include "D3D12Common.h"
+﻿#include "D3D12Common.h"
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 using namespace std;

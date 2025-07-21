@@ -1,4 +1,4 @@
-#include "MathUtility.h"
+﻿#include "MathUtility.h"
 #include <cmath>
 
 int NumberLoop(int num, int max, int min)

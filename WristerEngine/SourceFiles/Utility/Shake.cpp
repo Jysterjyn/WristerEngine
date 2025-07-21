@@ -1,4 +1,4 @@
-#include "Shake.h"
+﻿#include "Shake.h"
 
 using namespace WristerEngine::_3D;
 

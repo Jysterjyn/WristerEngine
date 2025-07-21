@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Input.h"
 #include "SceneManager.h"
 #include "Constant.h"

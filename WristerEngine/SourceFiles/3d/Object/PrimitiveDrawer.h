@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <D3D12Common.h>
 #include <Color.h>
 

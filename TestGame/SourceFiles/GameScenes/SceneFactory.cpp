@@ -1,4 +1,4 @@
-#include "SceneFactory.h"
+﻿#include "SceneFactory.h"
 #include <TestScene.h>
 
 std::unique_ptr<WristerEngine::BaseScene> SceneFactory::CreateScene(const std::string& sceneName)

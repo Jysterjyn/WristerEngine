@@ -1,4 +1,4 @@
-#include "LevelLoader.h"
+﻿#include "LevelLoader.h"
 using namespace WristerEngine;
 
 std::vector<ObjectData> LevelLoader::LoadLevel(const std::string& fileName)

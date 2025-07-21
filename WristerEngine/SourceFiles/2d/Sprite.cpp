@@ -1,4 +1,4 @@
-#include "Sprite.h"
+﻿#include "Sprite.h"
 #include "D3D12Common.h"
 #include <DirectXTex.h>
 #include <StringUtility.h>

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <BaseCamera.h>
 
 namespace WristerEngine::_3D

@@ -1,4 +1,4 @@
-#include "Color.h"
+﻿#include "Color.h"
 using namespace WE;
 
 const float Color::MAX = 1.0f;

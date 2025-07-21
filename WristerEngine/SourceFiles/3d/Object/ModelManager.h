@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CameraManager.h"
 #include "LightGroup.h"
 #include "Object3d.h"

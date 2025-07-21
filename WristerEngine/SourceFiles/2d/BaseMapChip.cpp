@@ -1,4 +1,4 @@
-#include "BaseMapChip.h"
+﻿#include "BaseMapChip.h"
 using namespace WristerEngine::_2D;
 
 void BaseMapChip::Initialize(const Vector2& leftTopPos_, const Vector2& chipSize_, const Vector2& chipAnchor_)

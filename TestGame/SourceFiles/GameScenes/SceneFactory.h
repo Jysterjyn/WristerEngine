@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "AbstractSceneFactory.h"
 
 class SceneFactory : public WristerEngine::AbstractSceneFactory

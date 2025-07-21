@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Light.h"
 #include "CircleShadow.h"
 #include <wrl.h>

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BaseScene.h"
 #include "AbstractUIDrawer.h"
 #include <map>

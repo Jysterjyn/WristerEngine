@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "DiffuseParticle.h"
 #include "DirectionalParticle.h"
 #include "Sprite.h"
@@ -32,15 +32,15 @@ namespace WristerEngine
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		// テクスチャインデックス
 		_2D::TextureData* texture = nullptr;
-		// 拡散するパーティクル
+		// パーティクル
 		std::list<std::unique_ptr<Particle>> particles;
 
 		// 頂点バッファ生成
 		void CreateVertexBuffer();
 		// 全てのパーティクルの合計数
-		size_t AllParticleNum() { return particles.size(); }
+		size_t AllParticleNum() const { return particles.size(); }
 		// パーティクルが最大値に達してるか
-		bool IsParticleMax() { return AllParticleNum() >= PARTICLE_MAX; }
+		bool IsParticleMax() const { return AllParticleNum() >= PARTICLE_MAX; }
 
 	public:
 		// 初期化

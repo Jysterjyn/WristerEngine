@@ -1,4 +1,4 @@
-#include "Input.h"
+﻿#include "Input.h"
 #include "D3D12Common.h"
 #include <cmath>
 #pragma comment(lib, "dinput8.lib")

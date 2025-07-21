@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "Vector.h"
 #include "Color.h"
 #include <cmath>
 
 namespace WristerEngine
 {
-	// 丸影
+	// 筝後襲
 	class CircleShadow
 	{
 	private:

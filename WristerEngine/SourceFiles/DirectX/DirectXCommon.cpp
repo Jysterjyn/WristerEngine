@@ -1,4 +1,4 @@
-#include "D3D12Common.h"
+﻿#include "D3D12Common.h"
 #include <thread>
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")

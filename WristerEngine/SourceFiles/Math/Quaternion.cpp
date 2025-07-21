@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+﻿#include "Quaternion.h"
 #include <cmath>
 
 void Quaternion::operator*=(const Quaternion& q)

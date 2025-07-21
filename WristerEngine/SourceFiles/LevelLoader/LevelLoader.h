@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "JsonLoader.h"
 #include "Vector.h"
 #include "Easing.h"

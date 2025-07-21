@@ -1,4 +1,4 @@
-#include "Timer.h"
+﻿#include "Timer.h"
 using namespace std::chrono;
 using namespace WristerEngine;
 

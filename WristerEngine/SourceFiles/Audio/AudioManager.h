@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PointAudio.h"
 #include <list>
 #include <memory>

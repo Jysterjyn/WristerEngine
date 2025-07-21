@@ -1,4 +1,4 @@
-#include "LightGroup.h"
+﻿#include "LightGroup.h"
 #include "D3D12Common.h"
 using namespace WristerEngine;
 

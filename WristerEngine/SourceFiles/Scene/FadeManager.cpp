@@ -1,4 +1,4 @@
-#include "FadeManager.h"
+﻿#include "FadeManager.h"
 #include "WindowsAPI.h"
 using namespace WristerEngine;
 

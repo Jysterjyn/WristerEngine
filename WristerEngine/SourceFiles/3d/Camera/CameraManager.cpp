@@ -1,4 +1,4 @@
-#include "CameraManager.h"
+﻿#include "CameraManager.h"
 #include <DebugCamera.h>
 #include <RailCamera.h>
 #include <FollowCamera.h>

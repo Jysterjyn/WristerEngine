@@ -1,4 +1,4 @@
-#include "TimedCall.h"
+﻿#include "TimedCall.h"
 
 WristerEngine::TimedCall::TimedCall(std::function<void(void)> callfunc_, uint32_t time)
 {

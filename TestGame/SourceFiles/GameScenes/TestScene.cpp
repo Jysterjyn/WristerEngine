@@ -60,6 +60,6 @@ void TestScene::Update()
 	//prop.end.x = 5;
 	//prop.angleRange = { Angle(180),Angle(180) };
 	//pgd->Add(prop);
-	WE::ParticleGroup* pgl = pm->GetParticleGroup(0);
+	WE::ParticleGroup* pgl = pm->GetParticleGroup(0,WE::ParticleType::Dark);
 	pgl->Add(prop);
 }

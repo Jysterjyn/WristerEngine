@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PostEffect.h"
 
 namespace WristerEngine::_2D

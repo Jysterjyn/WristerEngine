@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Matrix4.h"
 
 // 四元数(クォータニオン)

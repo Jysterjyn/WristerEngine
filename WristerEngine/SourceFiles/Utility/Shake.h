@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Easing.h"
 #include "Random.h"
 #include "Vector.h"

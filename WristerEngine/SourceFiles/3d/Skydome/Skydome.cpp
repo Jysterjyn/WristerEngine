@@ -1,4 +1,4 @@
-#include "Skydome.h"
+﻿#include "Skydome.h"
 #include "ModelManager.h"
 
 void WristerEngine::Skydome::Initialize(const std::string& modelName, float scale)

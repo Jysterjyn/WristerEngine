@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BaseCamera.h"
 #include "Quaternion.h"
 

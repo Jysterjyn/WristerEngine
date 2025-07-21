@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <WristerEngineUtility.h>
 
 namespace WristerEngine

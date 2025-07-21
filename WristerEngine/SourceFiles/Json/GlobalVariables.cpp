@@ -1,4 +1,4 @@
-#include "GlobalVariables.h"
+﻿#include "GlobalVariables.h"
 #include <imgui.h>
 #include <ImGuiManager.h>
 #include <fstream>

@@ -1,4 +1,4 @@
-#include "BasePauseMenu.h"
+﻿#include "BasePauseMenu.h"
 using namespace WristerEngine;
 
 void BasePauseMenu::Update()

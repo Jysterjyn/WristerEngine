@@ -1,4 +1,4 @@
-#include "Constant.h"
+﻿#include "Constant.h"
 #include "Color.h"
 #include <fstream>
 #include "BitMapNumber.h"
