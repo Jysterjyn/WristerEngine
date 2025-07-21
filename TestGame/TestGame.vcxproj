@@ -27,6 +27,7 @@
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" />
     <None Include="cpp.hint" />
     <None Include="Resources\Shaders\Particle.hlsli" />
   </ItemGroup>

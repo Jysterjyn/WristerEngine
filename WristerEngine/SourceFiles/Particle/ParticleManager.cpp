@@ -3,6 +3,7 @@
 #include "D3D12Common.h"
 #include "PipelineManager.h"
 #include <CameraManager.h>
+#include <imgui.h>
 using namespace Microsoft::WRL;
 using namespace WE;
 using namespace _3D;
@@ -26,7 +27,11 @@ void ParticleManager::Update()
 	}
 	// 定数バッファへデータ転送
 	const BaseCamera* camera = CameraManager::GetInstance()->Get();
-	constMap->mat = camera->GetViewProjectionMatrix();
+
+	static float angle = Angle(0);
+	ImGui::SliderFloat("angle", &angle, 0, PI * 2.0f);
+
+	constMap->mat = camera->GetViewProjectionMatrix() * Matrix4::RotateZ(angle);
 	constMap->matBillboard = camera->GetBillboard();
 }
 

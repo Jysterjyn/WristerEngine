@@ -72,6 +72,9 @@
     <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
+    <None Include="..\.editorconfig">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
