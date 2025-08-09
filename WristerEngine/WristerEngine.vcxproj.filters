@@ -56,14 +56,17 @@
     <Filter Include="ソース ファイル\Timer">
       <UniqueIdentifier>{8cd3b574-38f1-4ca3-a850-33bc03214952}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\WinApp">
-      <UniqueIdentifier>{0c9f24d1-03f7-49fb-9d06-96f22e8267d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Utility">
       <UniqueIdentifier>{823e7a3e-f66c-4d55-a1f7-a5ed16915fdf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\3d\Fbx">
       <UniqueIdentifier>{b85dfb4a-b2a3-4b7b-9ff1-9241c17c8eb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Behavior">
+      <UniqueIdentifier>{a4cda047-3565-4331-9d09-f43537a1e314}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\WinApp">
+      <UniqueIdentifier>{0c9f24d1-03f7-49fb-9d06-96f22e8267d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp">
       <Filter>ソース ファイル\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Behavior\Bahavior.cpp">
+      <Filter>ソース ファイル\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,6 +455,9 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Particle\Particle.h">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Behavior\Bahavior.h">
+      <Filter>ソース ファイル\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

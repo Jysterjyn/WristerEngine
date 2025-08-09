@@ -39,10 +39,10 @@ static const PipelineType ConvertType(ParticleType particleType)
 {
 	switch (particleType)
 	{
-	case WristerEngine::ParticleType::Light:
+	case ParticleType::Light:
 	default:
 		return PipelineType::LightParticle;
-	case WristerEngine::ParticleType::Dark:
+	case ParticleType::Dark:
 		return PipelineType::DarkParticle;
 	}
 }
