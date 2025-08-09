@@ -1,47 +1,42 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include <DebugCamera.h>
 #include <ParticleManager.h>
 #include <Random.h>
 
 void TestSceneUIDrawer::Initialize()
 {
+	sprites["test"] = WE::_2D::Sprite::Create({ "イリウス_国旗.png" });
+	sprites["test"]->size *= 0.25f;
+	sprites["test"]->anchorPoint.y = 1.0f;
+	sprites["test"]->position.y = 720.0f;
+
+	WE::BehaviorPair behavior;
+	behavior.first = std::make_unique<RightMove>();
+	behavior.first->Initialize();
+	behaviorPattern.Add(behavior);
+
+	behavior.first = std::make_unique<UpMove>();
+	behaviorPattern.Add(behavior);
 }
 
 void TestSceneUIDrawer::Update()
 {
+	behaviorPattern.Update();
+	const BehaviorParameter* pParam = static_cast<const BehaviorParameter*>(behaviorPattern.GetParam());
+	if (!pParam) { return; }
+	sprites["test"]->position = pParam->pos;
 }
 
 void TestScene::Initialize()
 {
-	//const int32_t DIV_NUM = 10;
-	//const float LAND_SCALE = 3.0f;
-
-	//for (int32_t i = 0; i < DIV_NUM; i++)
-	//{
-	//	for (int32_t j = 0; j < DIV_NUM; j++)
-	//	{
-	//		std::unique_ptr<Ground> ground = std::make_unique<Ground>();
-	//		ground->Initialize({ (j - DIV_NUM / 2) * LAND_SCALE * 2,0,
-	//			(i - DIV_NUM / 2) * LAND_SCALE * 2 }, LAND_SCALE);
-	//		grounds.push_back(std::move(ground));
-	//	}
-	//}
-	//player.Initialize();
-
-	//WE::ParticleGroup* pg = WE::ParticleManager::GetParticleGroup(0);
-	//WE::DiffuseParticle::AddProp pProp;
-	//pProp.velRange = {};
-	//pProp.velOffset = {};
-	//pProp.accRange = {};
-	//pProp.accOffset = {};
-	//pProp.lifeTime = 100000;
-	//pg->Add(pProp);
-
 	WE::_3D::DebugCamera::Prop prop;
 	prop.distance = 15.0f;
 	prop.wheelSpdDec = 100;
 	prop.mouseMoveDec = 200;
 	cameraManager->Create("debug", WE::_3D::CameraType::Debug, &prop);
+
+	uiDrawer = std::make_unique<TestSceneUIDrawer>();
+	uiDrawer->Initialize();
 }
 
 void TestScene::Update()
@@ -51,15 +46,33 @@ void TestScene::Update()
 	transform.translation.y += input->Move(WE::Key::W, WE::Key::S, 0.1f);
 	transform.Update();
 
-	WE::ParticleManager* pm = WE::ParticleManager::GetInstance();
-	WE::DiffuseParticle::Prop prop;
-	prop.parent = &transform;
-	//WE::ParticleGroup* pgd = pm->GetParticleGroup(0, WE::ParticleType::Dark);
-	//prop.radius = 5;
-	//prop.start.x = -5;
-	//prop.end.x = 5;
-	//prop.angleRange = { Angle(180),Angle(180) };
-	//pgd->Add(prop);
-	WE::ParticleGroup* pgl = pm->GetParticleGroup(0,WE::ParticleType::Dark);
-	pgl->Add(prop);
+	uiDrawer->Update();
+}
+
+void RightMove::Initialize()
+{
+	param = std::make_unique<BehaviorParameter>();
+	pParam = static_cast<BehaviorParameter*>(param.get());
+	if (!pParam) { return; }
+	pParam->name = "Move";
+	pParam->pos.y = 720;
+}
+
+void RightMove::Update()
+{
+	if (!pParam) { return; }
+	pParam->pos.x++;
+	if (timer.Update()) { Finish(); }
+}
+
+void UpMove::Initialize()
+{
+	if (param->name == "Move") { pParam = static_cast<BehaviorParameter*>(param.get()); }
+}
+
+void UpMove::Update()
+{
+	if (!pParam) { return; }
+	pParam->pos.y--;
+	if (timer.Update()) { Finish(); }
 }

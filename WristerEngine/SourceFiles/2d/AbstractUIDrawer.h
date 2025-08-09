@@ -21,6 +21,9 @@ namespace WristerEngine::_2D
 		// 更新(仮想関数)
 		virtual void Update() {}
 		// 描画(仮想関数)
-		virtual void Draw() { for (auto& s : sprites) { s.second->Draw(); } }
+		virtual void Draw() 
+		{
+			for (auto& s : sprites) { s.second->Draw(); } 
+		}
 	};
 }

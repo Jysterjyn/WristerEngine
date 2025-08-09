@@ -19,30 +19,35 @@ namespace WristerEngine
 		};
 
 	private:
-		Parameter param;
 		bool isFinish = false;
+
+	protected:
+		uPtr<Parameter> param;
 
 	public:
 		virtual ~Behavior() = default;
-		virtual void Initialize() {}
-		virtual void Update() {}
+		virtual void Initialize() = 0;
+		virtual void Update() = 0;
+		void Finish() { isFinish = true; }
 		bool IsFinish() const { return isFinish; }
-		static void Inherit(uPtr<Behavior>& b1, uPtr<Behavior>& b2);
+		static void Inherit(Behavior* b1, Behavior* b2);
+		const Parameter* GetParam() const { return param.get(); }
 	};
 
 	// ビヘイビアとクールタイム
-	using BehaviorPair = std::pair<Behavior, int>;
+	using BehaviorPair = std::pair<uPtr<Behavior>, int>;
 
 	// ビヘイビアの一連の流れ
 	class BehaviorPattern
 	{
 	private:
-		uList<BehaviorPair> behaviorList;
+		std::list<BehaviorPair> behaviorList;
 		bool isCoolTime = false;
 		FrameTimer coolTime;
 
 	public:
-		void Add(uPtr<BehaviorPair>& behavior);
+		void Add(BehaviorPair& behavior);
 		void Update();
+		const Behavior::Parameter* GetParam() const;
 	};
 }

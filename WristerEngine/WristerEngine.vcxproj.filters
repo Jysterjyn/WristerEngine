@@ -250,7 +250,7 @@
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp">
       <Filter>ソース ファイル\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Behavior\Bahavior.cpp">
+    <ClCompile Include="SourceFiles\Behavior\Behavior.cpp">
       <Filter>ソース ファイル\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
@@ -456,7 +456,7 @@
     <ClInclude Include="SourceFiles\Particle\Particle.h">
       <Filter>ソース ファイル\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Behavior\Bahavior.h">
+    <ClInclude Include="SourceFiles\Behavior\Behavior.h">
       <Filter>ソース ファイル\Behavior</Filter>
     </ClInclude>
   </ItemGroup>

@@ -120,7 +120,7 @@
     <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp" />
     <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
-    <ClCompile Include="SourceFiles\Behavior\Bahavior.cpp" />
+    <ClCompile Include="SourceFiles\Behavior\Behavior.cpp" />
     <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
     <ClCompile Include="SourceFiles\Json\GlobalVariables.cpp" />
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
@@ -183,7 +183,7 @@
     <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h" />
     <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h" />
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
-    <ClInclude Include="SourceFiles\Behavior\Bahavior.h" />
+    <ClInclude Include="SourceFiles\Behavior\Behavior.h" />
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
     <ClInclude Include="SourceFiles\Json\GlobalVariables.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
