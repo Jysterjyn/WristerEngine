@@ -9,7 +9,7 @@
 #pragma warning(disable:26495)
 #include <fbxsdk.h>
 #pragma warning(pop)
-#include "Sprite.h"
+#include "SpriteManager.h"
 
 namespace WristerEngine::_3D
 {
@@ -23,7 +23,7 @@ namespace WristerEngine::_3D
 		Node* parent = nullptr;
 	};
 
-	class FbxModel
+	class FbxModel : _2D::SpriteUtility
 	{
 	public:
 		static const int MAX_BONE_INDICES = 4;

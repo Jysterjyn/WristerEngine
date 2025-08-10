@@ -1,21 +1,26 @@
 ﻿#pragma once
 #include "SceneManager.h"
+#include "SpriteManager.h"
 #include "DirectXCommon.h"
 #include "Constant.h"
 #include <CollisionManager.h>
+#include <GlobalVariables.h>
 
 namespace WristerEngine
 {
 	// ゲーム処理の枠組みクラス
-	class Framework
+	class Framework : public _2D::SpriteUtility
 	{
+	private:
+		GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+		WindowsAPI* wAPI = WindowsAPI::GetInstance();
+		Constant* constant = Constant::GetInstance();
+
 	protected:
 		std::wstring windowName;
-		WindowsAPI* wAPI = WindowsAPI::GetInstance();
 		Input* input = Input::GetInstance();
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		SceneManager* sceneManager = SceneManager::GetInstance();
-		Constant* constant = Constant::GetInstance();
 		CollisionManager* collisionManager = CollisionManager::GetInstance();
 
 		// 初期化

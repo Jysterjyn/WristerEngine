@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "DiffuseParticle.h"
 #include "DirectionalParticle.h"
-#include "Sprite.h"
+#include "SpriteManager.h"
 #include <string>
 #include <wrl.h>
 #include <d3dx12.h>
@@ -10,7 +10,7 @@ namespace WristerEngine
 {
 	// パーティクルグループ
 	// このインスタンス1つにつき1枚のテクスチャが使える
-	class ParticleGroup
+	class ParticleGroup : _2D::SpriteUtility
 	{
 	private:
 		// 頂点データ構造体

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <Sprite.h>
+#include <SpriteManager.h>
 #include <CameraManager.h>
 
 namespace WristerEngine::_3D
@@ -14,7 +14,7 @@ namespace WristerEngine::_3D
 	};
 
 	// ロックオン
-	class LockOn
+	class LockOn : _2D::SpriteUtility
 	{
 		// ロックオンマーク用スプライト
 		WE::_2D::Sprite* lockOnMark = nullptr;

@@ -5,7 +5,7 @@
 
 void TestSceneUIDrawer::Initialize()
 {
-	sprites["test"] = WE::_2D::Sprite::Create({ "イリウス_国旗.png" });
+	sprites["test"] = spMan->Create({ "イリウス_国旗.png" });
 	sprites["test"]->size *= 0.25f;
 	sprites["test"]->anchorPoint.y = 1.0f;
 	sprites["test"]->position.y = 720.0f;

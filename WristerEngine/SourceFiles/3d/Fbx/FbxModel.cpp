@@ -175,7 +175,7 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					baseTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
+					baseTexture = spMan->LoadTexture(BASE_DIRECTORY + name + "/" + name_);
 					baseColor = {};
 					textureLoaded = true;
 				}
@@ -195,7 +195,7 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					metalnessTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
+					metalnessTexture = spMan->LoadTexture(BASE_DIRECTORY + name + "/" + name_);
 					metalness = 0.0f;
 				}
 			}
@@ -218,13 +218,13 @@ void FbxModel::ParseMaterial(FbxNode* fbxNode)
 					string path_str(filepath);
 					string name_ = ExtractFileName(path_str);
 					// テクスチャ読み込み
-					roughnessTexture = _2D::TextureData::Load(BASE_DIRECTORY + name + "/" + name_);
+					roughnessTexture = spMan->LoadTexture(BASE_DIRECTORY + name + "/" + name_);
 					roughness = 0.0f;
 				}
 			}
 		}
 
-		if (!textureLoaded) { baseTexture = _2D::TextureData::Load(BASE_DIRECTORY + DEFAULT_TEXTURE_FILE_NAME); }
+		if (!textureLoaded) { baseTexture = spMan->LoadTexture(BASE_DIRECTORY + DEFAULT_TEXTURE_FILE_NAME); }
 	}
 }
 

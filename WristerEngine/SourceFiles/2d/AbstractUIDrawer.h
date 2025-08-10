@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Constant.h"
-#include "Sprite.h"
+#include "SpriteManager.h"
 #include <map>
 
 namespace WristerEngine::_2D
@@ -12,6 +12,7 @@ namespace WristerEngine::_2D
 	protected:
 		Constant* constant = Constant::GetInstance();
 		std::map<std::string, Sprite*> sprites;
+		SpriteManager* spMan = SpriteManager::GetInstance();
 
 	public:
 		// 仮想デストラクタ

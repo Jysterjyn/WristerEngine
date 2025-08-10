@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <vector>
-#include "Sprite.h"
+#include "SpriteManager.h"
 
 namespace WristerEngine::_2D
 {
@@ -39,7 +39,7 @@ namespace WristerEngine::_2D
 	/// ビットマップの数字の描画
 	/// 整数にのみ対応
 	/// </summary>
-	class BitMapNumber
+	class BitMapNumber : SpriteUtility
 	{
 	private:
 		std::vector<Sprite*> sprites;

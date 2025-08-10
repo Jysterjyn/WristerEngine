@@ -67,7 +67,7 @@ void SceneManager::Draw()
 	scene->Draw();
 	if (fadeManager.IsFade())
 	{
-		_2D::Sprite::PreDraw();
+		spMan->PreDraw();
 		fadeManager.Draw();
 	}
 	// ポーズ中ならポーズメニューを描画

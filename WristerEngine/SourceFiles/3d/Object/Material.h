@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Sprite.h"
+#include "SpriteManager.h"
 #include <sstream>
 
 namespace WristerEngine::_3D
@@ -31,7 +31,7 @@ namespace WristerEngine::_3D
 	};
 
 	// マテリアル
-	struct Material
+	struct Material : _2D::SpriteUtility
 	{
 		std::string name;
 		ColorRGB ambient;

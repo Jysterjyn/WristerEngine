@@ -8,7 +8,7 @@
 namespace WristerEngine
 {
 	// シーン管理
-	class SceneManager final
+	class SceneManager final : _2D::SpriteUtility
 	{
 	private:
 		std::unique_ptr<BaseScene> scene;

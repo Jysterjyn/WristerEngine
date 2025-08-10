@@ -7,20 +7,19 @@
 namespace WristerEngine::_2D
 {
 	// テクスチャ1枚分のデータ
-	struct TextureData : DXCommonGetter
+	struct TextureData
 	{
-		static uList<TextureData> textures;
 		std::string fileName;
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
 		SRVHandle srvHandle;
-
-		// テクスチャ読み込み
-		static TextureData* Load(const std::string& fileName);
 	};
 
+	class SpriteManager;
+
 	// スプライト
-	struct Sprite : private DXCommonGetter
+	class Sprite : private DXCommonGetter
 	{
+	public:
 		Vector2 position;
 		float rotation = 0;
 		ColorRGBA color;
@@ -34,6 +33,8 @@ namespace WristerEngine::_2D
 		Vector2 posOffset; // 表示位置の調整
 
 	private:
+		friend SpriteManager;
+
 		class Animation
 		{
 		private:
@@ -71,8 +72,6 @@ namespace WristerEngine::_2D
 
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-		const static Matrix4 matProj;
-		static uList<Sprite> sprites;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
@@ -91,7 +90,6 @@ namespace WristerEngine::_2D
 		void Update();
 
 	public:
-		static void UpdateAll();
 
 		void SetAnimation(size_t spriteNum, int animationIntervel);
 		// 描画
@@ -100,12 +98,6 @@ namespace WristerEngine::_2D
 		void SetCenterPos() { position = Half(WIN_SIZE); }
 		// anchorPoint = { 0.5f,0.5f } にする
 		void SetCenterAnchor() { anchorPoint = { 0.5f,0.5f }; }
-		// スプライト生成
-		static Sprite* Create(std::initializer_list<const std::string> fileNames,
-			const Vector2& pos = {}, const Vector2& anchorPoint = {},
-			const Vector2& textureSize = {}, const Vector2& textureLeftTop = {});
-		// 描画前処理
-		static void PreDraw();
 
 		// 現在のインデックスが示すテクスチャのGPUハンドルを取得
 		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() const { return textures[texIndex]->srvHandle.gpu; }

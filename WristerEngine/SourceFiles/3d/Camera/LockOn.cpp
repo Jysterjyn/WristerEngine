@@ -7,7 +7,7 @@ using namespace _3D;
 
 void LockOn::Initialize(std::initializer_list<const std::string> textureNames)
 {
-	lockOnMark = _2D::Sprite::Create(textureNames);
+	lockOnMark = spMan->Create(textureNames);
 	camera = _3D::CameraManager::GetInstance()->Get();
 }
 

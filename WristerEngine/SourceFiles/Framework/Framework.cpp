@@ -3,7 +3,6 @@
 #include "D3D12Common.h"
 #include "ImGuiManager.h"
 #include "PipelineManager.h"
-#include <GlobalVariables.h>
 using namespace WE;
 using namespace _2D;
 
@@ -16,7 +15,7 @@ void Framework::Initialize()
 	constant->LoadConstants();
 	ImGuiManager::Initialize();
 	// グローバル変数の読み込み
-	GlobalVariables::GetInstance()->LoadFiles();
+	globalVariables->LoadFiles();
 }
 
 void Framework::Update()
@@ -24,11 +23,11 @@ void Framework::Update()
 	// 入力関連の毎フレーム処理
 	input->Update();
 	// グローバル変数の更新
-	GlobalVariables::GetInstance()->Update();
+	globalVariables->Update();
 	// ゲームシーンの毎フレーム処理
 	sceneManager->Update();
 	// スプライトの更新
-	Sprite::UpdateAll();
+	spMan->UpdateAll();
 }
 
 void Framework::Finalize()

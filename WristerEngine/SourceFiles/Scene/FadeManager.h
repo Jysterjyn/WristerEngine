@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "Sprite.h"
+#include "SpriteManager.h"
 
 namespace WristerEngine
 {
 	// 画面のフェード演出
-	class FadeManager
+	class FadeManager : _2D::SpriteUtility
 	{
 	private:
 		const int FADE_TIME = 30;

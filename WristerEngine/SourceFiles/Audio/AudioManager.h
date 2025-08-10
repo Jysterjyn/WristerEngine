@@ -19,7 +19,7 @@ namespace WristerEngine
 		AudioManager& operator=(const AudioManager&) = delete;
 
 	public:
-		AudioManager* GetInstance();
+		static AudioManager* GetInstance();
 
 		/// <summary>
 		/// オーディオ生成

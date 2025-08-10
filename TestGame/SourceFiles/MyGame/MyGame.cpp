@@ -37,7 +37,7 @@ void MyGame::Draw()
 {
 	// 描画処理
 	dxCommon->PreDraw();
-	Sprite::PreDraw();
+	spMan->PreDraw();
 	sceneManager->Draw();
 	modelManager->Draw();
 	pDrawer->Draw();

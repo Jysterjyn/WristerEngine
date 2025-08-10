@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "Sprite.h"
+#include "SpriteManager.h"
 
 namespace WristerEngine::_2D
 {
 	// マップチップ描画汎用クラス
-	class BaseMapChip
+	class BaseMapChip : SpriteUtility
 	{
 	protected:
 		Vector2 leftTopPos; // 起点となる位置

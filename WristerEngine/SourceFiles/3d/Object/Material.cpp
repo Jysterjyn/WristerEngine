@@ -10,7 +10,7 @@ using namespace WE;
 using namespace _2D;
 using namespace _3D;
 
-void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
+static void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
 {
 	Vector3 colorTemp;
 	stream >> colorTemp.x;
@@ -25,17 +25,17 @@ void Material::LoadTexture(istringstream& line_stream, TexType spriteIndex)
 {
 	string textureFilename;
 	line_stream >> textureFilename;
-	textures[(size_t)spriteIndex].data = TextureData::Load(directoryPath + textureFilename);
+	textures[(size_t)spriteIndex].data = spMan->LoadTexture(directoryPath + textureFilename);
 }
 
 void Material::ChangeTexture(size_t texIndex, const std::string& texName)
 {
 	// フルパス指定の場合
-	if (texName.find("./") == std::string::npos) { textures[texIndex].data = TextureData::Load(texName); return; }
+	if (texName.find("./") == std::string::npos) { textures[texIndex].data = spMan->LoadTexture(texName); return; }
 
 	// マテリアルが存在するディレクトリからの相対パス指定の場合
 	std::string fileName = ExtractFileName(texName);
-	textures[texIndex].data = TextureData::Load(directoryPath + fileName);
+	textures[texIndex].data = spMan->LoadTexture(directoryPath + fileName);
 }
 
 void Material::Load(Mesh* mesh)
@@ -66,7 +66,7 @@ void Material::Load(Mesh* mesh)
 	file.close();
 
 	// デフォルトテクスチャのセット
-	for (auto& tex : textures) { if (!tex.data) { tex.data = TextureData::Load("white1x1.png"); } }
+	for (auto& tex : textures) { if (!tex.data) { tex.data = spMan->LoadTexture("white1x1.png"); } }
 
 	// ブレンドテクスチャがデフォルトの場合、マスク値は使わない
 	if (textures[(size_t)TexType::Blend].data->fileName.find("white1x1.png") != string::npos)
