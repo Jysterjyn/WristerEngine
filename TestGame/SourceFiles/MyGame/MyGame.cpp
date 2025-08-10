@@ -42,7 +42,7 @@ void MyGame::Draw()
 	modelManager->Draw();
 	pDrawer->Draw();
 	particleManager->Draw();
-	WE::ImGuiManager::Draw();
+	imGuiManager->Draw();
 	dxCommon->PostDraw();
 }
 

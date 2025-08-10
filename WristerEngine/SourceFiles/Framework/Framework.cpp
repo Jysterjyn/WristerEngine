@@ -1,7 +1,6 @@
 ﻿#include "Framework.h"
 #include "Sprite.h"
 #include "D3D12Common.h"
-#include "ImGuiManager.h"
 #include "PipelineManager.h"
 using namespace WE;
 using namespace _2D;
@@ -13,7 +12,7 @@ void Framework::Initialize()
 	input->Initialize();
 	PipelineManager::Initialize();
 	constant->LoadConstants();
-	ImGuiManager::Initialize();
+	imGuiManager->Initialize();
 	// グローバル変数の読み込み
 	globalVariables->LoadFiles();
 }
@@ -32,7 +31,7 @@ void Framework::Update()
 
 void Framework::Finalize()
 {
-	ImGuiManager::Finalize();
+	imGuiManager->Finalize();
 	constant->Finalize();
 	sceneManager->Finalize();
 	wAPI->Finalize();
@@ -46,12 +45,12 @@ void Framework::Run()
 	while (!(IsEndRequest() || wAPI->ProcessMessage()))
 	{
 		// ImGui受付開始
-		ImGuiManager::Begin();
+		imGuiManager->Begin();
 
 		Update();
 
 		// ImGui受付終了
-		ImGuiManager::End();
+		imGuiManager->End();
 
 		// デスクリプタヒープをセット
 		dxCommon->SetDescriptorHeap();

@@ -21,6 +21,8 @@ void GlobalVariables::Update()
 	}
 	if (!ImGui::BeginMenuBar()) { return; }
 
+	ImGuiManager* imMan = ImGuiManager::GetInstance();
+
 	// 各グループについて
 	for (auto itGroup = datas.begin(); itGroup != datas.end(); ++itGroup)
 	{
@@ -57,7 +59,7 @@ void GlobalVariables::Update()
 			else if (std::holds_alternative<Vector3>(item))
 			{
 				Vector3* ptr = std::get_if<Vector3>(&item);
-				ImGuiManager::SliderVector(itemName.c_str(), *ptr, -10.0f, 10.0f);
+				imMan->SliderVector(itemName.c_str(), *ptr, -10.0f, 10.0f);
 			}
 
 			// bool型の値を保持していれば

@@ -6,6 +6,12 @@ using namespace ImGui;
 using namespace WristerEngine;
 using namespace _2D;
 
+ImGuiManager* ImGuiManager::GetInstance()
+{
+	static ImGuiManager instance;
+	return &instance;
+}
+
 void ImGuiManager::Initialize()
 {
 	// インスタンスの取得

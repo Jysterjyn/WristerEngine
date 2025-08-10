@@ -5,6 +5,7 @@
 #include "Constant.h"
 #include <CollisionManager.h>
 #include <GlobalVariables.h>
+#include "ImGuiManager.h"
 
 namespace WristerEngine
 {
@@ -22,6 +23,7 @@ namespace WristerEngine
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		SceneManager* sceneManager = SceneManager::GetInstance();
 		CollisionManager* collisionManager = CollisionManager::GetInstance();
+		ImGuiManager* imGuiManager = ImGuiManager::GetInstance();
 
 		// 初期化
 		virtual void Initialize();
