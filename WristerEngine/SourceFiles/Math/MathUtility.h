@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include <cmath>
+#include <WristerEngineUtility.h>
 
 const float PI = 3.141592f; // 円周率
 const float ONE_DEG_RAD = PI / 180.0f; // 1°のラジアン変換

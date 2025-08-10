@@ -9,8 +9,8 @@ using namespace DirectX;
 using namespace WristerEngine;
 using namespace _2D;
 
-list<unique_ptr<TextureData>> TextureData::textures;
-list<unique_ptr<Sprite>> Sprite::sprites;
+uList<TextureData> TextureData::textures;
+uList<Sprite> Sprite::sprites;
 
 // 平行投影行列
 static Matrix4 OrthoGraphic()

@@ -9,7 +9,7 @@ namespace WristerEngine::_2D
 	// テクスチャ1枚分のデータ
 	struct TextureData : DXCommonGetter
 	{
-		static std::list<std::unique_ptr<TextureData>> textures;
+		static uList<TextureData> textures;
 		std::string fileName;
 		Microsoft::WRL::ComPtr<ID3D12Resource> buffer;
 		SRVHandle srvHandle;
@@ -72,7 +72,7 @@ namespace WristerEngine::_2D
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 		const static Matrix4 matProj;
-		static std::list<std::unique_ptr<Sprite>> sprites;
+		static uList<Sprite> sprites;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;

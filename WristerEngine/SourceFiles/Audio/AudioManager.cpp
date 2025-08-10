@@ -1,8 +1,12 @@
 ﻿#include "AudioManager.h"
 #include "D3D12Common.h"
-using namespace WristerEngine;
+using namespace WE;
 
-std::list<std::unique_ptr<Audio>> AudioManager::audios;
+AudioManager* AudioManager::GetInstance()
+{
+	static AudioManager instance;
+	return &instance;
+}
 
 Audio* AudioManager::Create(const std::string& fileName, bool isLoop)
 {

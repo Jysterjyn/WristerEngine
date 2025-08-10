@@ -68,6 +68,18 @@
     <Filter Include="ソース ファイル\WinApp">
       <UniqueIdentifier>{0c9f24d1-03f7-49fb-9d06-96f22e8267d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\2d\MapChip">
+      <UniqueIdentifier>{7a48d7dc-7994-4e86-ae3a-3a59c252132c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2d\PostEffect">
+      <UniqueIdentifier>{4d663f35-1f11-485a-bebf-e91c2ddd2371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2d\Other">
+      <UniqueIdentifier>{da691f6b-4c32-49aa-a118-b35d8e2456db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\2d\Sprite">
+      <UniqueIdentifier>{5c5c81dd-02a2-4ea3-a988-7f7d4c3625e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp">
@@ -75,9 +87,6 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Math\Vector.cpp">
       <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp">
-      <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Input\Input.cpp">
       <Filter>ソース ファイル\Input</Filter>
@@ -105,9 +114,6 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\DebugCamera.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\2d\PostEffect.cpp">
-      <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Audio\PointAudio.cpp">
       <Filter>ソース ファイル\Audio</Filter>
@@ -160,14 +166,8 @@
     <ClCompile Include="SourceFiles\3d\Object\Object3d.cpp">
       <Filter>ソース ファイル\3d\Object</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\2d\Sprite.cpp">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Audio\AudioManager.cpp">
       <Filter>ソース ファイル\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp">
-      <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Skydome\Skydome.cpp">
       <Filter>ソース ファイル\3d\Skydome</Filter>
@@ -181,20 +181,11 @@
     <ClCompile Include="SourceFiles\Math\Easing.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\2d\MultiTexture.cpp">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Json\Constant.cpp">
       <Filter>ソース ファイル\Json</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\2d\BaseMapChip.cpp">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp">
-      <Filter>ソース ファイル\2d</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp">
       <Filter>ソース ファイル\LevelLoader</Filter>
@@ -253,6 +244,30 @@
     <ClCompile Include="SourceFiles\Behavior\Behavior.cpp">
       <Filter>ソース ファイル\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\2d\BaseMapChip.cpp">
+      <Filter>ソース ファイル\2d\MapChip</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\BitMapNumber.cpp">
+      <Filter>ソース ファイル\2d\MapChip</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\MultiTexture.cpp">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\PostEffect.cpp">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp">
+      <Filter>ソース ファイル\2d\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\Sprite.cpp">
+      <Filter>ソース ファイル\2d\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\2d\SpriteManager.cpp">
+      <Filter>ソース ファイル\2d\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -260,9 +275,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Math\Vector.h">
       <Filter>ソース ファイル\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\ImGuiManager.h">
-      <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Input\Input.h">
       <Filter>ソース ファイル\Input</Filter>
@@ -293,9 +305,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\DebugCamera.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\PostEffect.h">
-      <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Audio\PointAudio.h">
       <Filter>ソース ファイル\Audio</Filter>
@@ -354,14 +363,8 @@
     <ClInclude Include="SourceFiles\3d\Object\Object3d.h">
       <Filter>ソース ファイル\3d\Object</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\2d\Sprite.h">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Audio\AudioManager.h">
       <Filter>ソース ファイル\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\BitMapNumber.h">
-      <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Skydome\Skydome.h">
       <Filter>ソース ファイル\3d\Skydome</Filter>
@@ -375,26 +378,14 @@
     <ClInclude Include="SourceFiles\Light\Light.h">
       <Filter>ソース ファイル\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Math\Easing.h">
       <Filter>ソース ファイル\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\MultiTexture.h">
-      <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Json\Constant.h">
       <Filter>ソース ファイル\Json</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\2d\BaseMapChip.h">
-      <Filter>ソース ファイル\2d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h">
-      <Filter>ソース ファイル\2d</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h">
       <Filter>ソース ファイル\LevelLoader</Filter>
@@ -458,6 +449,33 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Behavior\Behavior.h">
       <Filter>ソース ファイル\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\BaseMapChip.h">
+      <Filter>ソース ファイル\2d\MapChip</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\BitMapNumber.h">
+      <Filter>ソース ファイル\2d\MapChip</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\MultiTexture.h">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\PostEffect.h">
+      <Filter>ソース ファイル\2d\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h">
+      <Filter>ソース ファイル\2d\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\ImGuiManager.h">
+      <Filter>ソース ファイル\2d\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\Sprite.h">
+      <Filter>ソース ファイル\2d\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\2d\SpriteManager.h">
+      <Filter>ソース ファイル\2d\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -110,6 +110,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\NonEffectDrawer.cpp" />
+    <ClCompile Include="SourceFiles\2d\SpriteManager.cpp" />
     <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\NonEffectDrawer.h" />
+    <ClInclude Include="SourceFiles\2d\SpriteManager.h" />
     <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
