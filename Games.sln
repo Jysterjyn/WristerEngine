@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.35821.62
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGame", "TestGame\TestGame.vcxproj", "{95AD2923-45B5-46A1-80E7-68B78627A92D}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WristerEngine", "WristerEngine\WristerEngine.vcxproj", "{8BF34D9C-A65C-49F5-9A77-83FA870060DC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Template3DGame3", "Template3DGame3\Template3DGame3.vcxproj", "{CF452E0F-D5BB-4820-94BB-B8F679B6994D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Template2DGame1", "Template2DGame1\Template2DGame1.vcxproj", "{D13985FC-95C2-4B87-B97E-3E8FE77B98EA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Template3DGame4", "Template3DGame4\Template3DGame4.vcxproj", "{C73D796C-E551-4BA4-8DB5-9185AA8242E3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Template3DGame5", "Template3DGame5\Template3DGame5.vcxproj", "{AE0906B5-BFD0-4D4D-B9B0-E54BC4C0CEB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +19,26 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Debug|x64.ActiveCfg = Debug|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Debug|x64.Build.0 = Debug|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Release|x64.ActiveCfg = Release|x64
-		{95AD2923-45B5-46A1-80E7-68B78627A92D}.Release|x64.Build.0 = Release|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Debug|x64.ActiveCfg = Debug|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Debug|x64.Build.0 = Debug|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Release|x64.ActiveCfg = Release|x64
 		{8BF34D9C-A65C-49F5-9A77-83FA870060DC}.Release|x64.Build.0 = Release|x64
+		{CF452E0F-D5BB-4820-94BB-B8F679B6994D}.Debug|x64.ActiveCfg = Debug|x64
+		{CF452E0F-D5BB-4820-94BB-B8F679B6994D}.Debug|x64.Build.0 = Debug|x64
+		{CF452E0F-D5BB-4820-94BB-B8F679B6994D}.Release|x64.ActiveCfg = Release|x64
+		{CF452E0F-D5BB-4820-94BB-B8F679B6994D}.Release|x64.Build.0 = Release|x64
+		{D13985FC-95C2-4B87-B97E-3E8FE77B98EA}.Debug|x64.ActiveCfg = Debug|x64
+		{D13985FC-95C2-4B87-B97E-3E8FE77B98EA}.Debug|x64.Build.0 = Debug|x64
+		{D13985FC-95C2-4B87-B97E-3E8FE77B98EA}.Release|x64.ActiveCfg = Release|x64
+		{D13985FC-95C2-4B87-B97E-3E8FE77B98EA}.Release|x64.Build.0 = Release|x64
+		{C73D796C-E551-4BA4-8DB5-9185AA8242E3}.Debug|x64.ActiveCfg = Debug|x64
+		{C73D796C-E551-4BA4-8DB5-9185AA8242E3}.Debug|x64.Build.0 = Debug|x64
+		{C73D796C-E551-4BA4-8DB5-9185AA8242E3}.Release|x64.ActiveCfg = Release|x64
+		{C73D796C-E551-4BA4-8DB5-9185AA8242E3}.Release|x64.Build.0 = Release|x64
+		{AE0906B5-BFD0-4D4D-B9B0-E54BC4C0CEB4}.Debug|x64.ActiveCfg = Debug|x64
+		{AE0906B5-BFD0-4D4D-B9B0-E54BC4C0CEB4}.Debug|x64.Build.0 = Debug|x64
+		{AE0906B5-BFD0-4D4D-B9B0-E54BC4C0CEB4}.Release|x64.ActiveCfg = Release|x64
+		{AE0906B5-BFD0-4D4D-B9B0-E54BC4C0CEB4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

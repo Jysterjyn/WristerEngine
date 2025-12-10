@@ -1,11 +1,12 @@
 ﻿#pragma once
-#include "SceneManager.h"
-#include "SpriteManager.h"
-#include "DirectXCommon.h"
-#include "Constant.h"
+#include <SceneManager.h>
+#include <SpriteManager.h>
+#include <DirectXCommon.h>
+#include <Constant.h>
 #include <CollisionManager.h>
 #include <GlobalVariables.h>
-#include "ImGuiManager.h"
+#include <ImGuiManager.h>
+#include <AudioManager.h>
 
 namespace WristerEngine
 {
@@ -16,6 +17,7 @@ namespace WristerEngine
 		GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 		WindowsAPI* wAPI = WindowsAPI::GetInstance();
 		Constant* constant = Constant::GetInstance();
+		AudioManager* audioManager = AudioManager::GetInstance();
 
 	protected:
 		std::wstring windowName;

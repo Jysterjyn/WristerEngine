@@ -224,72 +224,6 @@ namespace WristerEngine
 		const std::vector<CollisionPair>& GetExitPairs() const { return exitPairs; }
 	};
 
-	class Collider
-	{
-	private:
-		uint32_t serialNumber = 0;
-		static uint32_t nextSerialNumber;
-
-	protected:
-		ColliderGroup* group = nullptr;
-
-		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
-
-		/// <summary>
-		/// コライダーを登録
-		/// </summary>
-		/// <param name="shapeType">コライダーの形状</param>
-		/// <returns>登録されたコライダー</returns>
-		template<class T>
-		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
-		{
-			std::unique_ptr<BaseCollider> newCollider;
-			const std::string TYPE_NAME = typeid(T).name();
-
-			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
-
-			if (TypeCompare("Sphere")) { newCollider = std::make_unique<SphereCollider>(); }
-			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
-			else if (TypeCompare("Include")) { newCollider = std::make_unique<IncludeCollider>(); }
-			else if (TypeCompare("Plane")) { newCollider = std::make_unique<PlaneCollider>(); }
-			else if (TypeCompare("Triangle")) { newCollider = std::make_unique<TriangleCollider>(); }
-			else if (TypeCompare("Ray")) { newCollider = std::make_unique<RayCollider>(); }
-			else if (TypeCompare("Mesh")) { newCollider = std::make_unique<MeshCollider>(); }
-
-			newCollider->SetOwner(this);
-			if (info)
-			{
-				newCollider->SetAttribute(info->GetAttribute());
-				newCollider->SetMask(info->GetMask());
-			}
-			else
-			{
-				newCollider->SetAttribute(group->GetAttribute());
-				newCollider->SetMask(group->GetMask());
-			}
-			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
-		}
-
-	public:
-		Collider() { serialNumber = nextSerialNumber++; }
-		virtual ~Collider();
-
-		void DeleteGroup() { group = nullptr; }
-
-		// getter
-		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
-		ColliderGroup* GetGroup() const { return group; }
-		uint32_t GetSerialNumber() const { return serialNumber; }
-
-		// 衝突コールバック関数
-		// 当たっている間
-		virtual void OnCollision() {}
-		// 当たった瞬間
-		virtual void OnCollisionEnter() {}
-		// 離れた瞬間
-		virtual void OnCollisionExit() {}
-	};
-
 	// 球コライダー
 	class SphereCollider : public BaseCollider
 	{
@@ -297,7 +231,6 @@ namespace WristerEngine
 		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
 		Vector3 offset;
-
 
 	public:
 		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
@@ -461,4 +394,71 @@ namespace WristerEngine
 		const std::list<std::unique_ptr<TriangleCollider>>& GetTriangles() const { return triangles; }
 		const Matrix4& GetMatWorld() const { return pTransform->matWorld; }
 	};
+
+	class Collider
+	{
+	private:
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
+
+	protected:
+		ColliderGroup* group = nullptr;
+
+		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		template<class T>
+		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
+		{
+			std::unique_ptr<BaseCollider> newCollider;
+			const std::string TYPE_NAME = typeid(T).name();
+
+			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+
+			if (TypeCompare("Sphere")) { newCollider = std::make_unique<SphereCollider>(); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			else if (TypeCompare("Include")) { newCollider = std::make_unique<IncludeCollider>(); }
+			else if (TypeCompare("Plane")) { newCollider = std::make_unique<PlaneCollider>(); }
+			else if (TypeCompare("Triangle")) { newCollider = std::make_unique<TriangleCollider>(); }
+			else if (TypeCompare("Ray")) { newCollider = std::make_unique<RayCollider>(); }
+			else if (TypeCompare("Mesh")) { newCollider = std::make_unique<MeshCollider>(); }
+
+			newCollider->SetOwner(this);
+			if (info)
+			{
+				newCollider->SetAttribute(info->GetAttribute());
+				newCollider->SetMask(info->GetMask());
+			}
+			else
+			{
+				newCollider->SetAttribute(group->GetAttribute());
+				newCollider->SetMask(group->GetMask());
+			}
+			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		}
+
+	public:
+		Collider() { serialNumber = nextSerialNumber++; }
+		virtual ~Collider();
+
+		void DeleteGroup() { group = nullptr; }
+
+		// getter
+		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
+		ColliderGroup* GetGroup() const { return group; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
+
+		// 衝突コールバック関数
+		// 当たっている間
+		virtual void OnCollision() {}
+		// 当たった瞬間
+		virtual void OnCollisionEnter() {}
+		// 離れた瞬間
+		virtual void OnCollisionExit() {}
+	};
+
 }

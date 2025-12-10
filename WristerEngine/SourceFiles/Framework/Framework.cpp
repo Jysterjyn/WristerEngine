@@ -27,6 +27,8 @@ void Framework::Update()
 	sceneManager->Update();
 	// スプライトの更新
 	spMan->UpdateAll();
+	// 音源の更新
+	audioManager->Update();
 }
 
 void Framework::Finalize()
