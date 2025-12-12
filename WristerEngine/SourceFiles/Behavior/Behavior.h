@@ -31,7 +31,7 @@ namespace WristerEngine
 		void Finish() { isFinish = true; }
 		bool IsFinish() const { return isFinish; }
 		static void Inherit(Behavior* b1, Behavior* b2);
-		const Parameter* GetParam() const { return param.get(); }
+		Parameter* GetParam() { return param.get(); }
 	};
 
 	// ビヘイビアとクールタイム
@@ -48,6 +48,6 @@ namespace WristerEngine
 	public:
 		void Add(BehaviorPair& behavior);
 		void Update();
-		const Behavior::Parameter* GetParam() const;
+		Behavior::Parameter* GetParam();
 	};
 }

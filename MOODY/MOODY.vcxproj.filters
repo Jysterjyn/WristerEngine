@@ -39,6 +39,9 @@
     <Filter Include="リソース ファイル\Shader\Sprite">
       <UniqueIdentifier>{0610b136-c756-4270-86dd-f4582ae699b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GaneObjects">
+      <UniqueIdentifier>{e7785b93-8b79-44c2-b34d-783352da0ba4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\MyGame\MyGame.h">
@@ -53,6 +56,10 @@
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h">
       <Filter>ソース ファイル\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Ball.h">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\GameObjects.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\main.cpp">
@@ -66,6 +73,12 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Ball.cpp">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\GameObjects.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

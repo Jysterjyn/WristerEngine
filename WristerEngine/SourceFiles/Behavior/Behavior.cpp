@@ -42,7 +42,7 @@ void BehaviorPattern::Update()
 	}
 }
 
-const Behavior::Parameter* WristerEngine::BehaviorPattern::GetParam() const
+Behavior::Parameter* WristerEngine::BehaviorPattern::GetParam()
 {
 	if(behaviorList.empty()){ return nullptr; }
 	return behaviorList.front().first->GetParam();
