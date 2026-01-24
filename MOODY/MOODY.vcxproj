@@ -14,6 +14,8 @@
     <ClInclude Include="SourceFiles\GameObjects\Ball.h" />
     <ClInclude Include="SourceFiles\GameObjects\CollisionInfo.h" />
     <ClInclude Include="SourceFiles\GameObjects\GameObjects.h" />
+    <ClInclude Include="SourceFiles\GameObjects\Player.h" />
+    <ClInclude Include="SourceFiles\GameObjects\Stage.h" />
     <ClInclude Include="SourceFiles\GameScenes\SceneFactory.h" />
     <ClInclude Include="SourceFiles\GameScenes\GameScene.h" />
     <ClInclude Include="SourceFiles\MyGame\MyGame.h" />
@@ -21,6 +23,8 @@
   <ItemGroup>
     <ClCompile Include="SourceFiles\GameObjects\Ball.cpp" />
     <ClCompile Include="SourceFiles\GameObjects\GameObjects.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\Player.cpp" />
+    <ClCompile Include="SourceFiles\GameObjects\Stage.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\GameScenes\GameScene.cpp" />
     <ClCompile Include="SourceFiles\main.cpp" />

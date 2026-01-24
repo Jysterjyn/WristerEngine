@@ -56,7 +56,6 @@ namespace WristerEngine
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-		bool CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 
 		bool Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB);
 
@@ -80,6 +79,7 @@ namespace WristerEngine
 	public:
 		static CollisionManager* GetInstance();
 
+		bool CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 		ColliderGroup* AddGroup(const std::string& groupName);
 
 		bool Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo = nullptr,

@@ -59,7 +59,15 @@
     <ClInclude Include="SourceFiles\GameObjects\Ball.h">
       <Filter>ソース ファイル\GaneObjects</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\GameObjects\GameObjects.h" />
+    <ClInclude Include="SourceFiles\GameObjects\GameObjects.h">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Stage.h">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\GameObjects\Player.h">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\main.cpp">
@@ -78,7 +86,13 @@
       <Filter>ソース ファイル\GaneObjects</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\GameObjects.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Stage.cpp">
+      <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
+      <Filter>ソース ファイル\GaneObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,14 +43,14 @@ uint32_t Collider::nextSerialNumber = 0;
 //		tri.ComputeNormal();
 //	}
 //}
-//
-//void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
-//{
-//	transform = transform_;
-//	shapeType = shapeType_;
-//	colliderName = colliderName_;
-//}
-//
+
+void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
+{
+	transform = transform_;
+	shapeType = shapeType_;
+	colliderName = colliderName_;
+}
+
 //std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
 //{
 //	std::map<std::string, Vector2> ans;
@@ -305,5 +305,42 @@ void MeshCollider::ConstructTriangles(const _3D::Mesh* mesh)
 		tri->SetVertices(v);
 		tri->ComputeNormal();
 		triangles.push_back(std::move(tri));
+	}
+}
+
+bool WristerEngine::_2D::TestCheckAllCircleCollision::Check2Circles(TestCircleCollider* a, TestCircleCollider* b)
+{
+	// 値の取得
+	Vector2 centerA = a->GetTransform()->position;
+	Vector2 centerB = b->GetTransform()->position;
+	float radA = a->GetRadius();
+	float radB = b->GetRadius();
+
+	//判定対象の座標
+	Vector2 vecAB = centerA - centerB;
+	float dist = Dot(vecAB, vecAB);
+	//判定対象の半径
+	float radAB = radA + radB;
+
+	if (dist > radAB * radAB) { return false; }
+	return true;
+}
+
+void WristerEngine::_2D::TestCheckAllCircleCollision::CheckCircleCollisions()
+{
+	auto itrA = colliders.begin();
+	for (; itrA != colliders.end(); itrA++)
+	{
+		auto itrB = itrA;
+		itrB++;
+		for (; itrB != colliders.end(); itrB++)
+		{
+			if (!WE::CollisionManager::GetInstance()->CheckFiltering(*itrA, *itrB)) { continue; }
+			if (Check2Circles(*itrA, *itrB))
+			{
+				(*itrA)->OnCollision(*itrB);
+				(*itrB)->OnCollision(*itrA);
+			}
+		}
 	}
 }

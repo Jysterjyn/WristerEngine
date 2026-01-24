@@ -40,3 +40,25 @@ float LerpShortAngle(float a, float b, float t)
 
 	return std::lerp(a, a + diff, t);
 }
+
+bool IsInRange(int n, int min, int max, bool isMinInclude, bool isMaxInclude)
+{
+	bool flag = false;
+
+	// 最小値の比較
+	if (isMinInclude) { flag = n >= min; }
+	else { flag = n > min; }
+
+	// 範囲外リターン
+	if (!flag) { return false; }
+
+	// 最大値の比較
+	if (isMaxInclude) { flag = n <= max; }
+	else { flag = n < max; }
+
+	// 範囲外リターン
+	if (!flag) { return false; }
+
+	// 全てtrueなら範囲内
+	return true;
+}

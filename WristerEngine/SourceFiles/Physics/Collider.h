@@ -7,13 +7,33 @@
 
 namespace WristerEngine
 {
+	struct CollisionInfo
+	{
+	protected:
+		uint32_t attribute = 0;
+		uint32_t mask = UINT32_MAX;
+
+	public:
+		CollisionInfo(const uint32_t& attribute = 0, const uint32_t& mask = UINT32_MAX)
+			: attribute(attribute), mask(mask) {
+		}
+
+		// setter
+		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
+		void SetMask(uint32_t mask_) { mask = mask_; }
+		// getter
+		uint32_t GetAttribute() const { return attribute; }
+		uint32_t GetMask() const { return mask; }
+	};
+
 	namespace _2D
 	{
 		enum class CollisionShapeType
 		{
 			Unknown,
 			Box,
-			TwoRay
+			TwoRay,
+			Sphere
 		};
 
 		struct Option
@@ -58,6 +78,54 @@ namespace WristerEngine
 		public:
 			TwoRayCollider(Angle fov_) { fov = fov_; }
 			Angle GetFOV() const { return fov; }
+		};
+
+		class TestCircleCollider;
+
+		// 仮コライダー判定クラス
+		class TestCheckAllCircleCollision
+		{
+			std::list<TestCircleCollider*> colliders;
+
+			bool Check2Circles(TestCircleCollider* a, TestCircleCollider* b);
+
+			TestCheckAllCircleCollision() = default;
+			~TestCheckAllCircleCollision() = default;
+			TestCheckAllCircleCollision(const TestCheckAllCircleCollision&) = delete;
+			TestCheckAllCircleCollision& operator=(const TestCheckAllCircleCollision&) = delete;
+
+		public:
+			static TestCheckAllCircleCollision* GetInstance()
+			{
+				static TestCheckAllCircleCollision instance;
+				return &instance;
+			}
+
+			void CheckCircleCollisions();
+			void Add(TestCircleCollider* a) { colliders.push_back(a); }
+			void Delete(TestCircleCollider* a) 
+			{
+				colliders.remove(a); 
+			}
+			void Clear() { /*colliders.clear()*/; }
+		};
+
+		// 仮円コライダー
+		class TestCircleCollider : public Base2DCollider, public CollisionInfo
+		{
+			TestCheckAllCircleCollision* collision = TestCheckAllCircleCollision::GetInstance();
+			float radius = 0;
+
+		public:
+			virtual void OnCollision([[maybe_unused]] TestCircleCollider* other) {}
+			float GetRadius() const { return radius; }
+			void SetRadius(float radius_) { radius = radius_; }
+
+			TestCircleCollider() { collision->Add(this); }
+			~TestCircleCollider() 
+			{
+				//collision->Delete(this); 
+			}
 		};
 
 		//class Collider
@@ -105,25 +173,6 @@ namespace WristerEngine
 		Triangle,
 		Ray,
 		Mesh
-	};
-
-	struct CollisionInfo
-	{
-	protected:
-		uint32_t attribute = 0;
-		uint32_t mask = UINT32_MAX;
-
-	public:
-		CollisionInfo(const uint32_t& attribute = 0, const uint32_t& mask = UINT32_MAX)
-			: attribute(attribute), mask(mask) {
-		}
-
-		// setter
-		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
-		void SetMask(uint32_t mask_) { mask = mask_; }
-		// getter
-		uint32_t GetAttribute() const { return attribute; }
-		uint32_t GetMask() const { return mask; }
 	};
 
 	class Collider;

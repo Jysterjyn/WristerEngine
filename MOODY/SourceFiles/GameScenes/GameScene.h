@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <BaseScene.h>
-#include <GameObjects.h>
+#include <Stage.h>
+#include <Collider.h>
 
 class GameSceneUIDrawer : public WristerEngine::_2D::AbstractUIDrawer
 {
@@ -11,10 +12,17 @@ class GameSceneUIDrawer : public WristerEngine::_2D::AbstractUIDrawer
 
 class GameScene : public WristerEngine::BaseScene
 {
-	WE::uList<GameObjects> gameObjects;
+	Stage stage;
+	WE::_2D::TestCheckAllCircleCollision* collision = WE::_2D::TestCheckAllCircleCollision::GetInstance();
 
 	// BaseScene を介して継承されました
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
+
+public:
+	~GameScene() 
+	{
+		collision->Clear(); 
+	}
 };

@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include <GameObjects.h>
 #include <Vector.h>
+#include <Collider.h>
 
 struct BehaviorParameter : WE::Behavior::Parameter
 {
 	Vector2 pos;
 	WE::ColorRGB color;
 	bool isDestroy = false;
+	bool isUkenagashi = false;
 };
 
 class BaseBallBehavior : public WE::Behavior
@@ -29,7 +31,7 @@ class Ukenagashi : public BaseBallBehavior
 	void Update() override;
 };
 
-class Ball : public GameObjects
+class Ball : public GameObjects, public WE::_2D::TestCircleCollider
 {
 	BehaviorParameter* GetParameter();
 
@@ -37,6 +39,7 @@ class Ball : public GameObjects
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
+	void OnCollision(TestCircleCollider* other) override;
 
 	template<class T>
 	void CreateBehavior()

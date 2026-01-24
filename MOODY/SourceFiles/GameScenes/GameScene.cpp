@@ -1,5 +1,4 @@
 ﻿#include "GameScene.h"
-#include <Ball.h>
 
 void GameSceneUIDrawer::Initialize()
 {
@@ -17,22 +16,19 @@ void GameScene::Initialize()
 	uiDrawer = std::make_unique<GameSceneUIDrawer>();
 	uiDrawer->Initialize();
 
-	WE::uPtr<Ball> ball = std::make_unique<Ball>();
-	gameObjects.push_back(std::move(ball));
-
-	for (auto& object : gameObjects) { object->Initialize(); }
+	stage.Initialize();
 }
 
 void GameScene::Update()
 {
 	uiDrawer->Update();
 
-	gameObjects.remove_if([](const WE::uPtr<GameObjects>& o) { return o->IsDestroy(); });
-	for (auto& object : gameObjects) { object->Update(); }
+	stage.Update();
+	collision->CheckCircleCollisions();
 }
 
 void GameScene::Draw()
 {
 	uiDrawer->Draw();
-	for (auto& object : gameObjects) { object->Draw(); }
+	stage.Draw();
 }

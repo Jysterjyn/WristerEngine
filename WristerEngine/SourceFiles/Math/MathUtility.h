@@ -79,3 +79,14 @@ bool IsAny(T n, std::vector<T> list)
 
 // 最短角度補間
 float LerpShortAngle(float a, float b, float t);
+
+/// <summary>
+/// nがmin~maxの範囲に含まれているか
+/// </summary>
+/// <param name="n">値</param>
+/// <param name="min">最小値</param>
+/// <param name="max">最大値</param>
+/// <param name="isMinInclude">最低境界値を含むか</param>
+/// <param name="isMaxInclude">最大境界値を含むか</param>
+/// <returns>nがmin~maxの範囲に含まれていたらtrue</returns>
+bool IsInRange(int n, int min, int max, bool isMinInclude, bool isMaxInclude);
