@@ -76,10 +76,10 @@ void Sprite::Update()
 
 	if (animation) { animation->Update(); }
 
-	float left = (0.0f - anchorPoint.x) * size.x;
-	float right = (1.0f - anchorPoint.x) * size.x;
-	float top = (0.0f - anchorPoint.y) * size.y;
-	float bottom = (1.0f - anchorPoint.y) * size.y;
+	float left = (0.0f - anchorPoint.x);
+	float right = (1.0f - anchorPoint.x);
+	float top = (0.0f - anchorPoint.y);
+	float bottom = (1.0f - anchorPoint.y);
 
 	if (isFlipX) { left = -left; right = -right; }
 	if (isFlipY) { top = -top; bottom = -bottom; }
@@ -101,11 +101,12 @@ void Sprite::Update()
 	vertices[(size_t)VertexNumber::RB].uv = { tex_right, tex_bottom };
 	vertices[(size_t)VertexNumber::RT].uv = { tex_right, tex_top };
 
-	Matrix4 matRot, matTrans;
+	Matrix4 matRot, matTrans, matScale;
+	matScale = Matrix4::Scale(size);
 	matRot = Matrix4::RotateZ(rotation);
 	matTrans = Matrix4::Translate(position + posOffset);
 
-	matWorld = matRot * matTrans;
+	matWorld = matScale * matRot * matTrans;
 
 	// GPU転送
 	constMap->mat = matWorld * SpriteManager::matProj;
