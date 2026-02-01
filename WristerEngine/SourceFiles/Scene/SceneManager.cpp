@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include "ModelManager.h"
 #include "ParticleManager.h"
-#include "NonEffectDrawer.h"
+//#include "NonEffectDrawer.h"
 using namespace WristerEngine;
 
 BaseScene::BaseScene() { sceneManager = SceneManager::GetInstance(); }
@@ -50,7 +50,7 @@ void SceneManager::Update()
 			isParticleClear = false;
 		}
 
-		NonEffectDrawer::Clear();
+		//NonEffectDrawer::Clear();
 		scene->Initialize();
 		scene->Update();
 		if (pauseMenu) { pauseMenu->Initialize(); }

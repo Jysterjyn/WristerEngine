@@ -3,6 +3,7 @@
 #include <memory>
 #include "Color.h"
 #include "DirectXCommon.h"
+#include "Transform.h"
 
 namespace WristerEngine::_2D
 {
@@ -17,13 +18,10 @@ namespace WristerEngine::_2D
 	class SpriteManager;
 
 	// スプライト
-	class Sprite : private DXCommonGetter
+	class Sprite : private DXCommonGetter, public Transform
 	{
 	public:
-		Vector2 position;
-		float rotation = 0;
 		ColorRGBA color;
-		Vector2 size; // 表示サイズ
 		Vector2 anchorPoint;
 		bool isFlipX = false;
 		bool isFlipY = false;
@@ -77,7 +75,6 @@ namespace WristerEngine::_2D
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 		ConstBufferData* constMap = nullptr;
 		Vertex* vertMap = nullptr;
-		Matrix4 matWorld;
 		UINT16 texIndex = 0;
 		std::vector<TextureData*> textures{};
 		std::unique_ptr<Animation> animation;

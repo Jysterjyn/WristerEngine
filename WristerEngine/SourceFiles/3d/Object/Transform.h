@@ -40,3 +40,29 @@ namespace WristerEngine::_3D
 		Vector3 GetScale() const;
 	};
 }
+
+namespace WristerEngine::_2D
+{
+	// ワールドトランスフォーム
+	class Transform
+	{
+	private:
+		bool isUpdated = false;
+
+	public:
+		Matrix4 matWorld;
+		Vector2 size = { 1,1 }, position;
+		float rotation = 0;
+		Transform* parent = nullptr;
+
+		// 初期化
+		void Initialize();
+		// 更新
+		void Update();
+		// 描画
+		void Draw();
+		// getter
+		Vector2 GetWorldPosition() const { return matWorld.GetVector(3); }
+		Vector2 GetScale() const;
+	};
+}

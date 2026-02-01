@@ -101,12 +101,7 @@ void Sprite::Update()
 	vertices[(size_t)VertexNumber::RB].uv = { tex_right, tex_bottom };
 	vertices[(size_t)VertexNumber::RT].uv = { tex_right, tex_top };
 
-	Matrix4 matRot, matTrans, matScale;
-	matScale = Matrix4::Scale(size);
-	matRot = Matrix4::RotateZ(rotation);
-	matTrans = Matrix4::Translate(position + posOffset);
-
-	matWorld = matScale * matRot * matTrans;
+	Transform::Update();
 
 	// GPU転送
 	constMap->mat = matWorld * SpriteManager::matProj;
