@@ -13,36 +13,6 @@ uint32_t Collider::nextSerialNumber = 0;
 //	colliders.clear();
 //	collisionManager->PopCollider(this);
 //}
-//
-//void MeshCollider::ConstructTriangles(ModelManager* model)
-//{
-//	triangles.clear();
-//
-//	const Mesh& mesh = model->GetMesh();
-//
-//	int start = 0;
-//
-//	const std::vector<Mesh::VertexData>& vertices = mesh.GetVertices();
-//	const std::vector<unsigned short>& indices = mesh.GetIndices();
-//
-//	size_t triangleNum = indices.size() / 3;
-//
-//	triangles.resize(triangles.size() + triangleNum);
-//
-//	for (int i = 0; i < triangleNum; i++) {
-//
-//		PolygonCollider& tri = triangles[start + i];
-//		int idx0 = indices[i * 3 + 0];
-//		int idx1 = indices[i * 3 + 1];
-//		int idx2 = indices[i * 3 + 2];
-//
-//		tri.AddVertices(vertices[idx0].pos);
-//		tri.AddVertices(vertices[idx1].pos);
-//		tri.AddVertices(vertices[idx2].pos);
-//
-//		tri.ComputeNormal();
-//	}
-//}
 
 void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
 {

@@ -41,7 +41,7 @@ void Ball::OnCollision(TestCircleCollider* other)
 {
 	if (other->GetColliderName() != "Player") { return; }
 	
-	GetParameter()->isUkenagashi = true;
+	GetParameter()->isDestroy = true;
 }
 
 void Ball::ApplyParameter()
