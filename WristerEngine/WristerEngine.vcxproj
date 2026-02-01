@@ -110,15 +110,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\SpriteManager.cpp" />
-    <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\FollowCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\LockOn.cpp" />
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp" />
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp" />
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp" />
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\PrimitiveDrawer.cpp" />
     <ClCompile Include="SourceFiles\Behavior\Behavior.cpp" />
     <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
@@ -138,7 +134,6 @@
     <ClCompile Include="SourceFiles\Timer\FPS.cpp" />
     <ClCompile Include="SourceFiles\Utility\Random.cpp" />
     <ClCompile Include="SourceFiles\Math\MathUtility.cpp" />
-    <ClCompile Include="SourceFiles\3d\Skydome\Skydome.cpp" />
     <ClCompile Include="SourceFiles\Particle\ParticleGroup.cpp" />
     <ClCompile Include="SourceFiles\Particle\DiffuseParticle.cpp" />
     <ClCompile Include="SourceFiles\Particle\DirectionalParticle.cpp" />
@@ -171,15 +166,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\SpriteManager.h" />
-    <ClInclude Include="SourceFiles\3d\AxisIndicator.h" />
     <ClInclude Include="SourceFiles\3d\Camera\BaseCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h" />
     <ClInclude Include="SourceFiles\3d\Camera\FollowCamera.h" />
     <ClInclude Include="SourceFiles\3d\Camera\LockOn.h" />
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h" />
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h" />
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h" />
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h" />
     <ClInclude Include="SourceFiles\3d\Object\PrimitiveDrawer.h" />
     <ClInclude Include="SourceFiles\Behavior\Behavior.h" />
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
@@ -202,7 +193,6 @@
     <ClInclude Include="SourceFiles\Timer\FPS.h" />
     <ClInclude Include="SourceFiles\Utility\Random.h" />
     <ClInclude Include="SourceFiles\Math\MathUtility.h" />
-    <ClInclude Include="SourceFiles\3d\Skydome\Skydome.h" />
     <ClInclude Include="SourceFiles\Particle\ParticleGroup.h" />
     <ClInclude Include="SourceFiles\Particle\DiffuseParticle.h" />
     <ClInclude Include="SourceFiles\Particle\DirectionalParticle.h" />

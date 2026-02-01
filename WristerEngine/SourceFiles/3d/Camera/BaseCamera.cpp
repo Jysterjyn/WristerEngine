@@ -79,15 +79,6 @@ void BaseCamera::CameraMove(const Vector3& move)
 
 Matrix4 BaseCamera::GetBillboard() const
 {
-	//Vector3 cameraAxisZ = target - eye;
-	//// 0ベクトルの時
-	//assert(!(cameraAxisZ.Length() == 0));
-	//assert(!(up.Length() == 0));
-
-	//cameraAxisZ.Normalize();
-
-	//Vector3 cameraAxisX = Normalize(Cross(up, cameraAxisZ));
-	//Vector3 cameraAxisY = Normalize(Cross(cameraAxisZ, cameraAxisX));
 	auto cameraAxis = CalculateAxis(target - eye, &up);
 	return CreateFromVector(cameraAxis[0], cameraAxis[1], cameraAxis[2]);
 }

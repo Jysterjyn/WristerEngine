@@ -104,7 +104,7 @@ void Sprite::Update()
 	Transform::Update();
 
 	// GPU転送
-	constMap->mat = matWorld * SpriteManager::matProj;
+	constMap->mat = matWorld;
 	constMap->color = color;
 	std::copy(std::begin(vertices), std::end(vertices), vertMap);
 }

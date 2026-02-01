@@ -9,23 +9,28 @@ using namespace _2D;
 using namespace DirectX;
 
 // 平行投影行列
-static Matrix4 OrthoGraphic()
+Matrix4 SpriteManager::OrthoGraphic()
 {
-	Matrix4 matProj;
+	Matrix4 matProj_;
 	// 平行投影行列の生成
-	matProj.m[0][0] = 2.0f / WIN_SIZE.x;
-	matProj.m[1][1] = -2.0f / WIN_SIZE.y;
-	matProj.m[3][0] = -1.0f;
-	matProj.m[3][1] = 1.0f;
-	return matProj;
+	matProj_.m[0][0] = 2.0f / WIN_SIZE.x;
+	matProj_.m[1][1] = -2.0f / WIN_SIZE.y;
+	matProj_.m[3][0] = -1.0f;
+	matProj_.m[3][1] = 1.0f;
+	return matProj_;
 }
-
-const Matrix4 SpriteManager::matProj = OrthoGraphic();
 
 SpriteManager* SpriteManager::GetInstance()
 {
 	static SpriteManager instance;
 	return &instance;
+}
+
+void SpriteManager::Initialize()
+{
+	// 定数バッファ
+	CreateBuffer(constBuff.GetAddressOf(), &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
+	constMap->matProj = matProj;
 }
 
 TextureData* SpriteManager::LoadTexture(const std::string& fileName)
@@ -115,9 +120,10 @@ void SpriteManager::PreDraw()
 	PipelineManager::SetPipeline(PipelineType::Sprite);
 	// プリミティブ形状の設定コマンド
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // 三角形リスト
+	cmdList->SetGraphicsRootConstantBufferView(2, constBuff->GetGPUVirtualAddress());
 }
 
-void SpriteManager::UpdateAll()
+void SpriteManager::Update()
 {
 	for (auto& s : sprites) { s->Update(); }
 }

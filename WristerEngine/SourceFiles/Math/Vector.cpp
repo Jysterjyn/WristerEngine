@@ -267,7 +267,11 @@ std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)
 	assert(forward.Length() != 0);
 
 	Vector3 upVec;
-	if (up) { upVec = Normalize(*up); }
+	if (up) 
+	{
+		assert(up->Length() != 0);
+		upVec = Normalize(*up); 
+	}
 	else { upVec = Vector3::MakeAxis(Axis::Y); }
 
 	std::array<Vector3, 3> axis;

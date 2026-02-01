@@ -1,7 +1,12 @@
 cbuffer ConstBufferData : register(b0)
 {
-	matrix mat;
+	matrix world;
 	float4 color;
+}
+
+cbuffer ConstBufferData : register(b1)
+{
+	matrix proj;
 }
 
 struct VSOutput

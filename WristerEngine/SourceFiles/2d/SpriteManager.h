@@ -7,8 +7,19 @@ namespace WristerEngine::_2D
 	class SpriteManager final : DXCommonGetter
 	{
 	private:
+		struct ConstBufferData
+		{
+			Matrix4 matProj;
+		};
+
+		Matrix4 OrthoGraphic();
+
+		const Matrix4 matProj = OrthoGraphic();
+
 		uList<TextureData> textures;
 		uList<Sprite> sprites;
+		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
+		ConstBufferData* constMap = nullptr;
 
 		SpriteManager() = default;
 		~SpriteManager() = default;
@@ -18,7 +29,7 @@ namespace WristerEngine::_2D
 	public:
 		static SpriteManager* GetInstance();
 
-		static const Matrix4 matProj;
+		void Initialize();
 
 		// テクスチャ読み込み
 		TextureData* LoadTexture(const std::string& fileName);
@@ -27,8 +38,8 @@ namespace WristerEngine::_2D
 		Sprite* Create(std::initializer_list<const std::string> fileNames,
 			const Vector2& pos = {}, const Vector2& anchorPoint = {},
 			const Vector2& textureSize = {}, const Vector2& textureLeftTop = {});
-		
-		void UpdateAll();
+
+		void Update();
 
 		// 描画前処理
 		void PreDraw();

@@ -10,7 +10,7 @@ void PipelineManager::Initialize()
 	pipelineProp.shaderNames = { L"SpriteVS", L"SpritePS" };
 	pipelineProp.inputLayoutProps.push_back({ "POSITION", DXGI_FORMAT_R32G32_FLOAT });
 	pipelineProp.inputLayoutProps.push_back({ "TEXCOORD", DXGI_FORMAT_R32G32_FLOAT });
-	pipelineProp.rootParamProp = { 1,1 };
+	pipelineProp.rootParamProp = { 1,2 };
 	pipelineProp.cullMode = D3D12_CULL_MODE_NONE;
 	pipelines[PipelineType::Sprite].CreatePipeline(pipelineProp);
 

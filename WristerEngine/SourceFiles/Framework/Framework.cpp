@@ -13,6 +13,7 @@ void Framework::Initialize()
 	PipelineManager::Initialize();
 	constant->LoadConstants();
 	imGuiManager->Initialize();
+	spMan->Initialize();
 	// グローバル変数の読み込み
 	globalVariables->LoadFiles();
 }
@@ -26,7 +27,7 @@ void Framework::Update()
 	// ゲームシーンの毎フレーム処理
 	sceneManager->Update();
 	// スプライトの更新
-	spMan->UpdateAll();
+	spMan->Update();
 	// 音源の更新
 	audioManager->Update();
 }

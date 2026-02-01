@@ -169,9 +169,6 @@
     <ClCompile Include="SourceFiles\Audio\AudioManager.cpp">
       <Filter>ソース ファイル\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Skydome\Skydome.cpp">
-      <Filter>ソース ファイル\3d\Skydome</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Timer\Timer.cpp">
       <Filter>ソース ファイル\Timer</Filter>
     </ClCompile>
@@ -196,9 +193,6 @@
     <ClCompile Include="SourceFiles\Utility\StringUtility.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\3d\AxisIndicator.cpp">
-      <Filter>ソース ファイル\3d</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\RailCamera.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
@@ -213,15 +207,6 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Utility\Shake.cpp">
       <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxLoader.cpp">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxModel.cpp">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\3d\Fbx\FbxObject3d.cpp">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\3d\Camera\CameraManager.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
@@ -357,9 +342,6 @@
     <ClInclude Include="SourceFiles\Audio\AudioManager.h">
       <Filter>ソース ファイル\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Skydome\Skydome.h">
-      <Filter>ソース ファイル\3d\Skydome</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Timer\Timer.h">
       <Filter>ソース ファイル\Timer</Filter>
     </ClInclude>
@@ -387,9 +369,6 @@
     <ClInclude Include="SourceFiles\Utility\StringUtility.h">
       <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\3d\AxisIndicator.h">
-      <Filter>ソース ファイル\3d</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\RailCamera.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
@@ -407,15 +386,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\Shake.h">
       <Filter>ソース ファイル\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxLoader.h">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxModel.h">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\3d\Fbx\FbxObject3d.h">
-      <Filter>ソース ファイル\3d\Fbx</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\3d\Camera\CameraManager.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
