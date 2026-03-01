@@ -109,41 +109,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceFiles\2d\SpriteManager.cpp" />
-    <ClCompile Include="SourceFiles\Behavior\Behavior.cpp" />
-    <ClCompile Include="SourceFiles\DirectX\PipelineManager.cpp" />
-    <ClCompile Include="SourceFiles\Json\GlobalVariables.cpp" />
-    <ClCompile Include="SourceFiles\LevelLoader\LevelLoader.cpp" />
     <ClCompile Include="SourceFiles\Physics\Collider.cpp" />
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp" />
-    <ClCompile Include="SourceFiles\2d\MultiTexture.cpp" />
-    <ClCompile Include="SourceFiles\Utility\Shake.cpp" />
-    <ClCompile Include="SourceFiles\Audio\AudioManager.cpp" />
-    <ClCompile Include="SourceFiles\Json\JsonLoader.cpp" />
-    <ClCompile Include="SourceFiles\Json\Constant.cpp" />
-    <ClCompile Include="SourceFiles\Math\Easing.cpp" />
-    <ClCompile Include="SourceFiles\Timer\FPS.cpp" />
-    <ClCompile Include="SourceFiles\Utility\Random.cpp" />
-    <ClCompile Include="SourceFiles\Math\MathUtility.cpp" />
-    <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp" />
-    <ClCompile Include="SourceFiles\2d\PostEffect.cpp" />
-    <ClCompile Include="SourceFiles\2d\Sprite.cpp" />
-    <ClCompile Include="SourceFiles\3d\Object\Transform.cpp" />
-    <ClCompile Include="SourceFiles\Audio\Audio.cpp" />
-    <ClCompile Include="SourceFiles\DirectX\D3D12Common.cpp" />
-    <ClCompile Include="SourceFiles\DirectX\DirectXCommon.cpp" />
-    <ClCompile Include="SourceFiles\Framework\Framework.cpp" />
-    <ClCompile Include="SourceFiles\Input\Input.cpp" />
-    <ClCompile Include="SourceFiles\Timer\TimedCall.cpp" />
-    <ClCompile Include="SourceFiles\Utility\StringUtility.cpp" />
-    <ClCompile Include="SourceFiles\WinApp\WindowsAPI.cpp" />
-    <ClCompile Include="SourceFiles\Utility\Color.cpp" />
-    <ClCompile Include="SourceFiles\Timer\Timer.cpp" />
-    <ClCompile Include="SourceFiles\Math\Matrix4.cpp" />
-    <ClCompile Include="SourceFiles\Math\Quaternion.cpp" />
-    <ClCompile Include="SourceFiles\Math\Vector.cpp" />
-    <ClCompile Include="SourceFiles\Scene\FadeManager.cpp" />
-    <ClCompile Include="SourceFiles\Scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\2d\SpriteManager.h" />
