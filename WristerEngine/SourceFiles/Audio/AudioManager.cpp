@@ -16,15 +16,6 @@ Audio* AudioManager::Create(const std::string& fileName, bool isLoop)
 	return audios.back().get();
 }
 
-PointAudio* AudioManager::CreatePointAudio(const std::string& fileName,
-	bool isLoop, const Vector3& audioPos, bool useCamera, bool usePan)
-{
-	std::unique_ptr<PointAudio> newAudio = std::make_unique<PointAudio>();
-	newAudio->Initialize(fileName, audioPos, useCamera, usePan, isLoop);
-	audios.push_back(std::move(newAudio));
-	return static_cast<PointAudio*>(audios.back().get());
-}
-
 void AudioManager::PlaySE(const std::string& fileName)
 {
 	Audio* newAudio = Create(fileName);

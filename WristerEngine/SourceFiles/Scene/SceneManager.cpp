@@ -1,8 +1,5 @@
 ﻿#include "SceneManager.h"
 #include "Sprite.h"
-#include "ModelManager.h"
-#include "ParticleManager.h"
-//#include "NonEffectDrawer.h"
 using namespace WristerEngine;
 
 BaseScene::BaseScene() { sceneManager = SceneManager::GetInstance(); }
@@ -41,16 +38,13 @@ void SceneManager::Update()
 
 		if (isObjectClear)
 		{
-			_3D::ModelManager::GetInstance()->ClearObjects();
 			isObjectClear = false;
 		}
 		if (isParticleClear)
 		{
-			ParticleManager::GetInstance()->Clear();
 			isParticleClear = false;
 		}
 
-		//NonEffectDrawer::Clear();
 		scene->Initialize();
 		scene->Update();
 		if (pauseMenu) { pauseMenu->Initialize(); }
