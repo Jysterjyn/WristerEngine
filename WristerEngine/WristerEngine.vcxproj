@@ -109,7 +109,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceFiles\Physics\Collider.cpp" />
+    <ClCompile Include="SourceFiles\Physics\Collider2D.cpp" />
+    <ClCompile Include="SourceFiles\Physics\Collider3D.cpp" />
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -118,7 +119,8 @@
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h" />
     <ClInclude Include="SourceFiles\Json\GlobalVariables.h" />
     <ClInclude Include="SourceFiles\LevelLoader\LevelLoader.h" />
-    <ClInclude Include="SourceFiles\Physics\Collider.h" />
+    <ClInclude Include="SourceFiles\Physics\Collider2D.h" />
+    <ClInclude Include="SourceFiles\Physics\Collider3D.h" />
     <ClInclude Include="SourceFiles\Physics\CollisionManager.h" />
     <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h" />
     <ClInclude Include="SourceFiles\2d\MultiTexture.h" />
