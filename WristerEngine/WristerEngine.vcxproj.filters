@@ -80,9 +80,6 @@
     <Filter Include="ソース ファイル\2d\Sprite">
       <UniqueIdentifier>{5c5c81dd-02a2-4ea3-a988-7f7d4c3625e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Physics\Collider">
-      <UniqueIdentifier>{9bc8a7b6-74b2-43a4-a642-8fca02ff9140}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp">
@@ -223,6 +220,9 @@
     <ClCompile Include="SourceFiles\3d\Camera\LockOn.cpp">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\Collider.cpp">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClCompile>
     <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp">
       <Filter>ソース ファイル\Physics</Filter>
     </ClCompile>
@@ -243,9 +243,6 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\2d\SpriteManager.cpp">
       <Filter>ソース ファイル\2d\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Physics\Collider.cpp">
-      <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +399,9 @@
     <ClInclude Include="SourceFiles\3d\Camera\LockOn.h">
       <Filter>ソース ファイル\3d\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\Collider.h">
+      <Filter>ソース ファイル\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="SourceFiles\Physics\CollisionManager.h">
       <Filter>ソース ファイル\Physics</Filter>
     </ClInclude>
@@ -428,9 +428,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\2d\SpriteManager.h">
       <Filter>ソース ファイル\2d\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\Collider.h">
-      <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
