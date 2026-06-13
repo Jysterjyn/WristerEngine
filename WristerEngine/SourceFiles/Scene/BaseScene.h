@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Input.h"
 #include "AbstractUIDrawer.h"
-#include <ModelManager.h>
 #include <memory>
 
 namespace WristerEngine
@@ -14,8 +13,6 @@ namespace WristerEngine
 	protected:
 		SceneManager* sceneManager = nullptr;
 		Input* input = Input::GetInstance();
-		_3D::ModelManager* modelManager=_3D::ModelManager::GetInstance();
-		_3D::CameraManager* cameraManager = _3D::CameraManager::GetInstance();
 		std::unique_ptr<_2D::AbstractUIDrawer> uiDrawer;
 
 	public:
