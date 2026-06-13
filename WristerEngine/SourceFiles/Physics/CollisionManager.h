@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Collider.h"
+#include "Collider3D.h"
 #include <list>
 #include <optional>
 

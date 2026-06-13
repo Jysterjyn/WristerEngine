@@ -195,5 +195,8 @@
     <ClInclude Include="SourceFiles\Physics\Collider2D.h">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\CollisionInfo.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
