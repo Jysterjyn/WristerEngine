@@ -64,13 +64,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceFiles\Physics\CollisionManager.cpp">
-      <Filter>ソース ファイル\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Physics\Collider2D.cpp">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Physics\Collider3D.cpp">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\CollisionManager3D.cpp">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
   </ItemGroup>
@@ -165,9 +168,6 @@
     <ClInclude Include="SourceFiles\Json\GlobalVariables.h">
       <Filter>ソース ファイル\Json</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\CollisionManager.h">
-      <Filter>ソース ファイル\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Behavior\Behavior.h">
       <Filter>ソース ファイル\Behavior</Filter>
     </ClInclude>
@@ -196,6 +196,12 @@
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Physics\CollisionInfo.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\CollisionManager2D.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\CollisionManager3D.h">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
   </ItemGroup>

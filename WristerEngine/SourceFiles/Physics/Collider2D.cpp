@@ -1,23 +1,23 @@
 ﻿#include "Collider2D.h"
-#include "CollisionManager.h"
+#include "CollisionManager2D.h"
 #include <cassert>
-#include <imgui.h>
 using namespace WE;
+using namespace _2D;
 
-//_2D::Collider::~Collider()
+//Collider::~Collider()
 //{
 //	colliders.clear();
 //	collisionManager->PopCollider(this);
 //}
 
-void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
+void Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shapeType_, const std::string& colliderName_)
 {
 	transform = transform_;
 	shapeType = shapeType_;
 	colliderName = colliderName_;
 }
 
-//std::map<std::string, Vector2> _2D::BoxCollider::GetVertex() const
+//std::map<std::string, Vector2> BoxCollider::GetVertex() const
 //{
 //	std::map<std::string, Vector2> ans;
 //	ans["LT"] = ans["RB"] = ans["LB"] = ans["RT"] = transform->position;
@@ -33,15 +33,15 @@ void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shap
 //	return ans;
 //}
 //
-//void _2D::Collider::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
+//void Collider::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
 //{
 //	std::unique_ptr<Base2DCollider> newCollider;
 //	switch (shapeType)
 //	{
-//	case _2D::CollisionShapeType::Box:
-//		newCollider = std::make_unique<_2D::BoxCollider>();
+//	case CollisionShapeType::Box:
+//		newCollider = std::make_unique<BoxCollider>();
 //		break;
-//	case _2D::CollisionShapeType::TwoRay:
+//	case CollisionShapeType::TwoRay:
 //		assert(option);
 //		newCollider = std::make_unique<TwoRayCollider>(option->fov);
 //		break;
@@ -53,17 +53,17 @@ void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shap
 //	colliders.push_back(move(newCollider));
 //}
 //
-//void _2D::Collider::DeleteCollider(const std::string& colliderName)
+//void Collider::DeleteCollider(const std::string& colliderName)
 //{
 //	colliders.remove_if([&](const std::unique_ptr<Base2DCollider>& collider) { return collider->GetColliderName() == colliderName; });
 //}
 //
-//void _2D::Collider::AddCollisionPair(size_t myIndex, size_t youIndex)
+//void Collider::AddCollisionPair(size_t myIndex, size_t youIndex)
 //{
 //	collisionPair[myIndex].push_back(youIndex);
 //}
 //
-//void _2D::Collider::DeletePair()
+//void Collider::DeletePair()
 //{
 //	for (auto& pair : collisionPair)
 //	{
@@ -72,7 +72,7 @@ void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shap
 //	collisionPair.clear();
 //}
 //
-//const std::string _2D::Collider::GetColliderName(size_t index) const
+//const std::string Collider::GetColliderName(size_t index) const
 //{
 //	if (colliders.size() <= index) { return "Null"; }
 //	auto itr = colliders.begin();
@@ -83,7 +83,7 @@ void _2D::Base2DCollider::Initialize(Sprite* transform_, CollisionShapeType shap
 //	return itr->get()->GetColliderName();
 //}
 
-bool WristerEngine::_2D::TestCheckAllCircleCollision::Check2Circles(TestCircleCollider* a, TestCircleCollider* b)
+bool TestCheckAllCircleCollision::Check2Circles(TestCircleCollider* a, TestCircleCollider* b)
 {
 	// 値の取得
 	Vector2 centerA = a->GetTransform()->position;
@@ -101,7 +101,7 @@ bool WristerEngine::_2D::TestCheckAllCircleCollision::Check2Circles(TestCircleCo
 	return true;
 }
 
-void WristerEngine::_2D::TestCheckAllCircleCollision::CheckCircleCollisions()
+void TestCheckAllCircleCollision::CheckCircleCollisions()
 {
 	auto itrA = colliders.begin();
 	for (; itrA != colliders.end(); itrA++)
@@ -110,7 +110,7 @@ void WristerEngine::_2D::TestCheckAllCircleCollision::CheckCircleCollisions()
 		itrB++;
 		for (; itrB != colliders.end(); itrB++)
 		{
-			if (!WE::CollisionManager::GetInstance()->CheckFiltering(*itrA, *itrB)) { continue; }
+			if (!CollisionManager2D::GetInstance()->CheckFiltering(*itrA, *itrB)) { continue; }
 			if (Check2Circles(*itrA, *itrB))
 			{
 				(*itrA)->OnCollision(*itrB);

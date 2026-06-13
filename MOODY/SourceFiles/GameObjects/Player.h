@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "GameObjects.h"
 #include <Input.h>
-#include <Collider.h>
+#include <Collider2D.h>
 
 class Player : public GameObjects, public WE::_2D::TestCircleCollider
 {

@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <GameObjects.h>
 #include <Vector.h>
-#include <Collider.h>
+#include <Collider2D.h>
 
 struct BehaviorParameter : WE::Behavior::Parameter
 {

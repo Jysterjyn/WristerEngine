@@ -1,7 +1,6 @@
 ﻿#include "Collider3D.h"
-#include "CollisionManager.h"
+#include "CollisionManager3D.h"
 #include <cassert>
-#include <imgui.h>
 using namespace WE;
 using namespace _3D;
 
