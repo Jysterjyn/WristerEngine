@@ -3,7 +3,7 @@
 #include <list>
 #include <optional>
 
-namespace WristerEngine
+namespace WristerEngine::_3D
 {
 	struct RaycastHit
 	{
@@ -56,13 +56,9 @@ namespace WristerEngine
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-
 		bool Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB);
 
 		// 個別当たり判定
-		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
-		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
-
 		bool Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB);
 		bool Check2Spheres(const SphereCollider* sphereA, const SphereCollider* sphereB);
 		bool CheckSpherePlane(const SphereCollider* sphere, const PlaneCollider* plane);
@@ -72,19 +68,31 @@ namespace WristerEngine
 		bool Check2IncludeBoxes(const IncludeCollider* iBoxA, const IncludeCollider* iBoxB);
 		bool CheckRayPlane(const RayCollider* ray, const PlaneCollider* plane);
 		bool CheckRayTriangle(const RayCollider* ray, const TriangleCollider* triangle);
-		bool CheckRaySphere(const RayCollider * ray, const SphereCollider * sphere);
+		bool CheckRaySphere(const RayCollider* ray, const SphereCollider* sphere);
 		bool CheckRayMesh(const RayCollider* ray, const MeshCollider* mesh);
 		//bool CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB);
 
 	public:
 		static CollisionManager* GetInstance();
-
-		bool CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB);
 		ColliderGroup* AddGroup(const std::string& groupName);
 
+		/// <summary>
+		/// レイキャスト
+		/// </summary>
+		/// <param name="ray">レイコライダー</param>
+		/// <param name="attribute">対象の衝突属性</param>
+		/// <param name="hitInfo">衝突情報</param>
+		/// <param name="maxDistance">最大距離</param>
+		/// <returns>レイが任意のコライダーと交わる場合はtrue、それ以外はfalse</returns>
 		bool Raycast(const RayCollider* ray, uint32_t attribute, RaycastHit* hitInfo = nullptr,
 			const float maxDistance = D3D12_FLOAT32_MAX);
 
+		/// <summary>
+		/// 球による衝突全検索
+		/// </summary>
+		/// <param name="sphere">球コライダー</param>
+		/// <param name="callback">衝突時コールバック</param>
+		/// <param name="attribute">対象の衝突属性</param>
 		void QuerySphere(const SphereCollider* sphere, QueryCallback* callback, uint32_t attribute = UINT32_MAX);
 
 		// 全当たり判定

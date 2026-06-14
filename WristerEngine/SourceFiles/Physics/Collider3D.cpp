@@ -15,6 +15,9 @@ CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const HitI
 
 bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
 {
+	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
+	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
+	// シリアルナンバーと同じかで判断する
 	if (p1.my->GetSerialNumber() == p2.my->GetSerialNumber() &&
 		p1.other->GetSerialNumber() == p2.other->GetSerialNumber())
 	{
@@ -54,15 +57,21 @@ void ColliderGroup::AddCollisionPair(const CollisionPair& pair)
 
 void ColliderGroup::CallCollision()
 {
+	// OnCollisionは当たっている間に呼ばれるコールバック関数なので、同じオーナーに対して複数回呼ばれないようにする
 	std::map<uint32_t, uint8_t> calledCollision;
+	
+	// コールバック関数呼び出し(OnCollision)
 	for (auto& pair : collisionPairs)
 	{
 		Collider* owner = pair.my->GetOwner();
+		// すでに呼ばれているオーナーはスキップ
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollision();
+		// 呼び出したオーナーを記録
 		calledCollision[owner->GetSerialNumber()];
 	}
 
+	// OnCollisionEnterは当たった瞬間に呼ばれるコールバック関数なので、前フレームのペアと同じペアは呼ばない
 	for (auto& pair : collisionPairs)
 	{
 		bool isNotEnter = false;
@@ -82,6 +91,7 @@ void ColliderGroup::CallCollision()
 		calledCollision[owner->GetSerialNumber()];
 	}
 
+	// OnCollisionExitは離れた瞬間に呼ばれるコールバック関数なので、前フレームのペアで今回当たっていないペアだけ呼ぶ
 	for (auto& pair : collisionPairsPre)
 	{
 		bool isNotEnter = false;

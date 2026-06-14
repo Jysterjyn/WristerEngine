@@ -25,6 +25,6 @@ void Player::Draw()
 	sprite->Draw();
 }
 
-void Player::OnCollision(TestCircleCollider* other)
+void Player::OnCollision(CircleCollider* other)
 {
 }

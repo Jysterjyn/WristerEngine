@@ -1,20 +1,75 @@
 ﻿#include "CollisionManager2D.h"
-using namespace WE::_2D;
+using namespace WE;
+using namespace _2D;
 
-CollisionManager2D* CollisionManager2D::GetInstance()
+CollisionManager* CollisionManager::GetInstance()
 {
-	static CollisionManager2D instance;
+	static CollisionManager instance;
 	return &instance;
 }
 
-bool CollisionManager2D::CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
+ColliderGroup* CollisionManager::AddGroup(const std::string& groupName)
 {
-	return
-		infoA->GetAttribute() & infoB->GetMask() &&
-		infoB->GetAttribute() & infoA->GetMask();
+	if (!colliderGroups.contains(groupName))
+	{
+		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>();
+		colliderGroups[groupName] = std::move(newGroup);
+	}
+	return colliderGroups[groupName].get();
 }
 
-//bool CollisionManager2D::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
+void CollisionManager::CheckCollisions()
+{
+	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
+
+	auto itrA = colliderGroups.begin();
+	for (; itrA != colliderGroups.end(); itrA++)
+	{
+		auto itrB = itrA;
+		itrB++;
+		for (; itrB != colliderGroups.end(); itrB++)
+		{
+			ColliderGroup* groupA = itrA->second.get();
+			ColliderGroup* groupB = itrB->second.get();
+			if (!CheckFiltering(groupA, groupB)) { continue; }
+			if (!Check2Groups(groupA, groupB)) { continue; }
+		}
+	}
+
+	for (auto& group : colliderGroups)
+	{
+		group.second->CallCollision();
+	}
+}
+
+bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB)
+{
+	for (const auto& colliderA : *groupA->GetColliders()) {
+		for (const auto& colliderB : *groupB->GetColliders())
+		{
+			if (!CheckFiltering(colliderA.get(), colliderB.get())) { continue; }
+
+			std::list<BaseCollider*> colliderPair({ colliderA.get(),colliderB.get() });
+			colliderPair.sort([](BaseCollider* c1, BaseCollider* c2)
+				{
+					return c1->GetShapeType() < c2->GetShapeType();
+				});
+
+			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
+			{
+				CollisionPair pairA(colliderA.get(), colliderB.get(), *this);
+				CollisionPair pairB(colliderB.get(), colliderA.get(), *this);
+				groupA->AddCollisionPair(pairA);
+				groupB->AddCollisionPair(pairB);
+				Reset();
+			}
+		}
+	}
+
+	return !groupA->GetCollisionPairs().empty();
+}
+
+//bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
 //	for (size_t i = 0; i < colliders.size(); i++)
@@ -42,7 +97,7 @@ bool CollisionManager2D::CheckFiltering(const CollisionInfo* infoA, const Collis
 //	return false;
 //}
 //
-//bool CollisionManager2D::Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders)
+//bool CollisionManager::Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders)
 //{
 //	const _2D::TwoRayCollider* rayCollider = nullptr;
 //	const _2D::BoxCollider* boxCollider = nullptr;
@@ -103,7 +158,7 @@ bool CollisionManager2D::CheckFiltering(const CollisionInfo* infoA, const Collis
 //	return crossRT < 0 && crossLB > 0;
 //}
 //
-//bool CollisionManager2D::CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB)
+//bool CollisionManager::CheckCollisionRayBox(RayCollider* colliderA, BoxCollider* colliderB)
 //{
 //	if (!CheckFiltering(colliderA, colliderB)) { return false; }
 //	PolygonCollider pCollider;
@@ -123,7 +178,7 @@ bool CollisionManager2D::CheckFiltering(const CollisionInfo* infoA, const Collis
 //	return CheckCollisionRayPolygon(colliderA, &pCollider);
 //}
 //
-//bool CollisionManager2D::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
+//bool CollisionManager::CheckCollision2ColliderGroups(_2D::Collider* groupA, _2D::Collider* groupB)
 //{
 //	if (!CheckFiltering(groupA, groupB)) { return false; }
 //
@@ -170,7 +225,7 @@ bool CollisionManager2D::CheckFiltering(const CollisionInfo* infoA, const Collis
 //	return isHitGroup;
 //}
 //
-//void CollisionManager2D::Check2DCollisions()
+//void CollisionManager::Check2DCollisions()
 //{
 //	for (auto& collider : _2DColliders)
 //	{

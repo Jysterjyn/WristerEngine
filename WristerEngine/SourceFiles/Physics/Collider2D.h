@@ -1,145 +1,246 @@
 ﻿#pragma once
-#include "Sprite.h"
+#include "Transform.h"
 #include <map>
 #include <optional>
 #include "CollisionInfo.h"
 
-namespace WristerEngine
+namespace WristerEngine::_2D
 {
-	namespace _2D
+	enum class CollisionShapeType
 	{
-		enum class CollisionShapeType
+		Unknown,
+		Box,
+		TwoRay,
+		Circle
+	};
+
+	class Collider;
+
+	class BaseCollider : public CollisionInfo
+	{
+	private:
+		bool isDestroy = false;
+		Collider* owner = nullptr;
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
+
+	protected:
+		CollisionShapeType shapeType = CollisionShapeType::Unknown;
+		const Transform* pTransform = nullptr;
+
+	public:
+		BaseCollider(bool isDec = false) { serialNumber = nextSerialNumber++; if (isDec) { nextSerialNumber--; } }
+		
+		virtual ~BaseCollider() = default;
+
+		virtual void Update() {}
+
+		void Destroy() { isDestroy = true; }
+
+		void SetOwner(Collider* owner_) { owner = owner_; }
+		// トランスフォームを設定
+		void SetTransform(const Transform* pTransform_) { pTransform = pTransform_; Update(); }
+
+		// getter
+		CollisionShapeType GetShapeType() const { return shapeType; }
+		bool IsDestroy() const { return isDestroy; }
+		Collider* GetOwner() { return owner; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
+	};
+
+	struct HitInfo
+	{
+		std::optional<Vector2> inter = std::nullopt;
+		std::optional<float> distance = std::nullopt;
+		std::optional<Vector2> reject = std::nullopt;
+
+		HitInfo(const std::optional<Vector2>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
+			const std::optional<Vector2>& reject = std::nullopt)
+			: inter(inter), distance(distance), reject(reject)
 		{
-			Unknown,
-			Box,
-			TwoRay,
-			Sphere
-		};
+		}
 
-		struct Option
+		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
+	};
+
+	struct CollisionPair : public HitInfo
+	{
+		BaseCollider* my = nullptr, * other = nullptr;
+
+		CollisionPair(BaseCollider* my, BaseCollider* other, const HitInfo& hitInfo);
+
+		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
+	};
+
+	class ColliderGroup : public CollisionInfo
+	{
+	private:
+		std::list<std::unique_ptr<BaseCollider>> colliders;
+		std::list<Collider*> owners;
+
+		// 当たったペアの記録
+		std::vector<CollisionPair> collisionPairs;
+		std::vector<CollisionPair> enterPairs;
+		std::vector<CollisionPair> exitPairs;
+		std::vector<CollisionPair> collisionPairsPre;
+
+	public:
+		~ColliderGroup();
+
+		void Update();
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
+
+		void AddCollisionPair(const CollisionPair& pair);
+
+		void AddOwner(Collider* owner) { owners.push_back(owner); }
+
+		void CallCollision();
+
+		// getter
+		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
+		const std::vector<CollisionPair>& GetCollisionPairs() const { return collisionPairs; }
+		const std::vector<CollisionPair>& GetEnterPairs() const { return enterPairs; }
+		const std::vector<CollisionPair>& GetExitPairs() const { return exitPairs; }
+	};
+
+	// 四角形コライダー
+	class BoxCollider : public BaseCollider
+	{
+	public:
+		// 左上端と右下端の座標を求める
+		std::map<std::string, Vector2> GetVertex() const;
+	};
+
+	// 1点から2方向に延びる線分との当たり判定（まだ不完全）
+	class TwoRayCollider : public BaseCollider
+	{
+		Angle fov; // 視野角
+
+	public:
+		TwoRayCollider(Angle fov_) { fov = fov_; }
+		Angle GetFOV() const { return fov; }
+	};
+
+	class CircleCollider;
+
+	// 仮コライダー判定クラス
+	class TestCheckAllCircleCollision
+	{
+		std::list<CircleCollider*> colliders;
+
+
+		TestCheckAllCircleCollision() = default;
+		~TestCheckAllCircleCollision() = default;
+		TestCheckAllCircleCollision(const TestCheckAllCircleCollision&) = delete;
+		TestCheckAllCircleCollision& operator=(const TestCheckAllCircleCollision&) = delete;
+
+	public:
+		static TestCheckAllCircleCollision* GetInstance()
 		{
-			Angle fov;
-		};
+			static TestCheckAllCircleCollision instance;
+			return &instance;
+		}
 
-		//class Collider;
-
-		class Base2DCollider
+		void CheckCircleCollisions();
+		void Add(CircleCollider* a) { colliders.push_back(a); }
+		void Delete(CircleCollider* a)
 		{
-		protected:
-			Sprite* transform = nullptr;
-			CollisionShapeType shapeType = CollisionShapeType::Unknown;
-			std::string colliderName;
+			colliders.remove(a);
+		}
+		void Clear() { /*colliders.clear()*/; }
+	};
 
-		public:
-			virtual ~Base2DCollider() = default;
+	// 円コライダー
+	class CircleCollider : public BaseCollider
+	{
+	private:
+		Vector2 center;			// 中心座標
+		float radius = 50.0f;	// 半径(ピクセル)
+		Vector2 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
-			// 初期化
-			void Initialize(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName);
+	public:
+		CircleCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Circle; }
+		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
+		// 中心座標を取得
+		const Vector2& GetCenterPosition() const { return center; }
+		// 半径を取得
+		float GetRadius() const { return radius; }
+		// 中心座標を設定
+		void SetCenterPosition(const Vector2& center_) { center = center_ + offset; }
+		// オフセットを設定
+		void SetOffset(const Vector2& offset_) { offset = offset_; }
+		// 半径を設定
+		void SetRadius(float radius_) { radius = radius_; }
+	};
 
-			// getter
-			const Sprite* GetTransform() const { return transform; }
-			CollisionShapeType GetShapeType() const { return shapeType; }
-			const std::string GetColliderName() const { return colliderName; }
-		};
+	class Collider
+	{
+	private:
+		uint32_t serialNumber = 0;
+		static uint32_t nextSerialNumber;
 
-		// 四角形コライダー
-		class BoxCollider : public Base2DCollider
+	protected:
+		ColliderGroup* group = nullptr;
+
+		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		template<class T>
+		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
 		{
-		public:
-			// 左上端と右下端の座標を求める
-			std::map<std::string, Vector2> GetVertex() const;
-		};
+			std::unique_ptr<BaseCollider> newCollider;
+			const std::string TYPE_NAME = typeid(T).name();
 
-		// 1点から2方向に延びる線分との当たり判定（まだ不完全）
-		class TwoRayCollider : public Base2DCollider
-		{
-			Angle fov; // 視野角
+			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
 
-		public:
-			TwoRayCollider(Angle fov_) { fov = fov_; }
-			Angle GetFOV() const { return fov; }
-		};
+			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
 
-		class TestCircleCollider;
-
-		// 仮コライダー判定クラス
-		class TestCheckAllCircleCollision
-		{
-			std::list<TestCircleCollider*> colliders;
-
-			bool Check2Circles(TestCircleCollider* a, TestCircleCollider* b);
-
-			TestCheckAllCircleCollision() = default;
-			~TestCheckAllCircleCollision() = default;
-			TestCheckAllCircleCollision(const TestCheckAllCircleCollision&) = delete;
-			TestCheckAllCircleCollision& operator=(const TestCheckAllCircleCollision&) = delete;
-
-		public:
-			static TestCheckAllCircleCollision* GetInstance()
+			newCollider->SetOwner(this);
+			if (info)
 			{
-				static TestCheckAllCircleCollision instance;
-				return &instance;
+				newCollider->SetAttribute(info->GetAttribute());
+				newCollider->SetMask(info->GetMask());
 			}
-
-			void CheckCircleCollisions();
-			void Add(TestCircleCollider* a) { colliders.push_back(a); }
-			void Delete(TestCircleCollider* a) 
+			else
 			{
-				colliders.remove(a); 
+				newCollider->SetAttribute(group->GetAttribute());
+				newCollider->SetMask(group->GetMask());
 			}
-			void Clear() { /*colliders.clear()*/; }
-		};
+			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		}
 
-		// 仮円コライダー
-		class TestCircleCollider : public Base2DCollider, public CollisionInfo
-		{
-			TestCheckAllCircleCollision* collision = TestCheckAllCircleCollision::GetInstance();
-			float radius = 0;
+	public:
+		Collider() { serialNumber = nextSerialNumber++; }
+		virtual ~Collider();
 
-		public:
-			virtual void OnCollision([[maybe_unused]] TestCircleCollider* other) {}
-			float GetRadius() const { return radius; }
-			void SetRadius(float radius_) { radius = radius_; }
+		void DeleteGroup() { group = nullptr; }
 
-			TestCircleCollider() { collision->Add(this); }
-			~TestCircleCollider() 
-			{
-				//collision->Delete(this); 
-			}
-		};
+		// getter
+		const std::vector<CollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
+		ColliderGroup* GetGroup() const { return group; }
+		uint32_t GetSerialNumber() const { return serialNumber; }
 
-		//class Collider
-		//{
-		//protected:
-		//	std::list<std::unique_ptr<Base2DCollider>> colliders;
-		//	CollisionAttribute collisionAttribute = CollisionAttribute::All;
-		//	CollisionMask collisionMask = CollisionMask::All;
-		//	std::map<size_t, std::vector<size_t>> collisionPair;
+		// 衝突コールバック関数
+		// 当たっている間
+		virtual void OnCollision() {}
+		// 当たった瞬間
+		virtual void OnCollisionEnter() {}
+		// 離れた瞬間
+		virtual void OnCollisionExit() {}
+	};
 
-		//public:
-		//	// コンストラクタ
-		//	Collider();
-		//	// 仮想デストラクタ
-		//	virtual ~Collider();
-
-		//	// コライダーの追加
-		//	void AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option = nullptr);
-		//	// コライダーの削除
-		//	void DeleteCollider(const std::string& colliderName);
-		//	// コリジョンペアの追加
-		//	void AddCollisionPair(size_t myIndex, size_t youIndex);
-		//	// コリジョンペアの追加
-		//	void DeletePair();
-
-		//	// getter
-		//	CollisionAttribute GetAttribute() const { return collisionAttribute; }
-		//	CollisionMask GetMask() const { return collisionMask; }
-		//	const std::string GetColliderName(size_t index) const;
-		//	const std::list<std::unique_ptr<Base2DCollider>>& GetColliders() const { return colliders; }
-
-		//	// 衝突コールバック関数
-		//	virtual void OnCollision([[maybe_unused]] Collider* colliderGroup) {}
-
-		//};
-	}
+	// 個別当たり判定
+	static bool Check2Circles(const CircleCollider* a, const CircleCollider* b);
 }

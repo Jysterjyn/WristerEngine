@@ -3,7 +3,7 @@
 #include <Input.h>
 #include <Collider2D.h>
 
-class Player : public GameObjects, public WE::_2D::TestCircleCollider
+class Player : public GameObjects, public WE::_2D::CircleCollider
 {
 	WE::Input* input = WE::Input::GetInstance();
 
@@ -11,5 +11,5 @@ class Player : public GameObjects, public WE::_2D::TestCircleCollider
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
-	void OnCollision(TestCircleCollider* other) override;
+	void OnCollision(CircleCollider* other) override;
 };

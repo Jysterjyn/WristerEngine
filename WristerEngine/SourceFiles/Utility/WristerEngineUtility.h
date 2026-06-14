@@ -16,6 +16,14 @@ namespace WristerEngine
 
 	template<class T> using uPtr = std::unique_ptr<T>;
 	template<class T> using uList = std::list<uPtr<T>>;
+
+	template <class T>
+	// 順番を無視して要素が同じかどうかを比較する関数
+	static bool CompareVectors(const std::vector<T>& a, const std::vector<T>& b) {
+		// multisetに変換して比較
+		// 要素数も自動的に評価
+		return std::multiset<T>(a.begin(), a.end()) == std::multiset<T>(b.begin(), b.end());
+	}
 }
 
 // WristerEngineの略称のエイリアス

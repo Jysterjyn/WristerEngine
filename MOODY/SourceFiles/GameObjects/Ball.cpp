@@ -18,12 +18,12 @@ void Ball::Initialize()
 	WE::Random_Float randPosY(sprite->size.y + EDGE, WE::WIN_SIZE.y - sprite->size.y - EDGE);
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
-	transform = sprite;
-	shapeType = WE::_2D::CollisionShapeType::Sphere;
-	colliderName = "Ball";
-	attribute = ChangeVal(CollisionAttribute::Ball);
-	mask = ChangeVal(CollisionMask::Ball);
-	SetRadius(Half(sprite->size.x));
+	//transform = sprite;
+	//shapeType = WE::_2D::CollisionShapeType::Circle;
+	//colliderName = "Ball";
+	//attribute = ChangeVal(CollisionAttribute::Ball);
+	//mask = ChangeVal(CollisionMask::Ball);
+	//SetRadius(Half(sprite->size.x));
 }
 
 void Ball::Update()
@@ -37,11 +37,11 @@ void Ball::Draw()
 	sprite->Draw();
 }
 
-void Ball::OnCollision(TestCircleCollider* other)
+void Ball::OnCollision()
 {
-	if (other->GetColliderName() != "Player") { return; }
+	//if (other->GetColliderName() != "Player") { return; }
 	
-	GetParameter()->isDestroy = true;
+	//GetParameter()->isDestroy = true;
 }
 
 void Ball::ApplyParameter()

@@ -31,7 +31,7 @@ class Ukenagashi : public BaseBallBehavior
 	void Update() override;
 };
 
-class Ball : public GameObjects, public WE::_2D::TestCircleCollider
+class Ball : public GameObjects, public WE::_2D::Collider
 {
 	BehaviorParameter* GetParameter();
 
@@ -39,7 +39,7 @@ class Ball : public GameObjects, public WE::_2D::TestCircleCollider
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
-	void OnCollision(TestCircleCollider* other) override;
+	void OnCollision() override;
 
 	template<class T>
 	void CreateBehavior()

@@ -21,4 +21,11 @@ namespace WristerEngine
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
 	};
+
+	static bool CheckFiltering(const CollisionInfo* infoA, const CollisionInfo* infoB)
+	{
+		return
+			infoA->GetAttribute() & infoB->GetMask() &&
+			infoB->GetAttribute() & infoA->GetMask();
+	}
 }

@@ -5,7 +5,7 @@
 #include <optional>
 #include <CollisionInfo.h>
 
-namespace WristerEngine
+namespace WristerEngine::_3D
 {
 	enum class CollisionShapeType
 	{
@@ -77,6 +77,7 @@ namespace WristerEngine
 
 		CollisionPair(BaseCollider* my, BaseCollider* other, const HitInfo& hitInfo);
 
+		// ペアが同じか
 		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
 
@@ -123,7 +124,7 @@ namespace WristerEngine
 	private:
 		Vector3 center;			// 中心座標
 		float radius = 1.0f;	// 半径
-		Vector3 offset;
+		Vector3 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
 	public:
 		SphereCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Sphere; }
@@ -278,7 +279,6 @@ namespace WristerEngine
 		// ワールド行列の逆行列
 		Matrix4 invMatWorld;
 
-
 	public:
 		MeshCollider() { shapeType = CollisionShapeType::Mesh; }
 		void Update() override;
@@ -353,5 +353,4 @@ namespace WristerEngine
 		// 離れた瞬間
 		virtual void OnCollisionExit() {}
 	};
-
 }
