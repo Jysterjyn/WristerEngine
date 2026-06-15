@@ -17,17 +17,11 @@ bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
 	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
 	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
 	// シリアルナンバーと同じかで判断する
-	if (p1.my->GetSerialNumber() == p2.my->GetSerialNumber() &&
-		p1.other->GetSerialNumber() == p2.other->GetSerialNumber())
-	{
-		return true;
-	}
+	std::vector<uint32_t> serials1{ p1.my->GetSerialNumber(), p1.other->GetSerialNumber() };
+	std::vector<uint32_t> serials2{ p2.my->GetSerialNumber(), p2.other->GetSerialNumber() };
 
-	if (p1.my->GetSerialNumber() == p2.other->GetSerialNumber() &&
-		p1.other->GetSerialNumber() == p2.my->GetSerialNumber())
-	{
-		return true;
-	}
+	if (CompareVectors<uint32_t>(serials1, serials2)) { return true; }
+
 	return false;
 }
 

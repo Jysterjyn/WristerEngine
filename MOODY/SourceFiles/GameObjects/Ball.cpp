@@ -14,21 +14,15 @@ void Ball::Initialize()
 
 	// 座標をランダムで生成
 	BehaviorParameter* pParam = GetParameter();
-	const float EDGE = 50; // 画面端から離す座標値
+	const float EDGE = -150; // 画面端から離す座標値
 	WE::Random_Float randPosY(sprite->size.y + EDGE, WE::WIN_SIZE.y - sprite->size.y - EDGE);
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
 	WE::ColliderInfo info = { ChangeVal(CollisionAttribute::Ball), ChangeVal(CollisionMask::Ball), "Ball" };
 	Collider::Initialize("Ball", info);
-	WE::_2D::CircleCollider* collider = AddCollider<WE::_2D::CircleCollider>(info);
+	collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
-	//transform = sprite;
-	//shapeType = WE::_2D::CollisionShapeType::Circle;
-	//colliderName = "Ball";
-	//attribute = ChangeVal(CollisionAttribute::Ball);
-	//mask = ChangeVal(CollisionMask::Ball);
-	//SetRadius(Half(sprite->size.x));
 }
 
 void Ball::Update()
@@ -48,7 +42,8 @@ void Ball::OnCollision()
 	int i = 0;
 	i++;
 
-	GetParameter()->isDestroy = true;
+	//collider->Destroy();
+	//GetParameter()->isDestroy = true;
 }
 
 void Ball::ApplyParameter()

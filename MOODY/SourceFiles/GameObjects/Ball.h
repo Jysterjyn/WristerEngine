@@ -34,6 +34,7 @@ class Ukenagashi : public BaseBallBehavior
 class Ball : public GameObjects, public WE::_2D::Collider
 {
 	BehaviorParameter* GetParameter();
+	WE::_2D::CircleCollider* collider = nullptr;
 
 	// GameObjects を介して継承されました
 	void Initialize() override;

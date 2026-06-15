@@ -40,7 +40,6 @@ namespace WristerEngine
 		}
 
 		// setter
-		void SetName(const std::string& name_) { name = name_; }
 		void SetColliderInfo(const ColliderInfo& info)
 		{
 			attribute = info.attribute;
