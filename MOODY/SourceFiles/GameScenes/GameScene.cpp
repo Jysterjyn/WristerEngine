@@ -24,7 +24,6 @@ void GameScene::Update()
 	uiDrawer->Update();
 
 	stage.Update();
-	collision->CheckCircleCollisions();
 }
 
 void GameScene::Draw()

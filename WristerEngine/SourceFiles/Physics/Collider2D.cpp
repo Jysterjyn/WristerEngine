@@ -4,6 +4,9 @@
 using namespace WE;
 using namespace _2D;
 
+uint32_t BaseCollider::nextSerialNumber = 0;
+uint32_t Collider::nextSerialNumber = 0;
+
 CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const HitInfo& hitInfo)
 {
 	my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
@@ -116,13 +119,12 @@ ColliderGroup::~ColliderGroup()
 	for (auto* owner : owners) { owner->DeleteGroup(); }
 }
 
-void Collider::Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info)
+void Collider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)
 {
 	group = CollisionManager::GetInstance()->AddGroup(groupName);
 	group->AddOwner(this);
 	if (!info) { return; }
-	group->SetAttribute(info->GetAttribute());
-	group->SetMask(info->GetMask());
+	group->SetGroupInfo(*info);
 }
 
 Collider::~Collider()
@@ -132,24 +134,6 @@ Collider::~Collider()
 	{
 		if (collider->GetOwner() == this) { collider->Destroy(); }
 	}
-}
-
-static bool Check2Circles(const CircleCollider* a, const CircleCollider* b)
-{
-	// 値の取得
-	Vector2 centerA = a->GetCenterPosition();
-	Vector2 centerB = b->GetCenterPosition();
-	float radA = a->GetRadius();
-	float radB = b->GetRadius();
-
-	//判定対象の座標
-	Vector2 vecAB = centerA - centerB;
-	float dist = Dot(vecAB, vecAB);
-	//判定対象の半径
-	float radAB = radA + radB;
-
-	if (dist > radAB * radAB) { return false; }
-	return true;
 }
 
 //std::map<std::string, Vector2> BoxCollider::GetVertex() const
@@ -167,72 +151,21 @@ static bool Check2Circles(const CircleCollider* a, const CircleCollider* b)
 //	ans["RB"] += rbSub;
 //	return ans;
 //}
-//
-//void Collider::AddCollider(Sprite* transform, CollisionShapeType shapeType, const std::string& colliderName, const Option* option)
-//{
-//	std::unique_ptr<Base2DCollider> newCollider;
-//	switch (shapeType)
-//	{
-//	case CollisionShapeType::Box:
-//		newCollider = std::make_unique<BoxCollider>();
-//		break;
-//	case CollisionShapeType::TwoRay:
-//		assert(option);
-//		newCollider = std::make_unique<TwoRayCollider>(option->fov);
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	newCollider->Initialize(transform, shapeType, colliderName);
-//	colliders.push_back(move(newCollider));
-//}
-//
-//void Collider::DeleteCollider(const std::string& colliderName)
-//{
-//	colliders.remove_if([&](const std::unique_ptr<Base2DCollider>& collider) { return collider->GetColliderName() == colliderName; });
-//}
-//
-//void Collider::AddCollisionPair(size_t myIndex, size_t youIndex)
-//{
-//	collisionPair[myIndex].push_back(youIndex);
-//}
-//
-//void Collider::DeletePair()
-//{
-//	for (auto& pair : collisionPair)
-//	{
-//		pair.second.clear();
-//	}
-//	collisionPair.clear();
-//}
-//
-//const std::string Collider::GetColliderName(size_t index) const
-//{
-//	if (colliders.size() <= index) { return "Null"; }
-//	auto itr = colliders.begin();
-//	for (size_t i = 0; i < index; i++)
-//	{
-//		itr++;
-//	}
-//	return itr->get()->GetColliderName();
-//}
-// 
-//void TestCheckAllCircleCollision::CheckCircleCollisions()
-//{
-//	auto itrA = colliders.begin();
-//	for (; itrA != colliders.end(); itrA++)
-//	{
-//		auto itrB = itrA;
-//		itrB++;
-//		for (; itrB != colliders.end(); itrB++)
-//		{
-//			if (!CollisionManager2D::GetInstance()->CheckFiltering(*itrA, *itrB)) { continue; }
-//			if (Check2Circles(*itrA, *itrB))
-//			{
-//				(*itrA)->OnCollision(*itrB);
-//				(*itrB)->OnCollision(*itrA);
-//			}
-//		}
-//	}
-//}
+
+bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
+{
+	// 値の取得
+	Vector2 centerA = a->GetCenterPosition();
+	Vector2 centerB = b->GetCenterPosition();
+	float radA = a->GetRadius();
+	float radB = b->GetRadius();
+
+	//判定対象の座標
+	Vector2 vecAB = centerA - centerB;
+	float dist = Dot(vecAB, vecAB);
+	//判定対象の半径
+	float radAB = radA + radB;
+
+	if (dist > radAB * radAB) { return false; }
+	return true;
+}

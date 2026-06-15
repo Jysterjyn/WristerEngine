@@ -16,7 +16,7 @@ namespace WristerEngine::_2D
 
 	class Collider;
 
-	class BaseCollider : public CollisionInfo
+	class BaseCollider : public ColliderInfo
 	{
 	private:
 		bool isDestroy = false;
@@ -29,8 +29,8 @@ namespace WristerEngine::_2D
 		const Transform* pTransform = nullptr;
 
 	public:
-		BaseCollider(bool isDec = false) { serialNumber = nextSerialNumber++; if (isDec) { nextSerialNumber--; } }
-		
+		BaseCollider(const ColliderInfo& info) : ColliderInfo(info) { serialNumber = nextSerialNumber++; }
+
 		virtual ~BaseCollider() = default;
 
 		virtual void Update() {}
@@ -72,7 +72,7 @@ namespace WristerEngine::_2D
 		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
 
-	class ColliderGroup : public CollisionInfo
+	class ColliderGroup : public ColliderInfo
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
@@ -113,6 +113,7 @@ namespace WristerEngine::_2D
 	class BoxCollider : public BaseCollider
 	{
 	public:
+		BoxCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::Box; }
 		// 左上端と右下端の座標を求める
 		std::map<std::string, Vector2> GetVertex() const;
 	};
@@ -123,38 +124,11 @@ namespace WristerEngine::_2D
 		Angle fov; // 視野角
 
 	public:
-		TwoRayCollider(Angle fov_) { fov = fov_; }
+		TwoRayCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::TwoRay; }
 		Angle GetFOV() const { return fov; }
 	};
 
 	class CircleCollider;
-
-	// 仮コライダー判定クラス
-	class TestCheckAllCircleCollision
-	{
-		std::list<CircleCollider*> colliders;
-
-
-		TestCheckAllCircleCollision() = default;
-		~TestCheckAllCircleCollision() = default;
-		TestCheckAllCircleCollision(const TestCheckAllCircleCollision&) = delete;
-		TestCheckAllCircleCollision& operator=(const TestCheckAllCircleCollision&) = delete;
-
-	public:
-		static TestCheckAllCircleCollision* GetInstance()
-		{
-			static TestCheckAllCircleCollision instance;
-			return &instance;
-		}
-
-		void CheckCircleCollisions();
-		void Add(CircleCollider* a) { colliders.push_back(a); }
-		void Delete(CircleCollider* a)
-		{
-			colliders.remove(a);
-		}
-		void Clear() { /*colliders.clear()*/; }
-	};
 
 	// 円コライダー
 	class CircleCollider : public BaseCollider
@@ -165,7 +139,7 @@ namespace WristerEngine::_2D
 		Vector2 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
 	public:
-		CircleCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Circle; }
+		CircleCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::Circle; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
 		const Vector2& GetCenterPosition() const { return center; }
@@ -188,7 +162,7 @@ namespace WristerEngine::_2D
 	protected:
 		ColliderGroup* group = nullptr;
 
-		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
+		void Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
 		/// <summary>
 		/// コライダーを登録
@@ -196,28 +170,21 @@ namespace WristerEngine::_2D
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
 		template<class T>
-		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
+		T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
 		{
 			std::unique_ptr<BaseCollider> newCollider;
 			const std::string TYPE_NAME = typeid(T).name();
+			ColliderInfo defaultInfo = { group->GetAttribute(), group->GetMask(), group->GetName() };
+			if (info) { defaultInfo = *info; }
 
 			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
 
-			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
-			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
-			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
+			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(defaultInfo); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(defaultInfo); }
+			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(defaultInfo); }
 
 			newCollider->SetOwner(this);
-			if (info)
-			{
-				newCollider->SetAttribute(info->GetAttribute());
-				newCollider->SetMask(info->GetMask());
-			}
-			else
-			{
-				newCollider->SetAttribute(group->GetAttribute());
-				newCollider->SetMask(group->GetMask());
-			}
+
 			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
 		}
 
@@ -242,5 +209,5 @@ namespace WristerEngine::_2D
 	};
 
 	// 個別当たり判定
-	static bool Check2Circles(const CircleCollider* a, const CircleCollider* b);
+	bool Check2Circles(const CircleCollider* a, const CircleCollider* b);
 }

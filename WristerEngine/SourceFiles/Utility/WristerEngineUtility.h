@@ -2,6 +2,8 @@
 #include <string>
 #include <memory>
 #include <list>
+#include <set>
+#include <vector>
 
 namespace WristerEngine
 {
@@ -19,7 +21,7 @@ namespace WristerEngine
 
 	template <class T>
 	// 順番を無視して要素が同じかどうかを比較する関数
-	static bool CompareVectors(const std::vector<T>& a, const std::vector<T>& b) {
+	bool CompareVectors(const std::vector<T>& a, const std::vector<T>& b) {
 		// multisetに変換して比較
 		// 要素数も自動的に評価
 		return std::multiset<T>(a.begin(), a.end()) == std::multiset<T>(b.begin(), b.end());

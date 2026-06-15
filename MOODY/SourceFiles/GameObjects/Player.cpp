@@ -6,12 +6,17 @@ void Player::Initialize()
 	sprite = spMan->Create({ "Nanika/Nanika.png" }, Half(WE::WIN_SIZE));
 	sprite->SetCenterAnchor();
 
-	transform = sprite;
-	shapeType = WE::_2D::CollisionShapeType::Sphere;
-	colliderName = "Player";
-	attribute = ChangeVal(CollisionAttribute::Player);
-	mask = ChangeVal(CollisionMask::Player);
-	SetRadius(Half(sprite->size.x));
+	WE::ColliderInfo info = { ChangeVal(CollisionAttribute::Player), ChangeVal(CollisionMask::Player), "Player" };
+	Collider::Initialize("Player", info);
+	WE::_2D::CircleCollider* collider = AddCollider<WE::_2D::CircleCollider>();
+	collider->SetTransform(sprite);
+	collider->SetRadius(Half(sprite->size.x));
+	//transform = sprite;
+	//shapeType = WE::_2D::CollisionShapeType::Sphere;
+	//colliderName = "Player";
+	//attribute = ChangeVal(CollisionAttribute::Player);
+	//mask = ChangeVal(CollisionMask::Player);
+	//SetRadius(Half(sprite->size.x));
 }
 
 void Player::Update()
@@ -25,6 +30,6 @@ void Player::Draw()
 	sprite->Draw();
 }
 
-void Player::OnCollision(CircleCollider* other)
+void Player::OnCollision()
 {
 }

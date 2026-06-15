@@ -22,7 +22,7 @@ namespace WristerEngine::_3D
 	class Collider;
 
 	// コライダー基底クラス
-	class BaseCollider : public CollisionInfo
+	class BaseCollider : public ColliderInfo
 	{
 	private:
 		std::unique_ptr<Physics> physics;
@@ -81,7 +81,7 @@ namespace WristerEngine::_3D
 		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
 
-	class ColliderGroup : public CollisionInfo
+	class ColliderGroup : public BaseInfo
 	{
 	private:
 		std::list<std::unique_ptr<BaseCollider>> colliders;
@@ -151,7 +151,7 @@ namespace WristerEngine::_3D
 
 	public:
 		// コンストラクタ
-		BoxCollider(bool isDec = false) : BaseCollider(isDec) { shapeType = CollisionShapeType::Box; }
+		BoxCollider() { shapeType = CollisionShapeType::Box; }
 		// 中心座標を取得
 		const Vector3& GetCenterPosition() const { return center; }
 		// 3軸方向の半径を取得
@@ -297,7 +297,7 @@ namespace WristerEngine::_3D
 	protected:
 		ColliderGroup* group = nullptr;
 
-		void Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info = std::nullopt);
+		void Initialize(const std::string& groupName, const std::optional<BaseInfo>& info = std::nullopt);
 
 		/// <summary>
 		/// コライダーを登録
@@ -305,10 +305,12 @@ namespace WristerEngine::_3D
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
 		template<class T>
-		T* AddCollider(const std::optional<CollisionInfo>& info = std::nullopt)
+		T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
 		{
 			std::unique_ptr<BaseCollider> newCollider;
 			const std::string TYPE_NAME = typeid(T).name();
+			ColliderInfo colliderInfo = { group->GetAttribute(), group->GetMask() };
+			if (info) { colliderInfo = *info; }
 
 			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
 
@@ -321,16 +323,7 @@ namespace WristerEngine::_3D
 			else if (TypeCompare("Mesh")) { newCollider = std::make_unique<MeshCollider>(); }
 
 			newCollider->SetOwner(this);
-			if (info)
-			{
-				newCollider->SetAttribute(info->GetAttribute());
-				newCollider->SetMask(info->GetMask());
-			}
-			else
-			{
-				newCollider->SetAttribute(group->GetAttribute());
-				newCollider->SetMask(group->GetMask());
-			}
+			newCollider->SetGroupInfo(colliderInfo);
 			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
 		}
 

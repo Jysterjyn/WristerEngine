@@ -1,4 +1,6 @@
 ﻿#include "CollisionManager2D.h"
+#include <algorithm>
+#include <cassert>
 using namespace WE;
 using namespace _2D;
 
@@ -67,6 +69,33 @@ bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB
 	}
 
 	return !groupA->GetCollisionPairs().empty();
+}
+
+bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB)
+{
+	CollisionShapeType aST = colliderA->GetShapeType();
+	CollisionShapeType bST = colliderB->GetShapeType();
+
+	assert(aST != CollisionShapeType::Unknown);
+	assert(bST != CollisionShapeType::Unknown);
+
+	switch (aST)
+	{
+	case CollisionShapeType::Circle:
+	{
+		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
+
+		switch (bST)
+		{
+		case CollisionShapeType::Circle:
+
+			return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
+		}
+		break;
+	}
+	}
+
+	return false;
 }
 
 //bool CollisionManager::Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders)

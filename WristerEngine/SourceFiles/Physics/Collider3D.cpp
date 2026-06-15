@@ -120,13 +120,11 @@ ColliderGroup::~ColliderGroup()
 	for (auto* owner : owners) { owner->DeleteGroup(); }
 }
 
-void Collider::Initialize(const std::string& groupName, const std::optional<CollisionInfo>& info)
+void Collider::Initialize(const std::string& groupName, const std::optional<BaseInfo>& info)
 {
 	group = CollisionManager::GetInstance()->AddGroup(groupName);
 	group->AddOwner(this);
-	if (!info) { return; }
-	group->SetAttribute(info->GetAttribute());
-	group->SetMask(info->GetMask());
+	if (info) { group->SetGroupInfo(*info); }
 }
 
 Collider::~Collider()

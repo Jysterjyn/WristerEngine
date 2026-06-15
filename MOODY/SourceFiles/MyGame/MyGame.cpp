@@ -1,8 +1,6 @@
 ﻿#include "MyGame.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
-using namespace WE::_2D;
-using namespace WE::_3D;
 
 void MyGame::Initialize()
 {

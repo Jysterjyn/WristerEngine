@@ -70,9 +70,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceFiles\main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp">
       <Filter>ソース ファイル\MyGame</Filter>
     </ClCompile>
@@ -93,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\GameObjects\Player.cpp">
       <Filter>ソース ファイル\GaneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\main.cpp">
+      <Filter>ソース ファイル\MyGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
