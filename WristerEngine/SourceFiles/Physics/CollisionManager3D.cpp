@@ -9,11 +9,12 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-ColliderGroup* CollisionManager::AddGroup(const std::string& groupName)
+ColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<BaseInfo>& info)
 {
 	if (!colliderGroups.contains(groupName))
 	{
 		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>();
+		if (info) { newGroup->SetGroupInfo(*info); }
 		colliderGroups[groupName] = std::move(newGroup);
 	}
 	return colliderGroups[groupName].get();
@@ -499,7 +500,7 @@ void CollisionManager::QuerySphere(const SphereCollider* sphere, QueryCallback* 
 	assert(callback);
 
 	// 全てのコライダーと総当りチェック
-	for (auto& group : colliderGroups) 
+	for (auto& group : colliderGroups)
 	{
 		// 属性が合わなければスキップ
 		if (!(group.second->GetAttribute() & attribute)) { continue; }

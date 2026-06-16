@@ -74,7 +74,7 @@ namespace WristerEngine::_3D
 
 	public:
 		static CollisionManager* GetInstance();
-		ColliderGroup* AddGroup(const std::string& groupName);
+		ColliderGroup* AddGroup(const std::string& groupName, const std::optional<BaseInfo>& info = std::nullopt);
 
 		/// <summary>
 		/// レイキャスト
