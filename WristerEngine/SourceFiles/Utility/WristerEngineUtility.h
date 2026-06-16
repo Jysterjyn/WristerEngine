@@ -26,6 +26,31 @@ namespace WristerEngine
 		// 要素数も自動的に評価
 		return std::multiset<T>(a.begin(), a.end()) == std::multiset<T>(b.begin(), b.end());
 	}
+
+	template <class T>
+	// 1度しか変更されない値を表すクラス
+	class OneChange
+	{
+		bool isChanged = false;
+		T value;
+
+	public:
+		/// <summary>
+		/// 変更する値を代入する演算子。1度しか変更できない。
+		/// </summary>
+		/// <param name="newValue">変更する値</param>
+		/// <returns>変更されたらtrue</returns>
+		bool operator=(const T& newValue)
+		{
+			if (isChanged) { return false; }
+			value = newValue;
+			isChanged = true;
+			return true;
+		}
+
+		operator T() const { return value; }
+		bool IsChanged() const { return isChanged; }
+	};
 }
 
 // WristerEngineの略称のエイリアス
