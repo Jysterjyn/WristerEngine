@@ -76,12 +76,6 @@
     <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Physics\Collider3D.cpp">
-      <Filter>ソース ファイル\Physics\Collider\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Physics\CollisionManager3D.cpp">
-      <Filter>ソース ファイル\Physics\Collider\3D</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">
@@ -203,12 +197,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Physics\CollisionManager2D.h">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\Collider3D.h">
-      <Filter>ソース ファイル\Physics\Collider\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\CollisionManager3D.h">
-      <Filter>ソース ファイル\Physics\Collider\3D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

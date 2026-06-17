@@ -28,7 +28,7 @@ namespace WristerEngine
 	struct ColliderInfo : public BaseInfo
 	{
 	protected:
-		std::string name;
+		OneChange<std::string> name;
 
 	public:
 		ColliderInfo() = default;
