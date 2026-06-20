@@ -76,6 +76,9 @@
     <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\ColliderInfo.cpp">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\Math\Matrix4.h">

@@ -10,12 +10,12 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-ColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<BaseInfo>& info)
+ColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info)
 {
 	if (!colliderGroups.contains(groupName))
 	{
 		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>();
-		if (info) { newGroup->SetGroupInfo(*info); }
+		if (info) { newGroup->SetColliderInfo(*info); }
 		colliderGroups[groupName] = std::move(newGroup);
 	}
 	return colliderGroups[groupName].get();

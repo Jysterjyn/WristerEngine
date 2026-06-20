@@ -110,6 +110,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\Physics\Collider2D.cpp" />
+    <ClCompile Include="SourceFiles\Physics\ColliderInfo.cpp" />
     <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp" />
   </ItemGroup>
   <ItemGroup>

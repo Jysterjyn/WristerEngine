@@ -18,7 +18,7 @@ void Ball::Initialize()
 	WE::Random_Float randPosY(sprite->size.y + EDGE, WE::WIN_SIZE.y - sprite->size.y - EDGE);
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
-	WE::ColliderInfo info = { ChangeVal(CollisionAttribute::Ball), ChangeVal(CollisionMask::Ball), "Ball" };
+	WE::ColliderInfo info(ChangeVal(CollisionAttribute::Ball), ChangeVal(CollisionMask::Ball));
 	Collider::Initialize("Ball", info);
 	collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);

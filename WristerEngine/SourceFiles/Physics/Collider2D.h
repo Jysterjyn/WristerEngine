@@ -29,7 +29,7 @@ namespace WristerEngine::_2D
 		const Transform* pTransform = nullptr;
 
 	public:
-		BaseCollider(const ColliderInfo& info) : ColliderInfo(info) { serialNumber = nextSerialNumber++; }
+		BaseCollider() { serialNumber = nextSerialNumber++; }
 
 		virtual ~BaseCollider() = default;
 
@@ -37,7 +37,7 @@ namespace WristerEngine::_2D
 
 		void Destroy() { isDestroy = true; }
 
-		void SetOwner(Collider* owner_) { owner = owner_; }
+		void Initialize(Collider* owner_, const ColliderInfo& info);
 		// トランスフォームを設定
 		void SetTransform(const Transform* pTransform_) { pTransform = pTransform_; Update(); }
 
@@ -113,7 +113,7 @@ namespace WristerEngine::_2D
 	class BoxCollider : public BaseCollider
 	{
 	public:
-		BoxCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::Box; }
+		BoxCollider() : BaseCollider() { shapeType = CollisionShapeType::Box; }
 		// 左上端と右下端の座標を求める
 		std::map<std::string, Vector2> GetVertex() const;
 	};
@@ -124,7 +124,7 @@ namespace WristerEngine::_2D
 		Angle fov; // 視野角
 
 	public:
-		TwoRayCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::TwoRay; }
+		TwoRayCollider() : BaseCollider() { shapeType = CollisionShapeType::TwoRay; }
 		Angle GetFOV() const { return fov; }
 	};
 
@@ -139,7 +139,7 @@ namespace WristerEngine::_2D
 		Vector2 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
 	public:
-		CircleCollider(const ColliderInfo& info) : BaseCollider(info) { shapeType = CollisionShapeType::Circle; }
+		CircleCollider() : BaseCollider() { shapeType = CollisionShapeType::Circle; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
 		const Vector2& GetCenterPosition() const { return center; }
@@ -174,16 +174,18 @@ namespace WristerEngine::_2D
 		{
 			std::unique_ptr<BaseCollider> newCollider;
 			const std::string TYPE_NAME = typeid(T).name();
-			ColliderInfo defaultInfo = { group->GetAttribute(), group->GetMask(), group->GetName() };
-			if (info) { defaultInfo = *info; }
+			ColliderInfo colliderInfo(group->GetColliderInfo());
+			std::string groupName = info ? info->GetName() : group->GetName();
+			colliderInfo.SetName(groupName);
 
 			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
 
-			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(defaultInfo); }
-			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(defaultInfo); }
-			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(defaultInfo); }
+			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
+			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
+			if (!newCollider) { return nullptr; }
 
-			newCollider->SetOwner(this);
+			newCollider->Initialize(this, colliderInfo);
 
 			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
 		}
