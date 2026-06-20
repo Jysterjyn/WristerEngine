@@ -14,7 +14,7 @@ ColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const st
 {
 	if (!colliderGroups.contains(groupName))
 	{
-		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>();
+		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>(groupName);
 		if (info) { newGroup->SetColliderInfo(*info); }
 		colliderGroups[groupName] = std::move(newGroup);
 	}

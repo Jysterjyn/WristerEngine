@@ -48,7 +48,7 @@ namespace WristerEngine
 			return true;
 		}
 
-		operator T() const { return value; }
+		const T Get() const { return value; }
 		bool IsChanged() const { return isChanged; }
 	};
 }

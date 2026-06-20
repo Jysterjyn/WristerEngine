@@ -27,7 +27,7 @@ namespace WristerEngine
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
 		ColliderInfo GetColliderInfo() const;
-		std::string GetName() const { return name; }
+		std::string GetName() const { return name.Get(); }
 	};
 
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);

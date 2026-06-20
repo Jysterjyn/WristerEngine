@@ -85,6 +85,7 @@ namespace WristerEngine::_2D
 		std::vector<CollisionPair> collisionPairsPre;
 
 	public:
+		ColliderGroup(const std::string& groupName) { SetName(groupName); }
 		~ColliderGroup();
 
 		void Update();

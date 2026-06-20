@@ -121,7 +121,7 @@ void BaseCollider::Initialize(Collider* owner_, const ColliderInfo& info)
 
 void Collider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)
 {
-	group = CollisionManager::GetInstance()->AddGroup(groupName);
+	group = CollisionManager::GetInstance()->AddGroup(groupName, info);
 	group->AddOwner(this);
 	if (!info) { return; }
 	group->SetColliderInfo(*info);

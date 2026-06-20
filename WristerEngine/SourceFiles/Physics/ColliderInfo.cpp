@@ -12,13 +12,14 @@ ColliderInfo::ColliderInfo(const ColliderInfo& info)
 {
 	attribute = info.attribute;
 	mask = info.mask;
+	name = info.name.Get();
 }
 
 void ColliderInfo::SetColliderInfo(const ColliderInfo& info)
 {
 	attribute = info.attribute;
 	mask = info.mask;
-	name = info.name;
+	name = info.name.Get();
 }
 
 ColliderInfo ColliderInfo::GetColliderInfo() const
