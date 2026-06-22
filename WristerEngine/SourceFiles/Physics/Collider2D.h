@@ -48,14 +48,15 @@ namespace WristerEngine::_2D
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
+	template <class T>
 	struct HitInfo
 	{
-		std::optional<Vector2> inter = std::nullopt;
+		std::optional<T> inter = std::nullopt;
 		std::optional<float> distance = std::nullopt;
-		std::optional<Vector2> reject = std::nullopt;
+		std::optional<T> reject = std::nullopt;
 
-		HitInfo(const std::optional<Vector2>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
-			const std::optional<Vector2>& reject = std::nullopt)
+		HitInfo(const std::optional<T>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
+			const std::optional<T>& reject = std::nullopt)
 			: inter(inter), distance(distance), reject(reject)
 		{
 		}
@@ -63,7 +64,7 @@ namespace WristerEngine::_2D
 		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
 	};
 
-	struct CollisionPair : public HitInfo
+	struct CollisionPair : public HitInfo<Vector2>
 	{
 		BaseCollider* my = nullptr, * other = nullptr;
 

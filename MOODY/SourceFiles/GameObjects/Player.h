@@ -12,4 +12,6 @@ class Player : public GameObjects, public WE::_2D::Collider
 	void Update() override;
 	void Draw() override;
 	void OnCollision() override;
+	void OnCollisionEnter() override;
+	void OnCollisionExit() override;
 };

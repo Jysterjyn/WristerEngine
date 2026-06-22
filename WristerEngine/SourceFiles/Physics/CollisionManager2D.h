@@ -37,7 +37,7 @@ namespace WristerEngine::_2D
 	};
 
 	// コライダー管理
-	class CollisionManager final : private HitInfo
+	class CollisionManager final : private HitInfo<Vector2>
 	{
 	private:
 		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
