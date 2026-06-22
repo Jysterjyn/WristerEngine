@@ -2,7 +2,7 @@
 #include "Transform.h"
 #include <map>
 #include <optional>
-#include "CollisionInfo.h"
+#include "ColliderBase.h"
 
 namespace WristerEngine::_2D
 {

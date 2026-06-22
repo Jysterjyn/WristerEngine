@@ -1,4 +1,4 @@
-﻿#include "CollisionInfo.h"
+﻿#include "ColliderBase.h"
 
 using namespace WE;
 

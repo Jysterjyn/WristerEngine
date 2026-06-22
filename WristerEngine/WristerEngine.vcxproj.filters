@@ -76,7 +76,7 @@
     <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Physics\ColliderInfo.cpp">
+    <ClCompile Include="SourceFiles\Physics\ColliderBase.cpp">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,7 +192,7 @@
     <ClInclude Include="SourceFiles\2d\SpriteManager.h">
       <Filter>ソース ファイル\2d\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\CollisionInfo.h">
+    <ClInclude Include="SourceFiles\Physics\ColliderBase.h">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Physics\Collider2D.h">
