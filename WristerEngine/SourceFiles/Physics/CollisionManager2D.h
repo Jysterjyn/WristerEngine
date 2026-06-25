@@ -12,7 +12,7 @@ namespace WristerEngine::_2D
 	struct QueryHit
 	{
 		// 衝突相手のコライダー
-		BaseCollider* collider = nullptr;
+		BaseCollider2D* collider = nullptr;
 		// 衝突点
 		Vector2 inter;
 		// 排斥ベクトル
@@ -47,7 +47,7 @@ namespace WristerEngine::_2D
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-		bool Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB);
+		bool Check2Collisions(BaseCollider2D* colliderA, BaseCollider2D* colliderB);
 
 		// 個別当たり判定
 		bool Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB);

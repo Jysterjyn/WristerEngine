@@ -52,8 +52,8 @@ bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB
 		{
 			if (!CheckFiltering(colliderA.get(), colliderB.get())) { continue; }
 
-			std::list<BaseCollider*> colliderPair({ colliderA.get(),colliderB.get() });
-			colliderPair.sort([](BaseCollider* c1, BaseCollider* c2)
+			std::list<BaseCollider2D*> colliderPair({ colliderA.get(),colliderB.get() });
+			colliderPair.sort([](BaseCollider2D* c1, BaseCollider2D* c2)
 				{
 					return c1->GetShapeType() < c2->GetShapeType();
 				});
@@ -72,7 +72,7 @@ bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB
 	return !groupA->GetCollisionPairs().empty();
 }
 
-bool CollisionManager::Check2Collisions(BaseCollider* colliderA, BaseCollider* colliderB)
+bool CollisionManager::Check2Collisions(BaseCollider2D* colliderA, BaseCollider2D* colliderB)
 {
 	CollisionShapeType aST = colliderA->GetShapeType();
 	CollisionShapeType bST = colliderB->GetShapeType();

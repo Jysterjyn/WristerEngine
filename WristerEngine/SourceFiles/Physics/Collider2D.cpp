@@ -4,10 +4,10 @@
 using namespace WE;
 using namespace _2D;
 
-uint32_t BaseCollider::nextSerialNumber = 0;
+uint32_t BaseCollider2D::nextSerialNumber = 0;
 uint32_t Collider::nextSerialNumber = 0;
 
-CollisionPair::CollisionPair(BaseCollider* my_, BaseCollider* other_, const HitInfo& hitInfo)
+CollisionPair::CollisionPair(BaseCollider2D* my_, BaseCollider2D* other_, const HitInfo& hitInfo)
 {
 	my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
 }
@@ -25,7 +25,7 @@ bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
 	return false;
 }
 
-BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollider)
+BaseCollider2D* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider2D> newCollider)
 {
 	colliders.push_back(std::move(newCollider));
 	return colliders.back().get();
@@ -34,7 +34,7 @@ BaseCollider* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider> newCollid
 void ColliderGroup::Update()
 {
 	// コライダーの削除
-	colliders.remove_if([](std::unique_ptr<BaseCollider>& collider)
+	colliders.remove_if([](std::unique_ptr<BaseCollider2D>& collider)
 		{ return collider.get()->IsDestroy(); });
 
 	for (auto& collider : colliders) { collider->Update(); }
@@ -113,7 +113,7 @@ ColliderGroup::~ColliderGroup()
 	for (auto* owner : owners) { owner->DeleteGroup(); }
 }
 
-void BaseCollider::Initialize(Collider* owner_, const ColliderInfo& info)
+void BaseCollider2D::Initialize(Collider* owner_, const ColliderInfo& info)
 {
 	owner = owner_;
 	SetColliderInfo(info);

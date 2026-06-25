@@ -16,7 +16,7 @@ namespace WristerEngine::_2D
 
 	class Collider;
 
-	class BaseCollider : public ColliderInfo
+	class BaseCollider2D : public ColliderInfo
 	{
 	private:
 		bool isDestroy = false;
@@ -29,9 +29,9 @@ namespace WristerEngine::_2D
 		const Transform* pTransform = nullptr;
 
 	public:
-		BaseCollider() { serialNumber = nextSerialNumber++; }
+		BaseCollider2D() { serialNumber = nextSerialNumber++; }
 
-		virtual ~BaseCollider() = default;
+		virtual ~BaseCollider2D() = default;
 
 		virtual void Update() {}
 
@@ -66,9 +66,9 @@ namespace WristerEngine::_2D
 
 	struct CollisionPair : public HitInfo<Vector2>
 	{
-		BaseCollider* my = nullptr, * other = nullptr;
+		BaseCollider2D* my = nullptr, * other = nullptr;
 
-		CollisionPair(BaseCollider* my, BaseCollider* other, const HitInfo& hitInfo);
+		CollisionPair(BaseCollider2D* my, BaseCollider2D* other, const HitInfo& hitInfo);
 
 		static bool Check(const CollisionPair& p1, const CollisionPair& p2);
 	};
@@ -76,7 +76,7 @@ namespace WristerEngine::_2D
 	class ColliderGroup : public ColliderInfo
 	{
 	private:
-		std::list<std::unique_ptr<BaseCollider>> colliders;
+		std::list<std::unique_ptr<BaseCollider2D>> colliders;
 		std::list<Collider*> owners;
 
 		// 当たったペアの記録
@@ -96,7 +96,7 @@ namespace WristerEngine::_2D
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseCollider* AddCollider(std::unique_ptr<BaseCollider> newCollider);
+		BaseCollider2D* AddCollider(std::unique_ptr<BaseCollider2D> newCollider);
 
 		void AddCollisionPair(const CollisionPair& pair);
 
@@ -105,35 +105,35 @@ namespace WristerEngine::_2D
 		void CallCollision();
 
 		// getter
-		const std::list<std::unique_ptr<BaseCollider>>* GetColliders() const { return &colliders; }
+		const std::list<std::unique_ptr<BaseCollider2D>>* GetColliders() const { return &colliders; }
 		const std::vector<CollisionPair>& GetCollisionPairs() const { return collisionPairs; }
 		const std::vector<CollisionPair>& GetEnterPairs() const { return enterPairs; }
 		const std::vector<CollisionPair>& GetExitPairs() const { return exitPairs; }
 	};
 
 	// 四角形コライダー
-	class BoxCollider : public BaseCollider
+	class BoxCollider : public BaseCollider2D
 	{
 	public:
-		BoxCollider() : BaseCollider() { shapeType = CollisionShapeType::Box; }
+		BoxCollider() : BaseCollider2D() { shapeType = CollisionShapeType::Box; }
 		// 左上端と右下端の座標を求める
 		std::map<std::string, Vector2> GetVertex() const;
 	};
 
 	// 1点から2方向に延びる線分との当たり判定（まだ不完全）
-	class TwoRayCollider : public BaseCollider
+	class TwoRayCollider : public BaseCollider2D
 	{
 		Angle fov; // 視野角
 
 	public:
-		TwoRayCollider() : BaseCollider() { shapeType = CollisionShapeType::TwoRay; }
+		TwoRayCollider() : BaseCollider2D() { shapeType = CollisionShapeType::TwoRay; }
 		Angle GetFOV() const { return fov; }
 	};
 
 	class CircleCollider;
 
 	// 円コライダー
-	class CircleCollider : public BaseCollider
+	class CircleCollider : public BaseCollider2D
 	{
 	private:
 		Vector2 center;			// 中心座標
@@ -141,7 +141,7 @@ namespace WristerEngine::_2D
 		Vector2 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
 	public:
-		CircleCollider() : BaseCollider() { shapeType = CollisionShapeType::Circle; }
+		CircleCollider() : BaseCollider2D() { shapeType = CollisionShapeType::Circle; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
 		const Vector2& GetCenterPosition() const { return center; }
@@ -174,7 +174,7 @@ namespace WristerEngine::_2D
 		template<class T>
 		T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
 		{
-			std::unique_ptr<BaseCollider> newCollider;
+			std::unique_ptr<BaseCollider2D> newCollider;
 			const std::string TYPE_NAME = typeid(T).name();
 			ColliderInfo colliderInfo(group->GetColliderInfo());
 			std::string groupName = info ? info->GetName() : group->GetName();
