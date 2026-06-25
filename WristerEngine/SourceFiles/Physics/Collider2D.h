@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Transform.h"
 #include <map>
-#include <optional>
 #include "ColliderBase.h"
 
 namespace WristerEngine::_2D
@@ -46,22 +45,6 @@ namespace WristerEngine::_2D
 		bool IsDestroy() const { return isDestroy; }
 		Collider* GetOwner() { return owner; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
-	};
-
-	template <class T>
-	struct HitInfo
-	{
-		std::optional<T> inter = std::nullopt;
-		std::optional<float> distance = std::nullopt;
-		std::optional<T> reject = std::nullopt;
-
-		HitInfo(const std::optional<T>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
-			const std::optional<T>& reject = std::nullopt)
-			: inter(inter), distance(distance), reject(reject)
-		{
-		}
-
-		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
 	};
 
 	struct CollisionPair : public HitInfo<Vector2>

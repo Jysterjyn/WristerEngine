@@ -18,6 +18,7 @@ namespace WristerEngine
 
 	template<class T> using uPtr = std::unique_ptr<T>;
 	template<class T> using uList = std::list<uPtr<T>>;
+	template<class T> using CR = const T&;
 
 	template <class T>
 	// 順番を無視して要素が同じかどうかを比較する関数
