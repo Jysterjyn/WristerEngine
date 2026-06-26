@@ -52,6 +52,12 @@ namespace WristerEngine
 		const T Get() const { return value; }
 		bool IsChanged() const { return isChanged; }
 	};
+
+	template <class T>
+	uint32_t ChangeVal(T value) 
+	{
+		return static_cast<uint32_t>(value); 
+	}
 }
 
 // WristerEngineの略称のエイリアス

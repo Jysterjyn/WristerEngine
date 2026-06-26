@@ -7,11 +7,12 @@ void Player::Initialize()
 	sprite = spMan->Create({ "Nanika/Nanika.png" }, Half(WE::WIN_SIZE));
 	sprite->SetCenterAnchor();
 
-	WE::ColliderInfo info(ChangeVal(CollisionAttribute::Player), ChangeVal(CollisionMask::Player));
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player));
 	Collider::Initialize("Player", info);
 	WE::_2D::CircleCollider* collider = AddCollider<WE::_2D::CircleCollider>();
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
+
 }
 
 void Player::Update()

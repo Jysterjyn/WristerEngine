@@ -31,6 +31,8 @@ namespace WristerEngine
 		std::string GetName() const { return name.Get(); }
 	};
 
+	class BaseCollider;
+
 	class BaseSingleCollider : public ColliderInfo
 	{
 
@@ -65,7 +67,45 @@ namespace WristerEngine
 
 	class BaseCollider
 	{
+	private:
+		uint32_t serialNumber = 0;
 
+	protected:
+		BaseColliderGroup* group = nullptr;
+
+		template<class T>
+		bool TypeCompare(const std::string& type) const
+		{
+			const std::string TYPE_NAME = typeid(T).name();
+			return TYPE_NAME.find(type) != std::string::npos;
+		}
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		//template<class T>
+		//T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
+		//{
+		//	std::unique_ptr<BaseCollider2D> newCollider;
+		//	ColliderInfo colliderInfo(group->GetColliderInfo());
+		//	std::string groupName = info ? info->GetName() : group->GetName();
+		//	colliderInfo.SetName(groupName);
+
+		//	if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
+		//	else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+		//	else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
+		//	if (!newCollider) { return nullptr; }
+
+		//	newCollider->Initialize(this, colliderInfo);
+
+		//	return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		//}
+
+
+		// コライダー生成クラス
+		virtual uPtr<BaseCollider> CreateCollider(CR<std::string> type) = 0;
 	};
 
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);

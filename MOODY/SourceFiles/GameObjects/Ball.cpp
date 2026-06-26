@@ -20,7 +20,7 @@ void Ball::Initialize()
 	pParam->pos = Half(WE::WIN_SIZE);
 	pParam->pos.y += 100;
 
-	WE::ColliderInfo info(ChangeVal(CollisionAttribute::Ball), ChangeVal(CollisionMask::Ball));
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
 	Collider::Initialize("Ball", info);
 	collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);
