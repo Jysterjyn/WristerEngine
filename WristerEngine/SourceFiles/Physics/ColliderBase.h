@@ -31,7 +31,7 @@ namespace WristerEngine
 		std::string GetName() const { return name.Get(); }
 	};
 
-	class BaseCollider : public ColliderInfo
+	class BaseSingleCollider : public ColliderInfo
 	{
 
 	};
@@ -59,6 +59,11 @@ namespace WristerEngine
 	};
 
 	class BaseColliderGroup : public ColliderInfo
+	{
+
+	};
+
+	class BaseCollider
 	{
 
 	};
