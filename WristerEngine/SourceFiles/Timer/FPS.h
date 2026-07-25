@@ -3,7 +3,7 @@
 
 namespace WristerEngine
 {
-	const int MAX_FPS = 60;
+	const int MAX_FPS = 30;
 
 	// FPS関連処理
 	class FPS final

@@ -164,11 +164,13 @@ namespace WristerEngine::_2D
 			colliderInfo.SetName(groupName);
 
 			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+			if (!TypeCompare("Collider")) { return nullptr; }
+			newCollider = std::make_unique<T>();
 
-			if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
-			else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
-			else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
-			if (!newCollider) { return nullptr; }
+			//if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
+			//else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
+			//else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
+			//if (!newCollider) { return nullptr; }
 
 			newCollider->Initialize(this, colliderInfo);
 

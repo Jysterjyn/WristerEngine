@@ -4,6 +4,8 @@
 // このゲーム固有の処理クラス
 class MyGame : public WE::Framework
 {
+	WE::FPS* fps = WE::FPS::GetInstance();
+	
 	// 初期化(オーバーライド)
 	void Initialize();
 	// 更新(オーバーライド)
@@ -12,4 +14,5 @@ class MyGame : public WE::Framework
 	void Draw();
 	// 終了処理(オーバーライド)
 	void Finalize();
+	bool IsEndRequest() override;
 };

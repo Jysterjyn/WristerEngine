@@ -35,6 +35,11 @@ namespace WristerEngine
 
 	class BaseSingleCollider : public ColliderInfo
 	{
+	protected:
+		bool isDestroy = false;
+		BaseCollider* owner = nullptr;
+		uint32_t serialNumber = 0;
+		int shapeType = 0;
 
 	};
 
@@ -76,7 +81,7 @@ namespace WristerEngine
 		template<class T>
 		bool TypeCompare(const std::string& type) const
 		{
-			const std::string TYPE_NAME = typeid(T).name();
+			const std::string TYPE_NAME = typeid(type).name();
 			return TYPE_NAME.find(type) != std::string::npos;
 		}
 
@@ -88,7 +93,7 @@ namespace WristerEngine
 		//template<class T>
 		//T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
 		//{
-		//	std::unique_ptr<BaseCollider2D> newCollider;
+		//	std::unique_ptr<BaseCollider> newCollider;
 		//	ColliderInfo colliderInfo(group->GetColliderInfo());
 		//	std::string groupName = info ? info->GetName() : group->GetName();
 		//	colliderInfo.SetName(groupName);

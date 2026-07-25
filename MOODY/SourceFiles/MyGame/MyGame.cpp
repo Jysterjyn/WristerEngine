@@ -1,6 +1,7 @@
 ﻿#include "MyGame.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
+#include <imgui.h>
 
 void MyGame::Initialize()
 {
@@ -19,6 +20,8 @@ void MyGame::Update()
 	// 更新処理
 	Framework::Update();
 	collisionManager->CheckCollisions();
+
+	ImGui::Text("FPS: %d", fps->GetFPS());
 }
 
 void MyGame::Draw()
@@ -35,4 +38,9 @@ void MyGame::Finalize()
 {
 	// 終了処理
 	Framework::Finalize();
+}
+
+bool MyGame::IsEndRequest()
+{
+	return input->IsTrigger(WE::Key::F5)&& input->IsTrigger(WE::Mouse::B_3);
 }
