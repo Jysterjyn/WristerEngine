@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <chrono>
 #include <array>
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {
@@ -48,8 +49,11 @@ namespace WristerEngine
 		float timeMem;
 
 	public:
-		// コンストラクタ
-		RealTimer(float limitTime = 0) { timeMem = limitTime; startTime = std::chrono::steady_clock::now(); }
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		/// <param name="limitTime">制限時間（秒）</param>
+		RealTimer(float limitTime = 0);
 		// 更新
 		bool Update();
 		// 計測開始

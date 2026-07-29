@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "AbstractSceneFactory.h"
+#include "ISceneFactory.h"
 
-class SceneFactory : public WristerEngine::AbstractSceneFactory
+class SceneFactory : public WristerEngine::ISceneFactory
 {
-	// AbstractSceneFactory を介して継承されました
+	// ISceneFactory を介して継承されました
 	std::unique_ptr<WristerEngine::BaseScene> CreateScene(const std::string& sceneName) override;
 };

@@ -216,7 +216,7 @@
     <ClInclude Include="SourceFiles\Scene\SceneManager.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Scene\AbstractSceneFactory.h">
+    <ClInclude Include="SourceFiles\Scene\ISceneFactory.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Scene\FadeManager.h">

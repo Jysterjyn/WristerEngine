@@ -8,6 +8,7 @@ using namespace _2D;
 void Framework::Initialize()
 {
 	wAPI->Initialize(windowName);
+	wAPI->SetSizeChangeMode(WindowsAPI::SizeChangeMode::FixedAspect);
 	dxCommon->Initialize();
 	input->Initialize();
 	PipelineManager::Initialize();

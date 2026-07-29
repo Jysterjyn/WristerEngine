@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <WristerEngineUtility.h>
+#include <numeric>
 
 const float PI = 3.141592f; // 円周率
 const float ONE_DEG_RAD = PI / 180.0f; // 1°のラジアン変換
@@ -90,3 +91,28 @@ float LerpShortAngle(float a, float b, float t);
 /// <param name="isMaxInclude">最大境界値を含むか</param>
 /// <returns>nがmin~maxの範囲に含まれていたらtrue</returns>
 bool IsInRange(int n, int min, int max, bool isMinInclude, bool isMaxInclude);
+
+// 配列の合計値を計算する
+template <typename Container>
+typename Container::value_type Sum(const Container& arr)
+{
+	if (arr.empty()) return typename Container::value_type(0);
+	return std::accumulate(arr.begin(), arr.end(), typename Container::value_type(0));
+}
+
+// 配列の合計値を計算する
+template <typename Container,typename T>
+T Sum(const Container& arr,T zero)
+{
+	zero = static_cast<T>(0);
+	if (arr.empty()) return zero;
+	return std::accumulate(arr.begin(), arr.end(), zero);
+}
+
+// 平均値を計算する
+template <typename Container>
+typename Container::value_type Average(const Container& arr)
+{
+	if (arr.empty()) return typename Container::value_type(0);
+	return Sum(arr) / static_cast<typename Container::value_type>(arr.size());
+}

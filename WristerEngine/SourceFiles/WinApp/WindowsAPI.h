@@ -46,7 +46,7 @@ namespace WristerEngine
 		// 初期化
 		void Initialize(const std::wstring& windowName = L"");
 		// メッセージの処理
-		bool ProcessMessage();
+		bool ProcessMessage() const;
 		// 終了
 		void Finalize() const;
 

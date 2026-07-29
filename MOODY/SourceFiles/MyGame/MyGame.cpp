@@ -10,7 +10,7 @@ void MyGame::Initialize()
 	Framework::Initialize();
 
 	// シーンの生成
-	std::unique_ptr<WE::AbstractSceneFactory> sceneFactory;
+	std::unique_ptr<WE::ISceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "GameScene");
 }
@@ -21,7 +21,7 @@ void MyGame::Update()
 	Framework::Update();
 	collisionManager->CheckCollisions();
 
-	ImGui::Text("FPS: %d", fps->GetFPS());
+	ImGui::Text("FPS: %f", fps->GetFPS());
 }
 
 void MyGame::Draw()
@@ -42,5 +42,5 @@ void MyGame::Finalize()
 
 bool MyGame::IsEndRequest()
 {
-	return input->IsTrigger(WE::Key::F5)&& input->IsTrigger(WE::Mouse::B_3);
+	return input->IsTrigger(WE::Key::Escape);
 }

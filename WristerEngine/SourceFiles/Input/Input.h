@@ -3,7 +3,7 @@
 #include <dinput.h>
 #include <wrl.h>
 #include <array>
-#include <numeric>
+#include "MathUtility.h"
 #include "Vector.h"
 
 namespace WristerEngine
@@ -244,25 +244,25 @@ namespace WristerEngine
 		bool IsUp(uint32_t stickNo, JoyPad button) const;
 
 		// いずれかのキーが押されたらtrueを返す
-		bool IsAnyInput() const { return std::accumulate(key.begin(), key.end(), false); }
+		bool IsAnyInput() const { return Sum(key, 0U) > 0; }
 		bool IsAnyInput(std::vector<Key>& keys) const;
 
 		// KEY1が押されてたらプラス、KEY2が押されてたらマイナス
 		float Move(Key KEY1, Key KEY2, const float spd) const { return (IsInput(KEY1) - IsInput(KEY2)) * spd; }
-		
+
 		// 押されているキーの数
-		size_t KeyInputNum() const { return std::accumulate(key.begin(), key.end(), 0U) / 128; }
-		
+		size_t KeyInputNum() const { return Sum(key, 10000U) / 128; }
+
 		// 一定以上レバーを傾けたら移動する
 		Vector2 ConLStick(uint32_t stickNo, const float spd) const;
 		Vector2 ConRStick(uint32_t stickNo, const float spd) const;
-		
+
 		// getter
 		MouseMove GetMouseMove() const { return MouseMove(mouseState.lX, mouseState.lY, mouseState.lZ); }
 		PadState GetPadState(uint32_t stickNo) const;
 		bool IsConnectGamePad() const { return !joysticks.empty(); }
 		DIJOYSTATE GetJoyState(uint32_t stickNo) const;
-		
+
 		// コントローラーが反応しない範囲を変更
 		void SetDeadZone(uint32_t stickNo, float deadZoneL, float deadZoneR);
 	};

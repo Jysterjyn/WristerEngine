@@ -6,11 +6,11 @@
 namespace WristerEngine
 {
 	// シーンファクトリーの抽象クラス
-	class AbstractSceneFactory
+	class ISceneFactory
 	{
 	public:
 		// 仮想デストラクタ
-		virtual ~AbstractSceneFactory() = default;
+		virtual ~ISceneFactory() = default;
 		// シーン作成
 		virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
 	};

@@ -10,7 +10,7 @@ SceneManager* SceneManager::GetInstance()
 	return &sceneManager;
 }
 
-void SceneManager::Initialize(std::unique_ptr<AbstractSceneFactory>& sceneFactory_, const std::string& startScene)
+void SceneManager::Initialize(std::unique_ptr<ISceneFactory>& sceneFactory_, const std::string& startScene)
 {
 	fadeManager.Initialize();
 	sceneFactory = move(sceneFactory_);

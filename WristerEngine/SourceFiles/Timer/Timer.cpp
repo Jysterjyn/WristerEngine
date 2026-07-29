@@ -1,6 +1,6 @@
 ﻿#include "Timer.h"
 using namespace std::chrono;
-using namespace WristerEngine;
+using namespace WE;
 
 std::array<int, 2> FrameTimer::ConvertToSecond(int time, int fps) const
 {
@@ -26,6 +26,12 @@ bool FrameTimer::Update()
 	return false;
 }
 
+RealTimer::RealTimer(float limitTime)
+{
+	timeMem = limitTime * 1000000.0f;
+	startTime = steady_clock::now();
+}
+
 bool RealTimer::Update()
 {
 	nowTime = steady_clock::now();
@@ -39,7 +45,5 @@ bool RealTimer::Update()
 
 float RealTimer::GetTime() const
 {
-	// 単位を秒(s)にするための変数
-	const float KILO = 1000.0f;
-	return (float)duration_cast<milliseconds>(nowTime - startTime).count() / KILO;
+	return (float)duration_cast<microseconds>(nowTime - startTime).count();
 }

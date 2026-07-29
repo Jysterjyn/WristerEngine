@@ -230,7 +230,7 @@ void DirectXCommon::PostDraw()
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
 	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result = swapchain->Present(1, 0);
+	result = swapchain->Present(0, 0);
 
 	// コマンドの実行完了を待つ
 	commandQueue->Signal(fence.Get(), ++fenceVal);
@@ -245,7 +245,7 @@ void DirectXCommon::PostDraw()
 		}
 	}
 
-	fixFPS->Fix(); // FPS固定
+	fixFPS->Update(); // FPS固定
 
 	// キューをクリア
 	result = commandAllocator->Reset();

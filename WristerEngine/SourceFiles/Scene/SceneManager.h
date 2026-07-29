@@ -2,7 +2,7 @@
 #include "BaseScene.h"
 #include "FadeManager.h"
 #include "BasePauseMenu.h"
-#include "AbstractSceneFactory.h"
+#include "ISceneFactory.h"
 #include <optional>
 
 namespace WristerEngine
@@ -15,7 +15,7 @@ namespace WristerEngine
 		std::string nowScene = "None";
 		std::optional<std::string> nextScene = std::nullopt;
 		FadeManager fadeManager;
-		std::unique_ptr<AbstractSceneFactory> sceneFactory;
+		std::unique_ptr<ISceneFactory> sceneFactory;
 		bool isObjectClear = false, isParticleClear = false;
 		BasePauseMenu* pauseMenu = nullptr;
 
@@ -28,7 +28,7 @@ namespace WristerEngine
 		// インスタンス取得
 		static SceneManager* GetInstance();
 		// 初期化
-		void Initialize(std::unique_ptr<AbstractSceneFactory>& sceneFactory, const std::string& startScene);
+		void Initialize(std::unique_ptr<ISceneFactory>& sceneFactory, const std::string& startScene);
 		// 更新
 		void Update();
 		// 描画

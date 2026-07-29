@@ -182,7 +182,7 @@
     <ClInclude Include="SourceFiles\Math\Matrix4.h" />
     <ClInclude Include="SourceFiles\Math\Quaternion.h" />
     <ClInclude Include="SourceFiles\Math\Vector.h" />
-    <ClInclude Include="SourceFiles\Scene\AbstractSceneFactory.h" />
+    <ClInclude Include="SourceFiles\Scene\ISceneFactory.h" />
     <ClInclude Include="SourceFiles\Scene\BaseScene.h" />
     <ClInclude Include="SourceFiles\Scene\FadeManager.h" />
     <ClInclude Include="SourceFiles\Scene\SceneManager.h" />

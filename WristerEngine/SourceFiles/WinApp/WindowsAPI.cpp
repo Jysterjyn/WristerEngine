@@ -123,7 +123,7 @@ void WindowsAPI::Initialize(const std::wstring& windowName)
 	timeBeginPeriod(1);
 }
 
-bool WindowsAPI::ProcessMessage()
+bool WindowsAPI::ProcessMessage() const
 {
 	if (isInWindowCursor) { InWindowCursor(); }
 

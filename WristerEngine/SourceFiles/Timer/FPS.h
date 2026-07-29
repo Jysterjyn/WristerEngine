@@ -1,18 +1,26 @@
 ﻿#pragma once
 #include "Timer.h"
+#include <thread>
+#include <deque>
 
 namespace WristerEngine
 {
-	const int MAX_FPS = 30;
+	const float MAX_FPS = 10000;
 
 	// FPS関連処理
 	class FPS final
 	{
 	private:
+		// μを打ち消す変数
+		const float MEGA = 1000000.0f;
 		std::chrono::steady_clock::time_point reference;
-		int fps = 60;
-		RealTimer oneSecond = 1.0f;
-		FrameTimer oneSecondFrames = INT32_MAX;
+		float fps = 60;
+		// FPS測定のインターバル
+		RealTimer interval = 0.5f;
+		// 1フレームの実行時間記録用配列
+		std::deque<float> frameTimes;
+		// 最初のフレームか
+		bool isFirstFrame = true;
 
 		FPS() = default;
 		~FPS() = default;
@@ -29,8 +37,12 @@ namespace WristerEngine
 		/// <param name="maxfps">最大FPS値</param>
 		void Initialize();
 		// FPS固定
-		void Fix();
+		void Update();
+		// FPS計算
+		void CalculateFPS();
+		// 前回記録からの経過時間を取得する
+		std::chrono::microseconds GetElapsed() const;
 		// FPS取得
-		int GetFPS() const { return fps; }
+		float GetFPS() const { return fps; }
 	};
 }
