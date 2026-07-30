@@ -21,6 +21,16 @@ void MyGame::Update()
 	Framework::Update();
 	collisionManager->CheckCollisions();
 
+	if (input->IsTrigger(WE::Key::F))
+	{
+		WE::DirectXCommon::GetInstance()->ChangeResolution(16384, 16384);
+	}
+
+	if (input->IsTrigger(WE::Key::G))
+	{
+		WE::DirectXCommon::GetInstance()->ChangeResolution(128, 64);
+	}
+
 	ImGui::Text("FPS: %f", fps->GetFPS());
 }
 

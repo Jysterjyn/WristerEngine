@@ -35,11 +35,10 @@ namespace WristerEngine::_2D
 		template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 		static std::vector<std::unique_ptr<PostEffect>> postEffects;
 
-		ComPtr<ID3D12Resource> texBuff;
+		ComPtr<ID3D12Resource> texBuff, depthBuff, constBuff;
 		ComPtr<ID3D12DescriptorHeap> rtvHeap, dsvHeap;
 		std::array<Vertex, 4> vertices;
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
-		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 		ConstBufferData* constMap = nullptr;
 		SRVHandle srvHandle;
 

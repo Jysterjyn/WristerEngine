@@ -27,6 +27,7 @@ namespace WristerEngine
 		D3D12_RESOURCE_STATES state;
 		UINT rtvIndex;
 		D3D12_VIEWPORT* viewport;
+		D3D12_RECT* scissorRect;
 	};
 
 	// DirectX基盤
@@ -43,12 +44,14 @@ namespace WristerEngine
 		ComPtr<ID3D12CommandQueue> commandQueue;
 		ComPtr<IDXGISwapChain4> swapchain;
 		ComPtr<ID3D12DescriptorHeap> rtvHeap, srvHeap, dsvHeap;
+		ComPtr<ID3D12Resource> depthBuffer;
 		UINT32 srvIndex = 0;
 		ComPtr<ID3D12Fence> fence;
 		DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
 		std::vector<ComPtr<ID3D12Resource>> backBuffers;
 		UINT64 fenceVal = 0;
 		D3D12_VIEWPORT viewport{};
+		D3D12_RECT scissorRect{};
 		FPS* fixFPS = FPS::GetInstance();
 
 		DirectXCommon() = default;
@@ -73,6 +76,8 @@ namespace WristerEngine
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
+
+		void Finalize();
 		// 描画前処理
 		void PreDraw();
 		// ポストエフェクトクラス内で使う共通処理部分
@@ -88,6 +93,8 @@ namespace WristerEngine
 
 		// SRVIndexをインクリメント
 		void IncrementSRVIndex() { srvIndex++; }
+
+		void ChangeResolution(UINT width, UINT height);
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});

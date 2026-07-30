@@ -1,7 +1,9 @@
 ﻿#include "D3D12Common.h"
+#include <dxgidebug.h>
 #include <thread>
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
 using namespace std;
 using namespace WristerEngine;
 using namespace Microsoft::WRL;
@@ -24,7 +26,7 @@ void DirectXCommon::Initialize()
 	CreateSwapchain();				// スワップチェーンの生成
 	CreateRenderTargetView();		// レンダーターゲットビューの生成
 	CreateShaderResourceView();		// シェーダーリソースビューの生成
-	CreateDepthBuffer(&dsvHeap);	// 深度バッファの生成
+	CreateDepthBuffer(depthBuffer.Get(), &dsvHeap);	// 深度バッファの生成
 	CreateFence();					// フェンスの生成
 
 	// DXCommonGetterにポインタ代入
@@ -32,6 +34,11 @@ void DirectXCommon::Initialize()
 
 	// ビューポート設定コマンド
 	SetViewport();
+	scissorRect = { 0,0,(LONG)WIN_SIZE.x,(LONG)WIN_SIZE.y };
+}
+
+void DirectXCommon::Finalize()
+{
 }
 
 void DirectXCommon::CreateDevice()
@@ -90,25 +97,25 @@ void DirectXCommon::CreateDevice()
 
 #ifdef _DEBUG
 	// エラー時にブレークを発生させる
-	ComPtr<ID3D12InfoQueue> infoQueue;
-	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
-		// 抑制するエラー
-		D3D12_MESSAGE_ID denyIds[] = {
-			D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
-		// 抑制する表示レベル
-		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
-		D3D12_INFO_QUEUE_FILTER filter{};
-		filter.DenyList.NumIDs = _countof(denyIds);
-		filter.DenyList.pIDList = denyIds;
-		filter.DenyList.NumSeverities = _countof(severities);
-		filter.DenyList.pSeverityList = severities;
-		// 指定したエラーの表示を抑制する
-		infoQueue->PushStorageFilter(&filter);
-		// エラー時にブレークを発生させる
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
-	}
+	//ComPtr<ID3D12InfoQueue> infoQueue;
+	//if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
+	//	// 抑制するエラー
+	//	D3D12_MESSAGE_ID denyIds[] = {
+	//		D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
+	//	// 抑制する表示レベル
+	//	D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+	//	D3D12_INFO_QUEUE_FILTER filter{};
+	//	filter.DenyList.NumIDs = _countof(denyIds);
+	//	filter.DenyList.pIDList = denyIds;
+	//	filter.DenyList.NumSeverities = _countof(severities);
+	//	filter.DenyList.pSeverityList = severities;
+	//	// 指定したエラーの表示を抑制する
+	//	infoQueue->PushStorageFilter(&filter);
+	//	// エラー時にブレークを発生させる
+	//	infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+	//	infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+	//	infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
+	//}
 #endif
 }
 
@@ -166,7 +173,7 @@ void DirectXCommon::CreateRenderTargetView()
 	}
 }
 
-void WristerEngine::DirectXCommon::CreateShaderResourceView()
+void DirectXCommon::CreateShaderResourceView()
 {
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -185,7 +192,7 @@ void DirectXCommon::PreDraw()
 	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
 
 	PreDraw({ backBuffers[bbIndex].Get(), rtvHeap.Get(),
-		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex, &viewport });
+		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex, &viewport, &scissorRect });
 }
 
 void DirectXCommon::PreDraw(const PreDrawProp& prop)
@@ -211,7 +218,7 @@ void DirectXCommon::PreDraw(const PreDrawProp& prop)
 	// ビューポート領域の設定
 	commandList->RSSetViewports(1, prop.viewport);
 	// シザー矩形の設定
-	commandList->RSSetScissorRects(1, std::make_unique<CD3DX12_RECT>(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y).get());
+	commandList->RSSetScissorRects(1, prop.scissorRect);
 }
 
 void DirectXCommon::PostDraw()
@@ -276,6 +283,86 @@ SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE
 	device->CreateShaderResourceView(resBuff, &srvDesc, srvHandle.cpu);
 	srvIndex++;
 	return srvHandle;
+}
+
+void DirectXCommon::ChangeResolution(UINT width, UINT height)
+{
+	WIN_SIZE = { (float)width, (float)height };
+	// GPU待機
+	commandQueue->Signal(fence.Get(), ++fenceVal);
+
+	if (fence->GetCompletedValue() != fenceVal)
+	{
+		HANDLE event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+
+		fence->SetEventOnCompletion(fenceVal, event);
+		WaitForSingleObject(event, INFINITE);
+
+		CloseHandle(event);
+	}
+
+	// バックバッファ解放
+	backBuffers.clear();
+	//dsvHeap.Reset();
+
+	// ResizeBuffers()
+	swapchain->ResizeBuffers(
+		static_cast<UINT>(swapchainDesc.BufferCount),
+		width,
+		height,
+		swapchainDesc.Format,
+		swapchainDesc.Flags
+	);
+
+	swapchainDesc.Width = width;
+	swapchainDesc.Height = height;
+
+	backBuffers.resize(swapchainDesc.BufferCount);
+
+	for (UINT i = 0; i < swapchainDesc.BufferCount; i++)
+	{
+		swapchain->GetBuffer(i, IID_PPV_ARGS(&backBuffers[i]));
+	}
+
+	// RTV再生成
+	for (int i = 0; i < backBuffers.size(); i++)
+	{
+		swapchain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
+		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
+			i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
+		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
+		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+		device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+	}
+
+	// 深度バッファ再生成
+	D3D12_RESOURCE_DESC depthResourceDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_D32_FLOAT,
+			(UINT64)width, (UINT)height,
+			1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+
+	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_HEAP_TYPE_DEFAULT);
+	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
+
+	Result result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&depthResourceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&clearValue,
+		IID_PPV_ARGS(&depthBuffer));
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	device->CreateDepthStencilView(
+		depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
+
+	// Viewport更新
+	SetViewport(WIN_SIZE);
+	scissorRect = { 0,0,(LONG)width,(LONG)height };
 }
 
 void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)

@@ -2,9 +2,9 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 using namespace std;
-using namespace WristerEngine;
+using namespace WE;
 
-D3D12_INPUT_ELEMENT_DESC WristerEngine::SetInputLayout(LPCSTR semanticName, DXGI_FORMAT format)
+D3D12_INPUT_ELEMENT_DESC WE::SetInputLayout(LPCSTR semanticName, DXGI_FORMAT format)
 {
 	D3D12_INPUT_ELEMENT_DESC inputLayout =
 	{
@@ -15,7 +15,7 @@ D3D12_INPUT_ELEMENT_DESC WristerEngine::SetInputLayout(LPCSTR semanticName, DXGI
 	return inputLayout;
 }
 
-void WristerEngine::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR target)
+void WE::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR target)
 {
 	ID3DBlob* errorBlob = nullptr;
 
@@ -45,7 +45,7 @@ void WristerEngine::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR
 	}
 }
 
-void WristerEngine::CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap_)
+void WE::CreateDepthBuffer(ID3D12Resource* depthBuffer, ID3D12DescriptorHeap** dsvHeap_)
 {
 	D3D12_RESOURCE_DESC depthResourceDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
@@ -53,15 +53,17 @@ void WristerEngine::CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap_)
 			(UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 			1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
-	ID3D12Resource* depthBuff = nullptr;
+	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_HEAP_TYPE_DEFAULT);
+	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
+
 	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
 	Result result = device->CreateCommittedResource(
-		new CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
 		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		new CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0),
-		IID_PPV_ARGS(&depthBuff));
+		&clearValue,
+		IID_PPV_ARGS(&depthBuffer));
 
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;
@@ -72,5 +74,5 @@ void WristerEngine::CreateDepthBuffer(ID3D12DescriptorHeap** dsvHeap_)
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(
-		depthBuff, &dsvDesc, (*dsvHeap_)->GetCPUDescriptorHandleForHeapStart());
+		depthBuffer, &dsvDesc, (*dsvHeap_)->GetCPUDescriptorHandleForHeapStart());
 }

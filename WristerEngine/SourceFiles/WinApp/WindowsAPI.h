@@ -5,16 +5,15 @@
 
 namespace WristerEngine
 {
-	// ウィンドウサイズ
-	const Vector2 WIN_SIZE = { 1280,720 };
+	inline Vector2 WIN_SIZE = { 1280, 720 };
 	// ウィンドウサイズの半分(UI描画などに使う)
-	const Vector2 HALF_WIN_SIZE = WIN_SIZE / 2.0f;
+	inline Vector2 HALF_WIN_SIZE = WIN_SIZE / 2.0f;
 
 	// ウィンドウクラス処理
 	class WindowsAPI final
 	{
 	public:
-		enum class SizeChangeMode 
+		enum class SizeChangeMode
 		{
 			None,        // サイズ変更不可
 			Normal,      // 自由変更
