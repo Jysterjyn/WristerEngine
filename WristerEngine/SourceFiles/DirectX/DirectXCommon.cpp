@@ -24,9 +24,10 @@ void DirectXCommon::Initialize()
 	CreateDevice();					// デバイスの生成
 	CreateCommandList();			// コマンド関連の生成
 	CreateSwapchain();				// スワップチェーンの生成
+	CreateDescriptorHeaps();		// デスクリプタヒープの生成
 	CreateRenderTargetView();		// レンダーターゲットビューの生成
 	CreateShaderResourceView();		// シェーダーリソースビューの生成
-	CreateDepthBuffer(depthBuffer.Get(), &dsvHeap);	// 深度バッファの生成
+	CreateDepthBuffer(depthBuffer.Get(), dsvHeap.Get());	// 深度バッファの生成
 	CreateFence();					// フェンスの生成
 
 	// DXCommonGetterにポインタ代入
@@ -35,10 +36,6 @@ void DirectXCommon::Initialize()
 	// ビューポート設定コマンド
 	SetViewport();
 	scissorRect = { 0,0,(LONG)WIN_SIZE.x,(LONG)WIN_SIZE.y };
-}
-
-void DirectXCommon::Finalize()
-{
 }
 
 void DirectXCommon::CreateDevice()
@@ -150,7 +147,7 @@ void DirectXCommon::CreateSwapchain()
 	result = swapchain1->QueryInterface(IID_PPV_ARGS(&swapchain));
 }
 
-void DirectXCommon::CreateRenderTargetView()
+void DirectXCommon::CreateDescriptorHeaps()
 {
 	// デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
@@ -159,6 +156,14 @@ void DirectXCommon::CreateRenderTargetView()
 	// デスクリプタヒープの生成
 	Result result = device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
 
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.NumDescriptors = 1;
+	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+}
+
+void DirectXCommon::CreateRenderTargetView()
+{
 	backBuffers.resize(swapchainDesc.BufferCount);
 
 	for (int i = 0; i < backBuffers.size(); i++)
@@ -187,12 +192,26 @@ void DirectXCommon::CreateFence()
 	Result result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 }
 
+void DirectXCommon::WaitForGPU()
+{
+	// コマンドの実行完了を待つ
+	commandQueue->Signal(fence.Get(), ++fenceVal);
+	
+	if (fence->GetCompletedValue() == fenceVal) { return; }
+	HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+	fence->SetEventOnCompletion(fenceVal, event);
+	
+	if (event == 0) { return; }
+	WaitForSingleObject(event, INFINITE);
+	CloseHandle(event);
+}
+
 void DirectXCommon::PreDraw()
 {
 	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
 
 	PreDraw({ backBuffers[bbIndex].Get(), rtvHeap.Get(),
-		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex, &viewport, &scissorRect });
+		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex });
 }
 
 void DirectXCommon::PreDraw(const PreDrawProp& prop)
@@ -216,9 +235,16 @@ void DirectXCommon::PreDraw(const PreDrawProp& prop)
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 	// ビューポート領域の設定
-	commandList->RSSetViewports(1, prop.viewport);
+	D3D12_VIEWPORT vp{};
+	if (prop.viewport) { vp = *prop.viewport; }
+	else { vp = viewport; }
+	commandList->RSSetViewports(1, &vp);
+
 	// シザー矩形の設定
-	commandList->RSSetScissorRects(1, prop.scissorRect);
+	D3D12_RECT rect{};
+	if (prop.scissorRect) { rect = *prop.scissorRect; }
+	else { rect = scissorRect; }
+	commandList->RSSetScissorRects(1, &rect);
 }
 
 void DirectXCommon::PostDraw()
@@ -239,19 +265,7 @@ void DirectXCommon::PostDraw()
 	// 画面に表示するバッファをフリップ(裏表の入替え)
 	result = swapchain->Present(0, 0);
 
-	// コマンドの実行完了を待つ
-	commandQueue->Signal(fence.Get(), ++fenceVal);
-	if (fence->GetCompletedValue() != fenceVal)
-	{
-		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-		fence->SetEventOnCompletion(fenceVal, event);
-		if (event != 0)
-		{
-			WaitForSingleObject(event, INFINITE);
-			CloseHandle(event);
-		}
-	}
-
+	WaitForGPU(); // GPU待機
 	fixFPS->Update(); // FPS固定
 
 	// キューをクリア
@@ -285,31 +299,44 @@ SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE
 	return srvHandle;
 }
 
-void DirectXCommon::ChangeResolution(UINT width, UINT height)
+void DirectXCommon::OverwriteSRV(ID3D12Resource* resBuff, D3D12_CPU_DESCRIPTOR_HANDLE srvHandle, const D3D12_RESOURCE_DESC* texResDesc)
 {
-	WIN_SIZE = { (float)width, (float)height };
-	// GPU待機
-	commandQueue->Signal(fence.Get(), ++fenceVal);
-
-	if (fence->GetCompletedValue() != fenceVal)
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	if (texResDesc)
 	{
-		HANDLE event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-
-		fence->SetEventOnCompletion(fenceVal, event);
-		WaitForSingleObject(event, INFINITE);
-
-		CloseHandle(event);
+		srvDesc.Format = texResDesc->Format;
+		srvDesc.Texture2D.MipLevels = texResDesc->MipLevels;
 	}
+	else
+	{
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		srvDesc.Texture2D.MipLevels = 1;
+	}
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 
-	// バックバッファ解放
-	backBuffers.clear();
-	//dsvHeap.Reset();
+	device->CreateShaderResourceView(resBuff, &srvDesc, srvHandle);
+}
 
-	// ResizeBuffers()
+void DirectXCommon::ChangeResolution(CR<Vector2> windowSize)
+{
+	// ウィンドウサイズが変化していない場合は処理を抜ける
+	if (WIN_SIZE == windowSize) { return; }
+
+	// ウィンドウサイズ変更
+	WIN_SIZE = windowSize;
+
+	UINT width = (UINT)WIN_SIZE.x;
+	UINT height = (UINT)WIN_SIZE.y;
+
+	WaitForGPU(); // GPU待機
+	backBuffers.clear(); // バックバッファ解放
+	depthBuffer.Reset(); // 深度バッファ解放
+
+	// バッファのリサイズ
 	swapchain->ResizeBuffers(
 		static_cast<UINT>(swapchainDesc.BufferCount),
-		width,
-		height,
+		width, height,
 		swapchainDesc.Format,
 		swapchainDesc.Flags
 	);
@@ -317,48 +344,10 @@ void DirectXCommon::ChangeResolution(UINT width, UINT height)
 	swapchainDesc.Width = width;
 	swapchainDesc.Height = height;
 
-	backBuffers.resize(swapchainDesc.BufferCount);
-
-	for (UINT i = 0; i < swapchainDesc.BufferCount; i++)
-	{
-		swapchain->GetBuffer(i, IID_PPV_ARGS(&backBuffers[i]));
-	}
-
-	// RTV再生成
-	for (int i = 0; i < backBuffers.size(); i++)
-	{
-		swapchain->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers[i]));
-		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(rtvHeap->GetCPUDescriptorHandleForHeapStart(),
-			i, device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV));
-		D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
-		rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-		device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
-	}
+	CreateRenderTargetView(); // RTV再生成
 
 	// 深度バッファ再生成
-	D3D12_RESOURCE_DESC depthResourceDesc =
-		CD3DX12_RESOURCE_DESC::Tex2D(
-			DXGI_FORMAT_D32_FLOAT,
-			(UINT64)width, (UINT)height,
-			1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
-
-	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_HEAP_TYPE_DEFAULT);
-	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
-
-	Result result = device->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&depthResourceDesc,
-		D3D12_RESOURCE_STATE_DEPTH_WRITE,
-		&clearValue,
-		IID_PPV_ARGS(&depthBuffer));
-
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	device->CreateDepthStencilView(
-		depthBuffer.Get(), &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
+	CreateDepthBuffer(depthBuffer.Get(), dsvHeap.Get());
 
 	// Viewport更新
 	SetViewport(WIN_SIZE);

@@ -13,6 +13,8 @@ void MyGame::Initialize()
 	std::unique_ptr<WE::ISceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "GameScene");
+
+	postEffect = WE::_2D::PostEffect::Create();
 }
 
 void MyGame::Update()
@@ -21,14 +23,24 @@ void MyGame::Update()
 	Framework::Update();
 	collisionManager->CheckCollisions();
 
+	if (input->IsTrigger(WE::Key::D))
+	{
+		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::UltraHD * 4.0f);
+	}
+
 	if (input->IsTrigger(WE::Key::F))
 	{
-		WE::DirectXCommon::GetInstance()->ChangeResolution(16384, 16384);
+		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::UltraHD);
 	}
 
 	if (input->IsTrigger(WE::Key::G))
 	{
-		WE::DirectXCommon::GetInstance()->ChangeResolution(128, 64);
+		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::WQHD);
+	}
+
+	if (input->IsTrigger(WE::Key::H))
+	{
+		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
 
 	ImGui::Text("FPS: %f", fps->GetFPS());
@@ -36,10 +48,15 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
-	// 描画処理
-	dxCommon->PreDraw();
+	// ポストエフェクト
+	postEffect->PreDrawScene();
 	spMan->PreDraw();
 	sceneManager->Draw();
+	postEffect->PostDrawScene();
+
+	// 描画処理
+	dxCommon->PreDraw();
+	postEffect->Draw();
 	imGuiManager->Draw();
 	dxCommon->PostDraw();
 }

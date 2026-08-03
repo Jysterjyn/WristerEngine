@@ -67,7 +67,7 @@ namespace WristerEngine::_3D
 	public:
 		ConstBufferData* constMap = nullptr;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;
-		Vector3 eye = { 0, 0, -50.0f }, target, up = Vector3::MakeAxis(Axis::Y);
+		Vector3 eye = { 0, 0, -50.0f }, target, up = AXIS_Y_3D;
 		// シェイク機能
 		std::unique_ptr<Shake> shake;
 

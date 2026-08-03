@@ -24,6 +24,15 @@ public:
 	Vector2& operator-=(const Vector2& v);
 	Vector2& operator*=(float s);
 	Vector2& operator/=(float s);
+
+	// 比較演算子オーバーロード
+	bool operator<=(const Vector2& v) const;
+	bool operator>=(const Vector2& v) const;
+	bool operator<(const Vector2& v) const;
+	bool operator>(const Vector2& v) const;
+	bool operator==(const Vector2& v) const;
+
+	// 配列として扱える
 	float& operator[](size_t index);
 };
 
@@ -56,20 +65,25 @@ public:
 	Vector3& operator*=(const Matrix4& m);
 	Vector3& operator/=(float s);
 
-	bool operator<=(Vector3) const;
-	bool operator>=(Vector3) const;
-	bool operator<(Vector3) const;
-	bool operator>(Vector3) const;
-	bool operator==(Vector3) const;
+	// 比較演算子オーバーロード
+	bool operator<=(const Vector3& v) const;
+	bool operator>=(const Vector3& v) const;
+	bool operator<(const Vector3& v) const;
+	bool operator>(const Vector3& v) const;
+	bool operator==(const Vector3& v) const;
 
 	// 配列として扱える
 	float& operator[](size_t index);
 
-	// 軸を作成
-	static Vector3 MakeAxis(Axis axis);
-
 	operator Vector2() { return { x,y }; }
 };
+
+// 軸ベクトル
+static const Vector2 AXIS_X_2D = { 1, 0 };
+static const Vector2 AXIS_Y_2D = { 0, 1 };
+static const Vector3 AXIS_X_3D = { 1, 0, 0 };
+static const Vector3 AXIS_Y_3D = { 0, 1, 0 };
+static const Vector3 AXIS_Z_3D = { 0, 0, 1 };
 
 // 2項演算子オーバーロード
 const Vector2 operator+(const Vector2& v1, const Vector2& v2);

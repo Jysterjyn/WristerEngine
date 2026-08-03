@@ -58,18 +58,23 @@ namespace WristerEngine
 		~DirectXCommon() = default;
 		DirectXCommon(const DirectXCommon&) = delete;
 		DirectXCommon& operator=(const DirectXCommon&) = delete;
+
 		// デバイスの生成
 		void CreateDevice();
 		// コマンドリストの生成
 		void CreateCommandList();
 		// スワップチェーンの生成
 		void CreateSwapchain();
+		// デスクリプタヒープの生成
+		void CreateDescriptorHeaps();
 		// レンダーターゲットビューの生成
 		void CreateRenderTargetView();
 		// シェーダーリソースビューの生成
 		void CreateShaderResourceView();
 		// フェンスの生成
 		void CreateFence();
+		// GPU待機
+		void WaitForGPU();
 
 	public:
 		// インスタンス取得
@@ -91,10 +96,14 @@ namespace WristerEngine
 		/// <returns>現在生成したSRVハンドル</returns>
 		SRVHandle CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
 
+		// SRVを上書き
+		void OverwriteSRV(ID3D12Resource* resBuff, D3D12_CPU_DESCRIPTOR_HANDLE srvHandle, const D3D12_RESOURCE_DESC* texResDesc = nullptr);
+
 		// SRVIndexをインクリメント
 		void IncrementSRVIndex() { srvIndex++; }
 
-		void ChangeResolution(UINT width, UINT height);
+		// ウィンドウサイズ変更
+		void ChangeResolution(CR<Vector2> windowSize);
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});

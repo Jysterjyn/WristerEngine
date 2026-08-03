@@ -36,8 +36,11 @@ void PostEffect::CreateBuffers()
 	CreateBuffer(constBuff.GetAddressOf(),
 		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
-	Result result;
+	CreateTextureBuffer();
+}
 
+void PostEffect::CreateTextureBuffer()
+{
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, (UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -45,6 +48,7 @@ void PostEffect::CreateBuffers()
 	float clearColor[4] = { 0,0,0,1 };
 	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
+	Result result;
 	result = device->CreateCommittedResource(
 		new CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
 		D3D12_HEAP_FLAG_NONE,
@@ -63,18 +67,43 @@ void PostEffect::CreateBuffers()
 	delete[] img;
 }
 
-void PostEffect::CreateRTV()
+void PostEffect::CreateDescriptorHeaps()
 {
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvHeapDesc.NumDescriptors = 1;
 	Result result = device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap));
 
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	dsvHeapDesc.NumDescriptors = 1;
+	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+}
+
+void PostEffect::CreateRTV()
+{
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 
 	device->CreateRenderTargetView(texBuff.Get(), &rtvDesc, rtvHeap->GetCPUDescriptorHandleForHeapStart());
+}
+
+void PostEffect::ChangeResolution()
+{
+	UINT64 width = texBuff->GetDesc().Width;
+	UINT64 height = texBuff->GetDesc().Height;
+
+	// ウィンドウサイズが変化していない場合は処理を抜ける
+	if ((UINT64)WIN_SIZE.x == width && (UINT64)WIN_SIZE.y == height) { return; }
+
+	// ウィンドウサイズ変更
+	texBuff.Reset();
+	depthBuff.Reset();
+	CreateTextureBuffer();
+	CreateRTV();
+	dxCommon->OverwriteSRV(texBuff.Get(), srvHandle.cpu);
+	CreateDepthBuffer(depthBuff.Get(), dsvHeap.Get());
 }
 #pragma endregion
 
@@ -82,9 +111,10 @@ PostEffect* PostEffect::Create(Type effectType)
 {
 	std::unique_ptr<PostEffect> postEffect = std::make_unique<PostEffect>();
 	postEffect->CreateBuffers();
+	postEffect->CreateDescriptorHeaps();
 	postEffect->CreateRTV();
 	postEffect->srvHandle = dxCommon->CreateSRV(postEffect->texBuff.Get());
-	CreateDepthBuffer(postEffect->depthBuff.Get(), &postEffect->dsvHeap);
+	CreateDepthBuffer(postEffect->depthBuff.Get(), postEffect->dsvHeap.Get());
 	postEffect->SetEffectType(effectType);
 	postEffects.push_back(std::move(postEffect));
 	return postEffects.back().get();
@@ -108,41 +138,10 @@ void PostEffect::Draw()
 
 void PostEffect::PreDrawScene()
 {
-	// ビューポート領域の設定
-	D3D12_VIEWPORT viewport= CD3DX12_VIEWPORT(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
+	ChangeResolution();
 
 	DirectXCommon::GetInstance()->PreDraw({ texBuff.Get(),
-		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0, &viewport});
-
-
-	//ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
-	//// リソースバリアで書き込み可能に変更
-	//D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-	//	texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	//cmdList->ResourceBarrier(1, &resourceBarrier);
-
-	//// 描画先のRTVとDSVを指定する
-	//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
-	//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-	//cmdList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-	//// 画面全体の色をクリア
-	//float clearColor[4] = { 0,0,0,1 };
-	//cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-	//// 画面全体の深度をクリア
-	//cmdList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-
-	//// SRV用のデスクリプタヒープを指定する
-	//ID3D12DescriptorHeap* ppHeaps[] = { DirectXCommon::GetInstance()->GetSRV() };
-	//cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	//// ビューポート領域の設定
-	//CD3DX12_VIEWPORT viewport(0.0f, 0.0f, WIN_SIZE.x, WIN_SIZE.y);
-	//cmdList->RSSetViewports(1, &viewport);
-	//// シザー矩形の設定
-	//CD3DX12_RECT rect(0, 0, (LONG)WIN_SIZE.x, (LONG)WIN_SIZE.y);
-	//cmdList->RSSetScissorRects(1, &rect);
+		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0 });
 }
 
 void PostEffect::PostDrawScene()

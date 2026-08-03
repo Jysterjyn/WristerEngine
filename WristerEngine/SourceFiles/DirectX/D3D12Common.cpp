@@ -45,7 +45,7 @@ void WE::LoadShader(ID3DBlob** shaderBlob, wstring shaderName, LPCSTR target)
 	}
 }
 
-void WE::CreateDepthBuffer(ID3D12Resource* depthBuffer, ID3D12DescriptorHeap** dsvHeap_)
+void WE::CreateDepthBuffer(ID3D12Resource* depthBuffer, ID3D12DescriptorHeap* dsvHeap_)
 {
 	D3D12_RESOURCE_DESC depthResourceDesc =
 		CD3DX12_RESOURCE_DESC::Tex2D(
@@ -65,14 +65,9 @@ void WE::CreateDepthBuffer(ID3D12Resource* depthBuffer, ID3D12DescriptorHeap** d
 		&clearValue,
 		IID_PPV_ARGS(&depthBuffer));
 
-	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	dsvHeapDesc.NumDescriptors = 1;
-	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(dsvHeap_));
-
 	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(
-		depthBuffer, &dsvDesc, (*dsvHeap_)->GetCPUDescriptorHandleForHeapStart());
+		depthBuffer, &dsvDesc, dsvHeap_->GetCPUDescriptorHandleForHeapStart());
 }

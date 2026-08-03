@@ -38,7 +38,6 @@ void Framework::Finalize()
 	imGuiManager->Finalize();
 	constant->Finalize();
 	sceneManager->Finalize();
-	dxCommon->Finalize();
 	wAPI->Finalize();
 }
 

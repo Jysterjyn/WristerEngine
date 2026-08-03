@@ -43,7 +43,11 @@ namespace WristerEngine::_2D
 		SRVHandle srvHandle;
 
 		void CreateBuffers();
+		void CreateTextureBuffer();
+		void CreateDescriptorHeaps();
 		void CreateRTV();
+		// ウィンドウサイズ変更
+		void ChangeResolution();
 
 	public:
 		static PostEffect* Create(Type effectType = Type::None);

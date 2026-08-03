@@ -37,16 +37,6 @@ Vector2& Vector2::operator/=(float s)
 	return *this;
 }
 
-float& Vector2::operator[](size_t index)
-{
-	switch (index)
-	{
-	case (size_t)Axis::X: return x;
-	case (size_t)Axis::Y: return y;
-	default: assert(0); return x;
-	}
-}
-
 const Vector2 operator+(const Vector2& v1, const Vector2& v2)
 {
 	Vector2 temp(v1);
@@ -71,6 +61,46 @@ const Vector2 operator/(const Vector2& v, float s)
 {
 	Vector2 temp(v);
 	return temp /= s;
+}
+
+bool Vector2::operator<=(const Vector2& vec) const
+{
+	if (x <= vec.x && y <= vec.y) { return true; }
+	return false;
+}
+
+bool Vector2::operator>=(const Vector2& vec) const
+{
+	if (x >= vec.x && y >= vec.y) { return true; }
+	return false;
+}
+
+bool Vector2::operator<(const Vector2& vec) const
+{
+	if (x < vec.x && y < vec.y) { return true; }
+	return false;
+}
+
+bool Vector2::operator>(const Vector2& vec) const
+{
+	if (x > vec.x && y > vec.y) { return true; }
+	return false;
+}
+
+bool Vector2::operator==(const Vector2& vec) const
+{
+	if (x == vec.x && y == vec.y) { return true; }
+	return false;
+}
+
+float& Vector2::operator[](size_t index)
+{
+	switch (index)
+	{
+	case (size_t)Axis::X: return x;
+	case (size_t)Axis::Y: return y;
+	default: assert(0); return y;
+	}
 }
 
 Vector3 Vector3::Normalize()
@@ -130,31 +160,31 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
-bool Vector3::operator<=(Vector3 vec) const
+bool Vector3::operator<=(const Vector3& vec) const
 {
 	if (x <= vec.x && y <= vec.y && z <= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>=(Vector3 vec) const
+bool Vector3::operator>=(const Vector3& vec) const
 {
 	if (x >= vec.x && y >= vec.y && z >= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator<(Vector3 vec) const
+bool Vector3::operator<(const Vector3& vec) const
 {
 	if (x < vec.x && y < vec.y && z < vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>(Vector3 vec) const
+bool Vector3::operator>(const Vector3& vec) const
 {
 	if (x > vec.x && y > vec.y && z > vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator==(Vector3 vec) const
+bool Vector3::operator==(const Vector3& vec) const
 {
 	if (x == vec.x && y == vec.y && z == vec.z) { return true; }
 	return false;
@@ -169,17 +199,6 @@ float& Vector3::operator[](size_t index)
 	case (size_t)Axis::Z: return z;
 	default: assert(0); return z;
 	}
-}
-
-Vector3 Vector3::MakeAxis(Axis axis)
-{
-	switch (axis)
-	{
-	case Axis::X: return { 1,0,0 };
-	case Axis::Y: return { 0,1,0 };
-	case Axis::Z: return { 0,0,1 };
-	}
-	return { 0,0,0 };
 }
 
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)
@@ -244,7 +263,7 @@ std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)
 		assert(up->Length() != 0);
 		upVec = Normalize(*up); 
 	}
-	else { upVec = Vector3::MakeAxis(Axis::Y); }
+	else { upVec = AXIS_Y_3D; }
 
 	std::array<Vector3, 3> axis;
 	axis[(int)Axis::Z] = Normalize(forward);
@@ -255,16 +274,16 @@ std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)
 
 Vector2 RandomVector(Vector2 range)
 {
-	WristerEngine::Random_Float randPosX(-range.x, range.x);
-	WristerEngine::Random_Float randPosY(-range.y, range.y);
+	WE::Random_Float randPosX(-range.x, range.x);
+	WE::Random_Float randPosY(-range.y, range.y);
 	return Vector2(randPosX(), randPosY());
 }
 
 Vector3 RandomVector(Vector3 range)
 {
-	WristerEngine::Random_Float randPosX(-range.x, range.x);
-	WristerEngine::Random_Float randPosY(-range.y, range.y);
-	WristerEngine::Random_Float randPosZ(-range.z, range.z);
+	WE::Random_Float randPosX(-range.x, range.x);
+	WE::Random_Float randPosY(-range.y, range.y);
+	WE::Random_Float randPosZ(-range.z, range.z);
 	return Vector3(randPosX(), randPosY(), randPosZ());
 }
 
