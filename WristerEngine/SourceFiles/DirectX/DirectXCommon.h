@@ -53,6 +53,7 @@ namespace WristerEngine
 		D3D12_VIEWPORT viewport{};
 		D3D12_RECT scissorRect{};
 		FPS* fixFPS = FPS::GetInstance();
+		bool isChanedResolution = false;
 
 		DirectXCommon() = default;
 		~DirectXCommon() = default;
@@ -71,6 +72,7 @@ namespace WristerEngine
 		void CreateRenderTargetView();
 		// シェーダーリソースビューの生成
 		void CreateShaderResourceView();
+		D3D12_SHADER_RESOURCE_VIEW_DESC CreateSRVDesc(const D3D12_RESOURCE_DESC* texResDesc);
 		// フェンスの生成
 		void CreateFence();
 		// GPU待機
@@ -81,8 +83,6 @@ namespace WristerEngine
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
-
-		void Finalize();
 		// 描画前処理
 		void PreDraw();
 		// ポストエフェクトクラス内で使う共通処理部分
@@ -116,6 +116,7 @@ namespace WristerEngine
 		Matrix4 GetViewportMatrix() const;
 		ID3D12DescriptorHeap* GetSRV() const { return srvHeap.Get(); }
 		SRVHandle GetNextSRVHandle() const;
+		bool IsChangedResolution() const { return isChanedResolution; }
 	};
 
 	struct DXCommonGetter

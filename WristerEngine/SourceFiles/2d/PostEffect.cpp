@@ -48,23 +48,20 @@ void PostEffect::CreateTextureBuffer()
 	float clearColor[4] = { 0,0,0,1 };
 	CD3DX12_CLEAR_VALUE clearValue(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
+	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
+
 	Result result;
 	result = device->CreateCommittedResource(
-		new CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
-		D3D12_HEAP_FLAG_NONE,
+		&heapProp, D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-		&clearValue,
-		IID_PPV_ARGS(&texBuff));
+		&clearValue, IID_PPV_ARGS(&texBuff));
 
 	const UINT PIXEL_COUNT = (UINT)WIN_SIZE.x * (UINT)WIN_SIZE.y;
 	const UINT ROW_PITCH = sizeof(UINT) * (UINT)WIN_SIZE.x;
 	const UINT DEPTH_PITCH = ROW_PITCH * (UINT)WIN_SIZE.y;
-	UINT* img = new UINT[PIXEL_COUNT];
-	for (size_t i = 0; i < PIXEL_COUNT; i++) { img[i] = 0xff0000ff; }
-
-	result = texBuff->WriteToSubresource(0, nullptr, img, ROW_PITCH, DEPTH_PITCH);
-	delete[] img;
+	std::vector<UINT> img(PIXEL_COUNT, 0xff0000ff);
+	result = texBuff->WriteToSubresource(0, nullptr, img.data(), ROW_PITCH, DEPTH_PITCH);
 }
 
 void PostEffect::CreateDescriptorHeaps()
@@ -91,11 +88,8 @@ void PostEffect::CreateRTV()
 
 void PostEffect::ChangeResolution()
 {
-	UINT64 width = texBuff->GetDesc().Width;
-	UINT64 height = texBuff->GetDesc().Height;
-
 	// ウィンドウサイズが変化していない場合は処理を抜ける
-	if ((UINT64)WIN_SIZE.x == width && (UINT64)WIN_SIZE.y == height) { return; }
+	if (!dxCommon->IsChangedResolution()) { return; }
 
 	// ウィンドウサイズ変更
 	texBuff.Reset();
@@ -103,7 +97,7 @@ void PostEffect::ChangeResolution()
 	CreateTextureBuffer();
 	CreateRTV();
 	dxCommon->OverwriteSRV(texBuff.Get(), srvHandle.cpu);
-	CreateDepthBuffer(depthBuff.Get(), dsvHeap.Get());
+	CreateDepthBuffer(&depthBuff, dsvHeap.Get());
 }
 #pragma endregion
 
@@ -114,7 +108,7 @@ PostEffect* PostEffect::Create(Type effectType)
 	postEffect->CreateDescriptorHeaps();
 	postEffect->CreateRTV();
 	postEffect->srvHandle = dxCommon->CreateSRV(postEffect->texBuff.Get());
-	CreateDepthBuffer(postEffect->depthBuff.Get(), postEffect->dsvHeap.Get());
+	CreateDepthBuffer(&postEffect->depthBuff, postEffect->dsvHeap.Get());
 	postEffect->SetEffectType(effectType);
 	postEffects.push_back(std::move(postEffect));
 	return postEffects.back().get();

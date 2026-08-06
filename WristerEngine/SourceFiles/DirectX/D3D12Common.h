@@ -46,5 +46,5 @@ namespace WristerEngine
 	// シェーダー読み込み
 	void LoadShader(ID3DBlob** shaderBlob, std::wstring shaderName, LPCSTR target);
 	// 深度バッファの生成
-	void CreateDepthBuffer(ID3D12Resource* depthBuffer, ID3D12DescriptorHeap* dsvHeap);
+	void CreateDepthBuffer(ID3D12Resource** depthBuffer, ID3D12DescriptorHeap* dsvHeap);
 }

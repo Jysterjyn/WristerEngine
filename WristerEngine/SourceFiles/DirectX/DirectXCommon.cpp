@@ -27,7 +27,7 @@ void DirectXCommon::Initialize()
 	CreateDescriptorHeaps();		// デスクリプタヒープの生成
 	CreateRenderTargetView();		// レンダーターゲットビューの生成
 	CreateShaderResourceView();		// シェーダーリソースビューの生成
-	CreateDepthBuffer(depthBuffer.Get(), dsvHeap.Get());	// 深度バッファの生成
+	CreateDepthBuffer(&depthBuffer, dsvHeap.Get());	// 深度バッファの生成
 	CreateFence();					// フェンスの生成
 
 	// DXCommonGetterにポインタ代入
@@ -187,6 +187,25 @@ void DirectXCommon::CreateShaderResourceView()
 	Result result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 }
 
+D3D12_SHADER_RESOURCE_VIEW_DESC DirectXCommon::CreateSRVDesc(const D3D12_RESOURCE_DESC* texResDesc)
+{
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	if (texResDesc)
+	{
+		srvDesc.Format = texResDesc->Format;
+		srvDesc.Texture2D.MipLevels = texResDesc->MipLevels;
+	}
+	else
+	{
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		srvDesc.Texture2D.MipLevels = 1;
+	}
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+
+	return srvDesc;
+}
+
 void DirectXCommon::CreateFence()
 {
 	Result result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
@@ -272,6 +291,8 @@ void DirectXCommon::PostDraw()
 	result = commandAllocator->Reset();
 	// 再びコマンドリストを貯める準備
 	result = commandList->Reset(commandAllocator.Get(), nullptr);
+	// 解像度変更フラグを下ろす
+	isChanedResolution = false;
 }
 
 SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE_DESC* texResDesc)
@@ -279,19 +300,7 @@ SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE
 	// テクスチャ枚数上限チェック
 	assert(srvIndex < MAX_SRV_COUNT);
 
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	if (texResDesc)
-	{
-		srvDesc.Format = texResDesc->Format;
-		srvDesc.Texture2D.MipLevels = texResDesc->MipLevels;
-	}
-	else
-	{
-		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		srvDesc.Texture2D.MipLevels = 1;
-	}
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = CreateSRVDesc(texResDesc);
 
 	SRVHandle srvHandle = GetNextSRVHandle();
 	device->CreateShaderResourceView(resBuff, &srvDesc, srvHandle.cpu);
@@ -301,20 +310,7 @@ SRVHandle DirectXCommon::CreateSRV(ID3D12Resource* resBuff, const D3D12_RESOURCE
 
 void DirectXCommon::OverwriteSRV(ID3D12Resource* resBuff, D3D12_CPU_DESCRIPTOR_HANDLE srvHandle, const D3D12_RESOURCE_DESC* texResDesc)
 {
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-	if (texResDesc)
-	{
-		srvDesc.Format = texResDesc->Format;
-		srvDesc.Texture2D.MipLevels = texResDesc->MipLevels;
-	}
-	else
-	{
-		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		srvDesc.Texture2D.MipLevels = 1;
-	}
-	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = CreateSRVDesc(texResDesc);
 	device->CreateShaderResourceView(resBuff, &srvDesc, srvHandle);
 }
 
@@ -347,11 +343,14 @@ void DirectXCommon::ChangeResolution(CR<Vector2> windowSize)
 	CreateRenderTargetView(); // RTV再生成
 
 	// 深度バッファ再生成
-	CreateDepthBuffer(depthBuffer.Get(), dsvHeap.Get());
+	CreateDepthBuffer(&depthBuffer, dsvHeap.Get());
 
 	// Viewport更新
 	SetViewport(WIN_SIZE);
 	scissorRect = { 0,0,(LONG)width,(LONG)height };
+
+	// 解像度変更フラグを立てる
+	isChanedResolution = true;
 }
 
 void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)

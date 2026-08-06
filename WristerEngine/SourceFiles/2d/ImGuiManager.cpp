@@ -14,9 +14,6 @@ ImGuiManager* ImGuiManager::GetInstance()
 
 void ImGuiManager::Initialize()
 {
-	// インスタンスの取得
-	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-
 	// ImGuiのコンテキストを生成
 	CreateContext();
 	// ImGuiのスタイルを設定
@@ -34,6 +31,7 @@ void ImGuiManager::Initialize()
 	dxCommon->IncrementSRVIndex();
 
 	ImGuiIO& io = GetIO();
+	io.Fonts->Fonts.size();
 	// 標準フォントを追加する
 	io.Fonts->AddFontDefault();
 }
@@ -50,7 +48,23 @@ void ImGuiManager::End() { Render(); }
 
 void ImGuiManager::Draw()
 {
-	ImGui_ImplDX12_RenderDrawData(GetDrawData(), DirectXCommon::GetInstance()->GetCommandList());
+	if (dxCommon->IsChangedResolution())
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.Fonts->Clear();
+
+		ImFontConfig config;
+		config.SizePixels = 24.0f;   // フォントサイズ
+
+		io.Fonts->AddFontDefault(&config);
+
+		// DX12バックエンドにフォントテクスチャを再生成させる
+		ImGui_ImplDX12_InvalidateDeviceObjects();
+		ImGui_ImplDX12_CreateDeviceObjects();
+	}
+
+	ImGui_ImplDX12_RenderDrawData(GetDrawData(), dxCommon->GetCommandList());
 }
 
 void ImGuiManager::Finalize()

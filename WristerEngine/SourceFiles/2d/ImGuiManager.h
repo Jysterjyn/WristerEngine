@@ -2,12 +2,15 @@
 #include <string>
 #include "Quaternion.h"
 #include "Color.h"
+#include <DirectXCommon.h>
 
 namespace WristerEngine
 {
 	// ImGUIの管理
 	class ImGuiManager final
 	{
+		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
+		
 		ImGuiManager() = default;
 		~ImGuiManager() = default;
 		ImGuiManager(const ImGuiManager&) = delete;

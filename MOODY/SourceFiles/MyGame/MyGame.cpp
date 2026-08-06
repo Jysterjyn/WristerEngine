@@ -44,6 +44,19 @@ void MyGame::Update()
 	}
 
 	ImGui::Text("FPS: %f", fps->GetFPS());
+	imGuiManager->PrintVector("Window Size", wAPI->GetScreenCursorPos());
+
+	RECT rc;
+	GetClientRect(wAPI->GetHwnd(), &rc);
+
+	ImGui::Text(
+		("Client = " +
+			std::to_string(rc.right - rc.left) +
+			" x " +
+			std::to_string(rc.bottom - rc.top)).c_str());
+
+	ImGui::Text("WIN_SIZE : %.0f x %.0f\n",
+		WE::WIN_SIZE.x, WE::WIN_SIZE.y);
 }
 
 void MyGame::Draw()

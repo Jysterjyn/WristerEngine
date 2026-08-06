@@ -28,11 +28,11 @@ void Input::Initialize()
 	// キーボード生成
 	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	// マウス生成
 	result = directInput->CreateDevice(GUID_SysMouse, &mouse, NULL);
 	result = mouse->SetDataFormat(&c_dfDIMouse2);
-	result = mouse->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = mouse->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 
 	// ゲームパッド生成
 	DeviceEnumParameter parameter{ &joysticks };
@@ -56,20 +56,20 @@ void Input::Initialize()
 	// どちらも見つけることが出来なかったら失敗
 	if (joysticks.empty()) { return; }
 
-	for (auto& j : joysticks)
+	for (auto& i : joysticks)
 	{
 		// デバイスが生成されてない
-		if (!j.device) { continue; }
+		if (!i.device) { continue; }
 
 		// 制御開始
 		DIDEVCAPS cap;
-		j.device->GetCapabilities(&cap);
+		i.device->GetCapabilities(&cap);
 		// ポーリング判定
 		if (cap.dwFlags & DIDC_POLLEDDATAFORMAT)
 		{
 			// ポーリング開始
-			j.device->Acquire();
-			j.device->Poll();
+			i.device->Acquire();
+			i.device->Poll();
 		}
 	}
 }
@@ -153,6 +153,28 @@ void Input::Joystick::Update()
 
 void Input::Update()
 {
+	if (IsTrigger(Key::Q))
+	{
+		Result result;
+		WindowsAPI* wAPI = WindowsAPI::GetInstance();
+
+		// キーボード生成
+		result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+		result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+		result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	}
+
+	if (IsTrigger(Key::E))
+	{
+		Result result;
+		WindowsAPI* wAPI = WindowsAPI::GetInstance();
+
+		// キーボード生成
+		result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+		result = keyboard->SetDataFormat(&c_dfDIKeyboard);
+		result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	}
+
 	keyboard->Acquire();
 	oldkey = key;
 	keyboard->GetDeviceState((DWORD)key.size(), (LPVOID)key.data());
