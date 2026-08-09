@@ -7,6 +7,7 @@
 using namespace std;
 using namespace WristerEngine;
 using namespace Microsoft::WRL;
+#include <imgui.h>
 
 ID3D12Device* DXCommonGetter::device = nullptr;
 DirectXCommon* DXCommonGetter::dxCommon = DirectXCommon::GetInstance();
@@ -215,11 +216,11 @@ void DirectXCommon::WaitForGPU()
 {
 	// コマンドの実行完了を待つ
 	commandQueue->Signal(fence.Get(), ++fenceVal);
-	
+
 	if (fence->GetCompletedValue() == fenceVal) { return; }
 	HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 	fence->SetEventOnCompletion(fenceVal, event);
-	
+
 	if (event == 0) { return; }
 	WaitForSingleObject(event, INFINITE);
 	CloseHandle(event);

@@ -2,9 +2,9 @@
 
 void GameSceneUIDrawer::Initialize()
 {
-	sprites["bg"] = spMan->Create({ "Background.png" });
-	sprites["bg"]->size = { 1280,720 };
-	sprites["bg"]->color = { 0.5f,0.5f,0.5f };
+	sprites["bg"] = spMan->Create({ "illust_66697251_20260725_195447.jpg" });
+	float scale = max(WE::WIN_SIZE.x / sprites["bg"]->size.x, WE::WIN_SIZE.y / sprites["bg"]->size.y);
+	sprites["bg"]->size *= scale;
 }
 
 void GameSceneUIDrawer::Update()

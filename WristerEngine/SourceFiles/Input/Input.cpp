@@ -4,6 +4,7 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 using namespace WristerEngine;
+#include <imgui.h>
 
 Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;
 
@@ -153,26 +154,22 @@ void Input::Joystick::Update()
 
 void Input::Update()
 {
-	if (IsTrigger(Key::Q))
+	// Windowsキーの有効・無効化の切り替え
+	if (IsTrigger(Key::Q)) { ChangeWindowsKeyMode(); }
+	if (isChangeWindowsKeyMode)
 	{
+		isChangeWindowsKeyMode = false;
 		Result result;
-		WindowsAPI* wAPI = WindowsAPI::GetInstance();
-
-		// キーボード生成
-		result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-		result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-		result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	}
-
-	if (IsTrigger(Key::E))
-	{
-		Result result;
-		WindowsAPI* wAPI = WindowsAPI::GetInstance();
-
-		// キーボード生成
-		result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-		result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-		result = keyboard->SetCooperativeLevel(wAPI->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+		HWND hwnd = WindowsAPI::GetInstance()->GetHwnd();
+		result = keyboard->Unacquire();
+		if (isWindowsKeyEnable)
+		{
+			result = keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+		}
+		else
+		{
+			result = keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		}
 	}
 
 	keyboard->Acquire();
@@ -182,6 +179,11 @@ void Input::Update()
 	mouse->Acquire();
 	mouseStatePre = mouseState;
 	mouse->GetDeviceState(sizeof(mouseState), &mouseState);
+
+	for (size_t i = 0; i < sizeof(mouseState.rgbButtons) / sizeof(mouseState.rgbButtons[0]); i++)
+	{
+		ImGui::Text("MouseState %d: %d", i, mouseState.rgbButtons[i]);
+	}
 
 	for (auto& j : joysticks) { j.Update(); }
 }
@@ -265,4 +267,10 @@ Vector2 Input::ConRStick(uint32_t stickNo, const float spd) const
 	if (vec.Length() < joysticks[stickNo].deadZoneR) { return {}; }
 
 	return Normalize(vec) * spd;
+}
+
+void Input::ChangeWindowsKeyMode()
+{
+	isWindowsKeyEnable = !isWindowsKeyEnable;
+	isChangeWindowsKeyMode = true;
 }

@@ -57,6 +57,14 @@ void MyGame::Update()
 
 	ImGui::Text("WIN_SIZE : %.0f x %.0f\n",
 		WE::WIN_SIZE.x, WE::WIN_SIZE.y);
+
+	ImGuiIO& io = ImGui::GetIO();
+
+	ImGui::Text(
+		"ImGui DisplaySize = %.0f x %.0f\n",
+		io.DisplaySize.x,
+		io.DisplaySize.y
+	);
 }
 
 void MyGame::Draw()

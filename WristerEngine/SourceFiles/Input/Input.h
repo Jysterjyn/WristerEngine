@@ -191,6 +191,8 @@ namespace WristerEngine
 		ComPtr<IDirectInputDevice8> mouse;
 		DIMOUSESTATE2 mouseState{}, mouseStatePre{};
 		std::vector<Joystick> joysticks;
+		bool isWindowsKeyEnable = true;
+		bool isChangeWindowsKeyMode = false;
 
 		Input() = default;
 		~Input() = default;
@@ -256,6 +258,9 @@ namespace WristerEngine
 		// 一定以上レバーを傾けたら移動する
 		Vector2 ConLStick(uint32_t stickNo, const float spd) const;
 		Vector2 ConRStick(uint32_t stickNo, const float spd) const;
+
+		// Windowsキーの有効・無効化の切り替え
+		void ChangeWindowsKeyMode();
 
 		// getter
 		MouseMove GetMouseMove() const { return MouseMove(mouseState.lX, mouseState.lY, mouseState.lZ); }
