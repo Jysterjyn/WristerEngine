@@ -127,13 +127,13 @@ namespace WristerEngine::_2D
 		CircleCollider() : BaseCollider2D() { shapeType = CollisionShapeType::Circle; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
-		const Vector2& GetCenterPosition() const { return center; }
+		CR<Vector2> GetCenterPosition() const { return center; }
 		// 半径を取得
 		float GetRadius() const { return radius; }
 		// 中心座標を設定
-		void SetCenterPosition(const Vector2& center_) { center = center_ + offset; }
+		void SetCenterPosition(CR<Vector2> center_) { center = center_ + offset; }
 		// オフセットを設定
-		void SetOffset(const Vector2& offset_) { offset = offset_; }
+		void SetOffset(CR<Vector2> offset_) { offset = offset_; }
 		// 半径を設定
 		void SetRadius(float radius_) { radius = radius_; }
 	};

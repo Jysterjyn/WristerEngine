@@ -91,7 +91,7 @@ void ImGuiManager::Finalize()
 	DestroyContext();
 }
 
-ImVec2 ImGuiManager::Vector2ToImVec2(const Vector2& vec)
+ImVec2 ImGuiManager::Vector2ToImVec2(CR<Vector2> vec)
 {
 	return ImVec2(vec.x, vec.y);
 }
@@ -101,7 +101,7 @@ Vector2	ImGuiManager::ImVec2ToVector2(const ImVec2& vec)
 	return Vector2(vec.x, vec.y);
 }
 
-void ImGuiManager::PrintVector(std::string str, const Vector2& vec)
+void ImGuiManager::PrintVector(std::string str, CR<Vector2> vec)
 {
 	str += " = (%.3f, %.3f)";
 	Text(str.c_str(), vec.x, vec.y);

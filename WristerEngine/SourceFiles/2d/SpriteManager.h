@@ -36,8 +36,8 @@ namespace WristerEngine::_2D
 
 		// スプライト生成
 		Sprite* Create(std::initializer_list<const std::string> fileNames,
-			const Vector2& pos = {}, const Vector2& anchorPoint = {},
-			const Vector2& textureSize = {}, const Vector2& textureLeftTop = {});
+			CR<Vector2> pos = {}, CR<Vector2> anchorPoint = {},
+			CR<Vector2> textureSize = {}, CR<Vector2> textureLeftTop = {});
 
 		void Update();
 

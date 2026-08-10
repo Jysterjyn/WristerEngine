@@ -59,7 +59,7 @@ namespace WristerEngine
 		void InWindowCursor() const;
 
 		// カーソルの位置を設定
-		void SetCursorPosition(const Vector2& pos) const { SetCursorPos((int32_t)pos.x, (int32_t)pos.y); }
+		void SetCursorPosition(CR<Vector2> pos) const { SetCursorPos((int32_t)pos.x, (int32_t)pos.y); }
 		// マウスカーソルの表示 / 非表示
 		void SetShowCursor(bool isShow) const { ShowCursor(isShow); }
 		// カーソルが画面外に出ないようにするフラグ

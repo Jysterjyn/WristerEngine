@@ -5,7 +5,7 @@
 using namespace WE;
 using namespace _2D;
 
-void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_)
+void Sprite::SetRect(CR<Vector2> textureSize_, CR<Vector2> textureLeftTop_)
 {
 	// 拡大比率を保ったまま切り取り領域を変更する
 	Vector2 sizeRate = { size.x / textureSize.x ,size.y / textureSize.y };
@@ -15,7 +15,7 @@ void Sprite::SetRect(const Vector2& textureSize_, const Vector2& textureLeftTop_
 	textureLeftTop = textureLeftTop_;
 }
 
-void Sprite::Split(const Vector2& spritNum)
+void Sprite::Split(CR<Vector2> spritNum)
 {
 	textureSize.x /= spritNum.x;
 	textureSize.y /= spritNum.y;

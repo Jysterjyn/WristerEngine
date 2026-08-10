@@ -2,6 +2,8 @@
 #include <cmath>
 #include <Random.h>
 
+using namespace WE;
+
 Vector2 Vector2::Normalize()
 {
 	float len = Length();
@@ -9,14 +11,14 @@ Vector2 Vector2::Normalize()
 	return *this;
 }
 
-Vector2& Vector2::operator+=(const Vector2& v)
+Vector2& Vector2::operator+=(CR<Vector2> v)
 {
 	x += v.x;
 	y += v.y;
 	return *this;
 }
 
-Vector2& Vector2::operator-=(const Vector2& v)
+Vector2& Vector2::operator-=(CR<Vector2> v)
 {
 	x -= v.x;
 	y -= v.y;
@@ -37,57 +39,57 @@ Vector2& Vector2::operator/=(float s)
 	return *this;
 }
 
-const Vector2 operator+(const Vector2& v1, const Vector2& v2)
+const Vector2 operator+(CR<Vector2> v1, CR<Vector2> v2)
 {
 	Vector2 temp(v1);
 	return temp += v2;
 }
 
-const Vector2 operator-(const Vector2& v1, const Vector2& v2)
+const Vector2 operator-(CR<Vector2> v1, CR<Vector2> v2)
 {
 	Vector2 temp(v1);
 	return temp -= v2;
 }
 
-const Vector2 operator*(const Vector2& v, float s)
+const Vector2 operator*(CR<Vector2> v, float s)
 {
 	Vector2 temp(v);
 	return temp *= s;
 }
 
-const Vector2 operator*(float s, const Vector2& v) { return v * s; }
+const Vector2 operator*(float s, CR<Vector2> v) { return v * s; }
 
-const Vector2 operator/(const Vector2& v, float s)
+const Vector2 operator/(CR<Vector2> v, float s)
 {
 	Vector2 temp(v);
 	return temp /= s;
 }
 
-bool Vector2::operator<=(const Vector2& vec) const
+bool Vector2::operator<=(CR<Vector2> vec) const
 {
 	if (x <= vec.x && y <= vec.y) { return true; }
 	return false;
 }
 
-bool Vector2::operator>=(const Vector2& vec) const
+bool Vector2::operator>=(CR<Vector2> vec) const
 {
 	if (x >= vec.x && y >= vec.y) { return true; }
 	return false;
 }
 
-bool Vector2::operator<(const Vector2& vec) const
+bool Vector2::operator<(CR<Vector2> vec) const
 {
 	if (x < vec.x && y < vec.y) { return true; }
 	return false;
 }
 
-bool Vector2::operator>(const Vector2& vec) const
+bool Vector2::operator>(CR<Vector2> vec) const
 {
 	if (x > vec.x && y > vec.y) { return true; }
 	return false;
 }
 
-bool Vector2::operator==(const Vector2& vec) const
+bool Vector2::operator==(CR<Vector2> vec) const
 {
 	if (x == vec.x && y == vec.y) { return true; }
 	return false;
@@ -227,11 +229,11 @@ const Vector3 operator/(const Vector3& v, float s)
 	return temp /= s;
 }
 
-float Dot(const Vector2& v1, const Vector2& v2) { return v1.x * v2.x + v1.y * v2.y; }
+float Dot(CR<Vector2> v1, CR<Vector2> v2) { return v1.x * v2.x + v1.y * v2.y; }
 
 float Dot(const Vector3& v1, const Vector3& v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
 
-float Cross(const Vector2& v1, const Vector2& v2) { return v1.x * v2.y - v1.y * v2.x; }
+float Cross(CR<Vector2> v1, CR<Vector2> v2) { return v1.x * v2.y - v1.y * v2.x; }
 
 Vector3 Cross(const Vector3& v1, const Vector3& v2)
 {
@@ -249,7 +251,7 @@ Vector3 Cross(const Vector3& v1, const Vector3& v2)
 
 float Length(const Vector3& v) { return Vector3(v).Length(); }
 
-Vector2 Normalize(const Vector2& v) { return Vector2(v).Normalize(); }
+Vector2 Normalize(CR<Vector2> v) { return Vector2(v).Normalize(); }
 
 Vector3 Normalize(const Vector3& v) { return Vector3(v).Normalize(); }
 
@@ -272,7 +274,7 @@ std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up)
 	return axis;
 }
 
-Vector2 RandomVector(Vector2 range)
+Vector2 RandomVector(WE::CR<Vector2> range)
 {
 	WE::Random_Float randPosX(-range.x, range.x);
 	WE::Random_Float randPosY(-range.y, range.y);

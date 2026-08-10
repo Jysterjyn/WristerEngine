@@ -104,13 +104,13 @@ namespace WristerEngine::_2D
 		/// </summary>
 		/// <param name="textureSize">切り取り領域のサイズ</param>
 		/// <param name="textureLeftTop">切り取り領域の左上座標</param>
-		void SetRect(const Vector2& textureSize, const Vector2& textureLeftTop = {});
+		void SetRect(CR<Vector2> textureSize, CR<Vector2> textureLeftTop = {});
 
 		/// <summary>
 		/// テクスチャ分割
 		/// </summary>
 		/// <param name="spritNum">分割数</param>
-		void Split(const Vector2& spritNum);
+		void Split(CR<Vector2> spritNum);
 
 		void SetTextureIndex(UINT16 texIndex);
 	};

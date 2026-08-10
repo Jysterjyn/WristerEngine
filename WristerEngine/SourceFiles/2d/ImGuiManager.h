@@ -30,11 +30,11 @@ namespace WristerEngine
 		// 終了処理
 		void Finalize();
 		// Vector2をImVec2に変換
-		ImVec2 Vector2ToImVec2(const Vector2& vec);
+		ImVec2 Vector2ToImVec2(CR<Vector2> vec);
 		// ImVec2をVector2に変換
 		Vector2 ImVec2ToVector2(const ImVec2& vec);
 		// ベクトル値の描画
-		void PrintVector(std::string str, const Vector2& vec);
+		void PrintVector(std::string str, CR<Vector2> vec);
 		void PrintVector(std::string str, const Vector3& vec);
 		// クォータニオンの描画
 		void PrintQuaternion(std::string str, const Quaternion& q);
