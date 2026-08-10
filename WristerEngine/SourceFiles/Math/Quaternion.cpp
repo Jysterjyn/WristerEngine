@@ -57,13 +57,13 @@ Quaternion Inverse(const Quaternion& q)
 	return ans;
 }
 
-Quaternion MakeAxisAngle(const Vector3& axis, float angle)
+Quaternion MakeAxisAngle(WE::CR<Vector3> axis, float angle)
 {
 	Vector3 nAxis = Normalize(axis);
 	return Quaternion(cosf(angle / 2.0f), nAxis * sinf(angle / 2.0f));
 }
 
-Vector3 RotateVector(const Vector3& v, const Quaternion& q)
+Vector3 RotateVector(WE::CR<Vector3> v, const Quaternion& q)
 {
 	Quaternion r = { 0,v };
 	return Quaternion(q * r * Conjugate(q)).GetImaginary();
@@ -122,7 +122,7 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	return scale0 * q0temp + scale1 * q1;
 }
 
-Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t)
+Vector3 Slerp(WE::CR<Vector3> v0, WE::CR<Vector3> v1, float t)
 {
 	Vector3 v0temp = Normalize(v0);
 	Vector3 v1temp = Normalize(v1);
@@ -142,7 +142,7 @@ Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t)
 	return length * (scale0 * v0temp + scale1 * v1temp);
 }
 
-Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
+Quaternion DirectionToDirection(WE::CR<Vector3> u, WE::CR<Vector3> v)
 {
 	float dot = Dot(u, v);
 	Vector3 axis = Normalize(Cross(u, v));

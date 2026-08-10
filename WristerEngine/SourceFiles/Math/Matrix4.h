@@ -25,7 +25,7 @@ public:
 	// ゼロ行列
 	static Matrix4 Zero();
 	// スケール行列
-	static Matrix4 Scale(const Vector3& s);
+	static Matrix4 Scale(WE::CR<Vector3> s);
 	// X軸周りの回転行列
 	static Matrix4 RotateX(float angle);
 	// Y軸周りの回転行列
@@ -33,9 +33,9 @@ public:
 	// Z軸周りの回転行列
 	static Matrix4 RotateZ(float angle);
 	// 回転行列
-	static Matrix4 Rotate(const Vector3& r);
+	static Matrix4 Rotate(WE::CR<Vector3> r);
 	// 平行移動行列
-	static Matrix4 Translate(const Vector3& t);
+	static Matrix4 Translate(WE::CR<Vector3> t);
 };
 
 // 転置行列
@@ -43,7 +43,7 @@ Matrix4 Transpose(const Matrix4& mat);
 // 逆行列
 Matrix4 Inverse(const Matrix4& mat);
 // 3Dベクトルから行列を作る
-Matrix4 CreateFromVector(const Vector3& vec1 = { 1,0,0 }, const Vector3& vec2 = { 0,1,0 }, const Vector3& vec3 = { 0,0,1 }, const Vector3& vec4 = {});
+Matrix4 CreateFromVector(WE::CR<Vector3> vec1 = { 1,0,0 }, WE::CR<Vector3> vec2 = { 0,1,0 }, WE::CR<Vector3> vec3 = { 0,0,1 }, WE::CR<Vector3> vec4 = {});
 
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
-Vector3 operator*(const Vector3& v, const Matrix4& m);
+Vector3 operator*(WE::CR<Vector3> v, const Matrix4& m);

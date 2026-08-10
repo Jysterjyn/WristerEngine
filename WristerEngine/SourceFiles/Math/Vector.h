@@ -59,18 +59,18 @@ public:
 	Vector3 operator-() const { return Vector3(-x, -y, -z); }
 
 	// 代入演算子オーバーロード
-	Vector3& operator+=(const Vector3& v);
-	Vector3& operator-=(const Vector3& v);
+	Vector3& operator+=(WE::CR<Vector3> v);
+	Vector3& operator-=(WE::CR<Vector3> v);
 	Vector3& operator*=(float s);
 	Vector3& operator*=(const Matrix4& m);
 	Vector3& operator/=(float s);
 
 	// 比較演算子オーバーロード
-	bool operator<=(const Vector3& v) const;
-	bool operator>=(const Vector3& v) const;
-	bool operator<(const Vector3& v) const;
-	bool operator>(const Vector3& v) const;
-	bool operator==(const Vector3& v) const;
+	bool operator<=(WE::CR<Vector3> v) const;
+	bool operator>=(WE::CR<Vector3> v) const;
+	bool operator<(WE::CR<Vector3> v) const;
+	bool operator>(WE::CR<Vector3> v) const;
+	bool operator==(WE::CR<Vector3> v) const;
 
 	// 配列として扱える
 	float& operator[](size_t index);
@@ -91,31 +91,31 @@ const Vector2 operator-(WE::CR<Vector2> v1, WE::CR<Vector2> v2);
 const Vector2 operator*(WE::CR<Vector2> v, float s);
 const Vector2 operator*(float s, WE::CR<Vector2> v);
 const Vector2 operator/(WE::CR<Vector2> v, float s);
-const Vector3 operator+(const Vector3& v1, const Vector3& v2);
-const Vector3 operator-(const Vector3& v1, const Vector3& v2);
-const Vector3 operator*(const Vector3& v, float s);
-const Vector3 operator*(float s, const Vector3& v);
-const Vector3 operator/(const Vector3& v, float s);
+const Vector3 operator+(WE::CR<Vector3> v1, WE::CR<Vector3> v2);
+const Vector3 operator-(WE::CR<Vector3> v1, WE::CR<Vector3> v2);
+const Vector3 operator*(WE::CR<Vector3> v, float s);
+const Vector3 operator*(float s, WE::CR<Vector3> v);
+const Vector3 operator/(WE::CR<Vector3> v, float s);
 
 // 内積値
 float Dot(WE::CR<Vector2> v1, WE::CR<Vector2> v2);
-float Dot(const Vector3& v1, const Vector3& v2);
+float Dot(WE::CR<Vector3> v1, WE::CR<Vector3> v2);
 // 外積値
 float Cross(WE::CR<Vector2> v1, WE::CR<Vector2> v2);
-Vector3 Cross(const Vector3& v1, const Vector3& v2);
+Vector3 Cross(WE::CR<Vector3> v1, WE::CR<Vector3> v2);
 // メンバ関数のグローバル関数版
 // ノルム(長さ)
-float Length(const Vector3& v);
+float Length(WE::CR<Vector3> v);
 // 正規化
 Vector2 Normalize(WE::CR<Vector2> v);
-Vector3 Normalize(const Vector3& v);
+Vector3 Normalize(WE::CR<Vector3> v);
 
 // forwardを正面ベクトルとする3軸を計算する
-std::array<Vector3, 3> CalculateAxis(const Vector3& forward, const Vector3* up = nullptr);
+std::array<Vector3, 3> CalculateAxis(WE::CR<Vector3> forward, const Vector3* up = nullptr);
 
 // 範囲内のランダムな大きさのベクトルを生成する
 Vector2 RandomVector(WE::CR<Vector2> range);
-Vector3 RandomVector(Vector3 range);
+Vector3 RandomVector(WE::CR<Vector3> range);
 
 // 線形補間
 template <class T>

@@ -35,7 +35,7 @@ namespace WristerEngine
 		Vector2 ImVec2ToVector2(const ImVec2& vec);
 		// ベクトル値の描画
 		void PrintVector(std::string str, CR<Vector2> vec);
-		void PrintVector(std::string str, const Vector3& vec);
+		void PrintVector(std::string str, WE::CR<Vector3> vec);
 		// クォータニオンの描画
 		void PrintQuaternion(std::string str, const Quaternion& q);
 		// ベクトル値のスライダー変更

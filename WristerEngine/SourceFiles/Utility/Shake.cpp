@@ -11,7 +11,7 @@ std::unique_ptr<Shake> Shake::Create(const Prop& shakeProp)
 	return instance;
 }
 
-void Shake::SetShakeRange(const Vector3& shakeRange_)
+void Shake::SetShakeRange(WE::CR<Vector3> shakeRange_)
 {
 	// 乱数の生成
 	rand[Axis::X] = Random_Float(-shakeRange_.x, shakeRange_.x);

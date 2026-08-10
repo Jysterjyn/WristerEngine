@@ -55,7 +55,7 @@ Matrix4 Matrix4::Zero()
 	return result;
 }
 
-Matrix4 Matrix4::Scale(const Vector3& s)
+Matrix4 Matrix4::Scale(WE::CR<Vector3> s)
 {
 	Matrix4 result
 	{
@@ -116,12 +116,12 @@ Matrix4 Matrix4::RotateZ(float angle)
 	return result;
 }
 
-Matrix4 Matrix4::Rotate(const Vector3& r)
+Matrix4 Matrix4::Rotate(WE::CR<Vector3> r)
 {
 	return RotateZ(r.z) * RotateX(r.x) * RotateY(r.y);
 }
 
-Matrix4 Matrix4::Translate(const Vector3& t)
+Matrix4 Matrix4::Translate(WE::CR<Vector3> t)
 {
 	Matrix4 result
 	{
@@ -225,7 +225,7 @@ void Matrix4::Inverse()
 	}
 }
 
-Matrix4 CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3& vec3, const Vector3& vec4)
+Matrix4 CreateFromVector(WE::CR<Vector3> vec1, WE::CR<Vector3> vec2, WE::CR<Vector3> vec3, WE::CR<Vector3> vec4)
 {
 	Matrix4 result
 	{
@@ -238,7 +238,7 @@ Matrix4 CreateFromVector(const Vector3& vec1, const Vector3& vec2, const Vector3
 	return result;
 }
 
-Vector3 operator*(const Vector3& v, const Matrix4& m)
+Vector3 operator*(WE::CR<Vector3> v, const Matrix4& m)
 {
 	float w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + m.m[3][3];
 

@@ -33,7 +33,7 @@ namespace WristerEngine::_3D
 		/// シェイクの範囲を再設定
 		/// </summary>
 		/// <param name="shakeRange_">シェイクの範囲</param>
-		void SetShakeRange(const Vector3& shakeRange_);
+		void SetShakeRange(WE::CR<Vector3> shakeRange_);
 
 		// シェイク開始
 		void Start();

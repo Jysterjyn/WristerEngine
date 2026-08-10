@@ -107,7 +107,7 @@ void ImGuiManager::PrintVector(std::string str, CR<Vector2> vec)
 	Text(str.c_str(), vec.x, vec.y);
 }
 
-void ImGuiManager::PrintVector(std::string str, const Vector3& vec)
+void ImGuiManager::PrintVector(std::string str, WE::CR<Vector3> vec)
 {
 	str += " = (%.3f, %.3f, %.3f)";
 	Text(str.c_str(), vec.x, vec.y, vec.z);

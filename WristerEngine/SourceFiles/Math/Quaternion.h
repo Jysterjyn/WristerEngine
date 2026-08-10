@@ -41,9 +41,9 @@ Quaternion Normalize(const Quaternion& q);
 // 逆Quaternionにする
 Quaternion Inverse(const Quaternion& q);
 // 任意軸回転のQuaternion生成
-Quaternion MakeAxisAngle(const Vector3& axis, float angle);
+Quaternion MakeAxisAngle(WE::CR<Vector3> axis, float angle);
 // ベクトルをQuaternionで回転させる
-Vector3 RotateVector(const Vector3& v, const Quaternion& q);
+Vector3 RotateVector(WE::CR<Vector3> v, const Quaternion& q);
 // Quaternionから回転行列を求める
 Matrix4 MakeRotateMatrix(const Quaternion& q);
 // 内積を求める
@@ -56,7 +56,7 @@ Quaternion operator/(const Quaternion& q, float norm);
 
 // 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
-Vector3 Slerp(const Vector3& v0, const Vector3& v1, float t);
+Vector3 Slerp(WE::CR<Vector3> v0, WE::CR<Vector3> v1, float t);
 
 // uからvへの回転を生成(u,vは正規化されている前提)
-Quaternion DirectionToDirection(const Vector3& u, const Vector3& v);
+Quaternion DirectionToDirection(WE::CR<Vector3> u, WE::CR<Vector3> v);
