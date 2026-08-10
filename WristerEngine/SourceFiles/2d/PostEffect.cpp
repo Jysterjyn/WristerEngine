@@ -36,6 +36,7 @@ void PostEffect::CreateBuffers()
 	CreateBuffer(constBuff.GetAddressOf(),
 		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
+	constMap->brightness = 1.0f;
 	CreateTextureBuffer();
 }
 
@@ -132,7 +133,7 @@ void PostEffect::Draw()
 
 void PostEffect::PreDrawScene()
 {
-	ChangeResolution();
+	//ChangeResolution();
 
 	DirectXCommon::GetInstance()->PreDraw({ texBuff.Get(),
 		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0 });

@@ -2,12 +2,11 @@
 
 float4 main(VSOutput input) : SV_TARGET
 {
-    float4 texcolor = tex.Sample(smp, input.uv);
+    // UV‚¸‚ç‚µ
+    float4 texcolor = ChangeUV(input, uvOffset);
     
     // ‹P“x‚ğ•ÏX
     texcolor = ChangeBrightness(texcolor, brightness);
-    // UV‚¸‚ç‚µ
-    texcolor = ChangeUV(input, uvOffset);
     
     switch (effectType)
     {

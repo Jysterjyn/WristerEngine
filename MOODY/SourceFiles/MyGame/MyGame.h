@@ -9,6 +9,8 @@ class MyGame : public WE::Framework
 	WE::FPS* fps = WE::FPS::GetInstance();
 	WE::_2D::PostEffect* postEffect = nullptr;
 
+	void ImGuiTexts();
+
 	// 初期化(オーバーライド)
 	void Initialize();
 	// 更新(オーバーライド)

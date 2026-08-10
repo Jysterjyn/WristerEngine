@@ -24,11 +24,11 @@ namespace WristerEngine::_2D
 	private:
 		struct ConstBufferData
 		{
-			UINT32 effectType = 0;
-			float angle = 0;
-			float brightness = 1;
-			Vector2 uvOffset;
+			UINT32 effectType;
+			float angle;
+			float brightness;
 			float pad;
+			Vector2 uvOffset;
 			Vector2 spotlightCenterUV;
 		};
 
@@ -54,7 +54,9 @@ namespace WristerEngine::_2D
 		static PostEffect* GetPostEffect(size_t index) { return postEffects[index].get(); }
 		void SetEffectType(Type effectType) { constMap->effectType = (UINT32)effectType; }
 		void SetAngle(float angle) { constMap->angle = angle; }
-		void SetLightPos(Vector2 lightPos) { constMap->spotlightCenterUV = lightPos; }
+		void SetBrightness(float brightness) { constMap->brightness = brightness; }
+		void SetUVOffset(CR<Vector2> uvOffset) { constMap->uvOffset = uvOffset; }
+		void SetLightPos(CR<Vector2> lightPos) { constMap->spotlightCenterUV = lightPos; }
 		void Draw();
 		void PreDrawScene();
 		void PostDrawScene();

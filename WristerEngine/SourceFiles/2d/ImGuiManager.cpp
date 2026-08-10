@@ -40,6 +40,25 @@ void ImGuiManager::Begin()
 	// ImGuiフレーム開始
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
+
+	//ImGuiIO& io = GetIO();
+	//io.DisplaySize = ImVec2(
+	//	WIN_SIZE.x,
+	//	WIN_SIZE.y
+	//);
+
+	//RECT rc;
+	//WindowsAPI* wAPI = WindowsAPI::GetInstance();
+	//GetClientRect(wAPI->GetHwnd(), &rc);
+	//io.MousePos = Vector2ToImVec2(wAPI->GetScreenCursorPos());
+	////float scaleX = WIN_SIZE.x / (rc.right - rc.left);
+	////float scaleY = WIN_SIZE.y / (rc.bottom - rc.top);
+	//Vector2 rectSize = { (float)(rc.right - rc.left),(float)(rc.bottom - rc.top) };
+	//Vector2 offset = WIN_SIZE - rectSize;
+	//Vector2 mousePos = ImVec2ToVector2(io.MousePos);
+	////Vector2 cursorPos = wAPI->GetScreenCursorPos();
+	//io.MousePos = Vector2ToImVec2(mousePos + offset);
+
 	NewFrame();
 }
 
@@ -70,6 +89,16 @@ void ImGuiManager::Finalize()
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	DestroyContext();
+}
+
+ImVec2 ImGuiManager::Vector2ToImVec2(const Vector2& vec)
+{
+	return ImVec2(vec.x, vec.y);
+}
+
+Vector2	ImGuiManager::ImVec2ToVector2(const ImVec2& vec)
+{
+	return Vector2(vec.x, vec.y);
 }
 
 void ImGuiManager::PrintVector(std::string str, const Vector2& vec)

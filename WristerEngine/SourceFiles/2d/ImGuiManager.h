@@ -3,6 +3,7 @@
 #include "Quaternion.h"
 #include "Color.h"
 #include <DirectXCommon.h>
+#include <imgui.h>
 
 namespace WristerEngine
 {
@@ -28,6 +29,10 @@ namespace WristerEngine
 		void Draw();
 		// 終了処理
 		void Finalize();
+		// Vector2をImVec2に変換
+		ImVec2 Vector2ToImVec2(const Vector2& vec);
+		// ImVec2をVector2に変換
+		Vector2 ImVec2ToVector2(const ImVec2& vec);
 		// ベクトル値の描画
 		void PrintVector(std::string str, const Vector2& vec);
 		void PrintVector(std::string str, const Vector3& vec);
