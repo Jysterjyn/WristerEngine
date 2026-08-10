@@ -10,6 +10,7 @@ namespace WristerEngine
 {
 	enum class Key
 	{
+		Null = 0x00,
 		Escape = 0x01,
 		_1 = 0x02,
 		_2 = 0x03,

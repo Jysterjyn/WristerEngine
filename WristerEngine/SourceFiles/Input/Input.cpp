@@ -180,11 +180,6 @@ void Input::Update()
 	mouseStatePre = mouseState;
 	mouse->GetDeviceState(sizeof(mouseState), &mouseState);
 
-	for (size_t i = 0; i < sizeof(mouseState.rgbButtons) / sizeof(mouseState.rgbButtons[0]); i++)
-	{
-		ImGui::Text("MouseState %d: %d", i, mouseState.rgbButtons[i]);
-	}
-
 	for (auto& j : joysticks) { j.Update(); }
 }
 

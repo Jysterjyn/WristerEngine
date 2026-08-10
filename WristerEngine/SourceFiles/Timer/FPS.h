@@ -5,7 +5,7 @@
 
 namespace WristerEngine
 {
-	const float MAX_FPS = 10000;
+	const float MAX_FPS = 120;
 
 	// FPS関連処理
 	class FPS final
@@ -16,11 +16,9 @@ namespace WristerEngine
 		std::chrono::steady_clock::time_point reference;
 		float fps = 60;
 		// FPS測定のインターバル
-		RealTimer interval = 0.5f;
+		RealTimer interval = 0.25f;
 		// 1フレームの実行時間記録用配列
 		std::deque<float> frameTimes;
-		// 最初のフレームか
-		bool isFirstFrame = true;
 
 		FPS() = default;
 		~FPS() = default;

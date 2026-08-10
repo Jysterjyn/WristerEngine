@@ -33,12 +33,12 @@ namespace WristerEngine
 		virtual void Update();
 		// 描画
 		virtual void Draw() = 0;
-		// 終了チェック
-		virtual bool IsEndRequest() { return false; }
 		// 終了
 		virtual void Finalize();
 
 	public:
+		// 終了チェック
+		virtual bool IsEndRequest() { return false; }
 		virtual ~Framework() = default;
 		// 実行
 		void Run();

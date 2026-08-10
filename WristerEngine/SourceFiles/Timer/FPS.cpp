@@ -43,12 +43,6 @@ void FPS::Update()
 
 void WE::FPS::CalculateFPS()
 {
-	if (isFirstFrame)
-	{
-		isFirstFrame = false;
-		return;
-	}
-
 	frameTimes.push_back((float)GetElapsed().count());
 	// 60フレーム以上のデータが溜まったら古いデータを削除する
 	while (frameTimes.size() > 60) { frameTimes.pop_front(); }

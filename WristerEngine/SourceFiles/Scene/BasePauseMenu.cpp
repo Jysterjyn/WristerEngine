@@ -1,9 +1,5 @@
 ﻿#include "BasePauseMenu.h"
-using namespace WristerEngine;
-
-void BasePauseMenu::Update()
-{
-}
+using namespace WE;
 
 void BasePauseMenu::Draw()
 {

@@ -31,7 +31,6 @@ void ImGuiManager::Initialize()
 	dxCommon->IncrementSRVIndex();
 
 	ImGuiIO& io = GetIO();
-	io.Fonts->Fonts.size();
 	// 標準フォントを追加する
 	io.Fonts->AddFontDefault();
 }
@@ -50,8 +49,7 @@ void ImGuiManager::Draw()
 {
 	if (dxCommon->IsChangedResolution())
 	{
-		ImGuiIO& io = ImGui::GetIO();
-
+		ImGuiIO& io = GetIO();
 		io.Fonts->Clear();
 
 		ImFontConfig config;

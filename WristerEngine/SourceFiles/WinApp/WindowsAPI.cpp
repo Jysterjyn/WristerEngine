@@ -88,8 +88,7 @@ void WindowsAPI::Initialize(const std::wstring& windowName)
 	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
 	// COM初期化
-	HRESULT result;
-	result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	assert(SUCCEEDED(result));
 
 	// ウィンドウクラスの設定

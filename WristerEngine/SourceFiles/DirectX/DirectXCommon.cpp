@@ -286,7 +286,7 @@ void DirectXCommon::PostDraw()
 	result = swapchain->Present(0, 0);
 
 	WaitForGPU(); // GPU待機
-	fixFPS->Update(); // FPS固定
+	fixFPS->Update(); // FPS更新
 
 	// キューをクリア
 	result = commandAllocator->Reset();

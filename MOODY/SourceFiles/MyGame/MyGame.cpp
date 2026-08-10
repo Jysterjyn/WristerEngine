@@ -3,6 +3,7 @@
 #include <ImGuiManager.h>
 #include <imgui.h>
 
+
 void MyGame::Initialize()
 {
 	// フレームワーク初期化
@@ -43,27 +44,34 @@ void MyGame::Update()
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
 
+	ImGui::Button("Test");
+	//ImGui::SetNextWindowPos(ImVec2(960, 540));
+
 	ImGui::Text("FPS: %f", fps->GetFPS());
-	imGuiManager->PrintVector("Window Size", wAPI->GetScreenCursorPos());
+	imGuiManager->PrintVector("CursorPos", wAPI->GetScreenCursorPos());
 
 	RECT rc;
 	GetClientRect(wAPI->GetHwnd(), &rc);
 
-	ImGui::Text(
-		("Client = " +
-			std::to_string(rc.right - rc.left) +
-			" x " +
-			std::to_string(rc.bottom - rc.top)).c_str());
+	imGuiManager->PrintVector("WIN_SIZE", WE::WIN_SIZE);
 
-	ImGui::Text("WIN_SIZE : %.0f x %.0f\n",
-		WE::WIN_SIZE.x, WE::WIN_SIZE.y);
+	ImGui::Text(
+		"Client = %d x %d",
+		rc.right - rc.left,
+		rc.bottom - rc.top);
 
 	ImGuiIO& io = ImGui::GetIO();
 
 	ImGui::Text(
-		"ImGui DisplaySize = %.0f x %.0f\n",
+		"ImGui DisplaySize = %.0f x %.0f",
 		io.DisplaySize.x,
 		io.DisplaySize.y
+	);
+
+	ImGui::Text(
+		"ImGui MousePos = %.0f x %.0f",
+		io.MousePos.x,
+		io.MousePos.y
 	);
 }
 
@@ -77,7 +85,7 @@ void MyGame::Draw()
 
 	// 描画処理
 	dxCommon->PreDraw();
-	postEffect->Draw();
+	//postEffect->Draw();
 	imGuiManager->Draw();
 	dxCommon->PostDraw();
 }
