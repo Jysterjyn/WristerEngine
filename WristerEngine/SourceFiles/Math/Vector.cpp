@@ -123,7 +123,7 @@ Vector3 Vector3::abs()
 	return ans;
 }
 
-Vector3& Vector3::operator+=(WE::CR<Vector3> v)
+Vector3& Vector3::operator+=(CR<Vector3> v)
 {
 	x += v.x;
 	y += v.y;
@@ -131,7 +131,7 @@ Vector3& Vector3::operator+=(WE::CR<Vector3> v)
 	return *this;
 }
 
-Vector3& Vector3::operator-=(WE::CR<Vector3> v)
+Vector3& Vector3::operator-=(CR<Vector3> v)
 {
 	x -= v.x;
 	y -= v.y;
@@ -162,31 +162,31 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
-bool Vector3::operator<=(WE::CR<Vector3> vec) const
+bool Vector3::operator<=(CR<Vector3> vec) const
 {
 	if (x <= vec.x && y <= vec.y && z <= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>=(WE::CR<Vector3> vec) const
+bool Vector3::operator>=(CR<Vector3> vec) const
 {
 	if (x >= vec.x && y >= vec.y && z >= vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator<(WE::CR<Vector3> vec) const
+bool Vector3::operator<(CR<Vector3> vec) const
 {
 	if (x < vec.x && y < vec.y && z < vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator>(WE::CR<Vector3> vec) const
+bool Vector3::operator>(CR<Vector3> vec) const
 {
 	if (x > vec.x && y > vec.y && z > vec.z) { return true; }
 	return false;
 }
 
-bool Vector3::operator==(WE::CR<Vector3> vec) const
+bool Vector3::operator==(CR<Vector3> vec) const
 {
 	if (x == vec.x && y == vec.y && z == vec.z) { return true; }
 	return false;
@@ -203,27 +203,27 @@ float& Vector3::operator[](size_t index)
 	}
 }
 
-const Vector3 operator+(WE::CR<Vector3> v1, WE::CR<Vector3> v2)
+const Vector3 operator+(CR<Vector3> v1, CR<Vector3> v2)
 {
 	Vector3 temp(v1);
 	return temp += v2;
 }
 
-const Vector3 operator-(WE::CR<Vector3> v1, WE::CR<Vector3> v2)
+const Vector3 operator-(CR<Vector3> v1, CR<Vector3> v2)
 {
 	Vector3 temp(v1);
 	return temp -= v2;
 }
 
-const Vector3 operator*(WE::CR<Vector3> v, float s)
+const Vector3 operator*(CR<Vector3> v, float s)
 {
 	Vector3 temp(v);
 	return temp *= s;
 }
 
-const Vector3 operator*(float s, WE::CR<Vector3> v) { return v * s; }
+const Vector3 operator*(float s, CR<Vector3> v) { return v * s; }
 
-const Vector3 operator/(WE::CR<Vector3> v, float s)
+const Vector3 operator/(CR<Vector3> v, float s)
 {
 	Vector3 temp(v);
 	return temp /= s;
@@ -231,11 +231,11 @@ const Vector3 operator/(WE::CR<Vector3> v, float s)
 
 float Dot(CR<Vector2> v1, CR<Vector2> v2) { return v1.x * v2.x + v1.y * v2.y; }
 
-float Dot(WE::CR<Vector3> v1, WE::CR<Vector3> v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
+float Dot(CR<Vector3> v1, CR<Vector3> v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
 
 float Cross(CR<Vector2> v1, CR<Vector2> v2) { return v1.x * v2.y - v1.y * v2.x; }
 
-Vector3 Cross(WE::CR<Vector3> v1, WE::CR<Vector3> v2)
+Vector3 Cross(CR<Vector3> v1, CR<Vector3> v2)
 {
 	Vector3 temp;
 
@@ -249,13 +249,13 @@ Vector3 Cross(WE::CR<Vector3> v1, WE::CR<Vector3> v2)
 	return temp;
 }
 
-float Length(WE::CR<Vector3> v) { return Vector3(v).Length(); }
+float Length(CR<Vector3> v) { return Vector3(v).Length(); }
 
 Vector2 Normalize(CR<Vector2> v) { return Vector2(v).Normalize(); }
 
-Vector3 Normalize(WE::CR<Vector3> v) { return Vector3(v).Normalize(); }
+Vector3 Normalize(CR<Vector3> v) { return Vector3(v).Normalize(); }
 
-std::array<Vector3, 3> CalculateAxis(WE::CR<Vector3> forward, const Vector3* up)
+std::array<Vector3, 3> CalculateAxis(CR<Vector3> forward, const Vector3* up)
 {
 	assert(forward.Length() != 0);
 
@@ -274,18 +274,18 @@ std::array<Vector3, 3> CalculateAxis(WE::CR<Vector3> forward, const Vector3* up)
 	return axis;
 }
 
-Vector2 RandomVector(WE::CR<Vector2> range)
+Vector2 RandomVector(CR<Vector2> range)
 {
-	WE::Random_Float randPosX(-range.x, range.x);
-	WE::Random_Float randPosY(-range.y, range.y);
+	Random_Float randPosX(-range.x, range.x);
+	Random_Float randPosY(-range.y, range.y);
 	return Vector2(randPosX(), randPosY());
 }
 
-Vector3 RandomVector(WE::CR<Vector3> range)
+Vector3 RandomVector(CR<Vector3> range)
 {
-	WE::Random_Float randPosX(-range.x, range.x);
-	WE::Random_Float randPosY(-range.y, range.y);
-	WE::Random_Float randPosZ(-range.z, range.z);
+	Random_Float randPosX(-range.x, range.x);
+	Random_Float randPosY(-range.y, range.y);
+	Random_Float randPosZ(-range.z, range.z);
 	return Vector3(randPosX(), randPosY(), randPosZ());
 }
 
