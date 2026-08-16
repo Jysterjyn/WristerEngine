@@ -41,6 +41,11 @@ namespace WristerEngine
 		uint32_t serialNumber = 0;
 		int shapeType = 0;
 
+	public:
+		virtual ~BaseSingleCollider() = default;
+		virtual void Update() {}
+		void Destroy() { isDestroy = true; }
+		void Initialize(BaseCollider* owner, const ColliderInfo& info);
 	};
 
 	template <class T>
@@ -57,6 +62,8 @@ namespace WristerEngine
 		}
 
 		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
+	
+		virtual ~HitInfo() = default;
 	};
 
 	template <class T>

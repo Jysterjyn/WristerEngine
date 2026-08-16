@@ -31,8 +31,10 @@ void ImGuiManager::Initialize()
 	dxCommon->IncrementSRVIndex();
 
 	ImGuiIO& io = GetIO();
+	ImFontConfig config;
+	config.SizePixels = DEFAULT_FONT_SIZE;   // フォントサイズ
 	// 標準フォントを追加する
-	io.Fonts->AddFontDefault();
+	io.Fonts->AddFontDefault(&config);
 }
 
 void ImGuiManager::Begin()
@@ -40,25 +42,6 @@ void ImGuiManager::Begin()
 	// ImGuiフレーム開始
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
-
-	//ImGuiIO& io = GetIO();
-	//io.DisplaySize = ImVec2(
-	//	WIN_SIZE.x,
-	//	WIN_SIZE.y
-	//);
-
-	//RECT rc;
-	//WindowsAPI* wAPI = WindowsAPI::GetInstance();
-	//GetClientRect(wAPI->GetHwnd(), &rc);
-	//io.MousePos = Vector2ToImVec2(wAPI->GetScreenCursorPos());
-	////float scaleX = WIN_SIZE.x / (rc.right - rc.left);
-	////float scaleY = WIN_SIZE.y / (rc.bottom - rc.top);
-	//Vector2 rectSize = { (float)(rc.right - rc.left),(float)(rc.bottom - rc.top) };
-	//Vector2 offset = WIN_SIZE - rectSize;
-	//Vector2 mousePos = ImVec2ToVector2(io.MousePos);
-	////Vector2 cursorPos = wAPI->GetScreenCursorPos();
-	//io.MousePos = Vector2ToImVec2(mousePos + offset);
-
 	NewFrame();
 }
 
@@ -66,20 +49,22 @@ void ImGuiManager::End() { Render(); }
 
 void ImGuiManager::Draw()
 {
-	if (dxCommon->IsChangedResolution())
-	{
-		ImGuiIO& io = GetIO();
-		io.Fonts->Clear();
+	//if (dxCommon->IsChangedResolution())
+	//{
+	//	ImGuiIO& io = GetIO();
+	//	io.Fonts->Clear();
 
-		ImFontConfig config;
-		config.SizePixels = 24.0f;   // フォントサイズ
+	//	// ウィンドウサイズに応じてフォントサイズを変更する
+	//	float newFontSize = DEFAULT_FONT_SIZE * (WIN_SIZE.x / DEFAULT_WIN_SIZE.x);
+	//	ImFontConfig config;
+	//	config.SizePixels = newFontSize;   // フォントサイズ
 
-		io.Fonts->AddFontDefault(&config);
+	//	io.Fonts->AddFontDefault(&config);
 
-		// DX12バックエンドにフォントテクスチャを再生成させる
-		ImGui_ImplDX12_InvalidateDeviceObjects();
-		ImGui_ImplDX12_CreateDeviceObjects();
-	}
+	//	// DX12バックエンドにフォントテクスチャを再生成させる
+	//	ImGui_ImplDX12_InvalidateDeviceObjects();
+	//	ImGui_ImplDX12_CreateDeviceObjects();
+	//}
 
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), dxCommon->GetCommandList());
 }

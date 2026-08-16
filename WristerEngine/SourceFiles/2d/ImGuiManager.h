@@ -10,6 +10,7 @@ namespace WristerEngine
 	// ImGUIの管理
 	class ImGuiManager final
 	{
+		const float DEFAULT_FONT_SIZE = 24.0f; // デフォルトフォントサイズ
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		
 		ImGuiManager() = default;

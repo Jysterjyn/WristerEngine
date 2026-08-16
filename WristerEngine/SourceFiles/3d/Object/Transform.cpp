@@ -39,10 +39,6 @@ Vector3 _3D::Transform::GetScale() const
 	return scale_;
 }
 
-void _2D::Transform::Initialize()
-{
-}
-
 void _2D::Transform::Update()
 {
 	// 親ポインタの更新
@@ -54,10 +50,6 @@ void _2D::Transform::Update()
 	matWorld = matScale * matRot;
 	matWorld.SetVector(position, 3); // 平行移動成分を代入
 	if (parent) { matWorld *= parent->matWorld; } // 親のワールド行列を掛ける
-}
-
-void _2D::Transform::Draw()
-{
 }
 
 Vector2 _2D::Transform::GetScale() const

@@ -44,7 +44,7 @@ void MyGame::Update()
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
 
-	ImGuiTexts();
+	//ImGuiTexts();
 }
 
 void MyGame::ImGuiTexts()
