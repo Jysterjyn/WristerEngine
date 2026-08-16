@@ -2,19 +2,9 @@
 SamplerState smp : register(s0);
 Texture2D<float4> tex : register(t0);
 
-float4 ChangeBrightness(float4 col, float brightness)
-{
-    return float4(col.rgb * brightness, 1);
-}
-
 float4 ColorFlip(float4 col)
 {
     return float4(float3(1, 1, 1) - col.rgb, 1);
-}
-
-float4 ChangeUV(VSOutput i, float2 uvOffset)
-{
-    return float4(tex.Sample(smp, i.uv + uvOffset).rgb, 1);
 }
 
 float Gaussian(float2 drawUV, float2 pickUV, float sigma)
@@ -127,10 +117,38 @@ float4 Dark(VSOutput i)
 {
     float4 texcolor = tex.Sample(smp, i.uv);
     
-    if (pow(i.uv.x - spotlightCenterUV.x, 2) * 1280 / 720 + 
+    if (pow(i.uv.x - spotlightCenterUV.x, 2) * 1280 / 720 +
         pow(i.uv.y - spotlightCenterUV.y, 2) / 1280 * 720 >= 0.05)
     {
         return float4(0, 0, 0, 0);
     }
     return texcolor;
+}
+
+float4 Sharpen(VSOutput input)
+{
+    // 入力テクスチャのサイズ
+    float2 texel = 1.0 / float2(1920.0, 1080.0);
+
+    float4 center = tex.Sample(smp, input.uv);
+
+    float4 left = tex.Sample(smp, input.uv + float2(-texel.x, 0.0));
+    float4 right = tex.Sample(smp, input.uv + float2(texel.x, 0.0));
+    float4 up = tex.Sample(smp, input.uv + float2(0.0, -texel.y));
+    float4 down = tex.Sample(smp, input.uv + float2(0.0, texel.y));
+
+    float4 upperLeft = tex.Sample(smp, input.uv + float2(-texel.x, -texel.y));
+    float4 upperRight = tex.Sample(smp, input.uv + float2(texel.x, -texel.y));
+    float4 lowerLeft = tex.Sample(smp, input.uv + float2(-texel.x, texel.y));
+    float4 lowerRight = tex.Sample(smp, input.uv + float2(texel.x, texel.y));
+
+    // 周辺8ピクセルの平均
+    float4 average =
+        (left + right + up + down +
+         upperLeft + upperRight + lowerLeft + lowerRight) / 8.0;
+
+    // Sharpen強度
+    float strength = 1.0;
+
+    return center + (center - average) * strength;
 }

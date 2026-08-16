@@ -2,11 +2,10 @@
 
 float4 main(VSOutput input) : SV_TARGET
 {
-    // UVずらし
-    float4 texcolor = ChangeUV(input, uvOffset);
+    // UV・輝度の調整
+    float4 texcolor = float4(tex.Sample(smp, input.uv + uvOffset).rgb * brightness, 1);
     
-    // 輝度を変更
-    texcolor = ChangeBrightness(texcolor, brightness);
+    //float4 texcolor = Sharpen(input);
     
     switch (effectType)
     {

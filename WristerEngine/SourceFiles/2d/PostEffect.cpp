@@ -135,8 +135,11 @@ void PostEffect::PreDrawScene()
 {
 	//ChangeResolution();
 
+	D3D12_VIEWPORT viewport = CD3DX12_VIEWPORT(0.0f, 0.0f, DEFAULT_WIN_SIZE.x, DEFAULT_WIN_SIZE.y);
+	D3D12_RECT scissorRect = { 0, 0, (LONG)DEFAULT_WIN_SIZE.x, (LONG)DEFAULT_WIN_SIZE.y };
+
 	DirectXCommon::GetInstance()->PreDraw({ texBuff.Get(),
-		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0 });
+		rtvHeap.Get(), dsvHeap.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, 0, &viewport, &scissorRect });
 }
 
 void PostEffect::PostDrawScene()

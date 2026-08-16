@@ -10,8 +10,10 @@ namespace WristerEngine
 	static const Vector2 WQHD = { 2560, 1440 };
 	static const Vector2 UltraHD = { 3840, 2160 };
 
+	// デフォルトウィンドウサイズ
+	inline Vector2 DEFAULT_WIN_SIZE = FullHD;
 	// ウィンドウサイズ
-	inline Vector2 WIN_SIZE = FullHD;
+	inline Vector2 WIN_SIZE = DEFAULT_WIN_SIZE;
 	// ウィンドウサイズの半分(UI描画などに使う)
 	inline Vector2 HALF_WIN_SIZE = WIN_SIZE / 2.0f;
 
