@@ -4,28 +4,11 @@
 using namespace WE;
 using namespace _2D;
 
-uint32_t BaseCollider2D::nextSerialNumber = 0;
+uint32_t SingleCollider2D::nextSerialNumber = 0;
 uint32_t Collider::nextSerialNumber = 0;
 
-CollisionPair::CollisionPair(BaseCollider2D* my_, BaseCollider2D* other_, const HitInfo& hitInfo)
-{
-	my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
-}
 
-bool CollisionPair::Check(const CollisionPair& p1, const CollisionPair& p2)
-{
-	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
-	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
-	// シリアルナンバーと同じかで判断する
-	std::vector<uint32_t> serials1{ p1.my->GetSerialNumber(), p1.other->GetSerialNumber() };
-	std::vector<uint32_t> serials2{ p2.my->GetSerialNumber(), p2.other->GetSerialNumber() };
-
-	if (CompareVectors<uint32_t>(serials1, serials2)) { return true; }
-
-	return false;
-}
-
-BaseCollider2D* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider2D> newCollider)
+SingleCollider2D* ColliderGroup::AddCollider(std::unique_ptr<SingleCollider2D> newCollider)
 {
 	colliders.push_back(std::move(newCollider));
 	return colliders.back().get();
@@ -34,7 +17,7 @@ BaseCollider2D* ColliderGroup::AddCollider(std::unique_ptr<BaseCollider2D> newCo
 void ColliderGroup::Update()
 {
 	// コライダーの削除
-	colliders.remove_if([](std::unique_ptr<BaseCollider2D>& collider)
+	colliders.remove_if([](std::unique_ptr<SingleCollider2D>& collider)
 		{ return collider.get()->IsDestroy(); });
 
 	for (auto& collider : colliders) { collider->Update(); }
@@ -56,7 +39,7 @@ void ColliderGroup::CallCollision()
 	// コールバック関数呼び出し(OnCollision)
 	for (auto& pair : collisionPairs)
 	{
-		Collider* owner = pair.my->GetOwner();
+		BaseCollider* owner = pair.my->GetOwner();
 		// すでに呼ばれているオーナーはスキップ
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollision();
@@ -78,7 +61,7 @@ void ColliderGroup::CallCollision()
 	calledCollision.clear();
 	for (auto& pair : enterPairs)
 	{
-		Collider* owner = pair.my->GetOwner();
+		BaseCollider* owner = pair.my->GetOwner();
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollisionEnter();
 		calledCollision[owner->GetSerialNumber()];
@@ -98,7 +81,7 @@ void ColliderGroup::CallCollision()
 	calledCollision.clear();
 	for (auto& pair : exitPairs)
 	{
-		Collider* owner = pair.my->GetOwner();
+		BaseCollider* owner = pair.my->GetOwner();
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollisionExit();
 		calledCollision[owner->GetSerialNumber()];
@@ -111,12 +94,6 @@ ColliderGroup::~ColliderGroup()
 {
 	colliders.clear();
 	for (auto* owner : owners) { owner->DeleteGroup(); }
-}
-
-void BaseCollider2D::Initialize(Collider* owner_, const ColliderInfo& info)
-{
-	owner = owner_;
-	SetColliderInfo(info);
 }
 
 void Collider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)

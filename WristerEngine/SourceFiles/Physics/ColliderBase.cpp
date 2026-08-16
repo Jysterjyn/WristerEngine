@@ -36,9 +36,3 @@ bool WE::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
 		infoA->GetAttribute() & infoB->GetMask() &&
 		infoB->GetAttribute() & infoA->GetMask();
 }
-
-void BaseSingleCollider::Initialize(BaseCollider* owner_, const ColliderInfo& info)
-{
-	owner = owner_;
-	SetColliderInfo(info);
-}
