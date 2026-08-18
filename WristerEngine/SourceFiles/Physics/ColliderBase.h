@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <WristerEngineUtility.h>
 #include <optional>
+#include <map>
 
 namespace WristerEngine
 {
@@ -17,7 +18,7 @@ namespace WristerEngine
 		ColliderInfo(uint32_t attribute_, uint32_t mask_);
 		ColliderInfo(const ColliderInfo& info);
 
-		virtual ~ColliderInfo() noexcept = default;
+		virtual ~ColliderInfo() = default;
 
 		// setter
 		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
@@ -31,102 +32,95 @@ namespace WristerEngine
 		std::string GetName() const { return name.Get(); }
 	};
 
-	template <class T>
 	class BaseCollider;
 
-	template <class T>
 	class BaseSingleCollider : public ColliderInfo
 	{
 	protected:
 		bool isDestroy = false;
-		BaseCollider<T>* owner = nullptr;
+		BaseCollider* owner = nullptr;
 		uint32_t serialNumber = 0;
-		int shapeType = 0;
+		uint32_t shapeType = 0;
 
 	public:
 		virtual ~BaseSingleCollider() = default;
 		virtual void Update() {}
 		void Destroy() { isDestroy = true; }
 
-		void Initialize(BaseCollider<T>* owner_, const ColliderInfo& info)
+		void Initialize(BaseCollider* owner_, const ColliderInfo& info)
 		{
-			owner = owner_;
-			SetColliderInfo(info);
+			owner = owner_; SetColliderInfo(info);
 		}
 
 		// getter
 		bool IsDestroy() const { return isDestroy; }
-		BaseCollider<T>* GetOwner() { return owner; }
+		BaseCollider* GetOwner() { return owner; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
+		uint32_t GetShapeType() const { return shapeType; }
 	};
 
-	template <class T>
 	struct HitInfo
 	{
-		std::optional<T> inter = std::nullopt;
 		std::optional<float> distance = std::nullopt;
-		std::optional<T> reject = std::nullopt;
 
-		HitInfo(const std::optional<T>& inter = std::nullopt, const std::optional<float>& distance = std::nullopt,
-			const std::optional<T>& reject = std::nullopt)
-			: inter(inter), distance(distance), reject(reject)
-		{
-		}
-
-		void Reset() { inter = reject = std::nullopt; distance = std::nullopt; }
-
+		void Reset() {}
 		virtual ~HitInfo() = default;
 	};
 
-	template <class T>
-	class BaseCollisionPair : public HitInfo<T>
+	struct BaseCollisionPair
 	{
-		BaseSingleCollider<T>* my = nullptr, * other = nullptr;
+		BaseSingleCollider* my = nullptr, * other = nullptr;
+		HitInfo* hitInfo = nullptr;
 
-		BaseCollisionPair(BaseSingleCollider<T>* my_, BaseSingleCollider<T>* other_, const HitInfo<T>& hitInfo)
+		BaseCollisionPair(BaseSingleCollider* my_, BaseSingleCollider* other_, HitInfo* hitInfo_)
 		{
-			my = my_; other = other_; inter = hitInfo.inter; distance = hitInfo.distance; reject = hitInfo.reject;
-		}
-
-		static bool Check(const BaseCollisionPair<T>& p1, const BaseCollisionPair<T>& p2)
-		{
-			// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
-			// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
-			// シリアルナンバーと同じかで判断する
-			std::vector<uint32_t> serials1{ p1.my->GetSerialNumber(), p1.other->GetSerialNumber() };
-			std::vector<uint32_t> serials2{ p2.my->GetSerialNumber(), p2.other->GetSerialNumber() };
-
-			if (CompareVectors<uint32_t>(serials1, serials2)) { return true; }
-
-			return false;
+			my = my_; other = other_; hitInfo = hitInfo_;
 		}
 	};
 
-	template <class T>
 	class BaseColliderGroup : public ColliderInfo
 	{
 	protected:
-		uList<BaseSingleCollider<T>> colliders;
-		std::list<BaseCollider<T>*> owners;
+		uList<BaseSingleCollider> colliders;
+		std::list<BaseCollider*> owners;
 
 		// 当たったペアの記録
-		std::vector<BaseCollisionPair<T>> collisionPairs;
-		std::vector<BaseCollisionPair<T>> enterPairs;
-		std::vector<BaseCollisionPair<T>> exitPairs;
-		std::vector<BaseCollisionPair<T>> collisionPairsPre;
-	
+		std::vector<BaseCollisionPair> collisionPairs;
+		std::vector<BaseCollisionPair> enterPairs;
+		std::vector<BaseCollisionPair> exitPairs;
+		std::vector<BaseCollisionPair> collisionPairsPre;
+
 	public:
-		virtual ~BaseColliderGroup() noexcept override = default;
 		BaseColliderGroup(const std::string& groupName) { SetName(groupName); }
+		~BaseColliderGroup();
+
+		void Update();
+
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		BaseSingleCollider* AddCollider(std::unique_ptr<BaseSingleCollider> newCollider);
+
+		void AddOwner(BaseCollider* owner) { owners.push_back(owner); }
+		void AddCollisionPair(const BaseCollisionPair& pair) { collisionPairs.push_back(pair); }
+
+		void CallCollision();
+
+		// getter
+		const std::list<std::unique_ptr<BaseSingleCollider>>* GetColliders() const { return &colliders; }
+		const std::vector<BaseCollisionPair>& GetCollisionPairs() const { return collisionPairs; }
+		const std::vector<BaseCollisionPair>& GetEnterPairs() const { return enterPairs; }
+		const std::vector<BaseCollisionPair>& GetExitPairs() const { return exitPairs; }
 	};
 
-	template <class T>
 	class BaseCollider
 	{
 	protected:
 		uint32_t serialNumber = 0;
 
-		BaseColliderGroup<T>* group = nullptr;
+		BaseColliderGroup* group = nullptr;
 
 		template<class T>
 		bool TypeCompare(const std::string& type) const
@@ -136,31 +130,32 @@ namespace WristerEngine
 		}
 
 	public:
-		// <summary>
-		// コライダーを登録
-		// </summary>
-		// <param name="shapeType">コライダーの形状</param>
-		// <returns>登録されたコライダー</returns>
-		//template<class T>
-		//T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
-		//{
-		//	std::unique_ptr<BaseCollider> newCollider;
-		//	ColliderInfo colliderInfo(group->GetColliderInfo());
-		//	std::string groupName = info ? info->GetName() : group->GetName();
-		//	colliderInfo.SetName(groupName);
-		//
-		//	if (TypeCompare("Circle")) { newCollider = std::make_unique<CircleCollider>(); }
-		//	else if (TypeCompare("Box")) { newCollider = std::make_unique<BoxCollider>(); }
-		//	else if (TypeCompare("TwoRay")) { newCollider = std::make_unique<TwoRayCollider>(); }
-		//	if (!newCollider) { return nullptr; }
-		//
-		//	newCollider->Initialize(this, colliderInfo);
-		//
-		//	return static_cast<T*>(group->AddCollider(std::move(newCollider)));
-		//}
-		
-		// コライダー生成クラス
-		virtual uPtr<BaseCollider> CreateCollider(CR<std::string> type) = 0;
+		/// <summary>
+		/// コライダーを登録
+		/// </summary>
+		/// <param name="shapeType">コライダーの形状</param>
+		/// <returns>登録されたコライダー</returns>
+		template<class T>
+		T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
+		{
+			// コライダーの型がColliderであるかを確認
+			const std::string TYPE_NAME = typeid(T).name();
+			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+			if (!TypeCompare("Collider")) { return nullptr; }
+
+			// コライダーグループが登録されていない場合は登録する
+			std::unique_ptr<BaseSingleCollider> newCollider;
+			ColliderInfo colliderInfo(group->GetColliderInfo());
+			std::string groupName = info ? info->GetName() : group->GetName();
+			colliderInfo.SetName(groupName);
+
+			// コライダー情報が指定されている場合は上書きする
+			newCollider = std::make_unique<T>();
+			newCollider->Initialize(this, colliderInfo);
+			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		}
+
+		void Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
 		// 衝突コールバック関数
 		// 当たっている間
@@ -170,14 +165,15 @@ namespace WristerEngine
 		// 離れた瞬間
 		virtual void OnCollisionExit() {}
 
-		virtual ~BaseCollider() = default;
+		virtual ~BaseCollider();
 
 		void DeleteGroup() { group = nullptr; }
 		// getter
-		const std::vector<BaseCollisionPair<T>>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
-		BaseColliderGroup<T>* GetGroup() const { return group; }
+		const std::vector<BaseCollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
+		BaseColliderGroup* GetGroup() const { return group; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
+	bool CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2);
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);
 }

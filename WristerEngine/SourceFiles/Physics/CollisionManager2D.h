@@ -37,26 +37,27 @@ namespace WristerEngine::_2D
 	};
 
 	// コライダー管理
-	class CollisionManager final : private HitInfo<Vector2>
+	class CollisionManager final
 	{
 	private:
-		std::unordered_map<std::string, std::unique_ptr<ColliderGroup>> colliderGroups;
+		uPtr<HitInfo> hitInfo;
+		std::unordered_map<std::string, std::unique_ptr<BaseColliderGroup>> colliderGroups;
 		
 		CollisionManager() = default;
 		~CollisionManager() = default;
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-		bool Check2Collisions(SingleCollider2D* colliderA, SingleCollider2D* colliderB);
+		bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB);
 
 		// 個別当たり判定
-		bool Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB);
+		bool Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB);
 		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
 		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
 
 	public:
 		static CollisionManager* GetInstance();
-		ColliderGroup* AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
+		BaseColliderGroup* AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
 		// 全当たり判定
 		void CheckCollisions();

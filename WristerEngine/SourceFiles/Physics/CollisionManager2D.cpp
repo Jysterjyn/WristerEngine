@@ -10,11 +10,11 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-ColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info)
+BaseColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info)
 {
 	if (!colliderGroups.contains(groupName))
 	{
-		std::unique_ptr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>(groupName);
+		std::unique_ptr<BaseColliderGroup> newGroup = std::make_unique<BaseColliderGroup>(groupName);
 		if (info) { newGroup->SetColliderInfo(*info); }
 		colliderGroups[groupName] = std::move(newGroup);
 	}
@@ -32,8 +32,8 @@ void CollisionManager::CheckCollisions()
 		itrB++;
 		for (; itrB != colliderGroups.end(); itrB++)
 		{
-			ColliderGroup* groupA = itrA->second.get();
-			ColliderGroup* groupB = itrB->second.get();
+			BaseColliderGroup* groupA = itrA->second.get();
+			BaseColliderGroup* groupB = itrB->second.get();
 			if (!CheckFiltering(groupA, groupB)) { continue; }
 			if (!Check2Groups(groupA, groupB)) { continue; }
 		}
@@ -45,26 +45,26 @@ void CollisionManager::CheckCollisions()
 	}
 }
 
-bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB)
+bool CollisionManager::Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB)
 {
 	for (const auto& colliderA : *groupA->GetColliders()) {
 		for (const auto& colliderB : *groupB->GetColliders())
 		{
 			if (!CheckFiltering(colliderA.get(), colliderB.get())) { continue; }
 
-			std::list<SingleCollider2D*> colliderPair({ colliderA.get(),colliderB.get() });
-			colliderPair.sort([](SingleCollider2D* c1, SingleCollider2D* c2)
+			std::list<BaseSingleCollider*> colliderPair({ colliderA.get(),colliderB.get() });
+			colliderPair.sort([](BaseSingleCollider* c1, BaseSingleCollider* c2)
 				{
 					return c1->GetShapeType() < c2->GetShapeType();
 				});
 
 			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
 			{
-				CollisionPair pairA(colliderA.get(), colliderB.get(), *this);
-				CollisionPair pairB(colliderB.get(), colliderA.get(), *this);
+				BaseCollisionPair pairA(colliderA.get(), colliderB.get(), hitInfo.get());
+				BaseCollisionPair pairB(colliderB.get(), colliderA.get(), hitInfo.get());
 				groupA->AddCollisionPair(pairA);
 				groupB->AddCollisionPair(pairB);
-				Reset();
+				hitInfo->Reset();
 			}
 		}
 	}
@@ -72,23 +72,23 @@ bool CollisionManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB
 	return !groupA->GetCollisionPairs().empty();
 }
 
-bool CollisionManager::Check2Collisions(SingleCollider2D* colliderA, SingleCollider2D* colliderB)
+bool CollisionManager::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
 {
-	CollisionShapeType aST = colliderA->GetShapeType();
-	CollisionShapeType bST = colliderB->GetShapeType();
+	uint32_t aST = colliderA->GetShapeType();
+	uint32_t bST = colliderB->GetShapeType();
 
-	assert(aST != CollisionShapeType::Unknown);
-	assert(bST != CollisionShapeType::Unknown);
+	assert(aST != (uint32_t)CollisionShapeType::Unknown);
+	assert(bST != (uint32_t)CollisionShapeType::Unknown);
 
 	switch (aST)
 	{
-	case CollisionShapeType::Circle:
+	case (uint32_t)CollisionShapeType::Circle:
 	{
 		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
 
 		switch (bST)
 		{
-		case CollisionShapeType::Circle:
+		case (uint32_t)CollisionShapeType::Circle:
 
 			return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
 		}
