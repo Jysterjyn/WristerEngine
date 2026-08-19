@@ -106,7 +106,10 @@ namespace WristerEngine
 		void AddOwner(BaseCollider* owner) { owners.push_back(owner); }
 		void AddCollisionPair(const BaseCollisionPair& pair) { collisionPairs.push_back(pair); }
 
-		void CallCollision();
+		void CallCollisions();
+		void CallOn();
+		void CallEnter();
+		void CallExit();
 
 		// getter
 		const std::list<std::unique_ptr<BaseSingleCollider>>* GetColliders() const { return &colliders; }

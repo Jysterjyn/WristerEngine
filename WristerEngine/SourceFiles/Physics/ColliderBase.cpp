@@ -1,5 +1,6 @@
 ﻿#include "ColliderBase.h"
 #include "CollisionManager2D.h"
+#include <thread>
 
 using namespace WE;
 
@@ -75,13 +76,23 @@ void BaseColliderGroup::Update()
 	exitPairs.clear();
 }
 
-void BaseColliderGroup::CallCollision()
+void BaseColliderGroup::CallCollisions()
+{
+	std::thread enterThread(&BaseColliderGroup::CallEnter, this);
+	std::thread exitThread(&BaseColliderGroup::CallExit, this);
+	CallOn();
+	enterThread.join();
+	exitThread.join();
+	collisionPairsPre = collisionPairs;
+}
+
+void BaseColliderGroup::CallOn()
 {
 	// OnCollisionは当たっている間に呼ばれるコールバック関数なので、同じオーナーに対して複数回呼ばれないようにする
 	std::map<uint32_t, uint8_t> calledCollision;
 
 	// コールバック関数呼び出し(OnCollision)
-	for (auto& pair : collisionPairs)
+	for (const auto& pair : collisionPairs)
 	{
 		BaseCollider* owner = pair.my->GetOwner();
 		// すでに呼ばれているオーナーはスキップ
@@ -90,48 +101,52 @@ void BaseColliderGroup::CallCollision()
 		// 呼び出したオーナーを記録
 		calledCollision[owner->GetSerialNumber()];
 	}
+}
 
+void BaseColliderGroup::CallEnter()
+{
 	// OnCollisionEnterは当たった瞬間に呼ばれるコールバック関数なので、前フレームのペアと同じペアは呼ばない
-	for (auto& pair : collisionPairs)
+	for (const auto& pair : collisionPairs)
 	{
 		bool isNotEnter = false;
-		for (auto& pairPre : collisionPairsPre)
+		for (const auto& pairPre : collisionPairsPre)
 		{
 			if (CheckCollisionPair(pair, pairPre)) { isNotEnter = true; break; }
 		}
 		if (isNotEnter) { continue; }
 		enterPairs.push_back(pair);
 	}
-	calledCollision.clear();
-	for (auto& pair : enterPairs)
+	std::map<uint32_t, uint8_t> calledCollision;
+	for (const auto& pair : enterPairs)
 	{
 		BaseCollider* owner = pair.my->GetOwner();
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollisionEnter();
 		calledCollision[owner->GetSerialNumber()];
 	}
+}
 
+void BaseColliderGroup::CallExit()
+{	
 	// OnCollisionExitは離れた瞬間に呼ばれるコールバック関数なので、前フレームのペアで今回当たっていないペアだけ呼ぶ
-	for (auto& pair : collisionPairsPre)
+	for (const auto& pair : collisionPairsPre)
 	{
 		bool isNotEnter = false;
-		for (auto& pairPre : collisionPairs)
+		for (const auto& pairPre : collisionPairs)
 		{
 			if (CheckCollisionPair(pair, pairPre)) { isNotEnter = true; break; }
 		}
 		if (isNotEnter) { continue; }
 		exitPairs.push_back(pair);
 	}
-	calledCollision.clear();
-	for (auto& pair : exitPairs)
+	std::map<uint32_t, uint8_t> calledCollision;
+	for (const auto& pair : exitPairs)
 	{
 		BaseCollider* owner = pair.my->GetOwner();
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollisionExit();
 		calledCollision[owner->GetSerialNumber()];
 	}
-
-	collisionPairsPre = collisionPairs;
 }
 
 void BaseCollider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)

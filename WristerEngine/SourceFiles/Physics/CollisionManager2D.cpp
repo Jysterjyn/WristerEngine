@@ -41,7 +41,7 @@ void CollisionManager::CheckCollisions()
 
 	for (auto& group : colliderGroups)
 	{
-		group.second->CallCollision();
+		group.second->CallCollisions();
 	}
 }
 
