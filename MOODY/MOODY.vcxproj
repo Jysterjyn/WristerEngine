@@ -206,7 +206,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(ProjectDir)SourceFiles\;$(ProjectDir)SourceFiles\Collider;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\MyGame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
