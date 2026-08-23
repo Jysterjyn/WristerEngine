@@ -12,14 +12,12 @@ void Player::Initialize()
 	WE::_2D::CircleCollider* collider = AddCollider<WE::_2D::CircleCollider>();
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
-
 }
 
 void Player::Update()
 {
 	const float MOVE_SPD = 5.0f;
 	sprite->position.y += input->Move(WE::Key::Down, WE::Key::Up, MOVE_SPD);
-	ImGui::Text("Collision Check");
 }
 
 void Player::Draw()

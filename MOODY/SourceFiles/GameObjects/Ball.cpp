@@ -40,12 +40,9 @@ void Ball::Draw()
 
 void Ball::OnCollision()
 {
-	// 相手がプレイヤーだったら
-	int i = 0;
-	i++;
-
+	// 相手がプレイヤーだったら消滅
 	//collider->Destroy();
-	//GetParameter()->isDestroy = true;
+	//Destroy();
 }
 
 void Ball::ApplyParameter()
@@ -55,6 +52,11 @@ void Ball::ApplyParameter()
 	sprite->position = pParam->pos;
 	sprite->color = pParam->color;
 	if (pParam->isDestroy) { Destroy(); }
+}
+
+Ball::~Ball()
+{
+	collider->Destroy();
 }
 
 BehaviorParameter* Ball::GetParameter()

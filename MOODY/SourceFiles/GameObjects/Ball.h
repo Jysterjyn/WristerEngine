@@ -52,5 +52,8 @@ class Ball : public GameObjects, public WE::_2D::Collider
 	}
 
 	void ApplyParameter(); // パラメータ適用
+
+public:
+	~Ball();
 };
 

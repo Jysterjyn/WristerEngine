@@ -22,6 +22,7 @@ void MyGame::Update()
 {
 	// 更新処理
 	Framework::Update();
+	ImGuiTexts();
 	collisionManager->CheckCollisions();
 
 	if (input->IsTrigger(WE::Key::D))
@@ -44,22 +45,11 @@ void MyGame::Update()
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
 
-	//ImGuiTexts();
 }
 
 void MyGame::ImGuiTexts()
 {
-	ImGuiIO& io = ImGui::GetIO();
-	RECT rc;
-	GetClientRect(wAPI->GetHwnd(), &rc);
-
 	ImGui::Text("FPS: %f", fps->GetFPS());
-	imGuiManager->PrintVector("CursorPos", wAPI->GetScreenCursorPos());
-	imGuiManager->PrintVector("WIN_SIZE", WE::WIN_SIZE);
-	ImGui::Text("Client = %d x %d", rc.right - rc.left, rc.bottom - rc.top);
-	ImGui::Text("ImGui DisplaySize = %.0f x %.0f", io.DisplaySize.x, io.DisplaySize.y);
-	ImGui::Text("ImGui MousePos = %.0f x %.0f", io.MousePos.x, io.MousePos.y);
-	ImGui::Text("ImGui FramebufferScale  = %.2f %.2f", io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
 }
 
 

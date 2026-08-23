@@ -143,6 +143,7 @@ void BaseColliderGroup::CallExit()
 	for (const auto& pair : exitPairs)
 	{
 		BaseCollider* owner = pair.my->GetOwner();
+		if (!owner) { continue; }
 		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
 		owner->OnCollisionExit();
 		calledCollision[owner->GetSerialNumber()];
