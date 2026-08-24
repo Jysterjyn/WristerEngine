@@ -1,6 +1,7 @@
 ﻿#include "PostEffect.h"
 #include "D3D12Common.h"
 #include "PipelineManager.h"
+#include <thread>
 
 using namespace WristerEngine;
 using namespace WristerEngine::_2D;
@@ -42,6 +43,12 @@ void PostEffect::CreateBuffers()
 
 void PostEffect::CreateTextureBuffer()
 {
+	const UINT PIXEL_COUNT = (UINT)WIN_SIZE.x * (UINT)WIN_SIZE.y;
+	const UINT ROW_PITCH = sizeof(UINT) * (UINT)WIN_SIZE.x;
+	const UINT DEPTH_PITCH = ROW_PITCH * (UINT)WIN_SIZE.y;
+	std::vector<UINT> img;
+	std::thread th([&]() { img.resize(PIXEL_COUNT, 0xff0000ff); });
+
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, (UINT64)WIN_SIZE.x, (UINT)WIN_SIZE.y,
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET);
@@ -58,10 +65,7 @@ void PostEffect::CreateTextureBuffer()
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 		&clearValue, IID_PPV_ARGS(&texBuff));
 
-	const UINT PIXEL_COUNT = (UINT)WIN_SIZE.x * (UINT)WIN_SIZE.y;
-	const UINT ROW_PITCH = sizeof(UINT) * (UINT)WIN_SIZE.x;
-	const UINT DEPTH_PITCH = ROW_PITCH * (UINT)WIN_SIZE.y;
-	std::vector<UINT> img(PIXEL_COUNT, 0xff0000ff);
+	th.join();
 	result = texBuff->WriteToSubresource(0, nullptr, img.data(), ROW_PITCH, DEPTH_PITCH);
 }
 

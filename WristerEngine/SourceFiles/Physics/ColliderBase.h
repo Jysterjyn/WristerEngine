@@ -84,11 +84,20 @@ namespace WristerEngine
 		uList<BaseSingleCollider> colliders;
 		std::list<BaseCollider*> owners;
 
+		using CollisionPairList = std::vector<BaseCollisionPair>;
+
 		// 当たったペアの記録
-		std::vector<BaseCollisionPair> collisionPairs;
-		std::vector<BaseCollisionPair> enterPairs;
-		std::vector<BaseCollisionPair> exitPairs;
-		std::vector<BaseCollisionPair> collisionPairsPre;
+		CollisionPairList collisionPairs;
+		CollisionPairList enterPairs;
+		CollisionPairList exitPairs;
+		CollisionPairList collisionPairsPre;
+
+	private:
+		// コールバック関数呼び出し
+		void CallCallbacks(CR<CollisionPairList> pairs, void (BaseCollider::* callback)());
+		void OneCallPair(CollisionPairList& at, CR<CollisionPairList> pair1, CR<CollisionPairList> pair2);
+		void CallEnter();
+		void CallExit();
 
 	public:
 		BaseColliderGroup(const std::string& groupName) { SetName(groupName); }
@@ -107,9 +116,6 @@ namespace WristerEngine
 		void AddCollisionPair(const BaseCollisionPair& pair) { collisionPairs.push_back(pair); }
 
 		void CallCollisions();
-		void CallOn();
-		void CallEnter();
-		void CallExit();
 
 		// getter
 		const std::list<std::unique_ptr<BaseSingleCollider>>* GetColliders() const { return &colliders; }

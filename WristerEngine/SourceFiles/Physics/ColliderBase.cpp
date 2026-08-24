@@ -80,74 +80,52 @@ void BaseColliderGroup::CallCollisions()
 {
 	std::thread enterThread(&BaseColliderGroup::CallEnter, this);
 	std::thread exitThread(&BaseColliderGroup::CallExit, this);
-	CallOn();
+	CallCallbacks(collisionPairs, &BaseCollider::OnCollision);
 	enterThread.join();
 	exitThread.join();
 	collisionPairsPre = collisionPairs;
 }
 
-void BaseColliderGroup::CallOn()
+void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCollider::* callback)())
 {
-	// OnCollisionは当たっている間に呼ばれるコールバック関数なので、同じオーナーに対して複数回呼ばれないようにする
-	std::map<uint32_t, uint8_t> calledCollision;
+	std::map<uint32_t, uint8_t> called;
 
-	// コールバック関数呼び出し(OnCollision)
-	for (const auto& pair : collisionPairs)
+	for (const auto& pair : pairs)
 	{
 		BaseCollider* owner = pair.my->GetOwner();
+		uint32_t serial = owner->GetSerialNumber();
 		// すでに呼ばれているオーナーはスキップ
-		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
-		owner->OnCollision();
+		if (called.contains(serial)) { continue; }
+		(owner->*callback)();
 		// 呼び出したオーナーを記録
-		calledCollision[owner->GetSerialNumber()];
+		called[serial];
+	}
+}
+
+void BaseColliderGroup::OneCallPair(CollisionPairList& at, CR<CollisionPairList> pair1, CR<CollisionPairList> pair2)
+{
+	for (const auto& pair : pair1)
+	{
+		bool isNotEnter = false;
+		for (const auto& pairPre : pair2)
+		{
+			if (CheckCollisionPair(pair, pairPre)) { isNotEnter = true; break; }
+		}
+		if (isNotEnter) { continue; }
+		at.push_back(pair);
 	}
 }
 
 void BaseColliderGroup::CallEnter()
 {
-	// OnCollisionEnterは当たった瞬間に呼ばれるコールバック関数なので、前フレームのペアと同じペアは呼ばない
-	for (const auto& pair : collisionPairs)
-	{
-		bool isNotEnter = false;
-		for (const auto& pairPre : collisionPairsPre)
-		{
-			if (CheckCollisionPair(pair, pairPre)) { isNotEnter = true; break; }
-		}
-		if (isNotEnter) { continue; }
-		enterPairs.push_back(pair);
-	}
-	std::map<uint32_t, uint8_t> calledCollision;
-	for (const auto& pair : enterPairs)
-	{
-		BaseCollider* owner = pair.my->GetOwner();
-		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
-		owner->OnCollisionEnter();
-		calledCollision[owner->GetSerialNumber()];
-	}
+	OneCallPair(enterPairs, collisionPairs, collisionPairsPre);
+	CallCallbacks(enterPairs, &BaseCollider::OnCollisionEnter);
 }
 
 void BaseColliderGroup::CallExit()
-{	
-	// OnCollisionExitは離れた瞬間に呼ばれるコールバック関数なので、前フレームのペアで今回当たっていないペアだけ呼ぶ
-	for (const auto& pair : collisionPairsPre)
-	{
-		bool isNotEnter = false;
-		for (const auto& pairPre : collisionPairs)
-		{
-			if (CheckCollisionPair(pair, pairPre)) { isNotEnter = true; break; }
-		}
-		if (isNotEnter) { continue; }
-		exitPairs.push_back(pair);
-	}
-	std::map<uint32_t, uint8_t> calledCollision;
-	for (const auto& pair : exitPairs)
-	{
-		BaseCollider* owner = pair.my->GetOwner();
-		if (!owner) { continue; }
-		if (calledCollision.contains(owner->GetSerialNumber())) { continue; }
-		owner->OnCollisionExit();
-		calledCollision[owner->GetSerialNumber()];
-	}
+{
+	OneCallPair(exitPairs, collisionPairsPre, collisionPairs);
+	CallCallbacks(exitPairs, &BaseCollider::OnCollisionExit);
 }
 
 void BaseCollider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)

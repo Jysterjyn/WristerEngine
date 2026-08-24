@@ -283,7 +283,7 @@ void DirectXCommon::PostDraw()
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
 	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result = swapchain->Present(0, 0);
+	result = swapchain->Present(1, 0);
 
 	WaitForGPU(); // GPU待機
 	fixFPS->Update(); // FPS更新
