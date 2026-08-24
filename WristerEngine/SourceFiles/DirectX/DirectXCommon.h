@@ -35,11 +35,12 @@ namespace WristerEngine
 	{
 	private:
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
+		static const UINT FrameCount = 3;
 		static const size_t MAX_SRV_COUNT = 512;
+
 		ComPtr<ID3D12Device> device;
 		ComPtr<IDXGIFactory7> dxgiFactory;
-		ComPtr<ID3D12CommandAllocator> commandAllocator;
+		std::array<ComPtr<ID3D12CommandAllocator>, FrameCount> commandAllocators;
 		ComPtr<ID3D12GraphicsCommandList> commandList;
 		ComPtr<ID3D12CommandQueue> commandQueue;
 		ComPtr<IDXGISwapChain4> swapchain;
@@ -49,11 +50,13 @@ namespace WristerEngine
 		ComPtr<ID3D12Fence> fence;
 		DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
 		std::vector<ComPtr<ID3D12Resource>> backBuffers;
-		UINT64 fenceVal = 0;
+		std::array<UINT64, FrameCount> fenceValues{};
+		UINT64 nextFenceValue = 1;
 		D3D12_VIEWPORT viewport{};
 		D3D12_RECT scissorRect{};
 		FPS* fixFPS = FPS::GetInstance();
 		bool isChanedResolution = false;
+		UINT frameIndex = 0;
 
 		DirectXCommon() = default;
 		~DirectXCommon() = default;
@@ -77,12 +80,16 @@ namespace WristerEngine
 		void CreateFence();
 		// GPU待機
 		void WaitForGPU();
+		// フレーム待機
+		void WaitForFrame();
 
 	public:
 		// インスタンス取得
 		static DirectXCommon* GetInstance();
 		// 初期化
 		void Initialize();
+		// フレーム開始処理
+		void BeginFrame();
 		// 描画前処理
 		void PreDraw();
 		// ポストエフェクトクラス内で使う共通処理部分
@@ -107,7 +114,6 @@ namespace WristerEngine
 
 		// setter
 		void SetViewport(Vector2 viewportSize = WIN_SIZE, Vector2 viewportLeftTop = {});
-		void SetDescriptorHeap();
 
 		// getter
 		ID3D12Device* GetDevice() const { return device.Get(); }

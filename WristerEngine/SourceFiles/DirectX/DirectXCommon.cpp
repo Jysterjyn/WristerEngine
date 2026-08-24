@@ -119,14 +119,26 @@ void DirectXCommon::CreateDevice()
 
 void DirectXCommon::CreateCommandList()
 {
-	Result result = device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator));
+	for (UINT i = 0; i < FrameCount; i++)
+	{
+		Result result = device->CreateCommandAllocator(
+			D3D12_COMMAND_LIST_TYPE_DIRECT,
+			IID_PPV_ARGS(&commandAllocators[i])
+		);
+	}
 
-	result = device->CreateCommandList(0,
+	Result result = device->CreateCommandList(
+		0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		commandAllocator.Get(), nullptr,
-		IID_PPV_ARGS(&commandList));
+		commandAllocators[0].Get(),
+		nullptr,
+		IID_PPV_ARGS(&commandList)
+	);
 
-	device->CreateCommandQueue(new D3D12_COMMAND_QUEUE_DESC(), IID_PPV_ARGS(&commandQueue));
+	device->CreateCommandQueue(
+		new D3D12_COMMAND_QUEUE_DESC(),
+		IID_PPV_ARGS(&commandQueue)
+	);
 }
 
 void DirectXCommon::CreateSwapchain()
@@ -136,7 +148,7 @@ void DirectXCommon::CreateSwapchain()
 	swapchainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 色情報の書式
 	swapchainDesc.SampleDesc.Count = 1; // マルチサンプルしない
 	swapchainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER; // バックバッファ用
-	swapchainDesc.BufferCount = 2; // バッファ数を2つに設定
+	swapchainDesc.BufferCount = FrameCount; // バッファ数を3つに設定
 	swapchainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // フリップ後は破棄
 	swapchainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
@@ -209,29 +221,87 @@ D3D12_SHADER_RESOURCE_VIEW_DESC DirectXCommon::CreateSRVDesc(const D3D12_RESOURC
 
 void DirectXCommon::CreateFence()
 {
-	Result result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	Result result = device->CreateFence(
+		0,
+		D3D12_FENCE_FLAG_NONE,
+		IID_PPV_ARGS(&fence)
+	);
 }
 
 void DirectXCommon::WaitForGPU()
 {
-	// コマンドの実行完了を待つ
-	commandQueue->Signal(fence.Get(), ++fenceVal);
+	UINT64 fenceValue = nextFenceValue++;
 
-	if (fence->GetCompletedValue() == fenceVal) { return; }
+	commandQueue->Signal(
+		fence.Get(),
+		fenceValue
+	);
+
+	if (fence->GetCompletedValue() < fenceValue)
+	{
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+
+		if (event == nullptr)
+		{
+			return;
+		}
+
+		fence->SetEventOnCompletion(fenceValue, event);
+
+		WaitForSingleObject(event, INFINITE);
+
+		CloseHandle(event);
+	}
+}
+
+void DirectXCommon::WaitForFrame()
+{
+	UINT64 fenceValue = fenceValues[frameIndex];
+
+	if (fence->GetCompletedValue() >= fenceValue) { return; }
+
 	HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-	fence->SetEventOnCompletion(fenceVal, event);
 
-	if (event == 0) { return; }
+	if (event == nullptr) { return; }
+
+	fence->SetEventOnCompletion(fenceValue, event);
+
 	WaitForSingleObject(event, INFINITE);
+
 	CloseHandle(event);
+}
+
+void DirectXCommon::BeginFrame()
+{
+	frameIndex = swapchain->GetCurrentBackBufferIndex();
+
+	// このフレームで使用するAllocatorが
+	// GPUから解放されるまで待つ
+	WaitForFrame();
+
+	// CommandAllocatorを再利用
+	commandAllocators[frameIndex]->Reset();
+
+	// CommandListを再利用
+	commandList->Reset(
+		commandAllocators[frameIndex].Get(),
+		nullptr
+	);
+
+	// SRV用のデスクリプタヒープを指定する
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
 void DirectXCommon::PreDraw()
 {
-	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
-
-	PreDraw({ backBuffers[bbIndex].Get(), rtvHeap.Get(),
-		dsvHeap.Get(), D3D12_RESOURCE_STATE_PRESENT, bbIndex });
+	PreDraw({
+		backBuffers[frameIndex].Get(),
+		rtvHeap.Get(),
+		dsvHeap.Get(),
+		D3D12_RESOURCE_STATE_PRESENT,
+		frameIndex
+		});
 }
 
 void DirectXCommon::PreDraw(const PreDrawProp& prop)
@@ -269,30 +339,34 @@ void DirectXCommon::PreDraw(const PreDrawProp& prop)
 
 void DirectXCommon::PostDraw()
 {
-	UINT bbIndex = swapchain->GetCurrentBackBufferIndex();
-
-	D3D12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		backBuffers[bbIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	D3D12_RESOURCE_BARRIER resourceBarrier =
+		CD3DX12_RESOURCE_BARRIER::Transition(
+			backBuffers[frameIndex].Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET,
+			D3D12_RESOURCE_STATE_PRESENT
+		);
 
 	commandList->ResourceBarrier(1, &resourceBarrier);
 
-	// 命令のクローズ
+	// コマンドリストを閉じる
 	Result result = commandList->Close();
-	// コマンドリストの実行
+
+	// コマンドをGPUへ送る
 	ID3D12CommandList* commandLists[] = { commandList.Get() };
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
-	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result = swapchain->Present(1, 0);
+	// このフレームのFence値を登録
+	UINT64 fenceValue = nextFenceValue++;
 
-	WaitForGPU(); // GPU待機
-	fixFPS->Update(); // FPS更新
+	fenceValues[frameIndex] = fenceValue;
 
-	// キューをクリア
-	result = commandAllocator->Reset();
-	// 再びコマンドリストを貯める準備
-	result = commandList->Reset(commandAllocator.Get(), nullptr);
-	// 解像度変更フラグを下ろす
+	commandQueue->Signal(fence.Get(), fenceValue);
+
+	// 表示
+	result = swapchain->Present(0, 0);
+
+	fixFPS->Update();
+
 	isChanedResolution = false;
 }
 
@@ -360,13 +434,6 @@ void DirectXCommon::SetViewport(Vector2 viewportSize, Vector2 viewportLeftTop)
 		viewportSize.x, viewportSize.y);
 
 	commandList->RSSetViewports(1, &viewport);
-}
-
-void DirectXCommon::SetDescriptorHeap()
-{
-	// SRV用のデスクリプタヒープを指定する
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
-	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
 Matrix4 DirectXCommon::GetViewportMatrix() const

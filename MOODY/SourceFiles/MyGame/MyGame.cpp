@@ -14,8 +14,6 @@ void MyGame::Initialize()
 	std::unique_ptr<WE::ISceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "GameScene");
-
-	postEffect = WE::_2D::PostEffect::Create();
 }
 
 void MyGame::Update()
@@ -44,7 +42,6 @@ void MyGame::Update()
 	{
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
-
 }
 
 void MyGame::ImGuiTexts()
@@ -55,16 +52,11 @@ void MyGame::ImGuiTexts()
 
 void MyGame::Draw()
 {
-	// ポストエフェクト
-	postEffect->PreDrawScene();
+	// 描画処理
+	dxCommon->PreDraw();
 	spMan->PreDraw();
 	sceneManager->Draw();
 	imGuiManager->Draw();
-	postEffect->PostDrawScene();
-
-	// 描画処理
-	dxCommon->PreDraw();
-	postEffect->Draw();
 	dxCommon->PostDraw();
 }
 

@@ -52,12 +52,13 @@ void Framework::Run()
 		imGuiManager->Begin();
 
 		Update();
+		//FPS::GetInstance()->Update();
 
 		// ImGui受付終了
 		imGuiManager->End();
 
 		// デスクリプタヒープをセット
-		dxCommon->SetDescriptorHeap();
+		dxCommon->BeginFrame();
 
 		Draw();
 	}

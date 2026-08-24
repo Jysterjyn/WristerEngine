@@ -17,23 +17,6 @@ void FPS::Initialize()
 
 void FPS::Update()
 {
-	// 1/MAX_FPS 秒ぴったりの時間
-	const microseconds MIN_TIME(uint64_t(MEGA / MAX_FPS));
-	// 1/MAX_FPS 秒よりわずかに短い時間
-	const float CHECK_TIME_OFFSET = 5;
-	const microseconds MIN_CHECK_TIME(uint64_t(MEGA / (MAX_FPS + CHECK_TIME_OFFSET)));
-
-	// 1/MAX_FPS 秒(よりわずかに短い時間)経っていない場合
-	if (GetElapsed() < MIN_CHECK_TIME)
-	{
-		// 1/MAX_FPS 秒経過するまで微小なスリープを繰り返す
-		while (GetElapsed() < MIN_TIME)
-		{
-			// 1マイクロ秒スリープ
-			std::this_thread::sleep_for(microseconds(1));
-		}
-	}
-
 	// FPSを計算する
 	CalculateFPS();
 
