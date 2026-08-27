@@ -9,6 +9,7 @@ void Framework::Initialize()
 {
 	wAPI->Initialize(windowName);
 	wAPI->SetSizeChangeMode(WindowsAPI::SizeChangeMode::FixedAspect);
+	fps->Initialize();
 	dxCommon->Initialize();
 	input->Initialize();
 	PipelineManager::Initialize();
@@ -21,6 +22,7 @@ void Framework::Initialize()
 
 void Framework::Update()
 {
+	fps->Update();
 	// 入力関連の毎フレーム処理
 	input->Update();
 	// グローバル変数の更新
@@ -38,11 +40,13 @@ void Framework::Finalize()
 	imGuiManager->Finalize();
 	constant->Finalize();
 	sceneManager->Finalize();
+	fps->Finalize();
 	wAPI->Finalize();
 }
 
 void Framework::Run()
 {
+	Framework::Initialize();
 	Initialize();
 
 	// Xボタンで終了メッセージが来たらゲームループを抜ける
@@ -51,8 +55,8 @@ void Framework::Run()
 		// ImGui受付開始
 		imGuiManager->Begin();
 
+		Framework::Update();
 		Update();
-		//FPS::GetInstance()->Update();
 
 		// ImGui受付終了
 		imGuiManager->End();
@@ -63,5 +67,7 @@ void Framework::Run()
 		Draw();
 	}
 
+	// 終了処理
 	Finalize();
+	Framework::Finalize();
 }

@@ -21,7 +21,6 @@ DirectXCommon* DirectXCommon::GetInstance()
 
 void DirectXCommon::Initialize()
 {
-	fixFPS->Initialize();			// FPS固定生成
 	CreateDevice();					// デバイスの生成
 	CreateCommandList();			// コマンド関連の生成
 	CreateSwapchain();				// スワップチェーンの生成
@@ -365,7 +364,6 @@ void DirectXCommon::PostDraw()
 	// 表示
 	result = swapchain->Present(0, 0);
 
-	fixFPS->Update();
 
 	isChanedResolution = false;
 }

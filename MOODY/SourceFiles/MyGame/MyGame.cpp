@@ -6,10 +6,6 @@
 
 void MyGame::Initialize()
 {
-	// フレームワーク初期化
-	windowName = L"WristerEngine";
-	Framework::Initialize();
-
 	// シーンの生成
 	std::unique_ptr<WE::ISceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
@@ -19,7 +15,6 @@ void MyGame::Initialize()
 void MyGame::Update()
 {
 	// 更新処理
-	Framework::Update();
 	ImGuiTexts();
 	collisionManager->CheckCollisions();
 
@@ -62,8 +57,6 @@ void MyGame::Draw()
 
 void MyGame::Finalize()
 {
-	// 終了処理
-	Framework::Finalize();
 }
 
 bool MyGame::IsEndRequest()

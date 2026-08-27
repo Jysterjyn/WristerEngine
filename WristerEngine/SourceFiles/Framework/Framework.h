@@ -17,15 +17,16 @@ namespace WristerEngine
 		GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 		Constant* constant = Constant::GetInstance();
 		AudioManager* audioManager = AudioManager::GetInstance();
+		std::wstring windowName;
 
 	protected:
-		std::wstring windowName;
 		WindowsAPI* wAPI = WindowsAPI::GetInstance();
 		Input* input = Input::GetInstance();
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		SceneManager* sceneManager = SceneManager::GetInstance();
 		_2D::CollisionManager* collisionManager = _2D::CollisionManager::GetInstance();
 		ImGuiManager* imGuiManager = ImGuiManager::GetInstance();
+		FPS* fps = FPS::GetInstance();
 
 		// 初期化
 		virtual void Initialize();
@@ -37,6 +38,7 @@ namespace WristerEngine
 		virtual void Finalize();
 
 	public:
+		Framework(CR<std::wstring> windowName_){ windowName = windowName_; }
 		// 終了チェック
 		virtual bool IsEndRequest() { return false; }
 		virtual ~Framework() = default;

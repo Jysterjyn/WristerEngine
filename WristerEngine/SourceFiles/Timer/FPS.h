@@ -17,25 +17,25 @@ namespace WristerEngine
 		RealTimer interval = 0.25f;
 		// 1フレームの実行時間記録用配列
 		std::deque<float> frameTimes;
+		std::unique_ptr<std::thread> calculateFPSThread;
+		bool isFinish = false;
 
 		FPS() = default;
 		~FPS() = default;
-
-	public:
 		FPS(const FPS& obj) = delete;
 		FPS& operator=(const FPS& obj) = delete;
 
+	public:
 		// インスタンス取得
 		static FPS* GetInstance();
-		/// <summary>
-		/// 初期化
-		/// </summary>
-		/// <param name="maxfps">最大FPS値</param>
+		// 初期化
 		void Initialize();
-		// FPS固定
+		// 更新
 		void Update();
 		// FPS計算
 		void CalculateFPS();
+		// 終了処理
+		void Finalize();
 		// 前回記録からの経過時間を取得する
 		std::chrono::microseconds GetElapsed() const;
 		// FPS取得

@@ -3,7 +3,8 @@
 #include <Timer.h>
 
 namespace WristerEngine
-{	// 時限発動
+{	
+	// 時限発動
 	class TimedCall
 	{
 	private:
@@ -16,7 +17,7 @@ namespace WristerEngine
 
 	public:
 		// コンストラクタ
-		TimedCall(std::function<void(void)>callfunc, uint32_t time);;
+		TimedCall(std::function<void(void)>callfunc, uint32_t time);
 		// 更新
 		void Update();
 		// 完了ならtrueを返す

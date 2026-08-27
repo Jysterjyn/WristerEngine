@@ -6,8 +6,6 @@
 // このゲーム固有の処理クラス
 class MyGame : public WE::Framework
 {
-	WE::FPS* fps = WE::FPS::GetInstance();
-
 	void ImGuiTexts();
 
 	// 初期化(オーバーライド)
@@ -19,4 +17,8 @@ class MyGame : public WE::Framework
 	// 終了処理(オーバーライド)
 	void Finalize();
 	bool IsEndRequest() override;
+
+public:
+	MyGame(WE::CR<std::wstring> windowName_) : Framework(windowName_) {}
+	~MyGame() = default;
 };

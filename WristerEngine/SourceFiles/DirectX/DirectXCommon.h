@@ -54,7 +54,6 @@ namespace WristerEngine
 		UINT64 nextFenceValue = 1;
 		D3D12_VIEWPORT viewport{};
 		D3D12_RECT scissorRect{};
-		FPS* fixFPS = FPS::GetInstance();
 		bool isChanedResolution = false;
 		UINT frameIndex = 0;
 
