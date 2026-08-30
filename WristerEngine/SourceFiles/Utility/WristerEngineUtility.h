@@ -4,6 +4,7 @@
 #include <list>
 #include <set>
 #include <vector>
+#include <functional>
 
 namespace WristerEngine
 {
@@ -19,6 +20,34 @@ namespace WristerEngine
 	template<class T> using uPtr = std::unique_ptr<T>;
 	template<class T> using uList = std::list<uPtr<T>>;
 	template<class T> using CR = const T&;
+
+	class ListObject
+	{
+	public:
+		virtual ~ListObject() = default;
+		virtual void Initialize() = 0;
+		virtual void Update() = 0;
+		virtual void Draw() {}
+		virtual bool Remove() { return false; }
+	};
+
+	class Test : public std::list<uPtr<ListObject>>
+	{
+		std::list<uPtr<ListObject>> list;
+
+	public:
+		void Add(uPtr<ListObject> obj) { list.push_back(std::move(obj)); }
+
+		void Initialize(){ for (auto& item : list) { item->Initialize(); } }
+
+		void Update()
+		{
+			list.remove_if([&](CR<uPtr<ListObject>> item) { return item->Remove(); });
+			for (auto& item : list) { item->Update(); }
+		}
+
+		void Draw(){ for (auto& item : list) { item->Draw(); } }
+	};
 
 	template <class T>
 	// 順番を無視して要素が同じかどうかを比較する関数
@@ -54,9 +83,9 @@ namespace WristerEngine
 	};
 
 	template <class T>
-	uint32_t ChangeVal(T value) 
+	uint32_t ChangeVal(T value)
 	{
-		return static_cast<uint32_t>(value); 
+		return static_cast<uint32_t>(value);
 	}
 }
 

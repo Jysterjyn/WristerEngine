@@ -1,8 +1,8 @@
 ﻿#include "MyGame.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
-#include <imgui.h>
 
+static int objDelNum = -1;
 
 void MyGame::Initialize()
 {
@@ -37,13 +37,20 @@ void MyGame::Update()
 	{
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD);
 	}
+
+	if (input->IsTrigger(WE::Key::J))
+	{
+		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD / 4);
+	}
+
+	if (input->IsAnyInput()) { objDelNum++; }
+	testList.Update();
 }
 
 void MyGame::ImGuiTexts()
 {
 	ImGui::Text("FPS: %f", fps->GetFPS());
 }
-
 
 void MyGame::Draw()
 {
@@ -55,11 +62,13 @@ void MyGame::Draw()
 	dxCommon->PostDraw();
 }
 
-void MyGame::Finalize()
-{
-}
-
 bool MyGame::IsEndRequest()
 {
 	return input->IsTrigger(WE::Key::Escape);
+}
+
+void TestClass::Update()
+{
+	if (objNum == objDelNum) { isDelete = true; }
+	ImGui::Text("Obj%d Updated!", objNum);
 }

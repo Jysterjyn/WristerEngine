@@ -249,6 +249,7 @@ namespace WristerEngine
 		// いずれかのキーが押されたらtrueを返す
 		bool IsAnyInput() const { return Sum(key, 0U) > 0; }
 		bool IsAnyInput(std::vector<Key>& keys) const;
+		//bool IsTrigger() const { for (int i = 0;i < key.size)return; }
 
 		// KEY1が押されてたらプラス、KEY2が押されてたらマイナス
 		float Move(Key KEY1, Key KEY2, const float spd) const { return (IsInput(KEY1) - IsInput(KEY2)) * spd; }
