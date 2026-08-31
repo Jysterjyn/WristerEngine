@@ -28,25 +28,27 @@ namespace WristerEngine
 		virtual void Initialize() = 0;
 		virtual void Update() = 0;
 		virtual void Draw() {}
-		virtual bool Remove() { return false; }
+		virtual bool Remove() const { return false; }
 	};
 
-	class Test : public std::list<uPtr<ListObject>>
+	class uList2 : public std::list<uPtr<ListObject>>
 	{
-		std::list<uPtr<ListObject>> list;
+		//std::list<uPtr<ListObject>> list;
 
 	public:
-		void Add(uPtr<ListObject> obj) { list.push_back(std::move(obj)); }
-
-		void Initialize(){ for (auto& item : list) { item->Initialize(); } }
+		void Add(uPtr<ListObject> obj)
+		{
+			obj->Initialize();
+			push_back(std::move(obj));
+		}
 
 		void Update()
 		{
-			list.remove_if([&](CR<uPtr<ListObject>> item) { return item->Remove(); });
-			for (auto& item : list) { item->Update(); }
+			remove_if([&](CR<uPtr<ListObject>> item) { return item->Remove(); });
+			for (auto& item : *this) { item->Update(); }
 		}
 
-		void Draw(){ for (auto& item : list) { item->Draw(); } }
+		void Draw() { for (auto& item : *this) { item->Draw(); } }
 	};
 
 	template <class T>

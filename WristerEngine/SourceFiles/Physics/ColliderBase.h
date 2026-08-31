@@ -78,19 +78,16 @@ namespace WristerEngine
 		}
 	};
 
+	using CollisionPairList = std::list<BaseCollisionPair>;
+
 	class BaseColliderGroup : public ColliderInfo
 	{
 	protected:
 		uList<BaseSingleCollider> colliders;
 		std::list<BaseCollider*> owners;
 
-		using CollisionPairList = std::vector<BaseCollisionPair>;
-
 		// 当たったペアの記録
-		CollisionPairList collisionPairs;
-		CollisionPairList enterPairs;
-		CollisionPairList exitPairs;
-		CollisionPairList collisionPairsPre;
+		CollisionPairList collisionPairs, enterPairs, exitPairs, collisionPairsPre;
 
 	private:
 		// コールバック関数呼び出し
@@ -119,9 +116,9 @@ namespace WristerEngine
 
 		// getter
 		const std::list<std::unique_ptr<BaseSingleCollider>>* GetColliders() const { return &colliders; }
-		const std::vector<BaseCollisionPair>& GetCollisionPairs() const { return collisionPairs; }
-		const std::vector<BaseCollisionPair>& GetEnterPairs() const { return enterPairs; }
-		const std::vector<BaseCollisionPair>& GetExitPairs() const { return exitPairs; }
+		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
+		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
+		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }
 	};
 
 	class BaseCollider
@@ -178,7 +175,7 @@ namespace WristerEngine
 
 		void DeleteGroup() { group = nullptr; }
 		// getter
-		const std::vector<BaseCollisionPair>& GetCollisionPairs() const { return group->GetCollisionPairs(); }
+		CR<CollisionPairList> GetCollisionPairs() const { return group->GetCollisionPairs(); }
 		BaseColliderGroup* GetGroup() const { return group; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};

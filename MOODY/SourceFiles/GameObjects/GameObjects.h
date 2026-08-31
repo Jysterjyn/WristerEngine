@@ -2,7 +2,7 @@
 #include <Behavior.h>
 #include <SpriteManager.h>
 
-class GameObjects
+class GameObjects : public WE::ListObject
 {
 private:
 	bool isDestroy = false;
@@ -17,9 +17,7 @@ protected:
 
 public:
 	virtual ~GameObjects() = default;
-	virtual void Initialize() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
-	bool IsDestroy() const { return isDestroy; }
+	bool Remove() const override { return isDestroy; }
+	//void Draw() override { sprite->Draw(); }
 };
 

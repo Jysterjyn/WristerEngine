@@ -41,8 +41,8 @@ void Ball::Draw()
 void Ball::OnCollision()
 {
 	// 相手がプレイヤーだったら消滅
-	//collider->Destroy();
-	//Destroy();
+	collider->Destroy();
+	Destroy();
 }
 
 void Ball::ApplyParameter()

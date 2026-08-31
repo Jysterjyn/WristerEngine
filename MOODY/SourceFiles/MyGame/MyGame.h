@@ -11,7 +11,7 @@ class TestClass : public WE::ListObject
 
 	void Initialize() override {}
 	void Update() override;
-	bool Remove() override { return isDelete; };
+	bool Remove() const override { return isDelete; };
 
 public:
 	TestClass(int num) { objNum = num; }
@@ -20,7 +20,7 @@ public:
 // このゲーム固有の処理クラス
 class MyGame : public WE::Framework
 {
-	WE::Test testList;
+	//WE::Test testList;
 	void ImGuiTexts();
 
 	// 初期化(オーバーライド)

@@ -1,6 +1,7 @@
 ﻿#include "ColliderBase.h"
 #include "CollisionManager2D.h"
 #include <thread>
+#include <unordered_set>
 
 using namespace WE;
 
@@ -67,7 +68,9 @@ BaseSingleCollider* BaseColliderGroup::AddCollider(std::unique_ptr<BaseSingleCol
 void BaseColliderGroup::Update()
 {
 	// コライダーの削除
-	colliders.remove_if([](std::unique_ptr<BaseSingleCollider>& collider)
+	collisionPairsPre.remove_if([](CR<BaseCollisionPair> pair)
+		{ return pair.my->IsDestroy() || pair.other->IsDestroy(); });
+	colliders.remove_if([](uPtr<BaseSingleCollider>& collider)
 		{ return collider.get()->IsDestroy(); });
 
 	for (auto& collider : colliders) { collider->Update(); }
@@ -88,7 +91,7 @@ void BaseColliderGroup::CallCollisions()
 
 void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCollider::* callback)())
 {
-	std::map<uint32_t, uint8_t> called;
+	std::unordered_set<uint32_t> called;
 
 	for (const auto& pair : pairs)
 	{
@@ -96,9 +99,10 @@ void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCol
 		uint32_t serial = owner->GetSerialNumber();
 		// すでに呼ばれているオーナーはスキップ
 		if (called.contains(serial)) { continue; }
+
 		(owner->*callback)();
 		// 呼び出したオーナーを記録
-		called[serial];
+		called.insert(serial);
 	}
 }
 

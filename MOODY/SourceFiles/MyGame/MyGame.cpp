@@ -44,7 +44,7 @@ void MyGame::Update()
 	}
 
 	if (input->IsAnyInput()) { objDelNum++; }
-	testList.Update();
+	//testList.Update();
 }
 
 void MyGame::ImGuiTexts()
@@ -64,7 +64,9 @@ void MyGame::Draw()
 
 bool MyGame::IsEndRequest()
 {
-	return input->IsTrigger(WE::Key::Escape);
+	bool isEnd = input->IsTrigger(WE::Key::Escape);
+	isEnd |= input->IsTrigger(WE::Mouse::Middle);
+	return isEnd;
 }
 
 void TestClass::Update()

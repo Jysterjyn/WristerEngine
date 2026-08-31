@@ -3,14 +3,11 @@
 
 class Stage
 {
-	WE::uList<GameObjects> gameObjects;
+	WE::uList2 gameObjects;
 
 public:
 	void Initialize();
 	void Update();
 	void Draw();
-	~Stage() 
-	{
-		gameObjects.clear(); 
-	}
+	~Stage() { gameObjects.clear(); }
 };
