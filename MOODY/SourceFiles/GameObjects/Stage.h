@@ -3,7 +3,7 @@
 
 class Stage
 {
-	WE::uList2 gameObjects;
+	WE::uList gameObjects;
 
 public:
 	void Initialize();

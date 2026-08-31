@@ -18,7 +18,6 @@ namespace WristerEngine
 	}
 
 	template<class T> using uPtr = std::unique_ptr<T>;
-	template<class T> using uList = std::list<uPtr<T>>;
 	template<class T> using CR = const T&;
 
 	class ListObject
@@ -31,10 +30,8 @@ namespace WristerEngine
 		virtual bool Remove() const { return false; }
 	};
 
-	class uList2 : public std::list<uPtr<ListObject>>
+	class uList : public std::list<uPtr<ListObject>>
 	{
-		//std::list<uPtr<ListObject>> list;
-
 	public:
 		ListObject* Add(uPtr<ListObject> obj)
 		{

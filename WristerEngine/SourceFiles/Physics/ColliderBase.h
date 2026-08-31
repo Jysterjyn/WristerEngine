@@ -83,7 +83,7 @@ namespace WristerEngine
 	class BaseColliderGroup : public ColliderInfo
 	{
 	protected:
-		uList<BaseSingleCollider> colliders;
+		std::list<uPtr<BaseSingleCollider>> colliders;
 		std::list<BaseCollider*> owners;
 
 		// 当たったペアの記録
@@ -115,7 +115,7 @@ namespace WristerEngine
 		void CallCollisions();
 
 		// getter
-		const std::list<std::unique_ptr<BaseSingleCollider>>* GetColliders() const { return &colliders; }
+		const std::list<uPtr<BaseSingleCollider>>* GetColliders() const { return &colliders; }
 		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
 		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
 		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }

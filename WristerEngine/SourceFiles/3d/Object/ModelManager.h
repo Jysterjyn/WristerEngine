@@ -14,7 +14,7 @@ namespace WristerEngine::_3D
 		// 読み込んだモデル情報
 		std::unordered_map<std::string, std::array<std::unique_ptr<Mesh>, 2>> meshes;
 		// 生成したオブジェクト
-		uList<Object3d> objects;
+		std::list<uPtr<Object3d>> objects;
 		// カメラマネージャー
 		CameraManager* cameraManager = CameraManager::GetInstance();
 		// ライト

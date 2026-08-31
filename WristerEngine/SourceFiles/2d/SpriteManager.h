@@ -16,8 +16,8 @@ namespace WristerEngine::_2D
 
 		const Matrix4 matProj = OrthoGraphic();
 
-		uList<TextureData> textures;
-		uList<Sprite> sprites;
+		std::list<uPtr<TextureData>> textures;
+		std::list<uPtr<Sprite>> sprites;
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 		ConstBufferData* constMap = nullptr;
 

@@ -9,7 +9,7 @@ namespace WristerEngine
 	class AudioManager
 	{
 	private:
-		uList2 audios;
+		uList audios;
 
 		AudioManager() = default;
 		~AudioManager() = default;
