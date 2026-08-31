@@ -16,10 +16,10 @@ namespace WristerEngine
 	private:
 		GlobalVariables* globalVariables = GlobalVariables::GetInstance();
 		Constant* constant = Constant::GetInstance();
-		AudioManager* audioManager = AudioManager::GetInstance();
 		std::wstring windowName;
 
 	protected:
+		AudioManager* audioManager = AudioManager::GetInstance();
 		WindowsAPI* wAPI = WindowsAPI::GetInstance();
 		Input* input = Input::GetInstance();
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();

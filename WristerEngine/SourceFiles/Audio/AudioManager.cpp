@@ -10,10 +10,8 @@ AudioManager* AudioManager::GetInstance()
 
 Audio* AudioManager::Create(const std::string& fileName, bool isLoop)
 {
-	std::unique_ptr<Audio> newAudio = std::make_unique<Audio>();
-	newAudio->Initialize(fileName, isLoop);
-	audios.push_back(std::move(newAudio));
-	return audios.back().get();
+	Audio* newAudio = static_cast<Audio*>(audios.Add(std::make_unique<Audio>(fileName, isLoop)));
+	return newAudio;
 }
 
 void AudioManager::PlaySE(const std::string& fileName)
@@ -25,8 +23,5 @@ void AudioManager::PlaySE(const std::string& fileName)
 
 void AudioManager::Update()
 {
-	audios.remove_if([](auto& audio) { return audio->isSE && audio->IsFinished(); });
-
-	// 更新処理
-	for (auto& audio : audios) { audio->Update(); }
+	audios.Update();
 }

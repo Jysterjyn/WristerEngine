@@ -7,19 +7,21 @@
 #include <dshow.h>
 #include <memory>
 #include <mfmediaengine.h>
- 
+#include <WristerEngineUtility.h>
+
 namespace WristerEngine
 {
 	class AudioManager;
 
 	// オーディオ
-	class Audio
+	class Audio : public ListObject
 	{
 	private:
 		Microsoft::WRL::ComPtr<IGraphBuilder> graphBuilder;
 		Microsoft::WRL::ComPtr<IMediaControl> mediaControl;
 		Microsoft::WRL::ComPtr<IMediaPosition> mediaPosition;
 		Microsoft::WRL::ComPtr<IBasicAudio> basicAudio;
+		const std::string name;
 		bool isLoop = false;
 		bool isSE = false;
 
@@ -27,16 +29,19 @@ namespace WristerEngine
 		static std::string DIRECTORY_PATH;
 
 		// 再生が終わったか
-		bool IsFinished();
+		bool IsFinished() const;
 
 	protected:
 		// 初期化
-		void Initialize(const std::string& fileName, bool isLoop);
+		void Initialize() override;
 		// 更新
-		virtual void Update();
+		virtual void Update() override;
+		bool Remove() const override { return isSE && IsFinished(); }
 
 	public:
 		friend AudioManager;
+
+		Audio(CR<std::string> fileName, bool isLoop) : name(fileName), isLoop(isLoop) {}
 		// 仮想デストラクタ
 		virtual ~Audio() = default;
 		// 再生
@@ -52,7 +57,6 @@ namespace WristerEngine
 		void SetVolume(long volume) { basicAudio->put_Volume(volume); }
 		// -10000(左)〜10000(右)
 		void SetBalance(long balance) { basicAudio->put_Balance(balance); }
-
-		REFTIME time = 0;
+		REFTIME GetReftime();
 	};
 }

@@ -3,24 +3,12 @@
 #include <PostEffect.h>
 #include <thread>
 
-class TestClass : public WE::ListObject
-{
-	int objNum = 0;
-	bool isDelete = false;
-	WE::Input* input = WE::Input::GetInstance();
-
-	void Initialize() override {}
-	void Update() override;
-	bool Remove() const override { return isDelete; };
-
-public:
-	TestClass(int num) { objNum = num; }
-};
-
 // このゲーム固有の処理クラス
 class MyGame : public WE::Framework
 {
-	//WE::Test testList;
+	WE::Audio* bgm = nullptr;
+	REFTIME bgmTime = 0;
+
 	void ImGuiTexts();
 
 	// 初期化(オーバーライド)

@@ -36,10 +36,11 @@ namespace WristerEngine
 		//std::list<uPtr<ListObject>> list;
 
 	public:
-		void Add(uPtr<ListObject> obj)
+		ListObject* Add(uPtr<ListObject> obj)
 		{
 			obj->Initialize();
 			push_back(std::move(obj));
+			return back().get();
 		}
 
 		void Update()

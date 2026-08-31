@@ -6,7 +6,7 @@ using namespace WE;
 
 std::string Audio::DIRECTORY_PATH = "Sounds/";
 
-void Audio::Initialize(const std::string& fileName, bool isLoop_)
+void Audio::Initialize()
 {
 	Result result;
 	// FilterGraphを生成
@@ -20,24 +20,28 @@ void Audio::Initialize(const std::string& fileName, bool isLoop_)
 	result = graphBuilder->QueryInterface(IID_IMediaPosition, (LPVOID*)&mediaPosition);
 	result = graphBuilder->QueryInterface(IID_IBasicAudio, (LPVOID*)&basicAudio);
 
-	std::string fullPath = CreateResourcePath(DIRECTORY_PATH + fileName);
+	std::string fullPath = CreateResourcePath(DIRECTORY_PATH + name);
 
 	// ワイド文字列に変換
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 
 	// Graphを生成
 	result = mediaControl->RenderFile((BSTR)wfilePath.data());
-
-	isLoop = isLoop_;
 }
 
 void Audio::Update()
 {
 	if (isLoop && IsFinished()) { SetPlayPosition(0); }
-	mediaPosition->get_CurrentPosition(&time);
 }
 
-bool Audio::IsFinished()
+REFTIME WristerEngine::Audio::GetReftime()
+{
+	REFTIME time = 0;
+	mediaPosition->get_CurrentPosition(&time);
+	return time;
+}
+
+bool Audio::IsFinished() const
 {
 	double currentTime = 0, duration = 0;
 	mediaPosition->get_CurrentPosition(&currentTime);
