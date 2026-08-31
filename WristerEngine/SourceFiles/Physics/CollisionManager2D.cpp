@@ -50,9 +50,11 @@ bool CollisionManager::Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup
 	for (const auto& colliderA : *groupA->GetColliders()) {
 		for (const auto& colliderB : *groupB->GetColliders())
 		{
-			if (!CheckFiltering(colliderA.get(), colliderB.get())) { continue; }
+			BaseSingleCollider* colA = static_cast<BaseSingleCollider*>(colliderA.get());
+			BaseSingleCollider* colB = static_cast<BaseSingleCollider*>(colliderB.get());
+			if (!CheckFiltering(colA, colB)) { continue; }
 
-			std::list<BaseSingleCollider*> colliderPair({ colliderA.get(),colliderB.get() });
+			std::list<BaseSingleCollider*> colliderPair({ colA,colB });
 			colliderPair.sort([](BaseSingleCollider* c1, BaseSingleCollider* c2)
 				{
 					return c1->GetShapeType() < c2->GetShapeType();
@@ -60,8 +62,8 @@ bool CollisionManager::Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup
 
 			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
 			{
-				BaseCollisionPair pairA(colliderA.get(), colliderB.get(), hitInfo.get());
-				BaseCollisionPair pairB(colliderB.get(), colliderA.get(), hitInfo.get());
+				BaseCollisionPair pairA(colA, colB, hitInfo.get());
+				BaseCollisionPair pairB(colB, colA, hitInfo.get());
 				groupA->AddCollisionPair(pairA);
 				groupB->AddCollisionPair(pairB);
 				hitInfo->Reset();

@@ -33,14 +33,14 @@ ColliderInfo ColliderInfo::GetColliderInfo() const
 	return info;
 }
 
-bool WE::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
+bool WristerEngine::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
 {
 	return
 		infoA->GetAttribute() & infoB->GetMask() &&
 		infoB->GetAttribute() & infoA->GetMask();
 }
 
-bool WE::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2)
+bool WristerEngine::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2)
 {
 	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
 	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
@@ -61,8 +61,7 @@ BaseColliderGroup::~BaseColliderGroup()
 
 BaseSingleCollider* BaseColliderGroup::AddCollider(std::unique_ptr<BaseSingleCollider> newCollider)
 {
-	colliders.push_back(std::move(newCollider));
-	return colliders.back().get();
+	return static_cast<BaseSingleCollider*>(colliders.Add(std::move(newCollider)));
 }
 
 void BaseColliderGroup::Update()
@@ -70,10 +69,7 @@ void BaseColliderGroup::Update()
 	// コライダーの削除
 	collisionPairsPre.remove_if([](CR<BaseCollisionPair> pair)
 		{ return pair.my->IsDestroy() || pair.other->IsDestroy(); });
-	colliders.remove_if([](uPtr<BaseSingleCollider>& collider)
-		{ return collider.get()->IsDestroy(); });
-
-	for (auto& collider : colliders) { collider->Update(); }
+	colliders.Update();
 	collisionPairs.clear();
 	enterPairs.clear();
 	exitPairs.clear();
@@ -145,6 +141,7 @@ BaseCollider::~BaseCollider()
 	if (!group) { return; }
 	for (auto& collider : *group->GetColliders())
 	{
-		if (collider->GetOwner() == this) { collider->Destroy(); }
+		BaseSingleCollider* col = static_cast<BaseSingleCollider*>(collider.get());
+		if (col->GetOwner() == this) { col->Destroy(); }
 	}
 }

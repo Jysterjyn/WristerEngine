@@ -20,7 +20,7 @@ void FPS::Initialize()
 void FPS::Update()
 {
 	// 前回のフレームからの経過時間を取得して記録する
-	frameTimes.push_back((float)GetElapsed().count());
+	frameTimes.push_back(GetDeltaTime());
 	// 現在の時間を記録する
 	reference = steady_clock::now();
 }
@@ -42,7 +42,7 @@ void FPS::Finalize()
 	if (calculateFPSThread && calculateFPSThread->joinable()) { calculateFPSThread->join(); }
 }
 
-microseconds FPS::GetElapsed() const
+float FPS::GetDeltaTime() const
 {
-	return  duration_cast<microseconds>(steady_clock::now() - reference);
+	return (float)(duration_cast<microseconds>(steady_clock::now() - reference)).count();
 }

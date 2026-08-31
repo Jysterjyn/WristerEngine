@@ -17,7 +17,7 @@ namespace WristerEngine
 		RealTimer interval = 0.25f;
 		// 1フレームの実行時間記録用配列
 		std::deque<float> frameTimes;
-		std::unique_ptr<std::thread> calculateFPSThread;
+		uPtr<std::thread> calculateFPSThread;
 		bool isFinish = false;
 
 		FPS() = default;
@@ -37,7 +37,9 @@ namespace WristerEngine
 		// 終了処理
 		void Finalize();
 		// 前回記録からの経過時間を取得する
-		std::chrono::microseconds GetElapsed() const;
+		float GetDeltaTime() const;
+		// 現在のフレームの経過時間を取得する
+		float GetCurrentDeltaTime() const { return frameTimes.empty() ? 0.0f : frameTimes.back(); }
 		// FPS取得
 		float GetFPS() const { return fps; }
 	};

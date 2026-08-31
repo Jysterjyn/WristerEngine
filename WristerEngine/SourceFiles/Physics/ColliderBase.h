@@ -34,7 +34,7 @@ namespace WristerEngine
 
 	class BaseCollider;
 
-	class BaseSingleCollider : public ColliderInfo
+	class BaseSingleCollider : public ColliderInfo, public ListObject
 	{
 	protected:
 		bool isDestroy = false;
@@ -44,8 +44,10 @@ namespace WristerEngine
 
 	public:
 		virtual ~BaseSingleCollider() = default;
-		virtual void Update() {}
+		virtual void Initialize() override {}
+		virtual void Update() override {}
 		void Destroy() { isDestroy = true; }
+		bool Remove() const override { return isDestroy; }
 
 		void Initialize(BaseCollider* owner_, const ColliderInfo& info)
 		{
@@ -83,7 +85,7 @@ namespace WristerEngine
 	class BaseColliderGroup : public ColliderInfo
 	{
 	protected:
-		std::list<uPtr<BaseSingleCollider>> colliders;
+		uList colliders;
 		std::list<BaseCollider*> owners;
 
 		// 当たったペアの記録
@@ -115,7 +117,7 @@ namespace WristerEngine
 		void CallCollisions();
 
 		// getter
-		const std::list<uPtr<BaseSingleCollider>>* GetColliders() const { return &colliders; }
+		const uList* GetColliders() const { return &colliders; }
 		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
 		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
 		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }
