@@ -133,7 +133,10 @@ void SpriteAnimation::Initialize(CR<SpriteProp> prop)
 
 void SpriteAnimation::Update()
 {
-	if (!interval.Update()) { return; }
-	animeNum = NumberLoop(animeNum + 1, animeNumMax);
-	textureLeftTop = { (float)animeNum * width ,0 };
+	if (interval.Update()) 
+	{
+		animeNum = NumberLoop(animeNum + 1, animeNumMax);
+		textureLeftTop = { (float)animeNum * width ,0 };
+	}
+	Sprite::Update();
 }

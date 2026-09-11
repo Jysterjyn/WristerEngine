@@ -32,8 +32,6 @@ namespace WristerEngine
 		void Initialize();
 		// 更新
 		void Update();
-		// FPS計算
-		void CalculateFPS();
 		// 終了処理
 		void Finalize();
 		// 前回記録からの経過時間を取得する
