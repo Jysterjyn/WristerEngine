@@ -6,9 +6,6 @@
 // このゲーム固有の処理クラス
 class MyGame : public WE::Framework
 {
-	WE::Audio* bgm = nullptr;
-	REFTIME bgmTime = 0;
-
 	void ImGuiTexts();
 
 	// 初期化(オーバーライド)
@@ -22,6 +19,6 @@ class MyGame : public WE::Framework
 	bool IsEndRequest() override;
 
 public:
-	MyGame(WE::CR<std::wstring> windowName_) : Framework(windowName_) {}
+	MyGame(WE::CR<std::wstring> windowName) : Framework(windowName) {}
 	~MyGame() = default;
 };

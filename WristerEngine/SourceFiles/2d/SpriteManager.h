@@ -35,9 +35,9 @@ namespace WristerEngine::_2D
 		TextureData* LoadTexture(const std::string& fileName);
 
 		// スプライト生成
-		Sprite* Create(std::initializer_list<const std::string> fileNames,
-			CR<Vector2> pos = {}, CR<Vector2> anchorPoint = {},
-			CR<Vector2> textureSize = {}, CR<Vector2> textureLeftTop = {});
+		Sprite* Create(CR<SpriteProp> prop);
+		// スプライト生成(シンプル版)
+		Sprite* Create(CR<std::string> fileName);
 
 		void Update();
 

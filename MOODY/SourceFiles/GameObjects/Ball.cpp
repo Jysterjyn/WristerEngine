@@ -5,7 +5,9 @@
 
 void Ball::Initialize()
 {
-	sprite = spMan->Create({ "Nanika/Nanika.png","Nanika/Ukenagashi.png" });
+	WE::_2D::SpriteProp prop;
+	prop.AddFileNames({ "Nanika/Nanika.png", "Nanika/Ukenagashi.png" });
+	sprite = spMan->Create(prop);
 	sprite->SetTextureIndex(0);
 	sprite->SetCenterAnchor();
 

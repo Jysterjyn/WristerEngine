@@ -15,6 +15,23 @@ namespace WristerEngine::_2D
 		SRVHandle srvHandle;
 	};
 
+	struct SpriteProp
+	{
+		// Sprite汎用変数
+		std::vector<std::string> fileNames;
+		Vector2 pos;
+		Vector2 anchorPoint;
+		Vector2 textureSize;
+		Vector2 textureLeftTop;
+		// SpriteAnimation汎用変数
+		bool isAnimation = false;
+		float width = 0;
+		int interval = 1;
+		size_t spriteNum = 0;
+
+		void AddFileNames(const std::vector<std::string>& fileNames);
+	};
+
 	class SpriteManager;
 
 	// スプライト
@@ -32,27 +49,6 @@ namespace WristerEngine::_2D
 
 	private:
 		friend SpriteManager;
-
-		class Animation
-		{
-		private:
-			Sprite* sprite = nullptr;
-			float width = 0;
-			FrameTimer interval;
-			size_t animeNum = 0;
-			size_t animeNumMax = 0;
-
-		public:
-			/// <summary>
-			/// 初期化
-			/// </summary>
-			/// <param name="sprite">spriteポインタ</param>
-			/// <param name="spriteNum">アニメーション枚数</param>
-			/// <param name="animationIntervel">アニメーション速度</param>
-			void Initialize(Sprite* sprite, size_t spriteNum, int animationIntervel);
-			// 更新
-			void Update();
-		};
 
 		struct ConstBufferData
 		{
@@ -77,18 +73,17 @@ namespace WristerEngine::_2D
 		Vertex* vertMap = nullptr;
 		UINT16 texIndex = 0;
 		std::vector<TextureData*> textures{};
-		std::unique_ptr<Animation> animation;
 
 		// テクスチャサイズをイメージに合わせる
 		void AdjustTextureSize();
+
+	protected:
 		// 初期化
-		void Initialize();
+		virtual void Initialize(CR<SpriteProp> prop);
 		// 更新
-		void Update();
+		virtual void Update();
 
 	public:
-
-		void SetAnimation(size_t spriteNum, int animationIntervel);
 		// 描画
 		void Draw();
 		// 位置を画面中央にする
@@ -105,7 +100,7 @@ namespace WristerEngine::_2D
 		/// <param name="textureSize">切り取り領域のサイズ</param>
 		/// <param name="textureLeftTop">切り取り領域の左上座標</param>
 		void SetRect(CR<Vector2> textureSize, CR<Vector2> textureLeftTop = {});
-
+		
 		/// <summary>
 		/// テクスチャ分割
 		/// </summary>
@@ -113,5 +108,20 @@ namespace WristerEngine::_2D
 		void Split(CR<Vector2> spritNum);
 
 		void SetTextureIndex(UINT16 texIndex);
+	};
+
+	class SpriteAnimation : public Sprite
+	{
+	private:
+		float width = 0;
+		FrameTimer interval;
+		size_t animeNum = 0;
+		size_t animeNumMax = 0;
+
+	public:
+		// 初期化
+		void Initialize(CR<SpriteProp> prop) override;
+		// 更新
+		void Update() override;
 	};
 }

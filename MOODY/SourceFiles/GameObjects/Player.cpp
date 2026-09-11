@@ -4,7 +4,10 @@
 
 void Player::Initialize()
 {
-	sprite = spMan->Create({ "Nanika/Nanika.png" }, Half(WE::WIN_SIZE));
+	WE::_2D::SpriteProp prop;
+	prop.fileNames.push_back("Nanika/Nanika.png");
+	prop.pos = Half(WE::WIN_SIZE);
+	sprite = spMan->Create(prop);
 	sprite->SetCenterAnchor();
 
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player));

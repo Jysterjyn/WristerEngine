@@ -10,15 +10,11 @@ void MyGame::Initialize()
 	std::unique_ptr<WE::ISceneFactory> sceneFactory;
 	sceneFactory = std::make_unique<SceneFactory>();
 	sceneManager->Initialize(sceneFactory, "GameScene");
-
-	bgm = audioManager->Create("群青とフリューゲル ft.初音ミクレロ (Gunjo To Flugel ft.Hatsune MikuRelo).mp3");
-	//bgm->Play();
 }
 
 void MyGame::Update()
 {
 	// 更新処理
-	bgmTime = bgm->GetReftime();
 	ImGuiTexts();
 	collisionManager->CheckCollisions();
 
@@ -46,15 +42,11 @@ void MyGame::Update()
 	{
 		WE::DirectXCommon::GetInstance()->ChangeResolution(WE::FullHD / 4);
 	}
-
-	if (bgmTime >= 30.0) { bgm->Stop(); }
-	if (input->IsAnyInput()) { objDelNum++; }
 }
 
 void MyGame::ImGuiTexts()
 {
 	ImGui::Text("FPS: %f", fps->GetFPS());
-	ImGui::Text("bgmTime: %f", bgmTime);
 }
 
 void MyGame::Draw()

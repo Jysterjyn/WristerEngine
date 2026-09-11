@@ -5,6 +5,11 @@
 using namespace WE;
 using namespace _2D;
 
+void SpriteProp::AddFileNames(const std::vector<std::string>& fileNames_)
+{
+	for (const std::string& fileName : fileNames_) { fileNames.push_back(fileName); }
+}
+
 void Sprite::SetRect(CR<Vector2> textureSize_, CR<Vector2> textureLeftTop_)
 {
 	// 拡大比率を保ったまま切り取り領域を変更する
@@ -15,14 +20,6 @@ void Sprite::SetRect(CR<Vector2> textureSize_, CR<Vector2> textureLeftTop_)
 	textureLeftTop = textureLeftTop_;
 }
 
-void Sprite::Split(CR<Vector2> spritNum)
-{
-	textureSize.x /= spritNum.x;
-	textureSize.y /= spritNum.y;
-	size.x /= spritNum.x;
-	size.y /= spritNum.y;
-}
-
 void Sprite::SetTextureIndex(UINT16 texIndex_)
 {
 	// テクスチャ数を超えてたら停止
@@ -30,7 +27,7 @@ void Sprite::SetTextureIndex(UINT16 texIndex_)
 	texIndex = texIndex_;
 }
 
-void Sprite::Initialize()
+void Sprite::Initialize(CR<SpriteProp> prop)
 {
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
@@ -52,6 +49,9 @@ void Sprite::Initialize()
 
 	AdjustTextureSize();
 	size = textureSize;
+	position = prop.pos;
+	anchorPoint = prop.anchorPoint;
+	if (prop.textureSize.Length() != 0) { SetRect(prop.textureSize, prop.textureLeftTop); }
 }
 
 void Sprite::AdjustTextureSize()
@@ -64,17 +64,9 @@ void Sprite::AdjustTextureSize()
 	textureSize.y = static_cast<float>(resDesc.Height);
 }
 
-void Sprite::SetAnimation(size_t spriteNum, int animationIntervel)
-{
-	animation = std::make_unique<Animation>();
-	animation->Initialize(this, spriteNum, animationIntervel);
-}
-
 void Sprite::Update()
 {
 	if (isInvisible) { return; }
-
-	if (animation) { animation->Update(); }
 
 	float left = (0.0f - anchorPoint.x);
 	float right = (1.0f - anchorPoint.x);
@@ -122,18 +114,26 @@ void Sprite::Draw()
 	cmdList->DrawInstanced((UINT)vertices.size(), 1, 0, 0); // 全ての頂点を使って描画
 }
 
-void Sprite::Animation::Initialize(Sprite* sprite_, size_t spriteNum, int animationIntervel)
+void Sprite::Split(CR<Vector2> spritNum)
 {
-	sprite = sprite_;
-	width = sprite->textureSize.x / spriteNum;
-	interval = animationIntervel;
-	animeNumMax = spriteNum;
-	sprite->SetRect({ width,sprite->textureSize.y });
+	textureSize.x /= spritNum.x;
+	textureSize.y /= spritNum.y;
+	size.x /= spritNum.x;
+	size.y /= spritNum.y;
 }
 
-void Sprite::Animation::Update()
+void SpriteAnimation::Initialize(CR<SpriteProp> prop)
+{
+	Sprite::Initialize(prop);
+	width = textureSize.x / prop.spriteNum;
+	interval = prop.interval;
+	animeNumMax = prop.spriteNum;
+	SetRect({ width, textureSize.y });
+}
+
+void SpriteAnimation::Update()
 {
 	if (!interval.Update()) { return; }
 	animeNum = NumberLoop(animeNum + 1, animeNumMax);
-	sprite->textureLeftTop = { (float)animeNum * width ,0 };
+	textureLeftTop = { (float)animeNum * width ,0 };
 }

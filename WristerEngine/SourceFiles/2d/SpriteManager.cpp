@@ -96,23 +96,29 @@ TextureData* SpriteManager::LoadTexture(const std::string& fileName)
 	return textures.back().get();
 }
 
-Sprite* SpriteManager::Create(std::initializer_list<const std::string> fileNames,
-	CR<Vector2> pos, CR<Vector2> anchorPoint,
-	CR<Vector2> textureSize, CR<Vector2> textureLeftTop)
+Sprite* SpriteManager::Create(CR<SpriteProp> prop)
 {
-	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	for (const std::string& fileName : fileNames)
+	std::unique_ptr<Sprite> sprite;
+
+	if (prop.isAnimation) { sprite = std::make_unique<SpriteAnimation>(); }
+	else { sprite = std::make_unique<Sprite>(); }
+
+	for (CR<std::string> fileName : prop.fileNames)
 	{
 		TextureData* tex = LoadTexture(fileName);
 		sprite->textures.push_back(tex);
 	}
-	sprite->Initialize();
-	sprite->position = pos;
-	sprite->anchorPoint = anchorPoint;
-	if (textureSize.Length() != 0) { sprite->SetRect(textureSize, textureLeftTop); }
+	sprite->Initialize(prop);
 	sprites.push_back(move(sprite));
 	return sprites.back().get();
 }
+
+Sprite* SpriteManager::Create(CR<std::string> fileName)
+{
+	SpriteProp prop;
+	prop.fileNames.push_back(fileName);
+	return Create(prop);
+ }
 
 void SpriteManager::PreDraw()
 {
