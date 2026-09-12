@@ -4,23 +4,20 @@
 namespace WristerEngine
 {
 	// 画面のフェード演出
-	class FadeManager : _2D::SpriteUtility
+	class IFadeManager : public _2D::SpriteUtility
 	{
-	private:
-		const int FADE_TIME = 30;
-		float fadePerFlame = 1.0f / FADE_TIME;
-		_2D::Sprite* sprite = nullptr;
-		bool isFade = 0;
-		float alpha = 0;
+	protected:
+		bool isFade = false;
 		bool isChange = false;
 
 	public:
+		virtual ~IFadeManager() = default;
 		// 初期化
-		void Initialize();
+		virtual void Initialize() = 0;
 		// 更新
-		void Update();
+		virtual void Update() = 0;
 		// 描画
-		void Draw() { sprite->Draw(); }
+		virtual void Draw() = 0;
 		// フェードをオンにする
 		void FadeScene() { isFade = true; }
 		// getter

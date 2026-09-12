@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "D3D12Common.h"
 #include "PipelineManager.h"
+#include <cassert>
 using namespace WE;
 using namespace _2D;
 
@@ -44,10 +45,16 @@ void Framework::Finalize()
 	wAPI->Finalize();
 }
 
+void Framework::CheckVariables()
+{
+	assert(sceneManager->CheckVariables());
+}
+
 void Framework::Run()
 {
 	Framework::Initialize();
 	Initialize();
+	CheckVariables();
 
 	// Xボタンで終了メッセージが来たらゲームループを抜ける
 	while (!(IsEndRequest() || wAPI->ProcessMessage()))

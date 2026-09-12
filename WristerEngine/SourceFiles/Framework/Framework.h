@@ -7,6 +7,7 @@
 #include <GlobalVariables.h>
 #include <ImGuiManager.h>
 #include <AudioManager.h>
+#include <BaseGameSettings.h>
 
 namespace WristerEngine
 {
@@ -27,6 +28,7 @@ namespace WristerEngine
 		_2D::CollisionManager* collisionManager = _2D::CollisionManager::GetInstance();
 		ImGuiManager* imGuiManager = ImGuiManager::GetInstance();
 		FPS* fps = FPS::GetInstance();
+		uPtr<BaseGameSettings> gameSettings;
 
 		// 初期化
 		virtual void Initialize();
@@ -36,6 +38,8 @@ namespace WristerEngine
 		virtual void Draw() = 0;
 		// 終了
 		virtual void Finalize();
+		// 変数に不備がないかのチェック
+		void CheckVariables();
 
 	public:
 		Framework(CR<std::wstring> windowName_){ windowName = windowName_; }

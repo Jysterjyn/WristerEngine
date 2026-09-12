@@ -10,18 +10,20 @@ SceneManager* SceneManager::GetInstance()
 	return &sceneManager;
 }
 
-void SceneManager::Initialize(std::unique_ptr<ISceneFactory>& sceneFactory_, const std::string& startScene)
+void SceneManager::Initialize(InitializeSceneManagerParam& param)
 {
-	fadeManager.Initialize();
-	sceneFactory = move(sceneFactory_);
-	nextScene = startScene;
+	fadeManager = std::move(param.fadeManager);
+	if (fadeManager) { fadeManager->Initialize(); }
+	sceneFactory = std::move(param.sceneFactory);
+	scene = sceneFactory->CreateScene(param.startScene);
+	pauseMenu = std::move(param.pauseMenu);
 }
 
 void SceneManager::Update()
 {
-	fadeManager.Update();
+	fadeManager->Update();
 
-	bool isChangeScene = fadeManager.IsChange() || !fadeManager.IsFade();
+	bool isChangeScene = fadeManager->IsChange() || !fadeManager->IsFade();
 	isChangeScene &= nextScene.has_value();
 	if (isChangeScene)
 	{
@@ -45,27 +47,26 @@ void SceneManager::Update()
 			isParticleClear = false;
 		}
 
-		scene->Initialize();
 		scene->Update();
 		if (pauseMenu) { pauseMenu->Initialize(); }
 	}
 
-	if (fadeManager.IsFade()) { return; }
+	if (fadeManager->IsFade()) { return; }
 	// ポーズ中ならシーンの更新をせずポーズメニューのみ更新する
-	if (pauseMenu) { if (pauseMenu->IsPause()) { pauseMenu->Update(); return; } }
+	if (pauseMenu && pauseMenu->IsPause()) { pauseMenu->Update(); return; }
 	scene->Update();
 }
 
 void SceneManager::Draw()
 {
 	scene->Draw();
-	if (fadeManager.IsFade())
+	if (fadeManager->IsFade())
 	{
 		spMan->PreDraw();
-		fadeManager.Draw();
+		fadeManager->Draw();
 	}
 	// ポーズ中ならポーズメニューを描画
-	if (pauseMenu) { if (pauseMenu->IsPause()) { pauseMenu->Draw(); } }
+	if (pauseMenu && pauseMenu->IsPause()) { pauseMenu->Draw(); }
 }
 
 void SceneManager::ChangeScene(const std::string& nextScene_, bool isObjectClear_, bool isParticleClear_, bool isUseFade)
@@ -73,5 +74,13 @@ void SceneManager::ChangeScene(const std::string& nextScene_, bool isObjectClear
 	nextScene = nextScene_;
 	isObjectClear = isObjectClear_;
 	isParticleClear = isParticleClear_;
-	if (isUseFade) { fadeManager.FadeScene(); }
+	if (isUseFade) { fadeManager->FadeScene(); }
+}
+
+bool WristerEngine::SceneManager::CheckVariables() const
+{
+	bool checkFlag = scene != nullptr;
+	checkFlag &= sceneFactory != nullptr;
+	checkFlag &= fadeManager != nullptr;
+	return checkFlag;
 }

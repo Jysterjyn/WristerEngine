@@ -88,9 +88,6 @@
     <ClCompile Include="SourceFiles\Utility\Random.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Utility\Shake.cpp">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Utility\StringUtility.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
@@ -103,25 +100,13 @@
     <ClCompile Include="SourceFiles\Timer\TimedCall.cpp">
       <Filter>ソース ファイル\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Scene\FadeManager.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Scene\SceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Math\Easing.cpp">
-      <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Math\MathUtility.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\Math\Quaternion.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\Math\Vector.cpp">
@@ -163,12 +148,6 @@
     <ClCompile Include="SourceFiles\2d\SpriteManager.cpp">
       <Filter>ソース ファイル\2d\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\2d\MultiTexture.cpp">
-      <Filter>ソース ファイル\2d\PostEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\2d\PostEffect.cpp">
-      <Filter>ソース ファイル\2d\PostEffect</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp">
       <Filter>ソース ファイル\2d\Other</Filter>
     </ClCompile>
@@ -191,9 +170,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Utility\Color.h">
       <Filter>ソース ファイル\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Math\Quaternion.h">
-      <Filter>ソース ファイル\Math</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Audio\Audio.h">
       <Filter>ソース ファイル\Audio</Filter>
@@ -222,7 +198,7 @@
     <ClInclude Include="SourceFiles\Scene\ISceneFactory.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Scene\FadeManager.h">
+    <ClInclude Include="SourceFiles\Scene\IFadeManager.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Framework\Framework.h">
@@ -243,9 +219,6 @@
     <ClInclude Include="SourceFiles\Timer\FPS.h">
       <Filter>ソース ファイル\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Math\Easing.h">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Json\Constant.h">
       <Filter>ソース ファイル\Json</Filter>
     </ClInclude>
@@ -261,20 +234,11 @@
     <ClInclude Include="SourceFiles\Utility\WristerEngineUtility.h">
       <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Utility\Shake.h">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Json\GlobalVariables.h">
       <Filter>ソース ファイル\Json</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Behavior\Behavior.h">
       <Filter>ソース ファイル\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\MultiTexture.h">
-      <Filter>ソース ファイル\2d\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\PostEffect.h">
-      <Filter>ソース ファイル\2d\PostEffect</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h">
       <Filter>ソース ファイル\2d\Other</Filter>
@@ -296,9 +260,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Physics\CollisionManager2D.h">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\Scene\BaseGameSettings.h">
       <Filter>ソース ファイル\Scene</Filter>

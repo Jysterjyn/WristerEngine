@@ -68,6 +68,12 @@
     <ClInclude Include="SourceFiles\GameObjects\Player.h">
       <Filter>ソース ファイル\GaneObjects</Filter>
     </ClInclude>
+    <ClInclude Include="SourceFiles\GameScenes\FadeManager.h">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\MyGame\GameSettings.h">
+      <Filter>ソース ファイル\MyGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\MyGame\MyGame.cpp">
@@ -92,6 +98,12 @@
       <Filter>ソース ファイル\GaneObjects</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\main.cpp">
+      <Filter>ソース ファイル\MyGame</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\GameScenes\FadeManager.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\MyGame\GameSettings.cpp">
       <Filter>ソース ファイル\MyGame</Filter>
     </ClCompile>
   </ItemGroup>

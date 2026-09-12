@@ -110,8 +110,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp" />
-    <ClCompile Include="SourceFiles\2d\MultiTexture.cpp" />
-    <ClCompile Include="SourceFiles\2d\PostEffect.cpp" />
     <ClCompile Include="SourceFiles\2d\Sprite.cpp" />
     <ClCompile Include="SourceFiles\2d\SpriteManager.cpp" />
     <ClCompile Include="SourceFiles\3d\Object\Transform.cpp" />
@@ -126,24 +124,19 @@
     <ClCompile Include="SourceFiles\Json\Constant.cpp" />
     <ClCompile Include="SourceFiles\Json\GlobalVariables.cpp" />
     <ClCompile Include="SourceFiles\Json\JsonLoader.cpp" />
-    <ClCompile Include="SourceFiles\Math\Easing.cpp" />
     <ClCompile Include="SourceFiles\Math\MathUtility.cpp" />
     <ClCompile Include="SourceFiles\Math\Matrix4.cpp" />
-    <ClCompile Include="SourceFiles\Math\Quaternion.cpp" />
     <ClCompile Include="SourceFiles\Math\Vector.cpp" />
     <ClCompile Include="SourceFiles\Physics\Collider2D.cpp" />
     <ClCompile Include="SourceFiles\Physics\ColliderBase.cpp" />
     <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp" />
     <ClCompile Include="SourceFiles\Scene\BaseGameSettings.cpp" />
-    <ClCompile Include="SourceFiles\Scene\BasePauseMenu.cpp" />
-    <ClCompile Include="SourceFiles\Scene\FadeManager.cpp" />
     <ClCompile Include="SourceFiles\Scene\SceneManager.cpp" />
     <ClCompile Include="SourceFiles\Timer\FPS.cpp" />
     <ClCompile Include="SourceFiles\Timer\TimedCall.cpp" />
     <ClCompile Include="SourceFiles\Timer\Timer.cpp" />
     <ClCompile Include="SourceFiles\Utility\Color.cpp" />
     <ClCompile Include="SourceFiles\Utility\Random.cpp" />
-    <ClCompile Include="SourceFiles\Utility\Shake.cpp" />
     <ClCompile Include="SourceFiles\Utility\StringUtility.cpp" />
     <ClCompile Include="SourceFiles\WinApp\WindowsAPI.cpp" />
   </ItemGroup>
@@ -155,20 +148,15 @@
     <ClInclude Include="SourceFiles\Physics\Collider2D.h" />
     <ClInclude Include="SourceFiles\Physics\ColliderBase.h" />
     <ClInclude Include="SourceFiles\2d\AbstractUIDrawer.h" />
-    <ClInclude Include="SourceFiles\2d\MultiTexture.h" />
     <ClInclude Include="SourceFiles\Physics\CollisionManager2D.h" />
     <ClInclude Include="SourceFiles\Scene\BaseGameSettings.h" />
-    <ClInclude Include="SourceFiles\Scene\BasePauseMenu.h" />
-    <ClInclude Include="SourceFiles\Utility\Shake.h" />
     <ClInclude Include="SourceFiles\Audio\AudioManager.h" />
     <ClInclude Include="SourceFiles\Json\JsonLoader.h" />
     <ClInclude Include="SourceFiles\Json\Constant.h" />
-    <ClInclude Include="SourceFiles\Math\Easing.h" />
     <ClInclude Include="SourceFiles\Timer\FPS.h" />
     <ClInclude Include="SourceFiles\Utility\Random.h" />
     <ClInclude Include="SourceFiles\Math\MathUtility.h" />
     <ClInclude Include="SourceFiles\2d\ImGuiManager.h" />
-    <ClInclude Include="SourceFiles\2d\PostEffect.h" />
     <ClInclude Include="SourceFiles\2d\Sprite.h" />
     <ClInclude Include="SourceFiles\3d\Object\Transform.h" />
     <ClInclude Include="SourceFiles\Audio\Audio.h" />
@@ -183,11 +171,10 @@
     <ClInclude Include="SourceFiles\Utility\Color.h" />
     <ClInclude Include="SourceFiles\Timer\Timer.h" />
     <ClInclude Include="SourceFiles\Math\Matrix4.h" />
-    <ClInclude Include="SourceFiles\Math\Quaternion.h" />
     <ClInclude Include="SourceFiles\Math\Vector.h" />
     <ClInclude Include="SourceFiles\Scene\ISceneFactory.h" />
     <ClInclude Include="SourceFiles\Scene\BaseScene.h" />
-    <ClInclude Include="SourceFiles\Scene\FadeManager.h" />
+    <ClInclude Include="SourceFiles\Scene\IFadeManager.h" />
     <ClInclude Include="SourceFiles\Scene\SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

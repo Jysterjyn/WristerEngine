@@ -1,13 +1,16 @@
 ﻿#include "MyGame.h"
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
+#include <FadeManager.h>
 
 void MyGame::Initialize()
 {
+	WE::InitializeSceneManagerParam param;
+	param.startScene = "GameScene";
+	param.sceneFactory = std::make_unique<SceneFactory>();
+	param.fadeManager = std::make_unique<FadeManager>();
 	// シーンの生成
-	std::unique_ptr<WE::ISceneFactory> sceneFactory;
-	sceneFactory = std::make_unique<SceneFactory>();
-	sceneManager->Initialize(sceneFactory, "GameScene");
+	sceneManager->Initialize(param);
 }
 
 void MyGame::Update()

@@ -7,5 +7,6 @@ std::unique_ptr<WristerEngine::BaseScene> SceneFactory::CreateScene(const std::s
 
 	if (sceneName == "GameScene") { nextScene = std::make_unique<GameScene>(); }
 	assert(nextScene);
+	nextScene->Initialize();
 	return nextScene;
 }
