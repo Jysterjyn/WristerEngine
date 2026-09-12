@@ -1,11 +1,12 @@
 ﻿#pragma once
 #include <functional>
 #include <Timer.h>
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {	
 	// 時限発動
-	class TimedCall
+	class TimedCall : public ListObject
 	{
 	private:
 		// コールバック
@@ -18,9 +19,10 @@ namespace WristerEngine
 	public:
 		// コンストラクタ
 		TimedCall(std::function<void(void)>callfunc, uint32_t time);
+		void Initialize() override {}
 		// 更新
-		void Update();
+		void Update() override;
 		// 完了ならtrueを返す
-		bool IsFinished()const { return isFinished; }
+		bool Remove() const override { return isFinished; }
 	};
 }

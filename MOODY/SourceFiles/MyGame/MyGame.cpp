@@ -2,8 +2,6 @@
 #include "SceneFactory.h"
 #include <ImGuiManager.h>
 
-static int objDelNum = -1;
-
 void MyGame::Initialize()
 {
 	// シーンの生成

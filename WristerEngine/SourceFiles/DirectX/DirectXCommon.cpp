@@ -364,7 +364,6 @@ void DirectXCommon::PostDraw()
 	// 表示
 	result = swapchain->Present(0, 0);
 
-
 	isChanedResolution = false;
 }
 

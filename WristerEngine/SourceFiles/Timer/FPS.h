@@ -9,8 +9,6 @@ namespace WristerEngine
 	class FPS final
 	{
 	private:
-		// μを打ち消す変数
-		const float MEGA = 1000000.0f;
 		std::chrono::steady_clock::time_point reference;
 		float fps = 60;
 		// FPS測定のインターバル

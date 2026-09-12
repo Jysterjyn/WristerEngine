@@ -16,11 +16,9 @@ void Ball::Initialize()
 
 	// 座標をランダムで生成
 	BehaviorParameter* pParam = GetParameter();
-	//const float EDGE = -150; // 画面端から離す座標値
-	//WE::Random_Float randPosY(sprite->size.y + EDGE, WE::WIN_SIZE.y - sprite->size.y - EDGE);
-	//pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
-	pParam->pos = Half(WE::WIN_SIZE);
-	pParam->pos.y += 100;
+	const float EDGE = 100; // 画面端から離す座標値
+	WE::Random_Float randPosY(sprite->size.y, WE::WIN_SIZE.y - sprite->size.y);
+	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
 	Collider::Initialize("Ball", info);
@@ -78,8 +76,9 @@ void Move::Initialize()
 
 void Move::Update()
 {
-	//const float MOVE_SPD = 2.0f;
-	//pParam->pos.x -= MOVE_SPD;
+	const ScreenSpeed MOVE_SPD(5.0f);
+	pParam->pos.x -= MOVE_SPD;
+	if (pParam->pos.x < -100) { pParam->isDestroy = true; }
 	if (pParam->isUkenagashi) { Finish(); }
 }
 

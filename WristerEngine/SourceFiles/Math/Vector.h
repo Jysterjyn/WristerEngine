@@ -78,6 +78,20 @@ public:
 	operator Vector2() { return { x,y }; }
 };
 
+class ScreenSpeed
+{
+private:
+	Vector3 speed;
+
+public:
+	ScreenSpeed(float s) {speed.x = ChangeSpeedToScreenRate(s); }
+	ScreenSpeed(Vector2 s);
+	ScreenSpeed(Vector3 s);
+	operator float() const { return speed.x; }
+	operator Vector2() const { return Vector2(speed.x, speed.y); }
+	operator Vector3() const { return speed; }
+};
+
 // 軸ベクトル
 static const Vector2 AXIS_X_2D = { 1, 0 };
 static const Vector2 AXIS_Y_2D = { 0, 1 };

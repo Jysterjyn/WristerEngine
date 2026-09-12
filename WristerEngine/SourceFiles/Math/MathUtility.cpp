@@ -1,13 +1,6 @@
 ﻿#include "MathUtility.h"
 #include <cmath>
 
-int NumberLoop(int num, int max, int min)
-{
-	if (num > max) { return num - max + min; }
-	if (num < min) { return max; }
-	return num;
-}
-
 Angle operator+(Angle angle, float rad)
 {
 	return angle += rad;

@@ -22,7 +22,7 @@ void FPS::Update()
 	// 60フレーム以上のデータが溜まったら古いデータを削除する
 	while (frameTimes.size() > 60) { frameTimes.pop_front(); }
 	// 60フレーム分の平均FPSを計算する
-	if (interval.Update()) { fps = MEGA / Average(frameTimes); }
+	if (interval.Update()) { fps = std::mega::num / Average(frameTimes); }
 	// 現在の時間を記録する
 	reference = steady_clock::now();
 }

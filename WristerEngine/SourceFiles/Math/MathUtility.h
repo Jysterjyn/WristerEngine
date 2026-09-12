@@ -3,6 +3,7 @@
 #include <cmath>
 #include <WristerEngineUtility.h>
 #include <numeric>
+#include <FPS.h>
 
 const float PI = 3.141592f; // 円周率
 const float ONE_DEG_RAD = PI / 180.0f; // 1°のラジアン変換
@@ -116,3 +117,18 @@ typename Container::value_type Average(const Container& arr)
 	if (arr.empty()) return typename Container::value_type(0);
 	return Sum(arr) / static_cast<typename Container::value_type>(arr.size());
 }
+
+/// <summary>
+/// 速度をスクリーンレートに変換する
+/// </summary>
+/// <param name="speed">速度</param>
+/// <returns>1秒間に移動する画面に対する割合</returns>
+template <typename T>
+T ChangeSpeedToScreenRate(T speed) 
+{
+	float deltaTime = WE::FPS::GetInstance()->GetCurrentDeltaTime() / (float)std::micro::den;
+
+	// 60FPS基準の速度を画面レートに変換する
+	return speed * deltaTime * 60.0f;
+}
+

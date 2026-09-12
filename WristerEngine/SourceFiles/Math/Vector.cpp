@@ -344,3 +344,16 @@ Vector3 SplineCurve(const std::vector<Vector3>& points, float t)
 	int index = int((t / dt)) + 1;
 	return SplineCurve(points, index, fmodf(t, dt) * length);
 }
+
+ScreenSpeed::ScreenSpeed(Vector2 s)
+{
+	speed.x = ChangeSpeedToScreenRate(s.x);
+	speed.y = ChangeSpeedToScreenRate(s.y);
+}
+
+ScreenSpeed::ScreenSpeed(Vector3 s)
+{
+	speed.x = ChangeSpeedToScreenRate(s.x);
+	speed.y = ChangeSpeedToScreenRate(s.y);
+	speed.z = ChangeSpeedToScreenRate(s.z);
+}

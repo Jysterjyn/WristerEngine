@@ -7,10 +7,6 @@ void Player::Initialize()
 {
 	WE::_2D::SpriteProp prop;
 	prop.fileNames.push_back("Nanika/Nanika.png");
-	//prop.fileNames.push_back("drill_girl_walk.png");
-	//prop.isAnimation = true;
-	//prop.spriteNum = 6;
-	//prop.interval = 1;
 	prop.pos = Half(WE::WIN_SIZE);
 	sprite = spMan->Create(prop);
 	sprite->SetCenterAnchor();
@@ -24,9 +20,9 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	const float MOVE_SPD = 5.0f;
+	const ScreenSpeed MOVE_SPD(10.0f);
 	sprite->position.y += input->Move(WE::Key::Down, WE::Key::Up, MOVE_SPD);
-	sprite->position.y = std::clamp(sprite->position.y, sprite->size.y / 2.0f, WE::WIN_SIZE.y - sprite->size.y / 2.0f);
+	sprite->position.y = std::clamp(sprite->position.y, Half(sprite->size.y), WE::WIN_SIZE.y - Half(sprite->size.y));
 }
 
 void Player::Draw()
