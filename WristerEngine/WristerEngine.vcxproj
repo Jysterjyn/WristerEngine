@@ -137,7 +137,7 @@
     <ClCompile Include="SourceFiles\Timer\Timer.cpp" />
     <ClCompile Include="SourceFiles\Utility\Color.cpp" />
     <ClCompile Include="SourceFiles\Utility\Random.cpp" />
-    <ClCompile Include="SourceFiles\Utility\StringUtility.cpp" />
+    <ClCompile Include="SourceFiles\Utility\WristerEngineUtility.cpp" />
     <ClCompile Include="SourceFiles\WinApp\WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +165,6 @@
     <ClInclude Include="SourceFiles\Framework\Framework.h" />
     <ClInclude Include="SourceFiles\Input\Input.h" />
     <ClInclude Include="SourceFiles\Timer\TimedCall.h" />
-    <ClInclude Include="SourceFiles\Utility\StringUtility.h" />
     <ClInclude Include="SourceFiles\Utility\WristerEngineUtility.h" />
     <ClInclude Include="SourceFiles\WinApp\WindowsAPI.h" />
     <ClInclude Include="SourceFiles\Utility\Color.h" />

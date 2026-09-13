@@ -33,19 +33,8 @@ namespace WristerEngine
 	class uList : public std::list<uPtr<ListObject>>
 	{
 	public:
-		ListObject* Add(uPtr<ListObject> obj)
-		{
-			obj->Initialize();
-			push_back(std::move(obj));
-			return back().get();
-		}
-
-		void Update()
-		{
-			remove_if([&](CR<uPtr<ListObject>> item) { return item->Remove(); });
-			for (auto& item : *this) { item->Update(); }
-		}
-
+		ListObject* Add(uPtr<ListObject> obj);
+		void Update();
 		void Draw() { for (auto& item : *this) { item->Draw(); } }
 	};
 
@@ -83,10 +72,17 @@ namespace WristerEngine
 	};
 
 	template <class T>
-	uint32_t ChangeVal(T value)
-	{
-		return static_cast<uint32_t>(value);
-	}
+	uint32_t ChangeVal(T value) { return static_cast<uint32_t>(value); }
+
+	/// <summary>
+	/// マルチバイト文字列をワイド文字列に変換
+	/// </summary>
+	/// <param name="mString">マルチバイト文字列</param>
+	/// <returns>ワイド文字列</returns>
+	std::wstring ConvertMultiByteStringToWideString(CR<std::string> mString);
+
+	// ディレクトリを含んだファイルパスからファイル名を抽出する
+	std::string ExtractFileName(CR<std::string> path);
 }
 
 // WristerEngineの略称のエイリアス

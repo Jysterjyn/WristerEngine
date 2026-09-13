@@ -1,7 +1,6 @@
 ﻿#include "SpriteManager.h"
 #include <DirectXTex.h>
 #include "D3D12Common.h"
-#include <StringUtility.h>
 #include "PipelineManager.h"
 
 using namespace WE;

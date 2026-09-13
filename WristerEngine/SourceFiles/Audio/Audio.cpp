@@ -1,7 +1,6 @@
 ﻿#include "Audio.h"
 #include "D3D12Common.h"
 #include <fstream>
-#include <StringUtility.h>
 using namespace WE;
 
 std::string Audio::DIRECTORY_PATH = "Sounds/";

@@ -1,8 +1,20 @@
-﻿#include "StringUtility.h"
-#include <vector>
+﻿#include <WristerEngineUtility.h>
 #include <Windows.h>
 
 using namespace WE;
+
+ListObject* uList::Add(uPtr<ListObject> obj)
+{
+	obj->Initialize();
+	push_back(std::move(obj));
+	return back().get();
+}
+
+void uList::Update()
+{
+	remove_if([&](CR<uPtr<ListObject>> item) { return item->Remove(); });
+	for (auto& item : *this) { item->Update(); }
+}
 
 std::wstring WE::ConvertMultiByteStringToWideString(CR<std::string> mString)
 {

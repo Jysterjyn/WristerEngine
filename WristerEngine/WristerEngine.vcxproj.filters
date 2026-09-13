@@ -88,9 +88,6 @@
     <ClCompile Include="SourceFiles\Utility\Random.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Utility\StringUtility.cpp">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Timer\Timer.cpp">
       <Filter>ソース ファイル\Timer</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Scene\BaseGameSettings.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Utility\WristerEngineUtility.cpp">
+      <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="SourceFiles\Timer\TimedCall.h">
       <Filter>ソース ファイル\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\Utility\StringUtility.h">
-      <Filter>ソース ファイル\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\DirectX\PipelineManager.h">
       <Filter>ソース ファイル\DirectX</Filter>
