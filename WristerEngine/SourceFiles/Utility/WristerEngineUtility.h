@@ -3,7 +3,6 @@
 #include <memory>
 #include <list>
 #include <set>
-#include <vector>
 #include <functional>
 
 namespace WristerEngine
