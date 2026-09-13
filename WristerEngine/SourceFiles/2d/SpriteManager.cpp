@@ -33,7 +33,7 @@ void SpriteManager::Initialize()
 	constMap->matProj = matProj;
 }
 
-TextureData* SpriteManager::LoadTexture(const std::string& fileName)
+TextureData* SpriteManager::LoadTexture(CR<std::string> fileName)
 {
 	// テクスチャの重複読み込みを検出
 	for (auto& tex : textures)

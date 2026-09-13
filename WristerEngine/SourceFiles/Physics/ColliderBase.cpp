@@ -128,7 +128,7 @@ void BaseColliderGroup::CallExit()
 	CallCallbacks(exitPairs, &BaseCollider::OnCollisionExit);
 }
 
-void BaseCollider::Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info)
+void BaseCollider::Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
 {
 	group = _2D::CollisionManager::GetInstance()->AddGroup(groupName, info);
 	group->AddOwner(this);

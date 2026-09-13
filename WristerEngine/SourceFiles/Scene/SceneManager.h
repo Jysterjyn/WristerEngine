@@ -46,9 +46,9 @@ namespace WristerEngine
 		// ポーズ切り替え
 		void Pause() { pauseMenu->Pause(); }
 		// シーン切り替え
-		void ChangeScene(const std::string& nextScene, bool isObjectClear = true, bool isParticleClear = true, bool isUseFade = true);
+		void ChangeScene(CR<std::string> nextScene, bool isObjectClear = true, bool isParticleClear = true, bool isUseFade = true);
 		// 現在のシーン取得
-		const std::string& GetNowScene() const { return nowScene; }
+		CR<std::string> GetNowScene() const { return nowScene; }
 		// シーンのポインタが存在するか
 		bool CheckVariables() const;
 	};

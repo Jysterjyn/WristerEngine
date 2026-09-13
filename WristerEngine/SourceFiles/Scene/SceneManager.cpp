@@ -69,7 +69,7 @@ void SceneManager::Draw()
 	if (pauseMenu && pauseMenu->IsPause()) { pauseMenu->Draw(); }
 }
 
-void SceneManager::ChangeScene(const std::string& nextScene_, bool isObjectClear_, bool isParticleClear_, bool isUseFade)
+void SceneManager::ChangeScene(CR<std::string> nextScene_, bool isObjectClear_, bool isParticleClear_, bool isUseFade)
 {
 	nextScene = nextScene_;
 	isObjectClear = isObjectClear_;

@@ -2,7 +2,9 @@
 #include <vector>
 #include <Windows.h>
 
-std::wstring WristerEngine::ConvertMultiByteStringToWideString(const std::string& mString)
+using namespace WE;
+
+std::wstring WE::ConvertMultiByteStringToWideString(CR<std::string> mString)
 {
 	// ワイド文字列に変換した際の文字列バッファサイズを計算
 	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, mString.c_str(), -1, nullptr, 0);
@@ -13,7 +15,7 @@ std::wstring WristerEngine::ConvertMultiByteStringToWideString(const std::string
 	return wfilePath.data();
 }
 
-std::string WristerEngine::ExtractFileName(const std::string& path)
+std::string WE::ExtractFileName(CR<std::string> path)
 {
 	size_t pos1 = path.rfind('\\');
 	if (pos1 != std::string::npos) { return path.substr(pos1 + 1, path.size() - pos1 - 1); }

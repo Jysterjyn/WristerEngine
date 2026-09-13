@@ -14,6 +14,6 @@ namespace WristerEngine
 		const static std::string DEFAULT_BASE_DIRECTORY;
 
 	protected:
-		static nlohmann::json LoadJson(const std::string& fileName);
+		static nlohmann::json LoadJson(CR<std::string> fileName);
 	};
 }

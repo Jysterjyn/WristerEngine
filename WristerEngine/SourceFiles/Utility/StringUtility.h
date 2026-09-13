@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {
@@ -8,8 +9,8 @@ namespace WristerEngine
 	/// </summary>
 	/// <param name="mString">マルチバイト文字列</param>
 	/// <returns>ワイド文字列</returns>
-	std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
+	std::wstring ConvertMultiByteStringToWideString(CR<std::string> mString);
 
 	// ディレクトリを含んだファイルパスからファイル名を抽出する
-	std::string ExtractFileName(const std::string& path);
+	std::string ExtractFileName(CR<std::string> path);
 }

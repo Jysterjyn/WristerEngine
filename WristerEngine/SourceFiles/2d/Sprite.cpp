@@ -7,7 +7,7 @@ using namespace _2D;
 
 void SpriteProp::AddFileNames(const std::vector<std::string>& fileNames_)
 {
-	for (const std::string& fileName : fileNames_) { fileNames.push_back(fileName); }
+	for (CR<std::string> fileName : fileNames_) { fileNames.push_back(fileName); }
 }
 
 void Sprite::SetRect(CR<Vector2> textureSize_, CR<Vector2> textureLeftTop_)

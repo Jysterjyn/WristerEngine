@@ -36,7 +36,7 @@ namespace WristerEngine
 		void LoadConstants();
 
 		template<class T>
-		T& GetConstant(const std::string& name)
+		T& GetConstant(CR<std::string> name)
 		{
 			T* num = (T*)constants[name];
 			assert(num);

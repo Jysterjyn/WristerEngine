@@ -11,14 +11,14 @@ namespace WristerEngine
 	// デフォルトリソースパス
 	const std::string DEFAULT_RESOURCE_PATH = "Resources/";
 
+	template<class T> using uPtr = std::unique_ptr<T>;
+	template<class T> using CR = const T&;
+
 	// 個別のリソースパスを生成
-	inline const std::string CreateResourcePath(const std::string& directoryPath)
+	inline const std::string CreateResourcePath(CR<std::string> directoryPath)
 	{
 		return DEFAULT_RESOURCE_PATH + directoryPath;
 	}
-
-	template<class T> using uPtr = std::unique_ptr<T>;
-	template<class T> using CR = const T&;
 
 	class ListObject
 	{

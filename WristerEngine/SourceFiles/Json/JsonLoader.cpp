@@ -5,7 +5,7 @@ using namespace WE;
 
 const std::string JsonLoader::DEFAULT_BASE_DIRECTORY = "Resources/JsonFiles/";
 
-nlohmann::json WristerEngine::JsonLoader::LoadJson(const std::string& fileName)
+nlohmann::json WristerEngine::JsonLoader::LoadJson(CR<std::string> fileName)
 {
 	// フルパス
 	const std::string fullpath = DEFAULT_BASE_DIRECTORY + fileName + ".json";

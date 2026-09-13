@@ -32,7 +32,7 @@ namespace WristerEngine::_2D
 		void Initialize();
 
 		// テクスチャ読み込み
-		TextureData* LoadTexture(const std::string& fileName);
+		TextureData* LoadTexture(CR<std::string> fileName);
 
 		// スプライト生成
 		Sprite* Create(CR<SpriteProp> prop);

@@ -15,7 +15,7 @@ namespace WristerEngine
 	public:
 		virtual ~BaseGameSettings() = default;
 		virtual void ChangeResolution() = 0;
-		void SetKey(const std::string& keyName, Key key){ keyList[keyName].insert(key); }
-		CR<std::unordered_set<Key>> GetKeyList(const std::string& keyName) const { return keyList.at(keyName); }
+		void SetKey(CR<std::string> keyName, Key key){ keyList[keyName].insert(key); }
+		CR<std::unordered_set<Key>> GetKeyList(CR<std::string> keyName) const { return keyList.at(keyName); }
 	};
 }

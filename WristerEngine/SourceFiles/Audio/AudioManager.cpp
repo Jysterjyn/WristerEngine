@@ -8,13 +8,13 @@ AudioManager* AudioManager::GetInstance()
 	return &instance;
 }
 
-Audio* AudioManager::Create(const std::string& fileName, bool isLoop)
+Audio* AudioManager::Create(CR<std::string> fileName, bool isLoop)
 {
 	Audio* newAudio = static_cast<Audio*>(audios.Add(std::make_unique<Audio>(fileName, isLoop)));
 	return newAudio;
 }
 
-void AudioManager::PlaySE(const std::string& fileName)
+void AudioManager::PlaySE(CR<std::string> fileName)
 {
 	Audio* newAudio = Create(fileName);
 	newAudio->isSE = true;

@@ -38,7 +38,7 @@ namespace WristerEngine
 		/// ファイルから読み込む
 		/// </summary>
 		/// <param name="groupName">グループ</param>
-		void LoadFile(const std::string& groupName);
+		void LoadFile(CR<std::string> groupName);
 
 	public:
 		static GlobalVariables* GetInstance();
@@ -50,14 +50,14 @@ namespace WristerEngine
 		/// ファイルに書き出し
 		/// </summary>
 		/// <param name="groupName">グループ</param>
-		void SaveFile(const std::string& groupName);
+		void SaveFile(CR<std::string> groupName);
 
 		// ディレクトリの全ファイル読み込み
 		void LoadFiles();
 
 		// 値をセット
 		template<class T>
-		void SetValue(const std::string& groupName, const std::string& key, const T& value)
+		void SetValue(CR<std::string> groupName, CR<std::string> key, const T& value)
 		{
 			// グループの参照を取得
 			Group& group = datas[groupName];
@@ -70,7 +70,7 @@ namespace WristerEngine
 
 		// 項目の追加
 		template<class T>
-		void AddItem(const std::string& groupName, const std::string& key, const T& value)
+		void AddItem(CR<std::string> groupName, CR<std::string> key, const T& value)
 		{
 			// 項目が未登録なら
 			if (!datas[groupName].contains(key)) { SetValue(groupName, key, value); }
@@ -78,7 +78,7 @@ namespace WristerEngine
 
 		// 値の取得
 		template<class T>
-		T GetValue(const std::string& groupName, const std::string& key) const
+		T GetValue(CR<std::string> groupName, CR<std::string> key) const
 		{
 			assert(datas.contains(groupName));
 			// グループの参照を取得

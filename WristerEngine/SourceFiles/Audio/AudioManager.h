@@ -25,9 +25,9 @@ namespace WristerEngine
 		/// <param name="fileName">ファイル名</param>
 		/// <param name="isLoop">ループ再生フラグ</param>
 		/// <returns>オーディオインスタンスのポインタ</returns>
-		Audio* Create(const std::string& fileName, bool isLoop = false);
+		Audio* Create(CR<std::string> fileName, bool isLoop = false);
 
-		void PlaySE(const std::string& fileName);
+		void PlaySE(CR<std::string> fileName);
 
 		// 全オーディオインスタンスの更新
 		void Update();

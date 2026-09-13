@@ -27,7 +27,7 @@ void GlobalVariables::Update()
 	for (auto itGroup = datas.begin(); itGroup != datas.end(); ++itGroup)
 	{
 		// グループ名を取得
-		const std::string& groupName = itGroup->first;
+		CR<std::string> groupName = itGroup->first;
 		// グループの参照を取得
 		Group& group = itGroup->second;
 
@@ -37,7 +37,7 @@ void GlobalVariables::Update()
 		for (auto itItem = group.begin(); itItem != group.end(); ++itItem)
 		{
 			// 項目名を取得
-			const std::string& itemName = itItem->first;
+			CR<std::string> itemName = itItem->first;
 			// 項目の参照を取得
 			Item& item = itItem->second;
 
@@ -89,7 +89,7 @@ void GlobalVariables::Update()
 	ImGui::End();
 }
 
-void GlobalVariables::SaveFile(const std::string& groupName)
+void GlobalVariables::SaveFile(CR<std::string> groupName)
 {
 	// グループを検索
 	std::map<std::string, Group>::iterator itGroup = datas.find(groupName);
@@ -104,7 +104,7 @@ void GlobalVariables::SaveFile(const std::string& groupName)
 	for (auto itItem = itGroup->second.begin(); itItem != itGroup->second.end(); ++itItem)
 	{
 		// 項目名を取得
-		const std::string& itemName = itItem->first;
+		CR<std::string> itemName = itItem->first;
 		// 項目の参照を取得
 		Item& item = itItem->second;
 
@@ -162,7 +162,7 @@ void GlobalVariables::SaveFile(const std::string& groupName)
 	ofs.close();
 }
 
-void GlobalVariables::LoadFile(const std::string& groupName)
+void GlobalVariables::LoadFile(CR<std::string> groupName)
 {
 	const std::string kDirectoryPath = CreateResourcePath(DIRECTORY_PATH);
 	// 読み込むJSONファイルのフルパスを合成する
@@ -193,7 +193,7 @@ void GlobalVariables::LoadFile(const std::string& groupName)
 	for (json::iterator itItem = itGroup->begin(); itItem != itGroup->end(); ++itItem)
 	{
 		// アイテム名を取得
-		const std::string& itemName = itItem.key();
+		CR<std::string> itemName = itItem.key();
 
 		// int32_t型の値を保持していれば
 		if (itItem->is_number_integer())

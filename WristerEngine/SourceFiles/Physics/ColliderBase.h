@@ -24,7 +24,7 @@ namespace WristerEngine
 		void SetAttribute(uint32_t attribute_) { attribute = attribute_; }
 		void SetMask(uint32_t mask_) { mask = mask_; }
 		void SetColliderInfo(const ColliderInfo& info);
-		void SetName(const std::string& name_) { name = name_; }
+		void SetName(CR<std::string> name_) { name = name_; }
 		// getter
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
@@ -99,7 +99,7 @@ namespace WristerEngine
 		void CallExit();
 
 	public:
-		BaseColliderGroup(const std::string& groupName) { SetName(groupName); }
+		BaseColliderGroup(CR<std::string> groupName) { SetName(groupName); }
 		~BaseColliderGroup();
 
 		void Update();
@@ -131,7 +131,7 @@ namespace WristerEngine
 		BaseColliderGroup* group = nullptr;
 
 		template<class T>
-		bool TypeCompare(const std::string& type) const
+		bool TypeCompare(CR<std::string> type) const
 		{
 			const std::string TYPE_NAME = typeid(type).name();
 			return TYPE_NAME.find(type) != std::string::npos;
@@ -148,7 +148,7 @@ namespace WristerEngine
 		{
 			// コライダーの型がColliderであるかを確認
 			const std::string TYPE_NAME = typeid(T).name();
-			auto TypeCompare = [&TYPE_NAME](const std::string& type) { return TYPE_NAME.find(type) != std::string::npos; };
+			auto TypeCompare = [&TYPE_NAME](CR<std::string> type) { return TYPE_NAME.find(type) != std::string::npos; };
 			if (!TypeCompare("Collider")) { return nullptr; }
 
 			// コライダーグループが登録されていない場合は登録する
@@ -163,7 +163,7 @@ namespace WristerEngine
 			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
 		}
 
-		void Initialize(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
+		void Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
 		// 衝突コールバック関数
 		// 当たっている間

@@ -10,7 +10,7 @@ CollisionManager* CollisionManager::GetInstance()
 	return &instance;
 }
 
-BaseColliderGroup* CollisionManager::AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info)
+BaseColliderGroup* CollisionManager::AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
 {
 	if (!colliderGroups.contains(groupName))
 	{

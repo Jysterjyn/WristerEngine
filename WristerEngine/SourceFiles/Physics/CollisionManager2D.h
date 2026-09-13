@@ -57,7 +57,7 @@ namespace WristerEngine::_2D
 
 	public:
 		static CollisionManager* GetInstance();
-		BaseColliderGroup* AddGroup(const std::string& groupName, const std::optional<ColliderInfo>& info = std::nullopt);
+		BaseColliderGroup* AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
 		// 全当たり判定
 		void CheckCollisions();
