@@ -3,7 +3,7 @@
 #include <cmath>
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
-using namespace WristerEngine;
+using namespace WE;
 #include <imgui.h>
 
 Microsoft::WRL::ComPtr<IDirectInput8> Input::directInput;

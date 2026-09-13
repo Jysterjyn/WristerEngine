@@ -1,6 +1,6 @@
 ﻿#include "Random.h"
 #include <numeric>
-using namespace WristerEngine;
+using namespace WE;
 
 std::random_device RandomDevice::rnd;
 std::mt19937 RandomDevice::rnddev(rnd());

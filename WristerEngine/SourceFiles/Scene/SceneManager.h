@@ -9,7 +9,7 @@ namespace WristerEngine
 {
 	struct InitializeSceneManagerParam
 	{
-		std::unique_ptr<ISceneFactory> sceneFactory;
+		uPtr<ISceneFactory> sceneFactory;
 		std::string startScene;
 		uPtr<IFadeManager> fadeManager;
 		uPtr<BasePauseMenu> pauseMenu;
@@ -19,7 +19,7 @@ namespace WristerEngine
 	class SceneManager final : _2D::SpriteUtility
 	{
 	private:
-		std::unique_ptr<BaseScene> scene;
+		uPtr<BaseScene> scene;
 		std::string nowScene = "None";
 		std::optional<std::string> nextScene = std::nullopt;
 		uPtr<IFadeManager> fadeManager;

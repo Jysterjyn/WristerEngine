@@ -3,7 +3,7 @@
 #include <imgui_impl_dx12.h>
 #include "D3D12Common.h"
 using namespace ImGui;
-using namespace WristerEngine;
+using namespace WE;
 using namespace _2D;
 
 ImGuiManager* ImGuiManager::GetInstance()

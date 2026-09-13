@@ -59,7 +59,7 @@ BaseColliderGroup::~BaseColliderGroup()
 	for (auto* owner : owners) { owner->DeleteGroup(); }
 }
 
-BaseSingleCollider* BaseColliderGroup::AddCollider(std::unique_ptr<BaseSingleCollider> newCollider)
+BaseSingleCollider* BaseColliderGroup::AddCollider(uPtr<BaseSingleCollider> newCollider)
 {
 	return static_cast<BaseSingleCollider*>(colliders.Add(std::move(newCollider)));
 }

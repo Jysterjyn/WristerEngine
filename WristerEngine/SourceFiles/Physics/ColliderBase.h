@@ -109,7 +109,7 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseSingleCollider* AddCollider(std::unique_ptr<BaseSingleCollider> newCollider);
+		BaseSingleCollider* AddCollider(uPtr<BaseSingleCollider> newCollider);
 
 		void AddOwner(BaseCollider* owner) { owners.push_back(owner); }
 		void AddCollisionPair(const BaseCollisionPair& pair) { collisionPairs.push_back(pair); }
@@ -152,7 +152,7 @@ namespace WristerEngine
 			if (!TypeCompare("Collider")) { return nullptr; }
 
 			// コライダーグループが登録されていない場合は登録する
-			std::unique_ptr<BaseSingleCollider> newCollider;
+			uPtr<BaseSingleCollider> newCollider;
 			ColliderInfo colliderInfo(group->GetColliderInfo());
 			std::string groupName = info ? info->GetName() : group->GetName();
 			colliderInfo.SetName(groupName);

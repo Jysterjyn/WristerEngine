@@ -3,7 +3,7 @@
 #include <fstream>
 #include "BitMapNumber.h"
 
-using namespace WristerEngine;
+using namespace WE;
 
 Constant* Constant::GetInstance()
 {

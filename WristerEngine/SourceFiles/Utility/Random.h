@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <random>
 #include <memory>
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {
@@ -16,7 +17,7 @@ namespace WristerEngine
 	class Random_Int : private RandomDevice
 	{
 	private:
-		std::unique_ptr<std::uniform_int_distribution<int>> random;
+		uPtr<std::uniform_int_distribution<int>> random;
 
 	public:
 		// コンストラクタ
@@ -28,7 +29,7 @@ namespace WristerEngine
 	class Random_Float : private RandomDevice
 	{
 	private:
-		std::unique_ptr<std::uniform_real_distribution<float>> random;
+		uPtr<std::uniform_real_distribution<float>> random;
 
 	public:
 		// コンストラクタ
@@ -40,7 +41,7 @@ namespace WristerEngine
 	class Roulette
 	{
 	private:
-		std::unique_ptr<Random_Int> random;
+		uPtr<Random_Int> random;
 		std::vector<uint32_t> rateTable;
 
 	public:

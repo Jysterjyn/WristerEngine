@@ -13,7 +13,7 @@ namespace WristerEngine
 	protected:
 		SceneManager* sceneManager = nullptr;
 		Input* input = Input::GetInstance();
-		std::unique_ptr<_2D::AbstractUIDrawer> uiDrawer;
+		uPtr<_2D::AbstractUIDrawer> uiDrawer;
 
 	public:
 		// コンストラクタ

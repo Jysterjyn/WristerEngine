@@ -1,6 +1,6 @@
 ﻿#include "SceneManager.h"
 #include "Sprite.h"
-using namespace WristerEngine;
+using namespace WE;
 
 BaseScene::BaseScene() { sceneManager = SceneManager::GetInstance(); }
 

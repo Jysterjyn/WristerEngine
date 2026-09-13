@@ -74,7 +74,7 @@ TextureData* SpriteManager::LoadTexture(const std::string& fileName)
 		metadata.format, metadata.width, (UINT)metadata.height,
 		(UINT16)metadata.arraySize, (UINT16)metadata.mipLevels);
 
-	std::unique_ptr<TextureData> texture = std::make_unique<TextureData>();
+	uPtr<TextureData> texture = std::make_unique<TextureData>();
 	CD3DX12_HEAP_PROPERTIES heapProp(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
 
 	result = device->CreateCommittedResource(
@@ -98,7 +98,7 @@ TextureData* SpriteManager::LoadTexture(const std::string& fileName)
 
 Sprite* SpriteManager::Create(CR<SpriteProp> prop)
 {
-	std::unique_ptr<Sprite> sprite;
+	uPtr<Sprite> sprite;
 
 	if (prop.isAnimation) { sprite = std::make_unique<SpriteAnimation>(); }
 	else { sprite = std::make_unique<Sprite>(); }

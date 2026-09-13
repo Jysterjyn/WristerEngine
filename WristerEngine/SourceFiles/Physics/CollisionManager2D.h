@@ -41,7 +41,7 @@ namespace WristerEngine::_2D
 	{
 	private:
 		uPtr<HitInfo> hitInfo;
-		std::unordered_map<std::string, std::unique_ptr<BaseColliderGroup>> colliderGroups;
+		std::unordered_map<std::string, uPtr<BaseColliderGroup>> colliderGroups;
 		
 		CollisionManager() = default;
 		~CollisionManager() = default;

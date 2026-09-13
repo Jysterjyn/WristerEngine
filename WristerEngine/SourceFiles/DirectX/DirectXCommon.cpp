@@ -5,7 +5,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
 using namespace std;
-using namespace WristerEngine;
+using namespace WE;
 using namespace Microsoft::WRL;
 #include <imgui.h>
 

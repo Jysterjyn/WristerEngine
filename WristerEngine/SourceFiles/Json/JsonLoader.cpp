@@ -1,7 +1,7 @@
 ﻿#include "JsonLoader.h"
 #include <fstream>
 #include <cassert>
-using namespace WristerEngine;
+using namespace WE;
 
 const std::string JsonLoader::DEFAULT_BASE_DIRECTORY = "Resources/JsonFiles/";
 

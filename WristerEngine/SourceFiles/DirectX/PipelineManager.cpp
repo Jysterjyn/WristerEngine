@@ -1,6 +1,6 @@
 ﻿#include "PipelineManager.h"
 #include "D3D12Common.h"
-using namespace WristerEngine;
+using namespace WE;
 
 std::map<PipelineType, PipelineManager> PipelineManager::pipelines;
 

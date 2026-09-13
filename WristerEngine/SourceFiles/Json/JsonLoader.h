@@ -4,6 +4,7 @@
 #pragma warning(disable:26819)
 #include <json.hpp>
 #pragma warning(pop)
+#include <WristerEngineUtility.h>
 
 namespace WristerEngine
 {

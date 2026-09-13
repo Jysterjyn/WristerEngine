@@ -12,6 +12,6 @@ namespace WristerEngine
 		// 仮想デストラクタ
 		virtual ~ISceneFactory() = default;
 		// シーン作成
-		virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
+		virtual uPtr<BaseScene> CreateScene(const std::string& sceneName) = 0;
 	};
 }
