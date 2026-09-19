@@ -154,8 +154,8 @@ namespace WristerEngine
 			// コライダーグループが登録されていない場合は登録する
 			uPtr<BaseSingleCollider> newCollider;
 			ColliderInfo colliderInfo(group->GetColliderInfo());
-			std::string groupName = info ? info->GetName() : group->GetName();
-			colliderInfo.SetName(groupName);
+			std::string colliderName = info ? info->GetName() : group->GetName();
+			colliderInfo.SetName(colliderName);
 
 			// コライダー情報が指定されている場合は上書きする
 			newCollider = std::make_unique<T>();

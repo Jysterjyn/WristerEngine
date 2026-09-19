@@ -16,6 +16,11 @@ void Player::Initialize()
 	WE::_2D::CircleCollider* collider = AddCollider<WE::_2D::CircleCollider>();
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
+
+	info.SetName("JudgeCircle");
+	WE::_2D::CircleCollider* judgeCircle = AddCollider<WE::_2D::CircleCollider>(info);
+	judgeCircle->SetTransform(sprite);
+	judgeCircle->SetRadius(sprite->size.x * 10.0f);
 }
 
 void Player::Update()

@@ -30,7 +30,7 @@ void BehaviorPattern::Update()
 		if (coolTime.Update())
 		{
 			isCoolTime = false;
-			if(behaviorList.size() > 1)
+			if (behaviorList.size() > 1)
 			{
 				auto itr1 = behaviorList.begin();
 				auto itr2 = itr1;
@@ -42,8 +42,8 @@ void BehaviorPattern::Update()
 	}
 }
 
-Behavior::Parameter* WristerEngine::BehaviorPattern::GetParam()
+Behavior::Parameter* BehaviorPattern::GetParam()
 {
-	if(behaviorList.empty()){ return nullptr; }
+	if (behaviorList.empty()) { return nullptr; }
 	return behaviorList.front().first->GetParam();
 }

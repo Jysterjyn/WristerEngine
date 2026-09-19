@@ -34,6 +34,8 @@ namespace WristerEngine::_2D
 		
 		// トランスフォームを設定
 		void SetTransform(const Transform* pTransform_) { pTransform = pTransform_; Update(); }
+
+		const Transform* GetTransform() const { return pTransform; }
 	};
 
 	// 四角形コライダー
