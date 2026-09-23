@@ -2,6 +2,7 @@
 #include <GameObjects.h>
 #include <Vector.h>
 #include <Collider2D.h>
+#include <TimedCall.h>
 
 struct BehaviorParameter : WE::Behavior::Parameter
 {
@@ -40,7 +41,6 @@ class Ball : public GameObjects, public WE::_2D::Collider
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
-	void OnCollision() override;
 
 	template<class T>
 	void CreateBehavior()
@@ -55,5 +55,22 @@ class Ball : public GameObjects, public WE::_2D::Collider
 
 public:
 	~Ball();
+	bool IsUkenagashi() { return GetParameter()->isUkenagashi; }
+	void ChangeNextBehavior(WE::CR<Vector2> pos); // 次のビヘイビアに切り替え
 };
 
+class BallManager : public WE::_2D::Collider, public WE::ListObject
+{
+	WE::uList balls;
+	WE::uList timedCalls;
+
+	void CreateBall();
+
+public:
+	void Update() override;
+	void Draw() override { balls.Draw(); }
+	void OnCollision() override;
+
+	// ListObject を介して継承されました
+	void Initialize() override;
+};

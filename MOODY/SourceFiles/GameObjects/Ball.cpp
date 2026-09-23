@@ -38,40 +38,6 @@ void Ball::Draw()
 	sprite->Draw();
 }
 
-void Ball::OnCollision()
-{
-	if (GetCollisionPairs().empty()) { return; }
-
-	BehaviorParameter* pParam = GetParameter();
-	if (pParam == nullptr) { return; }
-
-	auto collisionPairs = GetCollisionPairs();
-
-	for (auto& pair : GetCollisionPairs())
-	{
-		if (pair.other->GetName() == "Player" && !pParam->isUkenagashi)
-		{
-			// 相手がプレイヤーだったら消滅
-			collider->Destroy();
-			Destroy();
-		}
-		if (pair.other->GetName() == "JudgeCircle")
-		{
-			// 相手が判定円だったら左矢印入力で受け流しモードに移行
-			if (WE::Input::GetInstance()->IsTrigger(WE::Key::Left))
-			{
-				pParam->isUkenagashi = true;
-				const WE::_2D::SingleCollider2D* judgeCircle = static_cast<WE::_2D::SingleCollider2D*>(pair.other);
-				if (!judgeCircle) { return; }
-				const WE::_2D::Transform* judgeTransform = judgeCircle->GetTransform();
-				if (!judgeTransform) { return; }
-
-				pParam->pos.x = judgeTransform->position.x - judgeTransform->size.x / 4 - collider->GetRadius();
-			}
-		}
-	}
-}
-
 void Ball::ApplyParameter()
 {
 	const BehaviorParameter* pParam = GetParameter();
@@ -79,6 +45,15 @@ void Ball::ApplyParameter()
 	sprite->position = pParam->pos;
 	sprite->color = pParam->color;
 	if (pParam->isDestroy) { Destroy(); }
+}
+
+void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
+{
+	BehaviorParameter* pParam = GetParameter();
+	if (pParam == nullptr) { return; }
+
+	pParam->pos.x = pos.x;
+
 }
 
 Ball::~Ball()
@@ -122,4 +97,56 @@ void Ukenagashi::Update()
 {
 	const float MOVE_SPD = 6.0f;
 	//pParam->pos.x -= MOVE_SPD;
+}
+
+void BallManager::CreateBall()
+{
+	balls.Add(std::make_unique<Ball>());
+	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 120);
+	timedCalls.Add(std::move(timedCall));
+}
+
+void BallManager::Update()
+{
+	timedCalls.Update();
+	balls.Update();
+
+
+}
+
+void BallManager::OnCollision()
+{
+	if (GetCollisionPairs().empty()) { return; }
+
+	for (auto& pair : GetCollisionPairs())
+	{
+		Ball* ball = (Ball*)pair.my;
+		if (!ball) { continue; }
+
+		if (pair.other->GetName() == "Player" && ball->IsUkenagashi())
+		{
+			// 相手がプレイヤーだったら消滅
+			pair.my->Destroy();
+		}
+		if (pair.other->GetName() == "JudgeCircle" && WE::Input::GetInstance()->IsTrigger(WE::Key::Left))
+		{
+			// 相手が判定円だったら左矢印入力で受け流しモードに移行
+			const WE::_2D::SingleCollider2D* judgeCircle = static_cast<WE::_2D::SingleCollider2D*>(pair.other);
+			const WE::_2D::CircleCollider* ballCollider = static_cast<WE::_2D::CircleCollider*>(pair.my);
+			if (!judgeCircle || !ballCollider) { return; }
+
+			const WE::_2D::Transform* judgeTransform = judgeCircle->GetTransform();
+			if (!judgeTransform) { return; }
+
+			ball->ChangeNextBehavior(judgeTransform->position.x - judgeTransform->size.x / 4 - ballCollider->GetRadius());
+		}
+	}
+
+}
+
+void BallManager::Initialize()
+{
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
+	Collider::Initialize("Ball", info);
+	CreateBall();
 }
