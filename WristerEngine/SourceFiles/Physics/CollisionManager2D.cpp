@@ -27,7 +27,6 @@ BaseColliderGroup* CollisionManager::GetGroup(CR<std::string> groupName)
 	return colliderGroups[groupName].get();
 }
 
-
 void CollisionManager::CheckCollisions()
 {
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }

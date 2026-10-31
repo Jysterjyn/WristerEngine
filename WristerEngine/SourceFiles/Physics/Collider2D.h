@@ -12,6 +12,12 @@ namespace WristerEngine::_2D
 		Circle
 	};
 
+	class ColliderFactory : public IColliderFactory
+	{
+	public:
+		BaseSingleCollider* CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info) override;
+	};
+
 	struct HitInfo2D : public HitInfo
 	{
 		std::optional<Vector2> inter = std::nullopt;

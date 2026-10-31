@@ -39,3 +39,26 @@ bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
 	if (dist > radAB * radAB) { return false; }
 	return true;
 }
+
+BaseSingleCollider* ColliderFactory::CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info)
+{
+	BaseColliderGroup* group = CollisionManager::GetInstance()->AddGroup(groupName, info);
+	if (!group) { return nullptr; }
+	BaseSingleCollider* newCollider = nullptr;
+	if (info.GetName() == "Circle")
+	{
+		newCollider = new CircleCollider();
+	}
+	else if (info.GetName() == "Box")
+	{
+		newCollider = new BoxCollider();
+	}
+	else if (info.GetName() == "TwoRay")
+	{
+		newCollider = new TwoRayCollider();
+	}
+	if (!newCollider) { return nullptr; }
+	newCollider->Initialize(group->GetOwner(), info);
+	group->AddCollider(std::unique_ptr<BaseSingleCollider>(newCollider));
+	return newCollider;
+}

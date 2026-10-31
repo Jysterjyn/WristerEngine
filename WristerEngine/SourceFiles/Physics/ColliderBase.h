@@ -82,11 +82,14 @@ namespace WristerEngine
 
 	using CollisionPairList = std::list<BaseCollisionPair>;
 
+	class BaseCollisionManager;
+
 	class BaseColliderGroup : public ColliderInfo
 	{
 	protected:
 		uList colliders;
 		BaseCollider* owner = nullptr;
+		BaseCollisionManager* manager = nullptr;
 
 		// 当たったペアの記録
 		CollisionPairList collisionPairs, enterPairs, exitPairs, collisionPairsPre;
@@ -121,6 +124,13 @@ namespace WristerEngine
 		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
 		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
 		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }
+	};
+
+	class IColliderFactory
+	{
+	public:
+		virtual ~IColliderFactory() = default;
+		virtual BaseSingleCollider* CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info) = 0;
 	};
 
 	class BaseCollider
@@ -173,7 +183,7 @@ namespace WristerEngine
 		// 離れた瞬間
 		virtual void OnCollisionExit() {}
 
-		virtual ~BaseCollider();
+		virtual ~BaseCollider() = default;
 
 		void DeleteGroup() { group = nullptr; }
 		// getter
@@ -184,4 +194,24 @@ namespace WristerEngine
 
 	bool CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2);
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);
+
+	class BaseCollisionManager
+	{
+		uPtr<HitInfo> hitInfo;
+		std::unordered_map<std::string, uPtr<BaseColliderGroup>> colliderGroups;
+
+	public:
+		virtual ~BaseCollisionManager() = default;
+		BaseColliderGroup* AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
+		BaseColliderGroup* GetGroup(CR<std::string> groupName);
+
+		virtual bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) = 0;
+
+		// グループ単位での当たり判定
+		bool Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB);
+
+		// 全当たり判定
+		virtual void CheckCollisions();
+
+	};
 }
