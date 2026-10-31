@@ -3,6 +3,7 @@
 #include <Vector.h>
 #include <Collider2D.h>
 #include <TimedCall.h>
+#include <CollisionManager2D.h>
 
 struct BehaviorParameter : WE::Behavior::Parameter
 {
@@ -32,8 +33,9 @@ class Ukenagashi : public BaseBallBehavior
 	void Update() override;
 };
 
-class Ball : public GameObjects, public WE::_2D::Collider
+class Ball : public GameObjects
 {
+	static WE::_2D::CollisionManager* collisionManager;
 	BehaviorParameter* GetParameter();
 	WE::_2D::CircleCollider* collider = nullptr;
 
@@ -55,6 +57,7 @@ class Ball : public GameObjects, public WE::_2D::Collider
 
 public:
 	~Ball();
+	static void SetCollisionManager() { collisionManager = WE::_2D::CollisionManager::GetInstance(); }
 	bool IsUkenagashi() { return GetParameter()->isUkenagashi; }
 	void ChangeNextBehavior(WE::CR<Vector2> pos); // 次のビヘイビアに切り替え
 };

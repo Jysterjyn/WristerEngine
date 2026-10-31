@@ -21,6 +21,13 @@ BaseColliderGroup* CollisionManager::AddGroup(CR<std::string> groupName, const s
 	return colliderGroups[groupName].get();
 }
 
+BaseColliderGroup* CollisionManager::GetGroup(CR<std::string> groupName)
+{
+	if (!colliderGroups.contains(groupName)) { return nullptr; }
+	return colliderGroups[groupName].get();
+}
+
+
 void CollisionManager::CheckCollisions()
 {
 	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }

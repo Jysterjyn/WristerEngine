@@ -86,7 +86,7 @@ namespace WristerEngine
 	{
 	protected:
 		uList colliders;
-		std::list<BaseCollider*> owners;
+		BaseCollider* owner = nullptr;
 
 		// 当たったペアの記録
 		CollisionPairList collisionPairs, enterPairs, exitPairs, collisionPairsPre;
@@ -111,7 +111,7 @@ namespace WristerEngine
 		/// <returns>登録されたコライダー</returns>
 		BaseSingleCollider* AddCollider(uPtr<BaseSingleCollider> newCollider);
 
-		void AddOwner(BaseCollider* owner) { owners.push_back(owner); }
+		void SetOwner(BaseCollider* owner_) { owner = owner_; }
 		void AddCollisionPair(const BaseCollisionPair& pair) { collisionPairs.push_back(pair); }
 
 		void CallCollisions();

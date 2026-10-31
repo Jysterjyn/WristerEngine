@@ -56,7 +56,7 @@ bool WristerEngine::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCo
 BaseColliderGroup::~BaseColliderGroup()
 {
 	colliders.clear();
-	for (auto* owner : owners) { owner->DeleteGroup(); }
+	owner->DeleteGroup();
 }
 
 BaseSingleCollider* BaseColliderGroup::AddCollider(uPtr<BaseSingleCollider> newCollider)
@@ -91,12 +91,12 @@ void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCol
 
 	for (const auto& pair : pairs)
 	{
-		BaseCollider* owner = pair.my->GetOwner();
-		uint32_t serial = owner->GetSerialNumber();
+		BaseCollider* owner_ = pair.my->GetOwner();
+		uint32_t serial = owner_->GetSerialNumber();
 		// すでに呼ばれているオーナーはスキップ
 		if (called.contains(serial)) { continue; }
 
-		(owner->*callback)();
+		(owner_->*callback)();
 		// 呼び出したオーナーを記録
 		called.insert(serial);
 	}
@@ -131,7 +131,7 @@ void BaseColliderGroup::CallExit()
 void BaseCollider::Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
 {
 	group = _2D::CollisionManager::GetInstance()->AddGroup(groupName, info);
-	group->AddOwner(this);
+	group->SetOwner(this);
 	if (!info) { return; }
 	group->SetColliderInfo(*info);
 }

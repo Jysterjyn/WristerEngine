@@ -3,6 +3,8 @@
 #include <Input.h>
 #include <CollisionInfo.h>
 
+WE::_2D::CollisionManager* Ball::collisionManager = nullptr;
+
 void Ball::Initialize()
 {
 	WE::_2D::SpriteProp prop;
@@ -21,8 +23,8 @@ void Ball::Initialize()
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
-	Collider::Initialize("Ball", info);
-	collider = AddCollider<WE::_2D::CircleCollider>(info);
+	//Collider::Initialize("Ball", info);
+	//collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
 }
@@ -44,7 +46,7 @@ void Ball::ApplyParameter()
 	if (!pParam) { return; }
 	sprite->position = pParam->pos;
 	sprite->color = pParam->color;
-	if (pParam->isDestroy) { Destroy(); }
+	//if (pParam->isDestroy) { Destroy(); }
 }
 
 void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
@@ -101,7 +103,10 @@ void Ukenagashi::Update()
 
 void BallManager::CreateBall()
 {
-	balls.Add(std::make_unique<Ball>());
+	WE::uPtr<Ball> newBall = std::make_unique<Ball>();
+	WE::BaseSingleCollider* collider = newBall.get();
+	//group->AddCollider(collider);
+	//balls.Add(std::move(newBall));
 	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 120);
 	timedCalls.Add(std::move(timedCall));
 }
@@ -110,8 +115,6 @@ void BallManager::Update()
 {
 	timedCalls.Update();
 	balls.Update();
-
-
 }
 
 void BallManager::OnCollision()
@@ -141,11 +144,11 @@ void BallManager::OnCollision()
 			ball->ChangeNextBehavior(judgeTransform->position.x - judgeTransform->size.x / 4 - ballCollider->GetRadius());
 		}
 	}
-
 }
 
 void BallManager::Initialize()
 {
+	Ball::SetCollisionManager();
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
 	Collider::Initialize("Ball", info);
 	CreateBall();
