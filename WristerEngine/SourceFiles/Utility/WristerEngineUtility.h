@@ -71,6 +71,7 @@ namespace WristerEngine
 	};
 
 	template <class T>
+	// enum classの値をuint32_tに変換する関数
 	uint32_t ChangeVal(T value) { return static_cast<uint32_t>(value); }
 
 	/// <summary>

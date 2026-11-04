@@ -9,31 +9,12 @@ namespace WristerEngine::_2D
 	/// <summary>
 	/// クエリーによる情報を得る為の構造体
 	/// </summary>
-	struct QueryHit
+	struct QueryHit : public BaseQueryHit
 	{
-		// 衝突相手のコライダー
-		SingleCollider2D* collider = nullptr;
 		// 衝突点
-		Vector2 inter;
+		std::optional<Vector2> inter = std::nullopt;
 		// 排斥ベクトル
-		Vector2 reject;
-	};
-
-	/// <summary>
-	/// クエリーで交差を検出した時の動作を規定するクラス
-	/// </summary>
-	class QueryCallback
-	{
-	public:
-		QueryCallback() = default;
-		virtual ~QueryCallback() = default;
-
-		/// <summary>
-		/// 交差時コールバック
-		/// </summary>
-		/// <param name="info">交差情報</param>
-		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
-		virtual bool OnQueryHit(const QueryHit& info) = 0;
+		std::optional<Vector2> reject = std::nullopt;
 	};
 
 	// コライダー管理
@@ -52,8 +33,6 @@ namespace WristerEngine::_2D
 
 		// 個別当たり判定
 		bool Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB);
-		//bool Check2DCollision2Boxes(const std::array<_2D::Base2DCollider*, 2>& colliders);
-		//bool Check2DCollisionBox2Rays(const std::array<_2D::Base2DCollider*, 2>& colliders);
 
 	public:
 		static CollisionManager* GetInstance();

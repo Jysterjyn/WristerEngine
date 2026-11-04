@@ -98,4 +98,6 @@ namespace WristerEngine::_2D
 
 	// 個別当たり判定
 	bool Check2Circles(const CircleCollider* a, const CircleCollider* b);
+	//bool Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders);
+	//bool CheckBox2Rays(const std::array<_2D::TwoRayCollider*, 2>& colliders);
 }
