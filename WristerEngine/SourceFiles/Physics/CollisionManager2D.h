@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "Collider2D.h"
+#include "ColliderBase.h"
+#include <Vector.h>
 #include <list>
 #include <optional>
 #include <unordered_map>
@@ -18,7 +19,7 @@ namespace WristerEngine::_2D
 	};
 
 	// コライダー管理
-	class CollisionManager final
+	class CollisionManager final : public BaseCollisionManager
 	{
 	private:
 		uPtr<HitInfo> hitInfo;
@@ -29,17 +30,9 @@ namespace WristerEngine::_2D
 		CollisionManager(const CollisionManager&) = delete;
 		CollisionManager& operator=(const CollisionManager&) = delete;
 
-		bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB);
-
-		// 個別当たり判定
-		bool Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB);
-
 	public:
 		static CollisionManager* GetInstance();
-		BaseColliderGroup* AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
-		BaseColliderGroup* GetGroup(CR<std::string> groupName);
-
-		// 全当たり判定
-		void CheckCollisions();
+		
+		bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
 	};
 }

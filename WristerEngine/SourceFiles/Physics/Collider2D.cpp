@@ -1,4 +1,5 @@
 ﻿#include "Collider2D.h"
+#include "CollisionManager2D.h"
 #include <cassert>
 using namespace WE;
 using namespace _2D;
@@ -42,25 +43,25 @@ bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
 
 BaseSingleCollider* ColliderFactory::CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info)
 {
-	BaseColliderGroup* group = CollisionManager2D::GetInstance()->AddGroup(groupName, info);
+	BaseColliderGroup* group = CollisionManager::GetInstance()->GetGroup(groupName);
 	if (!group) { return nullptr; }
-	BaseSingleCollider* newCollider = nullptr;
+	uPtr<BaseSingleCollider> newCollider;
+
 	if (info.GetName() == "Circle")
 	{
-		newCollider = new CircleCollider();
+		newCollider = std::make_unique<CircleCollider>();
 	}
 	else if (info.GetName() == "Box")
 	{
-		newCollider = new BoxCollider();
+		newCollider = std::make_unique<BoxCollider>();
 	}
 	else if (info.GetName() == "TwoRay")
 	{
-		newCollider = new TwoRayCollider();
+		newCollider = std::make_unique<TwoRayCollider>();
 	}
 	if (!newCollider) { return nullptr; }
-	newCollider->Initialize(group->GetOwner(), info);
-	group->AddCollider(std::unique_ptr<BaseSingleCollider>(newCollider));
-	return newCollider;
+	newCollider->ColliderInitialize(group->GetOwner(), info);
+	return group->AddCollider(std::move(newCollider));
 }
 
 bool WE::_2D::Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders)

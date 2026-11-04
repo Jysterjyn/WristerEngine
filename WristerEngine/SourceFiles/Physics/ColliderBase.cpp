@@ -33,26 +33,6 @@ ColliderInfo ColliderInfo::GetColliderInfo() const
 	return info;
 }
 
-bool WristerEngine::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
-{
-	return
-		infoA->GetAttribute() & infoB->GetMask() &&
-		infoB->GetAttribute() & infoA->GetMask();
-}
-
-bool WristerEngine::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2)
-{
-	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
-	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
-	// シリアルナンバーと同じかで判断する
-	std::vector<uint32_t> serials1{ p1.my->GetSerialNumber(), p1.other->GetSerialNumber() };
-	std::vector<uint32_t> serials2{ p2.my->GetSerialNumber(), p2.other->GetSerialNumber() };
-
-	if (CompareVectors<uint32_t>(serials1, serials2)) { return true; }
-
-	return false;
-}
-
 BaseColliderGroup::~BaseColliderGroup()
 {
 	colliders.clear();
@@ -154,7 +134,7 @@ BaseColliderGroup* BaseCollisionManager::AddGroup(CR<std::string> groupName, con
 		if (info) { newGroup->SetColliderInfo(*info); }
 		colliderGroups[groupName] = std::move(newGroup);
 	}
-	return colliderGroups[groupName].get();
+	return GetGroup(groupName);
 }
 
 BaseColliderGroup* BaseCollisionManager::GetGroup(CR<std::string> groupName)
@@ -214,4 +194,24 @@ bool BaseCollisionManager::Check2Groups(BaseColliderGroup* groupA, BaseColliderG
 	}
 
 	return !groupA->GetCollisionPairs().empty();
+}
+
+bool WE::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
+{
+	return
+		infoA->GetAttribute() & infoB->GetMask() &&
+		infoB->GetAttribute() & infoA->GetMask();
+}
+
+bool WE::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2)
+{
+	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
+	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの
+	// シリアルナンバーと同じかで判断する
+	std::vector<uint32_t> serials1{ p1.my->GetSerialNumber(), p1.other->GetSerialNumber() };
+	std::vector<uint32_t> serials2{ p2.my->GetSerialNumber(), p2.other->GetSerialNumber() };
+
+	if (CompareVectors<uint32_t>(serials1, serials2)) { return true; }
+
+	return false;
 }

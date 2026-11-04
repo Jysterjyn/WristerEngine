@@ -49,7 +49,7 @@ namespace WristerEngine
 		void Destroy() { isDestroy = true; }
 		bool Remove() const override { return isDestroy; }
 
-		void Initialize(BaseCollider* owner_, const ColliderInfo& info)
+		void ColliderInitialize(BaseCollider* owner_, const ColliderInfo& info)
 		{
 			owner = owner_; SetColliderInfo(info);
 		}
@@ -121,6 +121,7 @@ namespace WristerEngine
 
 		// getter
 		const uList* GetColliders() const { return &colliders; }
+		BaseCollider* GetOwner() const { return owner; }
 		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
 		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
 		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }
@@ -153,25 +154,25 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		template<class T>
-		T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
-		{
-			// コライダーの型がColliderであるかを確認
-			const std::string TYPE_NAME = typeid(T).name();
-			auto TypeCompare = [&TYPE_NAME](CR<std::string> type) { return TYPE_NAME.find(type) != std::string::npos; };
-			if (!TypeCompare("Collider")) { return nullptr; }
+		//template<class T>
+		//T* AddCollider(const std::optional<ColliderInfo>& info = std::nullopt)
+		//{
+		//	// コライダーの型がColliderであるかを確認
+		//	const std::string TYPE_NAME = typeid(T).name();
+		//	auto TypeCompare = [&TYPE_NAME](CR<std::string> type) { return TYPE_NAME.find(type) != std::string::npos; };
+		//	if (!TypeCompare("Collider")) { return nullptr; }
 
-			// コライダーグループが登録されていない場合は登録する
-			uPtr<BaseSingleCollider> newCollider;
-			ColliderInfo colliderInfo(group->GetColliderInfo());
-			std::string colliderName = info ? info->GetName() : group->GetName();
-			colliderInfo.SetName(colliderName);
+		//	// コライダーグループが登録されていない場合は登録する
+		//	uPtr<BaseSingleCollider> newCollider;
+		//	ColliderInfo colliderInfo(group->GetColliderInfo());
+		//	std::string colliderName = info ? info->GetName() : group->GetName();
+		//	colliderInfo.SetName(colliderName);
 
-			// コライダー情報が指定されている場合は上書きする
-			newCollider = std::make_unique<T>();
-			newCollider->Initialize(this, colliderInfo);
-			return static_cast<T*>(group->AddCollider(std::move(newCollider)));
-		}
+		//	// コライダー情報が指定されている場合は上書きする
+		//	newCollider = std::make_unique<T>();
+		//	newCollider->Initialize(this, colliderInfo);
+		//	return static_cast<T*>(group->AddCollider(std::move(newCollider)));
+		//}
 
 		void Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 
@@ -183,7 +184,7 @@ namespace WristerEngine
 		// 離れた瞬間
 		virtual void OnCollisionExit() {}
 
-		virtual ~BaseCollider() = default;
+		virtual ~BaseCollider();
 
 		void DeleteGroup() { group = nullptr; }
 		// getter
@@ -192,9 +193,6 @@ namespace WristerEngine
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
-	bool CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2);
-	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);
-
 	class BaseCollisionManager
 	{
 		uPtr<HitInfo> hitInfo;
@@ -202,6 +200,7 @@ namespace WristerEngine
 
 	public:
 		virtual ~BaseCollisionManager() = default;
+
 		BaseColliderGroup* AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt);
 		BaseColliderGroup* GetGroup(CR<std::string> groupName);
 
@@ -211,7 +210,7 @@ namespace WristerEngine
 		bool Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB);
 
 		// 全当たり判定
-		virtual void CheckCollisions();
+		void CheckCollisions();
 	};
 
 	/// <summary>
@@ -238,4 +237,7 @@ namespace WristerEngine
 		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
 		virtual bool OnQueryHit(CR<BaseQueryHit> info) = 0;
 	};
+
+	bool CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2);
+	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);
 }
