@@ -153,7 +153,7 @@ namespace WristerEngine
 		}
 
 	public:
-		virtual ColliderGroup* Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info = std::nullopt) = 0;
+		virtual ColliderGroup* Initialize(CR<ColliderInfo> info) = 0;
 
 		// 衝突コールバック関数
 		// 当たっている間

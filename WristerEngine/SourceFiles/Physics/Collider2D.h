@@ -87,7 +87,7 @@ namespace WristerEngine::_2D
 	{
 	public:
 		// BaseCollider を介して継承されました
-		ColliderGroup* Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info) override;
+		ColliderGroup* Initialize(CR<ColliderInfo> info) override;
 	};
 
 	// 個別当たり判定

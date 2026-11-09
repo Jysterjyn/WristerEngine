@@ -11,8 +11,8 @@ void Player::Initialize()
 	sprite = spMan->Create(prop);
 	sprite->SetCenterAnchor();
 
-	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player));
-	Collider::Initialize("Player", info);
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player), "Player");
+	Collider::Initialize(info);
 	WE::_2D::CircleCollider* collider = 
 		static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
 	if (!collider) { assert(0); return; }

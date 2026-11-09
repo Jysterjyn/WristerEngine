@@ -4,15 +4,15 @@
 #include <cassert>
 using namespace WE;
 
-ColliderGroup* BaseColliderManager::AddGroup(CR<std::string> groupName, BaseCollider* owner, const std::optional<ColliderInfo>& info)
+ColliderGroup* BaseColliderManager::AddGroup(BaseCollider* owner, CR<ColliderInfo> info)
 {
-	if (!colliderGroups.contains(groupName))
+	if (!colliderGroups.contains(info.GetName()))
 	{
-		uPtr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>(groupName);
+		uPtr<ColliderGroup> newGroup = std::make_unique<ColliderGroup>(info.GetName());
 		newGroup->Initialize(factory.get(), owner, info);
-		colliderGroups[groupName] = std::move(newGroup);
+		colliderGroups[info.GetName()] = std::move(newGroup);
 	}
-	return GetGroup(groupName);
+	return GetGroup(info.GetName());
 }
 
 ColliderGroup* BaseColliderManager::GetGroup(CR<std::string> groupName)

@@ -71,7 +71,7 @@ namespace WristerEngine
 		virtual ~BaseColliderManager() = default;
 
 		// コライダーグループの追加と取得
-		ColliderGroup* AddGroup(CR<std::string> groupName, BaseCollider* owner, const std::optional<ColliderInfo>& info = std::nullopt);
+		ColliderGroup* AddGroup(BaseCollider* owner, CR<ColliderInfo> info);
 		// コライダーグループの取得
 		ColliderGroup* GetGroup(CR<std::string> groupName);
 		// 2つのコライダーの当たり判定

@@ -9,9 +9,9 @@ static BaseColliderManager* GetColliderManager2D()
 	return ColliderManager::GetInstance()->GetColliderManager(ColliderDimension::_2D);
 }
 
-ColliderGroup* Collider::Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
+ColliderGroup* Collider::Initialize(CR<ColliderInfo> info)
 {
-	group = GetColliderManager2D()->AddGroup(groupName, this, info);
+	group = GetColliderManager2D()->AddGroup(this, info);
 	return group;
 }
 

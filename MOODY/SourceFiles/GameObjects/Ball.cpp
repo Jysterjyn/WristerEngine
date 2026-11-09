@@ -106,8 +106,8 @@ void Ukenagashi::Update()
 
 void BallManager::Initialize()
 {
-	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
-	Ball::SetColliderGroup(Collider::Initialize("Ball", info));
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball), "Ball");
+	Ball::SetColliderGroup(Collider::Initialize(info));
 	CreateBall();
 }
 
