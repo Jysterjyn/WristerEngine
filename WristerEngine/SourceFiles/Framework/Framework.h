@@ -3,7 +3,7 @@
 #include <SpriteManager.h>
 #include <DirectXCommon.h>
 #include <Constant.h>
-#include <CollisionManager2D.h>
+#include <ColliderManager.h>
 #include <GlobalVariables.h>
 #include <ImGuiManager.h>
 #include <AudioManager.h>
@@ -25,7 +25,7 @@ namespace WristerEngine
 		Input* input = Input::GetInstance();
 		DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 		SceneManager* sceneManager = SceneManager::GetInstance();
-		_2D::CollisionManager* collisionManager = _2D::CollisionManager::GetInstance();
+		ColliderManager* collisionManager = ColliderManager::GetInstance();
 		ImGuiManager* imGuiManager = ImGuiManager::GetInstance();
 		FPS* fps = FPS::GetInstance();
 		uPtr<BaseGameSettings> gameSettings;

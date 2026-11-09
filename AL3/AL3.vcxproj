@@ -36,77 +36,6 @@
       <Project>{8bf34d9c-a65c-49f5-9a77-83fa870060dc}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Shaders\Functions.hlsli" />
-    <None Include="Resources\Shaders\Light.hlsli" />
-    <None Include="Resources\Shaders\Obj.hlsli" />
-    <None Include="Resources\Shaders\Particle.hlsli" />
-    <None Include="Resources\Shaders\PostEffect.hlsli" />
-    <None Include="Resources\Shaders\PostEffectFunctions.hlsli" />
-    <None Include="Resources\Shaders\Primitive.hlsli" />
-    <None Include="Resources\Shaders\Sprite.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\Shaders\MultiTexturePS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjPS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectPS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitivePS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitiveVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -118,13 +47,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -145,14 +74,14 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(ProjectName)\$(Configuration)\</OutDir>
     <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(WindowsSDK_IncludePath)</IncludePath>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(ProjectName)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
     <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -165,7 +94,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -190,7 +119,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ExceptionHandling>Sync</ExceptionHandling>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(ProjectDir)SourceFiles\GameScenes;$(ProjectDir)SourceFiles\GameObjects;$(ProjectDir)SourceFiles\MyGame</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard_C>Default</LanguageStandard_C>

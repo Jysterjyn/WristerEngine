@@ -15,7 +15,7 @@ namespace WristerEngine::_2D
 	class ColliderFactory : public IColliderFactory
 	{
 	public:
-		BaseSingleCollider* CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info) override;
+		uPtr<BaseSingleCollider> CreateCollider(uint32_t colliderShapeType) override;
 	};
 
 	struct HitInfo2D : public HitInfo
@@ -26,17 +26,14 @@ namespace WristerEngine::_2D
 		~HitInfo2D() = default;
 	};
 
-	class SingleCollider2D : public BaseSingleCollider
+	class SingleCollider : public BaseSingleCollider
 	{
-	private:
-		static uint32_t nextSerialNumber;
 
 	protected:
 		const Transform* pTransform = nullptr;
 
 	public:
-		SingleCollider2D() { serialNumber = nextSerialNumber++; }
-		virtual ~SingleCollider2D() = default;
+		virtual ~SingleCollider() = default;
 		
 		// トランスフォームを設定
 		void SetTransform(const Transform* pTransform_) { pTransform = pTransform_; Update(); }
@@ -45,26 +42,26 @@ namespace WristerEngine::_2D
 	};
 
 	// 四角形コライダー
-	class BoxCollider : public SingleCollider2D
+	class BoxCollider : public SingleCollider
 	{
 	public:
-		BoxCollider() : SingleCollider2D() { shapeType = (uint32_t)CollisionShapeType::Box; }
+		BoxCollider() : SingleCollider() { shapeType = (uint32_t)CollisionShapeType::Box; }
 		// 左上端と右下端の座標を求める
 		std::map<std::string, Vector2> GetVertex() const;
 	};
 
 	// 1点から2方向に延びる線分との当たり判定（まだ不完全）
-	class TwoRayCollider : public SingleCollider2D
+	class TwoRayCollider : public SingleCollider
 	{
 		Angle fov; // 視野角
 
 	public:
-		TwoRayCollider() : SingleCollider2D() { shapeType = (uint32_t)CollisionShapeType::TwoRay; }
+		TwoRayCollider() : SingleCollider() { shapeType = (uint32_t)CollisionShapeType::TwoRay; }
 		Angle GetFOV() const { return fov; }
 	};
 
 	// 円コライダー
-	class CircleCollider : public SingleCollider2D
+	class CircleCollider : public SingleCollider
 	{
 	private:
 		Vector2 center;			// 中心座標
@@ -72,7 +69,7 @@ namespace WristerEngine::_2D
 		Vector2 offset;			// 中心座標のオフセット(トランスフォームからの差分)
 
 	public:
-		CircleCollider() : SingleCollider2D() { shapeType = (uint32_t)CollisionShapeType::Circle; }
+		CircleCollider() : SingleCollider() { shapeType = (uint32_t)CollisionShapeType::Circle; }
 		void Update() override { if (pTransform) { center = pTransform->GetWorldPosition() + offset; } }
 		// 中心座標を取得
 		CR<Vector2> GetCenterPosition() const { return center; }
@@ -88,12 +85,9 @@ namespace WristerEngine::_2D
 
 	class Collider : public BaseCollider
 	{
-	private:
-		static uint32_t nextSerialNumber;
-
 	public:
-		Collider() { serialNumber = nextSerialNumber++; }
-		virtual ~Collider() = default;
+		// BaseCollider を介して継承されました
+		ColliderGroup* Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info) override;
 	};
 
 	// 個別当たり判定

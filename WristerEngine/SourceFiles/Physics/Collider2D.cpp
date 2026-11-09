@@ -1,11 +1,40 @@
 ﻿#include "Collider2D.h"
-#include "CollisionManager2D.h"
+#include "ColliderManager.h"
 #include <cassert>
 using namespace WE;
 using namespace _2D;
 
-uint32_t SingleCollider2D::nextSerialNumber = 0;
-uint32_t Collider::nextSerialNumber = 0;
+static BaseColliderManager* GetColliderManager2D()
+{
+	return ColliderManager::GetInstance()->GetColliderManager(ColliderDimension::_2D);
+}
+
+ColliderGroup* Collider::Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
+{
+	group = GetColliderManager2D()->AddGroup(groupName, this, info);
+	return group;
+}
+
+uPtr<BaseSingleCollider> ColliderFactory::CreateCollider(uint32_t colliderShapeType)
+{
+	uPtr<BaseSingleCollider> newCollider;
+
+	switch (colliderShapeType)
+	{
+	case (uint32_t)CollisionShapeType::Circle:
+		newCollider = std::make_unique<CircleCollider>();
+		break;
+	case (uint32_t)CollisionShapeType::Box:
+		newCollider = std::make_unique<BoxCollider>();
+		break;
+	case (uint32_t)CollisionShapeType::TwoRay:
+		newCollider = std::make_unique<TwoRayCollider>();
+		break;
+	default:
+		return nullptr;
+	}
+	return newCollider;
+}
 
 //std::map<std::string, Vector2> BoxCollider::GetVertex() const
 //{
@@ -41,31 +70,9 @@ bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
 	return true;
 }
 
-BaseSingleCollider* ColliderFactory::CreateCollider(CR<std::string> groupName, CR<ColliderInfo> info)
-{
-	BaseColliderGroup* group = CollisionManager::GetInstance()->GetGroup(groupName);
-	if (!group) { return nullptr; }
-	uPtr<BaseSingleCollider> newCollider;
-
-	if (info.GetName() == "Circle")
-	{
-		newCollider = std::make_unique<CircleCollider>();
-	}
-	else if (info.GetName() == "Box")
-	{
-		newCollider = std::make_unique<BoxCollider>();
-	}
-	else if (info.GetName() == "TwoRay")
-	{
-		newCollider = std::make_unique<TwoRayCollider>();
-	}
-	if (!newCollider) { return nullptr; }
-	newCollider->ColliderInitialize(group->GetOwner(), info);
-	return group->AddCollider(std::move(newCollider));
-}
-
 bool WE::_2D::Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders)
 {
+	colliders;
 	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
 	for (size_t i = 0; i < colliders.size(); i++)
 	{
@@ -79,8 +86,8 @@ bool WE::_2D::Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders)
 	{
 		trans[i] = box2DColliders[i]->GetTransform();
 		// 中心点を計算
-		auto pos = box2DColliders[i]->GetVertex();
-		posCenter[i] = Half<Vector2>(pos["LT"] + pos["RB"]);
+		//auto pos = box2DColliders[i]->GetVertex();
+		//posCenter[i] = Half<Vector2>(pos["LT"] + pos["RB"]);
 	}
 
 	// 当たり判定

@@ -2,11 +2,14 @@
 #include <Random.h>
 #include <Input.h>
 #include <CollisionInfo.h>
+#include <imgui.h>
 
-WE::_2D::CollisionManager* Ball::collisionManager = nullptr;
+WE::ColliderGroup* Ball::group = nullptr;
 
 void Ball::Initialize()
 {
+	if (!group) { assert(0); return; }
+
 	WE::_2D::SpriteProp prop;
 	prop.AddFileNames({ "Nanika/Nanika.png", "Nanika/Ukenagashi.png" });
 	sprite = spMan->Create(prop);
@@ -22,8 +25,9 @@ void Ball::Initialize()
 	WE::Random_Float randPosY(sprite->size.y, WE::WIN_SIZE.y - sprite->size.y);
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
-	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
-	//Collider::Initialize("Ball", info);
+	collider = static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
+	if (!collider) { assert(0); return; }
+	//BaseCollider::Initialize("Ball", info);
 	//collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
@@ -46,7 +50,7 @@ void Ball::ApplyParameter()
 	if (!pParam) { return; }
 	sprite->position = pParam->pos;
 	sprite->color = pParam->color;
-	//if (pParam->isDestroy) { Destroy(); }
+	if (pParam->isDestroy) { Destroy(); }
 }
 
 void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
@@ -55,7 +59,6 @@ void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
 	if (pParam == nullptr) { return; }
 
 	pParam->pos.x = pos.x;
-
 }
 
 Ball::~Ball()
@@ -82,7 +85,7 @@ void Move::Update()
 {
 	const ScreenSpeed MOVE_SPD(5.0f);
 	pParam->pos.x -= MOVE_SPD;
-	if (pParam->pos.x < -100) { pParam->isDestroy = true; }
+	if (pParam->pos.x < 300) { pParam->isDestroy = true; }
 	if (pParam->isUkenagashi) { Finish(); }
 }
 
@@ -101,20 +104,27 @@ void Ukenagashi::Update()
 	//pParam->pos.x -= MOVE_SPD;
 }
 
-void BallManager::CreateBall()
+void BallManager::Initialize()
 {
-	WE::uPtr<Ball> newBall = std::make_unique<Ball>();
-	WE::BaseSingleCollider* collider = newBall.get();
-	//group->AddCollider(collider);
-	//balls.Add(std::move(newBall));
-	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 120);
-	timedCalls.Add(std::move(timedCall));
+	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
+	Ball::SetColliderGroup(Collider::Initialize("Ball", info));
+	CreateBall();
 }
 
 void BallManager::Update()
 {
 	timedCalls.Update();
 	balls.Update();
+	ImGui::Text("Ball Count: %d", balls.size());
+	ImGui::Text("Collider Count: %d", group->GetColliders()->size());
+}
+
+void BallManager::CreateBall()
+{
+	WE::uPtr<Ball> newBall = std::make_unique<Ball>();
+	balls.Add(std::move(newBall));
+	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 500);
+	timedCalls.Add(std::move(timedCall));
 }
 
 void BallManager::OnCollision()
@@ -134,7 +144,7 @@ void BallManager::OnCollision()
 		if (pair.other->GetName() == "JudgeCircle" && WE::Input::GetInstance()->IsTrigger(WE::Key::Left))
 		{
 			// 相手が判定円だったら左矢印入力で受け流しモードに移行
-			const WE::_2D::SingleCollider2D* judgeCircle = static_cast<WE::_2D::SingleCollider2D*>(pair.other);
+			const WE::_2D::SingleCollider* judgeCircle = static_cast<WE::_2D::SingleCollider*>(pair.other);
 			const WE::_2D::CircleCollider* ballCollider = static_cast<WE::_2D::CircleCollider*>(pair.my);
 			if (!judgeCircle || !ballCollider) { return; }
 
@@ -144,12 +154,4 @@ void BallManager::OnCollision()
 			ball->ChangeNextBehavior(judgeTransform->position.x - judgeTransform->size.x / 4 - ballCollider->GetRadius());
 		}
 	}
-}
-
-void BallManager::Initialize()
-{
-	Ball::SetCollisionManager();
-	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball));
-	Collider::Initialize("Ball", info);
-	CreateBall();
 }

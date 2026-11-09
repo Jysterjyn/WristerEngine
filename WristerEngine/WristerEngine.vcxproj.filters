@@ -70,9 +70,6 @@
     <ClCompile Include="SourceFiles\Physics\Collider2D.cpp">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\Physics\CollisionManager2D.cpp">
-      <Filter>ソース ファイル\Physics\Collider\2D</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\Physics\ColliderBase.cpp">
       <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="SourceFiles\Utility\WristerEngineUtility.cpp">
       <Filter>ソース ファイル\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceFiles\Physics\ColliderManager.cpp">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,11 +255,11 @@
     <ClInclude Include="SourceFiles\Physics\Collider2D.h">
       <Filter>ソース ファイル\Physics\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\Physics\CollisionManager2D.h">
-      <Filter>ソース ファイル\Physics\Collider\2D</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFiles\Scene\BaseGameSettings.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFiles\Physics\ColliderManager.h">
+      <Filter>ソース ファイル\Physics\Collider</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

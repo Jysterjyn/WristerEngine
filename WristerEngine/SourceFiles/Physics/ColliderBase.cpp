@@ -1,53 +1,62 @@
 ﻿#include "ColliderBase.h"
-#include "CollisionManager2D.h"
+#include "ColliderManager.h"
 #include <thread>
 #include <unordered_set>
 
 using namespace WE;
 
-ColliderInfo::ColliderInfo(uint32_t attribute_, uint32_t mask_)
+uint32_t BaseCollider::nextSerialNumber = 0;
+uint32_t BaseSingleCollider::nextSerialNumber = 0;
+
+ColliderInfo::ColliderInfo(uint32_t attribute_, uint32_t mask_, CR<std::string> name_)
 {
 	attribute = attribute_;
 	mask = mask_;
+	name = name_;
 }
 
-ColliderInfo::ColliderInfo(const ColliderInfo& info)
+void ColliderInfo::SetColliderInfo(CR<ColliderInfo> info)
 {
 	attribute = info.attribute;
 	mask = info.mask;
-	name = info.name.Get();
+	name = info.name;
 }
 
-void ColliderInfo::SetColliderInfo(const ColliderInfo& info)
+CR<ColliderInfo> ColliderInfo::GetColliderInfo() const
 {
-	attribute = info.attribute;
-	mask = info.mask;
-	name = info.name.Get();
+	return *this;
 }
 
-ColliderInfo ColliderInfo::GetColliderInfo() const
-{
-	ColliderInfo info{};
-	info.attribute = attribute;
-	info.mask = mask;
-	return info;
-}
-
-BaseColliderGroup::~BaseColliderGroup()
+ColliderGroup::~ColliderGroup()
 {
 	colliders.clear();
 	owner->DeleteGroup();
 }
 
-BaseSingleCollider* BaseColliderGroup::AddCollider(uPtr<BaseSingleCollider> newCollider)
+BaseSingleCollider* ColliderGroup::AddCollider(uint32_t colliderShapeType, std::optional<ColliderInfo> info)
 {
+	uPtr<BaseSingleCollider> newCollider = factory->CreateCollider(colliderShapeType);
+	if (info) { newCollider->SetColliderInfo(*info); }
+	else 
+	{
+		ColliderInfo colliderInfo(GetColliderInfo());
+		colliderInfo.SetName(GetName());
+		newCollider->SetColliderInfo(colliderInfo);
+	}
 	return static_cast<BaseSingleCollider*>(colliders.Add(std::move(newCollider)));
 }
 
-void BaseColliderGroup::Update()
+void ColliderGroup::Initialize(IColliderFactory* factory_, BaseCollider* owner_, std::optional<ColliderInfo> info)
+{
+	SetFactory(factory_);
+	SetOwner(owner_);
+	if (info) { SetColliderInfo(*info); }
+}
+
+void ColliderGroup::Update()
 {
 	// コライダーの削除
-	collisionPairsPre.remove_if([](CR<BaseCollisionPair> pair)
+	collisionPairsPre.remove_if([](CR<CollisionPair> pair)
 		{ return pair.my->IsDestroy() || pair.other->IsDestroy(); });
 	colliders.Update();
 	collisionPairs.clear();
@@ -55,17 +64,17 @@ void BaseColliderGroup::Update()
 	exitPairs.clear();
 }
 
-void BaseColliderGroup::CallCollisions()
+void ColliderGroup::CallCollisions()
 {
-	std::thread enterThread(&BaseColliderGroup::CallEnter, this);
-	std::thread exitThread(&BaseColliderGroup::CallExit, this);
+	std::thread enterThread(&ColliderGroup::CallEnter, this);
+	std::thread exitThread(&ColliderGroup::CallExit, this);
 	CallCallbacks(collisionPairs, &BaseCollider::OnCollision);
 	enterThread.join();
 	exitThread.join();
 	collisionPairsPre = collisionPairs;
 }
 
-void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCollider::* callback)())
+void ColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCollider::* callback)())
 {
 	std::unordered_set<uint32_t> called;
 
@@ -82,7 +91,7 @@ void BaseColliderGroup::CallCallbacks(CR<CollisionPairList> pairs, void (BaseCol
 	}
 }
 
-void BaseColliderGroup::OneCallPair(CollisionPairList& at, CR<CollisionPairList> pair1, CR<CollisionPairList> pair2)
+void ColliderGroup::OneCallPair(CollisionPairList& at, CR<CollisionPairList> pair1, CR<CollisionPairList> pair2)
 {
 	for (const auto& pair : pair1)
 	{
@@ -96,24 +105,16 @@ void BaseColliderGroup::OneCallPair(CollisionPairList& at, CR<CollisionPairList>
 	}
 }
 
-void BaseColliderGroup::CallEnter()
+void ColliderGroup::CallEnter()
 {
 	OneCallPair(enterPairs, collisionPairs, collisionPairsPre);
 	CallCallbacks(enterPairs, &BaseCollider::OnCollisionEnter);
 }
 
-void BaseColliderGroup::CallExit()
+void ColliderGroup::CallExit()
 {
 	OneCallPair(exitPairs, collisionPairsPre, collisionPairs);
 	CallCallbacks(exitPairs, &BaseCollider::OnCollisionExit);
-}
-
-void BaseCollider::Initialize(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
-{
-	group = _2D::CollisionManager::GetInstance()->AddGroup(groupName, info);
-	group->SetOwner(this);
-	if (!info) { return; }
-	group->SetColliderInfo(*info);
 }
 
 BaseCollider::~BaseCollider()
@@ -126,84 +127,17 @@ BaseCollider::~BaseCollider()
 	}
 }
 
-BaseColliderGroup* BaseCollisionManager::AddGroup(CR<std::string> groupName, const std::optional<ColliderInfo>& info)
+
+bool WristerEngine::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
 {
-	if (!colliderGroups.contains(groupName))
-	{
-		uPtr<BaseColliderGroup> newGroup = std::make_unique<BaseColliderGroup>(groupName);
-		if (info) { newGroup->SetColliderInfo(*info); }
-		colliderGroups[groupName] = std::move(newGroup);
-	}
-	return GetGroup(groupName);
+	bool isA = infoA->GetAttribute() & infoB->GetMask();
+	bool isB = infoB->GetAttribute() & infoA->GetMask();
+	bool isAB = isA && isB;
+	if (!isAB) { return false; }
+	return true;
 }
 
-BaseColliderGroup* BaseCollisionManager::GetGroup(CR<std::string> groupName)
-{
-	if (!colliderGroups.contains(groupName)) { return nullptr; }
-	return colliderGroups[groupName].get();
-}
-
-void BaseCollisionManager::CheckCollisions()
-{
-	for (auto& colliderGroup : colliderGroups) { colliderGroup.second->Update(); }
-
-	auto itrA = colliderGroups.begin();
-	for (; itrA != colliderGroups.end(); itrA++)
-	{
-		auto itrB = itrA;
-		itrB++;
-		for (; itrB != colliderGroups.end(); itrB++)
-		{
-			BaseColliderGroup* groupA = itrA->second.get();
-			BaseColliderGroup* groupB = itrB->second.get();
-			if (!CheckFiltering(groupA, groupB)) { continue; }
-			if (!Check2Groups(groupA, groupB)) { continue; }
-		}
-	}
-
-	for (auto& group : colliderGroups)
-	{
-		group.second->CallCollisions();
-	}
-}
-
-bool BaseCollisionManager::Check2Groups(BaseColliderGroup* groupA, BaseColliderGroup* groupB)
-{
-	for (const auto& colliderA : *groupA->GetColliders()) {
-		for (const auto& colliderB : *groupB->GetColliders())
-		{
-			BaseSingleCollider* colA = static_cast<BaseSingleCollider*>(colliderA.get());
-			BaseSingleCollider* colB = static_cast<BaseSingleCollider*>(colliderB.get());
-			if (!CheckFiltering(colA, colB)) { continue; }
-
-			std::list<BaseSingleCollider*> colliderPair({ colA,colB });
-			colliderPair.sort([](BaseSingleCollider* c1, BaseSingleCollider* c2)
-				{
-					return c1->GetShapeType() < c2->GetShapeType();
-				});
-
-			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
-			{
-				BaseCollisionPair pairA(colA, colB, hitInfo.get());
-				BaseCollisionPair pairB(colB, colA, hitInfo.get());
-				groupA->AddCollisionPair(pairA);
-				groupB->AddCollisionPair(pairB);
-				hitInfo->Reset();
-			}
-		}
-	}
-
-	return !groupA->GetCollisionPairs().empty();
-}
-
-bool WE::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
-{
-	return
-		infoA->GetAttribute() & infoB->GetMask() &&
-		infoB->GetAttribute() & infoA->GetMask();
-}
-
-bool WE::CheckCollisionPair(const BaseCollisionPair& p1, const BaseCollisionPair& p2)
+bool WristerEngine::CheckCollisionPair(const CollisionPair& p1, const CollisionPair& p2)
 {
 	// ペアが同じかは、両方のコライダーのシリアルナンバーが同じか、
 	// 片方のコライダーのシリアルナンバーがもう片方のコライダーの

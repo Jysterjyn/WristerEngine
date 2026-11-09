@@ -40,67 +40,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\FBX.hlsli" />
     <None Include="Resources\Shaders\Functions.hlsli" />
-    <None Include="Resources\Shaders\Light.hlsli" />
-    <None Include="Resources\Shaders\Obj.hlsli" />
-    <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\PostEffect.hlsli" />
     <None Include="Resources\Shaders\PostEffectFunctions.hlsli" />
-    <None Include="Resources\Shaders\Primitive.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\white1x1.png" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\MultiTexturePS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjPS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectPS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -109,18 +62,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitivePS.hlsl">
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitiveVS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -173,13 +114,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\DirectWrite_CustomFont;$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\Behavior;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(SolutionDir)WristerEngine\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)..\Generated\Outputs\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)..\Generated\Outputs\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)..\Generated\Obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)External\DirectXTex\include;$(SolutionDir)External\imgui\include;$(SolutionDir)External\json;$(SolutionDir)External\DirectWrite_CustomFont;$(SolutionDir)WristerEngine\SourceFiles\2d;$(SolutionDir)WristerEngine\SourceFiles\3d\Camera;$(SolutionDir)WristerEngine\SourceFiles\3d\Object;$(SolutionDir)WristerEngine\SourceFiles\3d\Skydome;$(SolutionDir)WristerEngine\SourceFiles\Audio;$(SolutionDir)WristerEngine\SourceFiles\Behavior;$(SolutionDir)WristerEngine\SourceFiles\DirectX;$(SolutionDir)WristerEngine\SourceFiles\Framework;$(SolutionDir)WristerEngine\SourceFiles\Utility;$(SolutionDir)WristerEngine\SourceFiles\GameObject;$(SolutionDir)WristerEngine\SourceFiles\Input;$(SolutionDir)WristerEngine\SourceFiles\Json;$(SolutionDir)WristerEngine\SourceFiles\Light;$(SolutionDir)WristerEngine\SourceFiles\LevelLoader;$(SolutionDir)WristerEngine\SourceFiles\Math;$(SolutionDir)WristerEngine\SourceFiles\Particle;$(SolutionDir)WristerEngine\SourceFiles\Physics;$(SolutionDir)WristerEngine\SourceFiles\Scene;$(SolutionDir)WristerEngine\SourceFiles\Timer;$(SolutionDir)WristerEngine\SourceFiles\WinApp;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\DirectXTex\lib\$(Configuration);$(SolutionDir)External\imgui\lib\$(Configuration);$(SolutionDir)External\fbxsdk\lib\$(Configuration);$(SolutionDir)WristerEngine\lib\$(Configuration);$(LibraryPath)</LibraryPath>

@@ -21,20 +21,8 @@
     <Filter Include="リソース ファイル\Shader">
       <UniqueIdentifier>{36694c9b-fe8d-4159-b64a-272e43249bcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="リソース ファイル\Shader\FBX">
-      <UniqueIdentifier>{4491f18a-9b16-426e-bdbb-9e40330ebc07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\Shader\OBJ">
-      <UniqueIdentifier>{05fda1ea-533e-437c-b9dc-0231f3cb4f27}</UniqueIdentifier>
-    </Filter>
     <Filter Include="リソース ファイル\Shader\PostEffect">
       <UniqueIdentifier>{8c36968f-0e91-4ac3-80a1-23a413bfd38f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\Shader\Particle">
-      <UniqueIdentifier>{683df38d-0af8-41af-a65c-07895dcd0520}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="リソース ファイル\Shader\Primitive">
-      <UniqueIdentifier>{12fba77b-3927-40b7-aa6f-efd129d1e060}</UniqueIdentifier>
     </Filter>
     <Filter Include="リソース ファイル\Shader\Sprite">
       <UniqueIdentifier>{0610b136-c756-4270-86dd-f4582ae699b7}</UniqueIdentifier>
@@ -111,26 +99,11 @@
     <None Include="Resources\Shaders\Functions.hlsli">
       <Filter>リソース ファイル\Shader</Filter>
     </None>
-    <None Include="Resources\Shaders\FBX.hlsli">
-      <Filter>リソース ファイル\Shader\FBX</Filter>
-    </None>
-    <None Include="Resources\Shaders\Obj.hlsli">
-      <Filter>リソース ファイル\Shader\OBJ</Filter>
-    </None>
     <None Include="Resources\Shaders\PostEffect.hlsli">
       <Filter>リソース ファイル\Shader\PostEffect</Filter>
     </None>
     <None Include="Resources\Shaders\PostEffectFunctions.hlsli">
       <Filter>リソース ファイル\Shader\PostEffect</Filter>
-    </None>
-    <None Include="Resources\Shaders\Particle.hlsli">
-      <Filter>リソース ファイル\Shader\Particle</Filter>
-    </None>
-    <None Include="Resources\Shaders\Primitive.hlsli">
-      <Filter>リソース ファイル\Shader\Primitive</Filter>
-    </None>
-    <None Include="Resources\Shaders\Light.hlsli">
-      <Filter>リソース ファイル\Shader\OBJ</Filter>
     </None>
     <None Include="Resources\Shaders\Sprite.hlsli">
       <Filter>リソース ファイル\Shader\Sprite</Filter>
@@ -142,18 +115,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\FBXPS.hlsl">
-      <Filter>リソース ファイル\Shader\FBX</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\FBXVS.hlsl">
-      <Filter>リソース ファイル\Shader\FBX</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjPS.hlsl">
-      <Filter>リソース ファイル\Shader\OBJ</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ObjVS.hlsl">
-      <Filter>リソース ファイル\Shader\OBJ</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\PostEffectPS.hlsl">
       <Filter>リソース ファイル\Shader\PostEffect</Filter>
     </FxCompile>
@@ -162,21 +123,6 @@
     </FxCompile>
     <FxCompile Include="Resources\Shaders\MultiTexturePS.hlsl">
       <Filter>リソース ファイル\Shader\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
-      <Filter>リソース ファイル\Shader\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
-      <Filter>リソース ファイル\Shader\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
-      <Filter>リソース ファイル\Shader\Particle</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitivePS.hlsl">
-      <Filter>リソース ファイル\Shader\Primitive</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\Shaders\PrimitiveVS.hlsl">
-      <Filter>リソース ファイル\Shader\Primitive</Filter>
     </FxCompile>
     <FxCompile Include="Resources\Shaders\SpritePS.hlsl">
       <Filter>リソース ファイル\Shader\Sprite</Filter>
