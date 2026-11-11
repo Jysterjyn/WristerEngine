@@ -7,51 +7,13 @@
 
 namespace WristerEngine
 {
-	/// <summary>
-	/// クエリーによる情報を得る為の構造体
-	/// </summary>
-	struct BaseQueryHit
-	{
-		// 衝突相手のコライダー
-		BaseSingleCollider* collider = nullptr;
-	};
-
-	/// <summary>
-	/// クエリーで交差を検出した時の動作を規定するクラス
-	/// </summary>
-	class QueryCallback
-	{
-	public:
-		virtual ~QueryCallback() = default;
-
-		/// <summary>
-		/// 交差時コールバック
-		/// </summary>
-		/// <param name="info">交差情報</param>
-		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
-		virtual bool OnQueryHit(CR<BaseQueryHit> info) = 0;
-	};
-
-	namespace _2D
-	{
-		/// <summary>
-		/// クエリーによる情報を得る為の構造体
-		/// </summary>
-		struct QueryHit : public BaseQueryHit
-		{
-			// 衝突点
-			std::optional<Vector2> inter = std::nullopt;
-			// 排斥ベクトル
-			std::optional<Vector2> reject = std::nullopt;
-		};
-	}
-
 	namespace _3D
 	{
 		/// <summary>
 		/// クエリーによる情報を得る為の構造体
+		/// ※3Dクラスに引っ越し予定
 		/// </summary>
-		struct QueryHit : public BaseQueryHit
+		struct QueryHit : public HitInfo
 		{
 			// 衝突点
 			std::optional<Vector3> inter = std::nullopt;

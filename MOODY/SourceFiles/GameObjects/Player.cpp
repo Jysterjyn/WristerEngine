@@ -13,18 +13,19 @@ void Player::Initialize()
 
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player), "Player");
 	Collider::Initialize(info);
+	
 	WE::_2D::CircleCollider* collider = 
 		static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
 	if (!collider) { assert(0); return; }
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
 
-	info.SetName("JudgeCircle");
-	WE::_2D::CircleCollider* judgeCircle = 
-		static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle), info));
-	if (!judgeCircle) { assert(0); return; }
-	judgeCircle->SetTransform(sprite);
-	judgeCircle->SetRadius(sprite->size.x * 10.0f);
+	//info.SetName("JudgeCircle");
+	//WE::_2D::CircleCollider* judgeCircle = 
+	//	static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle), info));
+	//if (!judgeCircle) { assert(0); return; }
+	//judgeCircle->SetTransform(sprite);
+	//judgeCircle->SetRadius(sprite->size.x * 10.0f);
 }
 
 void Player::Update()

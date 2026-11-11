@@ -37,12 +37,8 @@ BaseSingleCollider* ColliderGroup::AddCollider(uint32_t colliderShapeType, std::
 {
 	uPtr<BaseSingleCollider> newCollider = factory->CreateCollider(colliderShapeType);
 	if (info) { newCollider->SetColliderInfo(*info); }
-	else 
-	{
-		ColliderInfo colliderInfo(GetColliderInfo());
-		colliderInfo.SetName(GetName());
-		newCollider->SetColliderInfo(colliderInfo);
-	}
+	else { newCollider->SetColliderInfo(GetColliderInfo()); }
+	newCollider->SetOwner(owner);
 	return static_cast<BaseSingleCollider*>(colliders.Add(std::move(newCollider)));
 }
 

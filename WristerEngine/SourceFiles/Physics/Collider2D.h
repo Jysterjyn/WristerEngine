@@ -18,17 +18,19 @@ namespace WristerEngine::_2D
 		uPtr<BaseSingleCollider> CreateCollider(uint32_t colliderShapeType) override;
 	};
 
-	struct HitInfo2D : public HitInfo
+	/// <summary>
+	/// クエリーによる情報を得る為の構造体
+	/// </summary>
+	struct QueryHit : public HitInfo
 	{
+		// 衝突点
 		std::optional<Vector2> inter = std::nullopt;
+		// 排斥ベクトル
 		std::optional<Vector2> reject = std::nullopt;
-
-		~HitInfo2D() = default;
 	};
 
 	class SingleCollider : public BaseSingleCollider
 	{
-
 	protected:
 		const Transform* pTransform = nullptr;
 

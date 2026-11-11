@@ -27,8 +27,6 @@ void Ball::Initialize()
 
 	collider = static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
 	if (!collider) { assert(0); return; }
-	//BaseCollider::Initialize("Ball", info);
-	//collider = AddCollider<WE::_2D::CircleCollider>(info);
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
 }
@@ -37,6 +35,7 @@ void Ball::Update()
 {
 	behaviorPattern.Update();
 	ApplyParameter();
+	IsUkenagashi();
 }
 
 void Ball::Draw()
@@ -136,10 +135,10 @@ void BallManager::OnCollision()
 		Ball* ball = (Ball*)pair.my;
 		if (!ball) { continue; }
 
-		if (pair.other->GetName() == "Player" && ball->IsUkenagashi())
+		if (pair.other->GetName() == "Player")
 		{
 			// 相手がプレイヤーだったら消滅
-			pair.my->Destroy();
+			if (ball->IsUkenagashi()) { pair.my->Destroy(); }
 		}
 		if (pair.other->GetName() == "JudgeCircle" && WE::Input::GetInstance()->IsTrigger(WE::Key::Left))
 		{
