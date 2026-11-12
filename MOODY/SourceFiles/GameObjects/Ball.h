@@ -33,7 +33,7 @@ class Ukenagashi : public BaseBallBehavior
 	void Update() override;
 };
 
-class Ball : public GameObjects
+class Ball : public GameObjects, public WE::QueryCallback
 {
 	static WE::ColliderGroup* group;
 	BehaviorParameter* GetParameter();
@@ -59,7 +59,10 @@ public:
 	~Ball();
 	static void SetColliderGroup(WE::ColliderGroup* colliderGroup) { group = colliderGroup; }
 	bool IsUkenagashi() { return GetParameter()->isUkenagashi; }
-	void ChangeNextBehavior(WE::CR<Vector2> pos); // 次のビヘイビアに切り替え
+	// 次のビヘイビアに切り替え
+	void ChangeNextBehavior(WE::CR<Vector2> pos);
+	// QueryCallback を介して継承されました
+	bool OnQueryHit(WE::CollisionPair* info) override;
 };
 
 class BallManager : public WE::_2D::Collider, public WE::ListObject

@@ -25,7 +25,8 @@ void Ball::Initialize()
 	WE::Random_Float randPosY(sprite->size.y, WE::WIN_SIZE.y - sprite->size.y);
 	pParam->pos = { WE::WIN_SIZE.x + EDGE,randPosY() };
 
-	collider = static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
+	collider = static_cast<WE::_2D::CircleCollider*>(
+		group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle), std::nullopt));
 	if (!collider) { assert(0); return; }
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
@@ -58,6 +59,11 @@ void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
 	if (pParam == nullptr) { return; }
 
 	pParam->pos.x = pos.x;
+}
+
+bool Ball::OnQueryHit(WE::CollisionPair* info)
+{
+	return false;
 }
 
 Ball::~Ball()

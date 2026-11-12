@@ -36,7 +36,7 @@ namespace WristerEngine::_2D
 
 	public:
 		virtual ~SingleCollider() = default;
-		
+
 		// トランスフォームを設定
 		void SetTransform(const Transform* pTransform_) { pTransform = pTransform_; Update(); }
 
@@ -92,8 +92,21 @@ namespace WristerEngine::_2D
 		ColliderGroup* Initialize(CR<ColliderInfo> info) override;
 	};
 
-	// 個別当たり判定
-	bool Check2Circles(const CircleCollider* a, const CircleCollider* b);
-	bool Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders);
+	// 当たり判定クラス
+	class CheckCollision : public BaseCheckCollision
+	{
+	private:
+		bool Check2Circles();
+		bool Check2Boxes();
+
+	public:
+		CheckCollision(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) : BaseCheckCollision(colliderA, colliderB) {}
+
+		QueryHit GetQueryHit() const { return *static_cast<QueryHit*>(hitInfo); }
+
+		bool Check2Collisions() override;
+	};
+
+
 	//bool CheckBox2Rays(const std::array<_2D::TwoRayCollider*, 2>& colliders);
 }

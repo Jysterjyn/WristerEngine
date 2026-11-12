@@ -22,6 +22,17 @@ namespace WristerEngine
 		};
 	}
 
+	struct CollisionParam
+	{
+		BaseSingleCollider* colliderA = nullptr, * colliderB = nullptr;
+		ColliderGroup* groupA = nullptr, * groupB = nullptr;
+
+		CollisionParam(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB, ColliderGroup* groupA, ColliderGroup* groupB)
+			: colliderA(colliderA), colliderB(colliderB), groupA(groupA), groupB(groupB)
+		{
+		}
+	};
+
 	class BaseColliderManager
 	{
 	protected:
@@ -37,7 +48,8 @@ namespace WristerEngine
 		// コライダーグループの取得
 		ColliderGroup* GetGroup(CR<std::string> groupName);
 		// 2つのコライダーの当たり判定
-		virtual bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) = 0;
+		//virtual bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) = 0;
+		virtual void VirtualCheck2Collisions(CR<CollisionParam> param) = 0;
 		// グループ単位での当たり判定
 		bool Check2Groups(ColliderGroup* groupA, ColliderGroup* groupB);
 		// 全当たり判定
@@ -50,7 +62,8 @@ namespace WristerEngine
 		{
 		public:
 			ColliderManager2D();
-			bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
+			//bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
+			void VirtualCheck2Collisions(CR<CollisionParam>) override;
 		};
 	}
 
@@ -60,7 +73,8 @@ namespace WristerEngine
 		{
 		public:
 			ColliderManager3D();
-			bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
+			//bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
+			void VirtualCheck2Collisions(CR<CollisionParam>) override {}
 		};
 	}
 

@@ -22,9 +22,11 @@ void ColliderInfo::SetColliderInfo(CR<ColliderInfo> info)
 	name = info.name;
 }
 
-CR<ColliderInfo> ColliderInfo::GetColliderInfo() const
+void BaseSingleCollider::ColliderInitialize(BaseCollider* owner_, CR<ColliderInfo> info, QueryCallback* callback)
 {
-	return *this;
+	owner = owner_;
+	SetColliderInfo(info);
+	queryCallback = callback;
 }
 
 ColliderGroup::~ColliderGroup()
@@ -33,12 +35,11 @@ ColliderGroup::~ColliderGroup()
 	owner->DeleteGroup();
 }
 
-BaseSingleCollider* ColliderGroup::AddCollider(uint32_t colliderShapeType, std::optional<ColliderInfo> info)
+BaseSingleCollider* ColliderGroup::AddCollider(uint32_t colliderShapeType, std::optional<ColliderInfo> info, QueryCallback* callback)
 {
 	uPtr<BaseSingleCollider> newCollider = factory->CreateCollider(colliderShapeType);
-	if (info) { newCollider->SetColliderInfo(*info); }
-	else { newCollider->SetColliderInfo(GetColliderInfo()); }
-	newCollider->SetOwner(owner);
+	ColliderInfo colliderInfo = info ? *info : GetColliderInfo();
+	newCollider->ColliderInitialize(owner, colliderInfo, callback);
 	return static_cast<BaseSingleCollider*>(colliders.Add(std::move(newCollider)));
 }
 
@@ -122,7 +123,6 @@ BaseCollider::~BaseCollider()
 		if (col->GetOwner() == this) { col->Destroy(); }
 	}
 }
-
 
 bool WristerEngine::CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB)
 {

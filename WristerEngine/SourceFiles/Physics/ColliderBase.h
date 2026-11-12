@@ -33,10 +33,12 @@ namespace WristerEngine
 		// getter
 		uint32_t GetAttribute() const { return attribute; }
 		uint32_t GetMask() const { return mask; }
-		CR<ColliderInfo> GetColliderInfo() const;
+		CR<ColliderInfo> GetColliderInfo() const { return *this; }
 		std::string GetName() const { return name; }
 		BaseCollider* GetOwner() { return owner; }
 	};
+
+	class QueryCallback;
 
 	class BaseSingleCollider : public ColliderInfo, public ListObject
 	{
@@ -47,6 +49,7 @@ namespace WristerEngine
 		bool isDestroy = false;
 		uint32_t serialNumber = 0;
 		uint32_t shapeType = 0;
+		QueryCallback* queryCallback = nullptr;
 
 	public:
 		BaseSingleCollider() { serialNumber = nextSerialNumber++; }
@@ -56,10 +59,7 @@ namespace WristerEngine
 		void Destroy() { isDestroy = true; }
 		bool Remove() const override { return isDestroy; }
 
-		void ColliderInitialize(BaseCollider* owner_, CR<ColliderInfo> info)
-		{
-			owner = owner_; SetColliderInfo(info);
-		}
+		void ColliderInitialize(BaseCollider* owner_, CR<ColliderInfo> info, QueryCallback* callback);
 
 		// getter
 		bool IsDestroy() const { return isDestroy; }
@@ -69,10 +69,21 @@ namespace WristerEngine
 
 	struct HitInfo
 	{
-		std::optional<float> distance = std::nullopt;
+		float distance = 0.0f;
 
 		void Reset() {}
 		virtual ~HitInfo() = default;
+	};
+
+	struct CollisionPair
+	{
+		BaseSingleCollider* my = nullptr, * other = nullptr;
+		HitInfo* hitInfo = nullptr;
+
+		CollisionPair(BaseSingleCollider* my, BaseSingleCollider* other, HitInfo* hitInfo)
+			: my(my), other(other), hitInfo(hitInfo)
+		{
+		}
 	};
 
 	/// <summary>
@@ -88,18 +99,7 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="info">交差情報</param>
 		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
-		virtual bool OnQueryHit(CR<HitInfo> info) = 0;
-	};
-
-	struct CollisionPair
-	{
-		BaseSingleCollider* my = nullptr, * other = nullptr;
-		HitInfo* hitInfo = nullptr;
-
-		CollisionPair(BaseSingleCollider* my, BaseSingleCollider* other, HitInfo* hitInfo)
-			: my(my), other(other), hitInfo(hitInfo)
-		{
-		}
+		virtual bool OnQueryHit(CollisionPair* info) = 0;
 	};
 
 	using CollisionPairList = std::list<CollisionPair>;
@@ -138,7 +138,7 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="shapeType">コライダーの形状</param>
 		/// <returns>登録されたコライダー</returns>
-		BaseSingleCollider* AddCollider(uint32_t colliderShapeType, std::optional<ColliderInfo> info = std::nullopt);
+		BaseSingleCollider* AddCollider(uint32_t colliderShapeType, std::optional<ColliderInfo> info = std::nullopt, QueryCallback* callback = nullptr);
 
 		void SetFactory(IColliderFactory* factory_) { factory = factory_; }
 		void AddCollisionPair(const CollisionPair& pair) { collisionPairs.push_back(pair); }
@@ -189,6 +189,22 @@ namespace WristerEngine
 		ColliderGroup* GetGroup() const { return group; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
+
+	// 当たり判定クラス
+	class BaseCheckCollision
+	{
+	protected:
+		BaseSingleCollider* colliderA = nullptr, * colliderB = nullptr;
+		HitInfo* hitInfo = nullptr;
+
+	public:
+		BaseCheckCollision(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) :
+			colliderA(colliderA), colliderB(colliderB)
+		{
+		}
+		virtual bool Check2Collisions() = 0;
+	};
+
 
 	bool CheckCollisionPair(const CollisionPair& p1, const CollisionPair& p2);
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);

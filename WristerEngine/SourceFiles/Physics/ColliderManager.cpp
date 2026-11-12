@@ -54,20 +54,26 @@ bool BaseColliderManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* gro
 			BaseSingleCollider* colB = static_cast<BaseSingleCollider*>(colliderB.get());
 			if (!CheckFiltering(colA, colB)) { continue; }
 
+			// ソートして、衝突判定の優先度を決める
 			std::list<BaseSingleCollider*> colliderPair({ colA,colB });
 			colliderPair.sort([](BaseSingleCollider* c1, BaseSingleCollider* c2)
 				{
 					return c1->GetShapeType() < c2->GetShapeType();
 				});
 
-			if (Check2Collisions(colliderPair.front(), colliderPair.back()))
-			{
-				CollisionPair pairA(colA, colB, hitInfo.get());
-				CollisionPair pairB(colB, colA, hitInfo.get());
-				groupA->AddCollisionPair(pairA);
-				groupB->AddCollisionPair(pairB);
-				hitInfo->Reset();
-			}
+			CollisionParam param(colliderPair.front(), colliderPair.back(), groupA, groupB);
+			VirtualCheck2Collisions(param);
+
+			//BaseCheckCollision check(colliderPair.front(), colliderPair.back());
+
+			//if (Check2Collisions(colliderPair.front(), colliderPair.back()))
+			//{
+			//	CollisionPair pairA(colA, colB, hitInfo.get());
+			//	CollisionPair pairB(colB, colA, hitInfo.get());
+			//	groupA->AddCollisionPair(pairA);
+			//	groupB->AddCollisionPair(pairB);
+			//	hitInfo->Reset();
+			//}
 		}
 	}
 
@@ -79,31 +85,42 @@ _2D::ColliderManager2D::ColliderManager2D()
 	factory = std::make_unique<ColliderFactory>();
 }
 
-bool _2D::ColliderManager2D::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
+//bool _2D::ColliderManager2D::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
+//{
+//	uint32_t aST = colliderA->GetShapeType();
+//	uint32_t bST = colliderB->GetShapeType();
+//
+//	assert(aST != (uint32_t)CollisionShapeType::Unknown);
+//	assert(bST != (uint32_t)CollisionShapeType::Unknown);
+//
+//	switch (aST)
+//	{
+//	case (uint32_t)CollisionShapeType::Circle:
+//	{
+//		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
+//
+//		switch (bST)
+//		{
+//		case (uint32_t)CollisionShapeType::Circle:
+//
+//			return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
+//		}
+//		break;
+//	}
+//	}
+//
+//	return false;
+//}
+
+void _2D::ColliderManager2D::VirtualCheck2Collisions(CR<CollisionParam> param)
 {
-	uint32_t aST = colliderA->GetShapeType();
-	uint32_t bST = colliderB->GetShapeType();
+	CheckCollision check(param.colliderA, param.colliderB);
 
-	assert(aST != (uint32_t)CollisionShapeType::Unknown);
-	assert(bST != (uint32_t)CollisionShapeType::Unknown);
-
-	switch (aST)
-	{
-	case (uint32_t)CollisionShapeType::Circle:
-	{
-		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
-
-		switch (bST)
-		{
-		case (uint32_t)CollisionShapeType::Circle:
-
-			return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
-		}
-		break;
-	}
-	}
-
-	return false;
+	if (!check.Check2Collisions()) { return; }
+	CollisionPair pairA(param.colliderA, param.colliderB, hitInfo.get());
+	CollisionPair pairB(param.colliderB, param.colliderA, hitInfo.get());
+	param.groupA->AddCollisionPair(pairA);
+	param.groupB->AddCollisionPair(pairB);
 }
 
 _3D::ColliderManager3D::ColliderManager3D()
@@ -111,33 +128,33 @@ _3D::ColliderManager3D::ColliderManager3D()
 	//factory = std::make_unique<ColliderFactory>();
 }
 
-bool _3D::ColliderManager3D::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
-{
-	uint32_t aST = colliderA->GetShapeType();
-	uint32_t bST = colliderB->GetShapeType();
-
-	//assert(aST != (uint32_t)CollisionShapeType::Unknown);
-	//assert(bST != (uint32_t)CollisionShapeType::Unknown);
-
-	switch (aST)
-	{
-	case 0:
-	{
-		//CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
-
-		switch (bST)
-		{
-		case 0:
-
-		//	return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
-			break;
-		}
-		break;
-	}
-	}
-
-	return false;
-}
+//bool _3D::ColliderManager3D::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
+//{
+//	uint32_t aST = colliderA->GetShapeType();
+//	uint32_t bST = colliderB->GetShapeType();
+//
+//	assert(aST != (uint32_t)CollisionShapeType::Unknown);
+//	assert(bST != (uint32_t)CollisionShapeType::Unknown);
+//
+//	switch (aST)
+//	{
+//	case 0:
+//	{
+//		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
+//
+//		switch (bST)
+//		{
+//		case 0:
+//
+//				return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
+//			break;
+//		}
+//		break;
+//	}
+//	}
+//
+//	return false;
+//}
 
 ColliderManager* ColliderManager::GetInstance()
 {

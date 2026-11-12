@@ -52,8 +52,38 @@ uPtr<BaseSingleCollider> ColliderFactory::CreateCollider(uint32_t colliderShapeT
 //	return ans;
 //}
 
-bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
+bool CheckCollision::Check2Collisions()
 {
+	uint32_t aST = colliderA->GetShapeType();
+	uint32_t bST = colliderB->GetShapeType();
+
+	assert(aST != (uint32_t)CollisionShapeType::Unknown);
+	assert(bST != (uint32_t)CollisionShapeType::Unknown);
+
+	switch (aST)
+	{
+	case (uint32_t)CollisionShapeType::Circle:
+	{
+		switch (bST)
+		{
+		case (uint32_t)CollisionShapeType::Circle:
+			return Check2Circles();
+		}
+		break;
+	}
+	}
+
+	return false;
+}
+
+bool CheckCollision::Check2Circles()
+{
+	CircleCollider* a = static_cast<CircleCollider*>(colliderA);
+	CircleCollider* b = static_cast<CircleCollider*>(colliderB);
+
+	assert(a != nullptr);
+	assert(b != nullptr);
+
 	// 値の取得
 	Vector2 centerA = a->GetCenterPosition();
 	Vector2 centerB = b->GetCenterPosition();
@@ -70,32 +100,31 @@ bool WE::_2D::Check2Circles(const CircleCollider* a, const CircleCollider* b)
 	return true;
 }
 
-bool WE::_2D::Check2Boxes(const std::array<_2D::BoxCollider*, 2>& colliders)
+bool CheckCollision::Check2Boxes()
 {
-	colliders;
-	std::array<const _2D::BoxCollider*, 2> box2DColliders{};
-	for (size_t i = 0; i < colliders.size(); i++)
-	{
-		box2DColliders[i] = dynamic_cast<_2D::BoxCollider*>(colliders[i]);
-	}
+	//std::array<const _2D::BoxCollider*, 2> box2DColliders{};
+	//for (size_t i = 0; i < colliders.size(); i++)
+	//{
+	//	box2DColliders[i] = dynamic_cast<_2D::BoxCollider*>(colliders[i]);
+	//}
 
-	std::array<Vector2, 2> posCenter;
-	std::array<const Transform*, 2> trans{};
+	//std::array<Vector2, 2> posCenter;
+	//std::array<const Transform*, 2> trans{};
 
-	for (size_t i = 0; i < box2DColliders.size(); i++)
-	{
-		trans[i] = box2DColliders[i]->GetTransform();
-		// 中心点を計算
-		//auto pos = box2DColliders[i]->GetVertex();
-		//posCenter[i] = Half<Vector2>(pos["LT"] + pos["RB"]);
-	}
+	//for (size_t i = 0; i < box2DColliders.size(); i++)
+	//{
+	//	trans[i] = box2DColliders[i]->GetTransform();
+	//	// 中心点を計算
+	//	auto pos = box2DColliders[i]->GetVertex();
+	//	posCenter[i] = Half<Vector2>(pos["LT"] + pos["RB"]);
+	//}
 
-	// 当たり判定
-	if (std::abs(posCenter[0].x - posCenter[1].x) <= Half(trans[0]->size.x + trans[1]->size.x) &&
-		std::abs(posCenter[0].y - posCenter[1].y) <= Half(trans[0]->size.y + trans[1]->size.y))
-	{
-		return true;
-	}
+	//// 当たり判定
+	//if (std::abs(posCenter[0].x - posCenter[1].x) <= Half(trans[0]->size.x + trans[1]->size.x) &&
+	//	std::abs(posCenter[0].y - posCenter[1].y) <= Half(trans[0]->size.y + trans[1]->size.y))
+	//{
+	//	return true;
+	//}
 	return false;
 }
 

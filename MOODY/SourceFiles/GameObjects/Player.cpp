@@ -13,8 +13,8 @@ void Player::Initialize()
 
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Player), WE::ChangeVal(CollisionMask::Player), "Player");
 	Collider::Initialize(info);
-	
-	WE::_2D::CircleCollider* collider = 
+
+	WE::_2D::CircleCollider* collider =
 		static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle)));
 	if (!collider) { assert(0); return; }
 	collider->SetTransform(sprite);
