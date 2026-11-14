@@ -63,17 +63,6 @@ bool BaseColliderManager::Check2Groups(ColliderGroup* groupA, ColliderGroup* gro
 
 			CollisionParam param(colliderPair.front(), colliderPair.back(), groupA, groupB);
 			VirtualCheck2Collisions(param);
-
-			//BaseCheckCollision check(colliderPair.front(), colliderPair.back());
-
-			//if (Check2Collisions(colliderPair.front(), colliderPair.back()))
-			//{
-			//	CollisionPair pairA(colA, colB, hitInfo.get());
-			//	CollisionPair pairB(colB, colA, hitInfo.get());
-			//	groupA->AddCollisionPair(pairA);
-			//	groupB->AddCollisionPair(pairB);
-			//	hitInfo->Reset();
-			//}
 		}
 	}
 
@@ -85,42 +74,13 @@ _2D::ColliderManager2D::ColliderManager2D()
 	factory = std::make_unique<ColliderFactory>();
 }
 
-//bool _2D::ColliderManager2D::Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB)
-//{
-//	uint32_t aST = colliderA->GetShapeType();
-//	uint32_t bST = colliderB->GetShapeType();
-//
-//	assert(aST != (uint32_t)CollisionShapeType::Unknown);
-//	assert(bST != (uint32_t)CollisionShapeType::Unknown);
-//
-//	switch (aST)
-//	{
-//	case (uint32_t)CollisionShapeType::Circle:
-//	{
-//		CircleCollider* sphere = static_cast<CircleCollider*>(colliderA);
-//
-//		switch (bST)
-//		{
-//		case (uint32_t)CollisionShapeType::Circle:
-//
-//			return Check2Circles(sphere, static_cast<CircleCollider*>(colliderB));
-//		}
-//		break;
-//	}
-//	}
-//
-//	return false;
-//}
-
 void _2D::ColliderManager2D::VirtualCheck2Collisions(CR<CollisionParam> param)
 {
 	CheckCollision check(param.colliderA, param.colliderB);
 
 	if (!check.Check2Collisions()) { return; }
-	CollisionPair pairA(param.colliderA, param.colliderB, hitInfo.get());
-	CollisionPair pairB(param.colliderB, param.colliderA, hitInfo.get());
-	param.groupA->AddCollisionPair(pairA);
-	param.groupB->AddCollisionPair(pairB);
+	param.groupA->AddCollisionPair(check);
+	param.groupB->AddCollisionPair(check.GetRevercedPair());
 }
 
 _3D::ColliderManager3D::ColliderManager3D()

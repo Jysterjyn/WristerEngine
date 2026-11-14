@@ -37,7 +37,6 @@ namespace WristerEngine
 	{
 	protected:
 		std::unordered_map<std::string, uPtr<ColliderGroup>> colliderGroups;
-		uPtr<HitInfo> hitInfo;
 		uPtr<IColliderFactory> factory;
 
 	public:
@@ -62,7 +61,6 @@ namespace WristerEngine
 		{
 		public:
 			ColliderManager2D();
-			//bool Check2Collisions(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) override;
 			void VirtualCheck2Collisions(CR<CollisionParam>) override;
 		};
 	}

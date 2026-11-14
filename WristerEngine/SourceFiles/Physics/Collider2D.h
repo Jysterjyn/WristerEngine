@@ -107,6 +107,5 @@ namespace WristerEngine::_2D
 		bool Check2Collisions() override;
 	};
 
-
 	//bool CheckBox2Rays(const std::array<_2D::TwoRayCollider*, 2>& colliders);
 }

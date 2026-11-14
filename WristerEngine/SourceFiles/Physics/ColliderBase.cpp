@@ -29,6 +29,12 @@ void BaseSingleCollider::ColliderInitialize(BaseCollider* owner_, CR<ColliderInf
 	queryCallback = callback;
 }
 
+void BaseSingleCollider::OnQueryHit(CollisionPair* info) const
+{
+	if (!queryCallback) { return; }
+	queryCallback->OnQueryHit(info);
+}
+
 ColliderGroup::~ColliderGroup()
 {
 	colliders.clear();

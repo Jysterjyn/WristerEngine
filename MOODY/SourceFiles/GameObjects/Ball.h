@@ -9,7 +9,6 @@ struct BehaviorParameter : WE::Behavior::Parameter
 {
 	Vector2 pos;
 	WE::ColorRGB color;
-	bool isDestroy = false;
 	bool isUkenagashi = false;
 };
 
@@ -62,7 +61,7 @@ public:
 	// 次のビヘイビアに切り替え
 	void ChangeNextBehavior(WE::CR<Vector2> pos);
 	// QueryCallback を介して継承されました
-	bool OnQueryHit(WE::CollisionPair* info) override;
+	void OnQueryHit(WE::CollisionPair* info) override;
 };
 
 class BallManager : public WE::_2D::Collider, public WE::ListObject

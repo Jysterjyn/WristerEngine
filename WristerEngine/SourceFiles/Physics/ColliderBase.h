@@ -39,6 +39,7 @@ namespace WristerEngine
 	};
 
 	class QueryCallback;
+	struct CollisionPair;
 
 	class BaseSingleCollider : public ColliderInfo, public ListObject
 	{
@@ -60,6 +61,7 @@ namespace WristerEngine
 		bool Remove() const override { return isDestroy; }
 
 		void ColliderInitialize(BaseCollider* owner_, CR<ColliderInfo> info, QueryCallback* callback);
+		void OnQueryHit(CollisionPair* info) const;
 
 		// getter
 		bool IsDestroy() const { return isDestroy; }
@@ -80,10 +82,12 @@ namespace WristerEngine
 		BaseSingleCollider* my = nullptr, * other = nullptr;
 		HitInfo* hitInfo = nullptr;
 
-		CollisionPair(BaseSingleCollider* my, BaseSingleCollider* other, HitInfo* hitInfo)
+		CollisionPair(BaseSingleCollider* my, BaseSingleCollider* other, HitInfo* hitInfo = nullptr)
 			: my(my), other(other), hitInfo(hitInfo)
 		{
 		}
+
+		void OnQueryHit() { return my->OnQueryHit(this); }
 	};
 
 	/// <summary>
@@ -99,7 +103,7 @@ namespace WristerEngine
 		/// </summary>
 		/// <param name="info">交差情報</param>
 		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
-		virtual bool OnQueryHit(CollisionPair* info) = 0;
+		virtual void OnQueryHit(CollisionPair* pair) = 0;
 	};
 
 	using CollisionPairList = std::list<CollisionPair>;
@@ -147,9 +151,9 @@ namespace WristerEngine
 
 		// getter
 		const uList* GetColliders() const { return &colliders; }
-		CR<CollisionPairList> GetCollisionPairs() const { return collisionPairs; }
-		CR<CollisionPairList> GetEnterPairs() const { return enterPairs; }
-		CR<CollisionPairList> GetExitPairs() const { return exitPairs; }
+		CollisionPairList& GetCollisionPairs() { return collisionPairs; }
+		CollisionPairList& GetEnterPairs() { return enterPairs; }
+		CollisionPairList& GetExitPairs() { return exitPairs; }
 	};
 
 	class BaseCollider
@@ -185,26 +189,22 @@ namespace WristerEngine
 
 		void DeleteGroup() { group = nullptr; }
 		// getter
-		CR<CollisionPairList> GetCollisionPairs() const { return group->GetCollisionPairs(); }
+		CollisionPairList& GetCollisionPairs() { return group->GetCollisionPairs(); }
 		ColliderGroup* GetGroup() const { return group; }
 		uint32_t GetSerialNumber() const { return serialNumber; }
 	};
 
 	// 当たり判定クラス
-	class BaseCheckCollision
+	class BaseCheckCollision : public CollisionPair
 	{
-	protected:
-		BaseSingleCollider* colliderA = nullptr, * colliderB = nullptr;
-		HitInfo* hitInfo = nullptr;
-
 	public:
 		BaseCheckCollision(BaseSingleCollider* colliderA, BaseSingleCollider* colliderB) :
-			colliderA(colliderA), colliderB(colliderB)
+			CollisionPair(colliderA, colliderB)
 		{
 		}
 		virtual bool Check2Collisions() = 0;
+		CollisionPair GetRevercedPair() const { return CollisionPair(other, my, hitInfo); }
 	};
-
 
 	bool CheckCollisionPair(const CollisionPair& p1, const CollisionPair& p2);
 	bool CheckFiltering(const ColliderInfo* infoA, const ColliderInfo* infoB);

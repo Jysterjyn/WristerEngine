@@ -54,8 +54,8 @@ uPtr<BaseSingleCollider> ColliderFactory::CreateCollider(uint32_t colliderShapeT
 
 bool CheckCollision::Check2Collisions()
 {
-	uint32_t aST = colliderA->GetShapeType();
-	uint32_t bST = colliderB->GetShapeType();
+	uint32_t aST = my->GetShapeType();
+	uint32_t bST = other->GetShapeType();
 
 	assert(aST != (uint32_t)CollisionShapeType::Unknown);
 	assert(bST != (uint32_t)CollisionShapeType::Unknown);
@@ -78,8 +78,8 @@ bool CheckCollision::Check2Collisions()
 
 bool CheckCollision::Check2Circles()
 {
-	CircleCollider* a = static_cast<CircleCollider*>(colliderA);
-	CircleCollider* b = static_cast<CircleCollider*>(colliderB);
+	CircleCollider* a = static_cast<CircleCollider*>(my);
+	CircleCollider* b = static_cast<CircleCollider*>(other);
 
 	assert(a != nullptr);
 	assert(b != nullptr);

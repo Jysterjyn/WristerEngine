@@ -13,9 +13,15 @@ namespace WristerEngine
 		// 受け継ぐパラメータ
 		struct Parameter
 		{
+		private:
+			bool isDestroy = false;
+
+		public:
 			std::string name;
 
 			virtual ~Parameter() = default;
+			void Destroy() { isDestroy = true; }
+			bool IsDestroy() const { return isDestroy; }
 		};
 
 	private:
