@@ -24,9 +24,9 @@ bool FrameTimer::Update()
 	return false;
 }
 
-RealTimer::RealTimer(float limitTime)
+RealTimer::RealTimer(float interval)
 {
-	timeMem = limitTime * std::mega::num;
+	timeMem = interval * std::mega::num;
 	startTime = steady_clock::now();
 }
 
