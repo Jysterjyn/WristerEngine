@@ -70,10 +70,14 @@ namespace WristerEngine
 		void Start() { startTime = std::chrono::steady_clock::now(); }
 		// 経過時間を取得
 		float GetTime() const;
+		// 経過秒数を取得
+		float GetSeconds() const { return GetTime() / (float)std::mega::num; }
 		// 経過時間を正規化して取得
 		float GetTimeRate() const override { return GetTime() / timeMem; }
 		// 残り時間を取得
 		float GetRemainTime() const { return timeMem - GetTime(); }
+		// 残り秒数を取得
+		float GetRemainSeconds() const { return GetRemainTime() / (float)std::mega::num; }
 		// 残り時間を正規化して取得
 		float GetRemainTimeRate() const override { return GetRemainTime() / timeMem; }
 		// ラップ時間を取得
