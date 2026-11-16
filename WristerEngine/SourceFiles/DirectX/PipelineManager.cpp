@@ -1,8 +1,13 @@
 ﻿#include "PipelineManager.h"
 #include "D3D12Common.h"
 using namespace WE;
+using namespace Microsoft::WRL;
 
-std::map<PipelineType, PipelineManager> PipelineManager::pipelines;
+PipelineManager* PipelineManager::GetInstance()
+{
+	static PipelineManager instance;
+	return &instance;
+}
 
 void PipelineManager::Initialize()
 {
@@ -72,7 +77,7 @@ void PipelineManager::Initialize()
 	pipelines[PipelineType::DarkParticle].CreatePipeline(pipelineProp);
 }
 
-void PipelineManager::CreatePipeline(const PipelineProp& pipelineProp)
+void Pipeline::CreatePipeline(const PipelineProp& pipelineProp)
 {
 	ComPtr<ID3DBlob> vsBlob, gsBlob, psBlob;
 	LoadShader(&vsBlob, pipelineProp.shaderNames[0], "vs_5_0");

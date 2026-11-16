@@ -55,23 +55,36 @@ namespace WristerEngine
 		Fbx
 	};
 
-	// パイプライン管理クラス
-	class PipelineManager : public DXCommonGetter
+	struct Pipeline : public DXCommonGetter
 	{
-		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-		static std::map<PipelineType, PipelineManager> pipelines;
-		ComPtr<ID3D12RootSignature> rootSignature;
-		ComPtr<ID3D12PipelineState> pipelineState;
+		Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+		Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
 
-	public:
 		/// <summary>
 		/// パイプライン生成
 		/// </summary>
 		/// <param name="pipelineProp">パイプライン生成プロパティ</param>
 		void CreatePipeline(const PipelineProp& pipelineProp);
+	};
+
+
+	// パイプライン管理クラス
+	class PipelineManager : public DXCommonGetter
+	{
+		std::map<PipelineType, Pipeline> pipelines;
+
+		// シングルトンパターン
+		PipelineManager() = default;
+		~PipelineManager() = default;
+		PipelineManager(const PipelineManager&) = delete;
+		PipelineManager& operator=(const PipelineManager&) = delete;
+
+	public:
+		// インスタンス取得
+		static PipelineManager* GetInstance();
 		// 初期化
-		static void Initialize();
+		void Initialize();
 		// パイプラインのセット
-		static void SetPipeline(PipelineType pipelineType);
+		void SetPipeline(PipelineType pipelineType);
 	};
 }

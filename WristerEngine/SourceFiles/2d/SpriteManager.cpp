@@ -122,7 +122,7 @@ Sprite* SpriteManager::Create(CR<std::string> fileName)
 void SpriteManager::PreDraw()
 {
 	// パイプラインステートとルートシグネチャの設定コマンド
-	PipelineManager::SetPipeline(PipelineType::Sprite);
+	PipelineManager::GetInstance()->SetPipeline(PipelineType::Sprite);
 	// プリミティブ形状の設定コマンド
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP); // 三角形リスト
 	cmdList->SetGraphicsRootConstantBufferView(2, constBuff->GetGPUVirtualAddress());

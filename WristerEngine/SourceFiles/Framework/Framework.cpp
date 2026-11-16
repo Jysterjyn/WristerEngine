@@ -13,7 +13,7 @@ void Framework::Initialize()
 	fps->Initialize();
 	dxCommon->Initialize();
 	input->Initialize();
-	PipelineManager::Initialize();
+	PipelineManager::GetInstance()->Initialize();
 	constant->LoadConstants();
 	imGuiManager->Initialize();
 	spMan->Initialize();
@@ -68,7 +68,7 @@ void Framework::Run()
 		// ImGui受付終了
 		imGuiManager->End();
 
-		// デスクリプタヒープをセット
+		// フレーム開始
 		dxCommon->BeginFrame();
 
 		Draw();
