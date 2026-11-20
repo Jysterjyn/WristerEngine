@@ -5,11 +5,12 @@
 #include <TimedCall.h>
 #include <ColliderManager.h>
 
-struct BehaviorParameter : WE::Behavior::Parameter
+struct BehaviorParameter : WE::BehaviorParameter
 {
 	Vector2 pos;
 	WE::ColorRGB color;
 	bool isUkenagashi = false;
+	float rotation;
 };
 
 class BaseBallBehavior : public WE::Behavior
@@ -35,13 +36,12 @@ class Ukenagashi : public BaseBallBehavior
 class Ball : public GameObjects, public WE::QueryCallback
 {
 	static WE::ColliderGroup* group;
-	BehaviorParameter* GetParameter();
 	WE::_2D::CircleCollider* collider = nullptr;
 
 	// GameObjects を介して継承されました
 	void Initialize() override;
 	void Update() override;
-	void Draw() override;
+	void Draw() override { sprite->Draw(); }
 
 	template<class T>
 	void CreateBehavior()
@@ -53,11 +53,12 @@ class Ball : public GameObjects, public WE::QueryCallback
 	}
 
 	void ApplyParameter(); // パラメータ適用
+	BehaviorParameter* GetParameter() { return static_cast<BehaviorParameter*>(behaviorPattern.GetParam()); }
 
 public:
-	~Ball();
+	~Ball() { collider->Destroy(); }
 	static void SetColliderGroup(WE::ColliderGroup* colliderGroup) { group = colliderGroup; }
-	bool IsUkenagashi() { return GetParameter()->isUkenagashi; }
+	bool IsUkenagashi();
 	// 次のビヘイビアに切り替え
 	void ChangeNextBehavior(WE::CR<Vector2> pos);
 	// QueryCallback を介して継承されました

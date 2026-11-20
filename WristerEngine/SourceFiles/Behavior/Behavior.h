@@ -6,29 +6,28 @@
 
 namespace WristerEngine
 {
+	// 受け継ぐパラメータ
+	struct BehaviorParameter
+	{
+	private:
+		bool isDestroy = false;
+
+	public:
+		std::string name;
+
+		virtual ~BehaviorParameter() = default;
+		void Destroy() { isDestroy = true; }
+		bool IsDestroy() const { return isDestroy; }
+	};
+
 	// ビヘイビア単体
 	class Behavior
 	{
-	public:
-		// 受け継ぐパラメータ
-		struct Parameter
-		{
-		private:
-			bool isDestroy = false;
-
-		public:
-			std::string name;
-
-			virtual ~Parameter() = default;
-			void Destroy() { isDestroy = true; }
-			bool IsDestroy() const { return isDestroy; }
-		};
-
 	private:
 		bool isFinish = false;
 
 	protected:
-		uPtr<Parameter> param;
+		uPtr<BehaviorParameter> param;
 
 	public:
 		virtual ~Behavior() = default;
@@ -37,7 +36,7 @@ namespace WristerEngine
 		void Finish() { isFinish = true; }
 		bool IsFinish() const { return isFinish; }
 		static void Inherit(Behavior* b1, Behavior* b2);
-		Parameter* GetParam() { return param.get(); }
+		BehaviorParameter* GetParam() { return param.get(); }
 	};
 
 	// ビヘイビアとクールタイム
@@ -54,6 +53,6 @@ namespace WristerEngine
 	public:
 		void Add(BehaviorPair& behavior);
 		void Update();
-		Behavior::Parameter* GetParam();
+		BehaviorParameter* GetParam();
 	};
 }

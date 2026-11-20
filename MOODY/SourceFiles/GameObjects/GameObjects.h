@@ -18,6 +18,6 @@ protected:
 public:
 	virtual ~GameObjects() = default;
 	bool Remove() const override { return isDestroy; }
-	//void Draw() override { sprite->Draw(); }
+	void Draw() override { sprite->Draw(); }
 };
 

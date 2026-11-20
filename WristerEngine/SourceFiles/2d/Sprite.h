@@ -26,10 +26,11 @@ namespace WristerEngine::_2D
 		// SpriteAnimation汎用変数
 		bool isAnimation = false;
 		float width = 0;
-		int interval = 1;
 		size_t spriteNum = 0;
+		IntOrFloat interval;
 
 		void AddFileNames(const std::vector<std::string>& fileNames);
+		void SetAnimation(float width_, size_t spriteNum_, CR<IntOrFloat> interval_);
 	};
 
 	class SpriteManager;
@@ -100,7 +101,7 @@ namespace WristerEngine::_2D
 		/// <param name="textureSize">切り取り領域のサイズ</param>
 		/// <param name="textureLeftTop">切り取り領域の左上座標</param>
 		void SetRect(CR<Vector2> textureSize, CR<Vector2> textureLeftTop = {});
-		
+
 		/// <summary>
 		/// テクスチャ分割
 		/// </summary>
@@ -114,7 +115,7 @@ namespace WristerEngine::_2D
 	{
 	private:
 		float width = 0;
-		FrameTimer interval;
+		Timer interval;
 		size_t animeNum = 0;
 		size_t animeNumMax = 0;
 

@@ -15,34 +15,37 @@ void BehaviorPattern::Add(BehaviorPair& behavior)
 void BehaviorPattern::Update()
 {
 	if (behaviorList.empty()) { return; }
+	// クールタイム中でなければ、現在のビヘイビアを更新
 	if (!isCoolTime)
 	{
 		const BehaviorPair& now = behaviorList.front();
 		now.first->Update();
+		// ビヘイビアが終了していれば、クールタイムを開始
 		if (now.first->IsFinish())
 		{
 			isCoolTime = true;
 			coolTime = now.second;
 		}
 	}
-	if (isCoolTime)
+	// クールタイム中であれば、クールタイムを更新
+	if (isCoolTime && coolTime.Update())
 	{
-		if (coolTime.Update())
+		// クールタイム終了
+		isCoolTime = false;
+		// 次のビヘイビアに切り替え
+		if (behaviorList.size() > 1)
 		{
-			isCoolTime = false;
-			if (behaviorList.size() > 1)
-			{
-				auto itr1 = behaviorList.begin();
-				auto itr2 = itr1;
-				itr2++;
-				Behavior::Inherit(itr1->first.get(), itr2->first.get());
-			}
-			behaviorList.pop_front();
+			auto itr1 = behaviorList.begin();
+			auto itr2 = itr1;
+			itr2++;
+			Behavior::Inherit(itr1->first.get(), itr2->first.get());
 		}
+		// 現在のビヘイビアを削除
+		behaviorList.pop_front();
 	}
 }
 
-Behavior::Parameter* BehaviorPattern::GetParam()
+BehaviorParameter* BehaviorPattern::GetParam()
 {
 	if (behaviorList.empty()) { return nullptr; }
 	return behaviorList.front().first->GetParam();

@@ -36,12 +36,6 @@ void Ball::Update()
 {
 	behaviorPattern.Update();
 	ApplyParameter();
-	IsUkenagashi();
-}
-
-void Ball::Draw()
-{
-	sprite->Draw();
 }
 
 void Ball::ApplyParameter()
@@ -50,7 +44,14 @@ void Ball::ApplyParameter()
 	if (!pParam) { return; }
 	sprite->position = pParam->pos;
 	sprite->color = pParam->color;
+	sprite->rotation = pParam->rotation;
 	if (pParam->IsDestroy()) { Destroy(); }
+}
+
+bool Ball::IsUkenagashi()
+{
+	BehaviorParameter* pParam = GetParameter();
+	return pParam ? pParam->isUkenagashi : false;
 }
 
 void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
@@ -59,41 +60,32 @@ void Ball::ChangeNextBehavior(WE::CR<Vector2> pos)
 	if (pParam == nullptr) { return; }
 
 	pParam->pos.x = pos.x;
+	pParam->isUkenagashi = true;
+	sprite->SetTextureIndex(1);
 }
 
 void Ball::OnQueryHit(WE::CollisionPair* info)
 {
+	if (IsUkenagashi()) { return; }
+	// 相手がプレイヤーだったら消滅
 	if (info->other->GetName() == "Player")
 	{
-		// 相手がプレイヤーだったら消滅
-		if (!IsUkenagashi())
-		{ 
-			GetParameter()->Destroy();
-			return; 
-		}
+		GetParameter()->Destroy();
+		return;
 	}
+	// 相手が判定円だったら左矢印入力で受け流しモードに移行
 	if (info->other->GetName() == "JudgeCircle" && WE::Input::GetInstance()->IsTrigger(WE::Key::Left))
 	{
-		// 相手が判定円だったら左矢印入力で受け流しモードに移行
 		const WE::_2D::SingleCollider* judgeCircle = static_cast<WE::_2D::SingleCollider*>(info->other);
 		const WE::_2D::CircleCollider* ballCollider = static_cast<WE::_2D::CircleCollider*>(info->my);
 		if (!judgeCircle || !ballCollider) { return; }
 
 		const WE::_2D::Transform* judgeTransform = judgeCircle->GetTransform();
-		if (!judgeTransform) { return; }
+
+		if (ballCollider->GetTransform()->position.x < judgeTransform->position.x) { return; }
 
 		ChangeNextBehavior(judgeTransform->position.x - judgeTransform->size.x / 4 - ballCollider->GetRadius());
 	}
-}
-
-Ball::~Ball()
-{
-	collider->Destroy();
-}
-
-BehaviorParameter* Ball::GetParameter()
-{
-	return static_cast<BehaviorParameter*>(behaviorPattern.GetParam());
 }
 
 void Move::Initialize()
@@ -125,8 +117,10 @@ void Ukenagashi::Initialize()
 
 void Ukenagashi::Update()
 {
-	const float MOVE_SPD = 6.0f;
-	//pParam->pos.x -= MOVE_SPD;
+	const ScreenSpeed MOVE_SPD(10.0f);
+	pParam->pos.x -= MOVE_SPD;
+	pParam->rotation += Angle(ScreenSpeed(0.1f));
+	if (pParam->pos.x < 0) { pParam->Destroy(); }
 }
 
 void BallManager::Initialize()
@@ -148,7 +142,7 @@ void BallManager::CreateBall()
 {
 	WE::uPtr<Ball> newBall = std::make_unique<Ball>();
 	balls.Add(std::move(newBall));
-	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); },250);
+	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 0.1f);
 	timedCalls.Add(std::move(timedCall));
 }
 

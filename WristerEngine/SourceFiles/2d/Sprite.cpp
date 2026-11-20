@@ -10,6 +10,14 @@ void SpriteProp::AddFileNames(const std::vector<std::string>& fileNames_)
 	for (CR<std::string> fileName : fileNames_) { fileNames.push_back(fileName); }
 }
 
+void SpriteProp::SetAnimation(float width_, size_t spriteNum_, CR<IntOrFloat> interval_)
+{
+	width = width_;
+	spriteNum = spriteNum_;
+	interval = interval_;
+	isAnimation = true;
+}
+
 void Sprite::SetRect(CR<Vector2> textureSize_, CR<Vector2> textureLeftTop_)
 {
 	// 拡大比率を保ったまま切り取り領域を変更する
@@ -126,14 +134,14 @@ void SpriteAnimation::Initialize(CR<SpriteProp> prop)
 {
 	Sprite::Initialize(prop);
 	width = textureSize.x / prop.spriteNum;
-	interval = prop.interval;
 	animeNumMax = prop.spriteNum;
 	SetRect({ width, textureSize.y });
+	interval = prop.interval;
 }
 
 void SpriteAnimation::Update()
 {
-	if (interval.Update()) 
+	if (interval.Update())
 	{
 		animeNum = NumberLoop(animeNum + 1, animeNumMax);
 		textureLeftTop = { (float)animeNum * width ,0 };

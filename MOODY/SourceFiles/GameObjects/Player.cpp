@@ -2,11 +2,12 @@
 #include <CollisionInfo.h>
 #include <imgui.h>
 #include <algorithm>
+#include <variant>
 
 void Player::Initialize()
 {
 	WE::_2D::SpriteProp prop;
-	prop.fileNames.push_back("Nanika/Nanika.png");
+	prop.AddFileNames({ "Nanika/Nanika.png" });
 	prop.pos = Half(WE::WIN_SIZE);
 	sprite = spMan->Create(prop);
 	sprite->SetCenterAnchor();
@@ -20,12 +21,12 @@ void Player::Initialize()
 	collider->SetTransform(sprite);
 	collider->SetRadius(Half(sprite->size.x));
 
-	//info.SetName("JudgeCircle");
-	//WE::_2D::CircleCollider* judgeCircle = 
-	//	static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle), info));
-	//if (!judgeCircle) { assert(0); return; }
-	//judgeCircle->SetTransform(sprite);
-	//judgeCircle->SetRadius(sprite->size.x * 10.0f);
+	info.SetName("JudgeCircle");
+	WE::_2D::CircleCollider* judgeCircle =
+		static_cast<WE::_2D::CircleCollider*>(group->AddCollider(WE::ChangeVal(WE::_2D::CollisionShapeType::Circle), info));
+	if (!judgeCircle) { assert(0); return; }
+	judgeCircle->SetTransform(sprite);
+	judgeCircle->SetRadius(sprite->size.x * 70.0f);
 }
 
 void Player::Update()

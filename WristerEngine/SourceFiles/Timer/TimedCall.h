@@ -12,13 +12,13 @@ namespace WristerEngine
 		// コールバック
 		std::function<void(void)> callfunc;
 		// 残り時間
-		FrameTimer timer;
+		Timer timer;
 		// 完了フラグ
 		bool isFinished = false;
 
 	public:
 		// コンストラクタ
-		TimedCall(std::function<void(void)>callfunc, uint32_t time);
+		TimedCall(std::function<void(void)>callfunc, CR<IntOrFloat> interval);
 		void Initialize() override {}
 		// 更新
 		void Update() override;

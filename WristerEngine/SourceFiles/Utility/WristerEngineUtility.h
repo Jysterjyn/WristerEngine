@@ -4,6 +4,7 @@
 #include <list>
 #include <set>
 #include <functional>
+#include <optional>
 
 namespace WristerEngine
 {
@@ -68,6 +69,26 @@ namespace WristerEngine
 
 		const T Get() const { return value; }
 		bool IsChanged() const { return isChanged; }
+	};
+
+	// intかfloatのどちらかを保持するクラス
+	class IntOrFloat
+	{
+		std::optional<int> intValue = std::nullopt;
+		std::optional<float> floatValue = std::nullopt;
+
+	public:
+		IntOrFloat() = default;
+		IntOrFloat(int value);
+		IntOrFloat(float value);
+		void operator=(int value);
+		void operator=(float value);
+		int GetInt() const { return intValue.value(); }
+		float GetFloat() const { return floatValue.value(); }
+		std::optional<int> GetOptionalInt() const { return intValue; }
+		std::optional<float> GetOptionalFloat() const { return floatValue; }
+		bool IsInt() const { return intValue.has_value(); }
+		bool IsFloat() const { return floatValue.has_value(); }
 	};
 
 	template <class T>

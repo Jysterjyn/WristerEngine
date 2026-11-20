@@ -45,3 +45,9 @@ float RealTimer::GetTime() const
 {
 	return (float)duration_cast<microseconds>(nowTime - startTime).count();
 }
+
+void Timer::operator=(CR<IntOrFloat> interval)
+{
+	if (interval.IsInt()) { pTimer = std::make_unique<FrameTimer>(interval.GetInt()); }
+	else if (interval.IsFloat()) { pTimer = std::make_unique<RealTimer>(interval.GetFloat()); }
+}

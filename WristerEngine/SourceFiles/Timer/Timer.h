@@ -89,12 +89,10 @@ namespace WristerEngine
 	{
 	private:
 		uPtr<ITimer> pTimer;
+
 	public:
 		// 初期化
-		void operator=(int interval) { *ToFrameTimer() = interval; }
-		void operator=(float interval) { *ToRealTimer() = interval; }
-		void Initialize(int interval = 0) { pTimer = std::make_unique<FrameTimer>(interval); }
-		void Initialize(float interval = 0.0f) { pTimer = std::make_unique<RealTimer>(interval); }
+		void operator=(CR<IntOrFloat> interval);
 		// 更新
 		bool Update() { return pTimer->Update(); }
 		// 経過時間を正規化して取得

@@ -8,6 +8,7 @@ namespace WristerEngine
 {
 	class BaseCollider;
 
+	// コライダー情報
 	struct ColliderInfo
 	{
 	protected:
@@ -41,6 +42,7 @@ namespace WristerEngine
 	class QueryCallback;
 	struct CollisionPair;
 
+	// コライダーの基底クラス
 	class BaseSingleCollider : public ColliderInfo, public ListObject
 	{
 	private:
@@ -69,6 +71,7 @@ namespace WristerEngine
 		uint32_t GetShapeType() const { return shapeType; }
 	};
 
+	// 衝突情報
 	struct HitInfo
 	{
 		float distance = 0.0f;
@@ -77,6 +80,7 @@ namespace WristerEngine
 		virtual ~HitInfo() = default;
 	};
 
+	// 衝突ペア
 	struct CollisionPair
 	{
 		BaseSingleCollider* my = nullptr, * other = nullptr;
@@ -90,9 +94,7 @@ namespace WristerEngine
 		void OnQueryHit() { return my->OnQueryHit(this); }
 	};
 
-	/// <summary>
-	/// クエリーで交差を検出した時の動作を規定するクラス
-	/// </summary>
+	// クエリーで交差を検出した時の動作を規定するクラス
 	class QueryCallback
 	{
 	public:
@@ -102,7 +104,6 @@ namespace WristerEngine
 		/// 交差時コールバック
 		/// </summary>
 		/// <param name="info">交差情報</param>
-		/// <returns>クエリーを続けるならtrue、打ち切るならfalseを返す</returns>
 		virtual void OnQueryHit(CollisionPair* pair) = 0;
 	};
 
@@ -115,6 +116,7 @@ namespace WristerEngine
 		virtual uPtr<BaseSingleCollider> CreateCollider(uint32_t colliderShapeType) = 0;
 	};
 
+	// コライダーグループ
 	class ColliderGroup : public ColliderInfo
 	{
 	private:
@@ -156,6 +158,7 @@ namespace WristerEngine
 		CollisionPairList& GetExitPairs() { return exitPairs; }
 	};
 
+	// コライダーの基底クラス
 	class BaseCollider
 	{
 	private:
@@ -163,15 +166,7 @@ namespace WristerEngine
 
 	protected:
 		uint32_t serialNumber = 0;
-
 		ColliderGroup* group = nullptr;
-
-		template<class T>
-		bool TypeCompare(CR<std::string> type) const
-		{
-			const std::string TYPE_NAME = typeid(type).name();
-			return TYPE_NAME.find(type) != std::string::npos;
-		}
 
 	public:
 		virtual ColliderGroup* Initialize(CR<ColliderInfo> info) = 0;

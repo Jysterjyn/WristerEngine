@@ -1,9 +1,9 @@
 ﻿#include "TimedCall.h"
 
-WE::TimedCall::TimedCall(std::function<void(void)> callfunc_, uint32_t time)
+WE::TimedCall::TimedCall(std::function<void(void)> callfunc_, CR<IntOrFloat> interval)
 {
 	callfunc = callfunc_;
-	timer = time;
+	timer = interval;
 }
 
 void WE::TimedCall::Update()
