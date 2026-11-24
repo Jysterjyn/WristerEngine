@@ -6,9 +6,11 @@
 class Player : public GameObjects, public WE::_2D::Collider
 {
 	WE::Input* input = WE::Input::GetInstance();
+	int hp = 3;
 
 	// GameObjects を介して継承されました
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
+	void OnCollisionEnter() override;
 };

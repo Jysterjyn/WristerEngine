@@ -34,9 +34,22 @@ void Player::Update()
 	const ScreenSpeed MOVE_SPD(10.0f);
 	sprite->position.y += input->Move(WE::Key::Down, WE::Key::Up, MOVE_SPD);
 	sprite->position.y = std::clamp(sprite->position.y, Half(sprite->size.y), WE::WIN_SIZE.y - Half(sprite->size.y));
+	ImGui::Text("HP: %d", hp);
 }
 
 void Player::Draw()
 {
 	sprite->Draw();
+}
+
+void Player::OnCollisionEnter()
+{
+	for (auto& pair : GetCollisionPairs())
+	{
+		// 相手がボールだったらHPを減らす
+		if (pair.my->GetName() == "Player" && pair.other->GetName() == "Ball")
+		{
+			hp--;
+		}
+	}
 }
