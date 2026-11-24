@@ -1,16 +1,14 @@
 ﻿#pragma once
 #include <GameObjects.h>
-#include <Vector.h>
 #include <Collider2D.h>
 #include <TimedCall.h>
-#include <ColliderManager.h>
 
 struct BehaviorParameter : WE::BehaviorParameter
 {
 	Vector2 pos;
 	WE::ColorRGB color;
 	bool isUkenagashi = false;
-	float rotation;
+	float rotation = 0;
 };
 
 class BaseBallBehavior : public WE::Behavior

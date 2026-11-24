@@ -40,18 +40,3 @@ void Player::Draw()
 {
 	sprite->Draw();
 }
-
-void Player::OnCollision()
-{
-	ImGui::Text("Hit");
-}
-
-void Player::OnCollisionEnter()
-{
-	ImGui::Text("Hit Enter");
-}
-
-void Player::OnCollisionExit()
-{
-	ImGui::Text("Hit Exit");
-}

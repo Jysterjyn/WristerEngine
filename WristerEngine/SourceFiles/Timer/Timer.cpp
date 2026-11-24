@@ -16,6 +16,8 @@ std::array<int, 2> FrameTimer::ConvertToSecond(int time, int fps) const
 
 bool FrameTimer::Update()
 {
+	if (timeMem == 0) { return true; }
+
 	if (++timer >= timeMem)
 	{
 		timer = 0;
@@ -32,6 +34,8 @@ RealTimer::RealTimer(float interval)
 
 bool RealTimer::Update()
 {
+	if (timeMem == 0.0f) { return true; }
+
 	nowTime = steady_clock::now();
 	if (GetTime() >= timeMem)
 	{

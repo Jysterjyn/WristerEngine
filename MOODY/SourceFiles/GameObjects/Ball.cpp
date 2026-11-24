@@ -127,7 +127,8 @@ void BallManager::Initialize()
 {
 	WE::ColliderInfo info(WE::ChangeVal(CollisionAttribute::Ball), WE::ChangeVal(CollisionMask::Ball), "Ball");
 	Ball::SetColliderGroup(Collider::Initialize(info));
-	CreateBall();
+	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 0.1f);
+	timedCalls.Add(std::move(timedCall));
 }
 
 void BallManager::Update()
@@ -142,7 +143,7 @@ void BallManager::CreateBall()
 {
 	WE::uPtr<Ball> newBall = std::make_unique<Ball>();
 	balls.Add(std::move(newBall));
-	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 0.1f);
+	WE::uPtr<WE::TimedCall> timedCall = std::make_unique<WE::TimedCall>([&]() { CreateBall(); }, 0.5f);
 	timedCalls.Add(std::move(timedCall));
 }
 
